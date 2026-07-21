@@ -207,6 +207,10 @@ all three positions as P in about one minute apiece.  The corresponding
 `RUN_G4_MOVE_*.txt` files fingerprint the sources, controls, and results; no
 precision cutoff is involved.
 
+Move 78 returns to the smaller regime: the direct response 27 is an exact
+finite P-position with Frobenius number 93 and 83,237 evaluated states.  The
+Python and native evaluators agree on the outcome and state count.
+
 The first unresolved even branch 12 reduces the candidate to `{12,16,20}`.
 The primary survey explicitly calls a good odd reply to this position
 unknown.  An exact bounded pass now excludes every odd reply through 101:
@@ -216,7 +220,7 @@ mistaking it for an unbounded answer.
 
 This finite result is consistent with the candidate being P but does not
 prove it.  A proof must still cover infinitely many larger odd moves and all
-remaining legal even moves, beginning with 12 and 78; no extrapolation
+remaining legal even moves, beginning with 12 and 82; no extrapolation
 from the checked range is used here.
 
 ### Sources

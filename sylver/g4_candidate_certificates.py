@@ -51,6 +51,7 @@ G4_CANDIDATE_EVEN_RESPONSES = (
     (66, 305, "native-finite"),
     (70, 277, "native-finite"),
     (74, 273, "native-finite"),
+    (78, 27, "finite"),
 )
 
 
