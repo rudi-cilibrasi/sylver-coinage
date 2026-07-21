@@ -79,16 +79,18 @@ G4_MOVE_90_NATIVE_FINITE_P_POSITIONS = {
     (16, 20, 28, 47, 82, 90),
     (16, 20, 28, 55, 90, 94),
     (16, 20, 28, 45, 98),
+    (16, 20, 28, 86, 90, 227),
 }
 
 G4_MOVE_90_NEW_LONG_REFUTATIONS = (
     (66, 51),
     (82, 47),
+    (86, 227),
     (94, 55),
     (98, 45),
 )
 
-G4_MOVE_90_UNRESOLVED_LONG_REPLIES = (12, 86, 114)
+G4_MOVE_90_UNRESOLVED_LONG_REPLIES = (12, 114)
 
 
 @dataclass(frozen=True)

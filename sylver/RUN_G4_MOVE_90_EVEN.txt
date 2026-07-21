@@ -82,3 +82,9 @@ Interpretation:
   201 is exactly N for each, but long positions have no finite Quiet End
   cutoff.  Odd replies above 229 to the base position likewise remain open.
   No outcome for move 90 or the candidate {16,20,28} is claimed.
+
+Later refinement:
+  RUN_G4_MOVE_90_REPLY_86.txt proves that response 227 refutes long even reply
+  86.  The updated exact partition has 28 refuted replies and only 12 and 114
+  unresolved.  This file remains the source fingerprint for the earlier
+  27-reply checkpoint.

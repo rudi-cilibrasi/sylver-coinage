@@ -1,0 +1,60 @@
+Exact Sylver move-90 refutation of long even reply 86, 2026-07-21
+
+Source SHA-256:
+  85c7f20f93f43a464d0420c47c2bd39cd1818c7af5cc1d3cbdbef99a7a8bc3af  native_solver.cpp
+  7efc1f99c8cb2e495857ce0e69c6d37df76b2f521f56a41fa9962d4c8a0f8065  g4_candidate_certificates.py
+
+Test SHA-256:
+  672646b32d6ee32692740c82ab5d3e5cec389baad169b9beeb5093229d123fe5  test_sylver_solver.py
+  fdfa33353adb985cce8e4ce8df44fb3f099e9e63993c1da11eeae8b877a1a1a9  test_sylver_native_solver.py
+
+Discovery batch:
+  /tmp/conway-sylver-native --odd-range 203 251 16 20 28 86 90
+
+Completed result:
+  25 exact rows; first P row:
+    move=227 P winning_move=none frobenius=325
+    cumulative_states=14379914
+  final row:
+    move=251 N winning_move=257 frobenius=349
+    cumulative_states=16206367
+  elapsed=1:41.22; user=100.02s; maximum RSS=1674216 KB; exit=0
+
+Independent single-position command:
+  /usr/bin/time -v /tmp/conway-sylver-native 16 20 28 86 90 227
+
+Independent result:
+  P winning_move=none frobenius=325 states=13220935
+  elapsed=1:17.75; user=76.67s; maximum RSS=1394364 KB; exit=0
+
+Updated partition command:
+  /usr/bin/time -v python - <<'PY'
+  from sylver.g4_candidate_certificates import verify_move_90_even_partition
+  print(verify_move_90_even_partition())
+  PY
+
+Updated partition result:
+  legal even replies=30
+  short refutations=4
+  inherited long refutations=19
+  new long refutations=(66,51), (82,47), (86,227), (94,55), (98,45)
+  unresolved long replies=12, 114
+  elapsed=0:41.02; maximum RSS=244348 KB; exit=0
+
+Residual frontier extension:
+  reply 12, base {12,16,20,90}, odd moves 203--301:
+    50/50 N; last move=301 -> 263; F=399; states=1632707
+    elapsed=0:13.22; maximum RSS=174240 KB
+  reply 114, base {16,20,28,90,114}, odd moves 203--251:
+    25/25 N; last move=251 -> 333; F=353; states=18439561
+    elapsed=1:56.60; maximum RSS=1883536 KB
+
+Interpretation:
+  After opponent move 90 and candidate even reply 86, move 227 reaches the
+  independently evaluated finite P-position {16,20,28,86,90,227}.  Hence
+  reply 86 is N and 28 of the 30 legal even replies are now refuted.
+
+  The only unresolved even replies are the long positions reached by 12 and
+  114.  Their displayed odd ranges are exact finite exclusions, not Quiet End
+  cutoffs.  Odd replies above 229 to the base move-90 position also remain.
+  No outcome for move 90 or {16,20,28} is claimed.

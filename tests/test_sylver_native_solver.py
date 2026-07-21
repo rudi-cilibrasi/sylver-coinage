@@ -96,15 +96,21 @@ class NativeSylverSolverTests(unittest.TestCase):
             self.native_result((16, 20, 28, 86, 105)),
             (False, None, 215),
         )
-        for generators in sorted(G4_MOVE_90_NATIVE_FINITE_P_POSITIONS):
+        move_90_frobenius = {
+            (16, 20, 28, 45, 98): 147,
+            (16, 20, 28, 47, 82, 90): 133,
+            (16, 20, 28, 51, 66, 90): 129,
+            (16, 20, 28, 55, 90, 94): 157,
+            (16, 20, 28, 86, 90, 227): 325,
+        }
+        self.assertEqual(
+            set(move_90_frobenius), G4_MOVE_90_NATIVE_FINITE_P_POSITIONS
+        )
+        for generators, frobenius in move_90_frobenius.items():
             with self.subTest(generators=generators):
                 self.assertEqual(
                     self.native_result(generators),
-                    (
-                        False,
-                        None,
-                        {45: 147, 47: 133, 51: 129, 55: 157}[generators[3]],
-                    ),
+                    (False, None, frobenius),
                 )
 
     def test_native_solver_rejects_non_coprime_input(self) -> None:
