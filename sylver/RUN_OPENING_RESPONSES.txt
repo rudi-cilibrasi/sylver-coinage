@@ -1,0 +1,40 @@
+Sylver opening-16 partial strategy certificate, 2026-07-21
+
+Source SHA-256:
+  f14a52febbb3da7085226901a23649b9acd52f7ce1079031dc93fa4dc100c320  short_certificates.py
+  8a151b4395fc4c7a74f8e697949b456e90e143f4fe5dad59c07279213213840d  pairing_family.py
+  7cdb3c0cc11bcabc671599f4cc20994d27c9ba25623b5400759fb562fb7d24c4  solver.py
+
+Command:
+  /usr/bin/time -v python - <<'PY'
+  from sylver.short_certificates import (
+      verify_published_short_certificates,
+      verify_opening_16_even_responses,
+  )
+  print(verify_published_short_certificates())
+  print(verify_opening_16_even_responses())
+  PY
+
+Output:
+  CertificateReport(nodes=5, exceptional_odd_children=33,
+                    even_children=38, external_pairing_edges=4)
+  ((2, 3, 'finite'), (4, 6, 'C'), (6, 7, 'finite'),
+   (8, 14, 'E'), (10, 9, 'finite'), (12, 14, 'F'),
+   (14, 8, 'E'), (18, 5, 'finite'), (22, 12, 'P0'))
+
+Resource report:
+  User time: 1.47 seconds
+  Elapsed wall time: 1.48 seconds
+  Maximum resident set size: 21,184 KB
+  Exit status: 0
+
+Interpretation:
+  Every finite arithmetic branch in the five named short P-position nodes is
+  checked exactly.  The four external edges invoke the unbounded pairing
+  theorem documented in RESEARCH.md; the executable checker verifies that
+  each destination has precisely the theorem's required form and that every
+  prescribed mate is legal.  The second output certifies replies to the nine
+  displayed even moves after opening 16.
+
+  This is a partial strategy, not a solution of the opening: it does not cover
+  20, 24, 26, or infinitely many larger even moves.

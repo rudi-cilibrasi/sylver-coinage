@@ -146,8 +146,10 @@ As a consequence, the following portion of a response strategy after opening
 | 22 | 12 | `{12,16,22}` |
 
 `verify_opening_16_even_responses` checks legality and every destination.
-This is useful finite coverage but deliberately not a solution: moves 20, 24,
-26, and infinitely many larger even replies still require certified rules.
+`RUN_OPENING_RESPONSES.txt` preserves source fingerprints and the complete
+report.  This is useful finite coverage but deliberately not a solution:
+moves 20, 24, 26, and infinitely many larger even replies still require
+certified rules.
 
 ### Sources
 
