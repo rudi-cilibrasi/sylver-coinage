@@ -262,6 +262,16 @@ and `RUN_G4_MOVE_90_ODD_493.txt` add 36 later wide-build rows.  Odd replies
 above 493 to the original move-90 child remain open, so move 90 itself is not
 classified.
 
+There is finite pairing structure inside the new frontier, but not yet an
+unbounded rule.  Of the 96 rows from 303 through 493, 22 reciprocal pairs
+cover 44 moves: for example, 399 answers 405 and 405 answers 399, so both
+children reach the same exact P-position after the second move.  The same is
+true of 463 and 489.  Across all 22 pairs the differences are exactly drawn
+from `6,14,18,22,26,30,34,38,50,54,94,98,114`, each a legal even gap of the
+move-90 position.  The endpoints do not yet yield a checked periodic or
+parametric pairing, so this compresses finite certificates without addressing
+the odd tail.
+
 The first unresolved even branch 12 reduces the candidate to `{12,16,20}`.
 The primary survey explicitly calls a good odd reply to this position
 unknown.  An exact bounded pass now excludes every odd reply through 101:
