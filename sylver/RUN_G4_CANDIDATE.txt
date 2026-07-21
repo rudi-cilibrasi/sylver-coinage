@@ -34,7 +34,7 @@ Interpretation:
 Finite even-branch certificate addendum:
 
   Source SHA-256:
-    06fb0661e8b61dcc2b42636f0d6d62d75619760d417a49ec2dbcbd9bfcec0eb1  g4_candidate_certificates.py
+    62a47be79bf2eb40000b492e7a7a56233526d9a71ad1888d94abbf52c22d3d2c  g4_candidate_certificates.py
     e01d144c6529e8e8fd737feebc8b3af494f8404912784c72bc34704f69e9b025  short_certificates.py
     7cdb3c0cc11bcabc671599f4cc20994d27c9ba25623b5400759fb562fb7d24c4  solver.py
 
@@ -43,15 +43,20 @@ Finite even-branch certificate addendum:
      (10, 9, 'finite'), (14, 31, 'finite'), (18, 5, 'finite'),
      (22, 29, 'finite'), (24, 5, 'finite'), (26, 38, 'J'),
      (30, 29, 'finite'), (34, 22, 'L'), (38, 26, 'J'),
-     (42, 30, 'N'), (46, 35, 'finite'), (50, 38, 'M'))
+     (42, 30, 'N'), (46, 35, 'finite'), (50, 38, 'M'),
+     (54, 35, 'finite'), (58, 43, 'finite'), (62, 43, 'finite'))
 
-  User time: 15.41 seconds
-  Elapsed wall time: 15.47 seconds
-  Maximum resident set size: 69,880 KB
+  User time: 24.66 seconds
+  Elapsed wall time: 24.77 seconds
+  Maximum resident set size: 104,712 KB
   Exit status: 0
 
   Each row is (opponent move, response, destination).  A finite destination
   is independently solved as P at gcd one; C, G, J, L, M, and N are separately
   certified short P-positions.  G's only nonlocal dependency is the peer-reviewed
   periodicity computation proving that {8,10,22} is a long P-position.  The
-  smallest unresolved even branches are 12 and 54.
+  smallest unresolved even branches are 12 and 66.
+
+  A direct odd-response search at move 66 was deliberately stopped after
+  3:23.87, 1,044,448 KB, and no completed response.  This is a resource
+  boundary, not evidence that the branch is N or P.

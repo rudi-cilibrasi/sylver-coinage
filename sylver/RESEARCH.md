@@ -162,8 +162,9 @@ refuted, with an explicit winning response from the child in every case.
 `RUN_G4_CANDIDATE.txt` records the complete computation.
 
 There is also proof-grade finite progress on the even side.
-`g4_candidate_certificates.py` verifies replies to eleven legal even moves:
-`2,4,6,8,10,14,18,22,24,26,30`.  Move 8 is answered by 26, reaching the
+`g4_candidate_certificates.py` verifies replies to nineteen legal even moves:
+`2,4,6,8,10,14,18,22,24,26,30,34,38,42,46,50,54,58,62`.  Move 8 is
+answered by 26, reaching the
 short position `G={8,20,26}`.  The Quiet End Theorem handles G's unbounded
 odd tail, while the checker exhausts its nine exceptional odd children and
 ten even children.  Nine even edges finish in exact finite or pairing-family
@@ -193,6 +194,13 @@ even children reduce to finite P-positions, earlier short nodes, and
 `O={8,20,30}`.  O is itself short; its only external boundaries are the same
 pairing family and published `{8,10,22}` computation already named above.
 
+The next three branches also close directly at gcd one: move 54 is answered
+by 35, and moves 58 and 62 are each answered by 43.  These are exact finite
+P-position evaluations.  A search for a comparable direct reply after move
+66 was stopped at a transparent resource boundary (3:23.87 elapsed and
+1,044,448 KB resident) without a completed reply; it establishes no outcome
+for that branch.
+
 The first unresolved even branch 12 reduces the candidate to `{12,16,20}`.
 The primary survey explicitly calls a good odd reply to this position
 unknown.  An exact bounded pass now excludes every odd reply through 101:
@@ -202,7 +210,7 @@ mistaking it for an unbounded answer.
 
 This finite result is consistent with the candidate being P but does not
 prove it.  A proof must still cover infinitely many larger odd moves and all
-remaining legal even moves, beginning with 12 and 54; no extrapolation
+remaining legal even moves, beginning with 12 and 66; no extrapolation
 from the checked range is used here.
 
 ### Sources

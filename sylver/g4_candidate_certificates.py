@@ -34,6 +34,9 @@ G4_CANDIDATE_EVEN_RESPONSES = (
     (42, 30, "N"),
     (46, 35, "finite"),
     (50, 38, "M"),
+    (54, 35, "finite"),
+    (58, 43, "finite"),
+    (62, 43, "finite"),
 )
 
 
