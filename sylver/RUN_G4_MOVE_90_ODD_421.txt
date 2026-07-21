@@ -122,3 +122,7 @@ Interpretation:
 
   This remains a finite exclusion.  Odd replies above 421 are unclassified,
   so no outcome for {16,20,28,90} or {16,20,28} is claimed.
+
+Later refinement:
+  RUN_G4_MOVE_90_ODD_457.txt extends the exact direct odd frontier through
+  457 in three more completed 1024-bit batches.

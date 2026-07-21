@@ -220,10 +220,10 @@ Move 86 is answered by 105.  Its exact child has Frobenius number 215 and is
 P after 4,122,547 states in a 19-second independent native run, recorded in
 `RUN_G4_MOVE_86.txt`.
 
-The next branch, move 90, has no direct odd P reply from 3 through 421.  Exact
-common-bound batches classify all 210 children as N.  The scan crosses the
+The next branch, move 90, has no direct odd P reply from 3 through 457.  Exact
+common-bound batches classify all 228 children as N.  The scan crosses the
 standard Frobenius ceiling of 511 under a separately compiled 1024-bit build;
-the final batch uses 5.48 GB, so extending the same linear scan has sharply
+the final batch uses 5.93 GB, so extending the same linear scan has sharply
 diminishing value.
 The even side has 30 legal replies.  Exactly four produce a short gcd-two
 position, and all four are now refuted.  Reply 4 allows move 6 to the certified
@@ -257,8 +257,9 @@ number 923.  `RUN_G4_MOVE_90_EVEN.txt` fingerprints the original 27-reply
 partition; the three `RUN_G4_MOVE_90_REPLY_*.txt` records preserve the later
 independent P reruns and initial frontier extensions.  The final
 `RUN_G4_MOVE_90_ODD_421.txt` checkpoint records 60 more exact rows and
-cross-width reruns of the final P destination.  Odd replies above 421 to the
-original move-90 child remain open, so move 90 itself is not classified.
+cross-width reruns of its final P destination.  `RUN_G4_MOVE_90_ODD_457.txt`
+adds the last 18 wide-build rows.  Odd replies above 457 to the original
+move-90 child remain open, so move 90 itself is not classified.
 
 The first unresolved even branch 12 reduces the candidate to `{12,16,20}`.
 The primary survey explicitly calls a good odd reply to this position
