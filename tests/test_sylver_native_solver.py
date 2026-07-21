@@ -4,6 +4,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from sylver.g4_candidate_certificates import G4_MOVE_90_NATIVE_FINITE_P_POSITIONS
 from sylver.solver import solve_position
 
 
@@ -95,6 +96,16 @@ class NativeSylverSolverTests(unittest.TestCase):
             self.native_result((16, 20, 28, 86, 105)),
             (False, None, 215),
         )
+        for generators in sorted(G4_MOVE_90_NATIVE_FINITE_P_POSITIONS):
+            with self.subTest(generators=generators):
+                self.assertEqual(
+                    self.native_result(generators),
+                    (
+                        False,
+                        None,
+                        {45: 147, 47: 133, 51: 129, 55: 157}[generators[3]],
+                    ),
+                )
 
     def test_native_solver_rejects_non_coprime_input(self) -> None:
         completed = subprocess.run(

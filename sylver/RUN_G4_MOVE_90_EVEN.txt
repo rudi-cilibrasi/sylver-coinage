@@ -1,0 +1,84 @@
+Exact Sylver move-90 even-reply partition, 2026-07-21
+
+Base position:
+  {16,20,28,90}
+
+Source SHA-256:
+  85c7f20f93f43a464d0420c47c2bd39cd1818c7af5cc1d3cbdbef99a7a8bc3af  native_solver.cpp
+  a9dbb3099a8a914b2a02769614c106aea063375278837a0163bfd45eaa34e882  g4_candidate_certificates.py
+  98cd3ed7844fca9520c9a5690f6188cb8c1246d133d9f11d6ad8c58db4e72612  short_certificates.py
+  7cdb3c0cc11bcabc671599f4cc20994d27c9ba25623b5400759fb562fb7d24c4  solver.py
+
+Test SHA-256:
+  bf0592965dbc940d3de7fad41144e374d25e8e53007f25bdda9ddadabe508a60  test_sylver_solver.py
+  c0bf1ec2ec9bc97245abc8a3992b2b777218e865b1240c95b7f316e2e2d4271f  test_sylver_native_solver.py
+
+Compiler:
+  g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+
+Compile command:
+  g++ -std=c++20 -O3 -Wall -Wextra -pedantic \
+      sylver/native_solver.cpp -o /tmp/conway-sylver-native
+
+Partition command:
+  /usr/bin/time -v python - <<'PY'
+  from sylver.g4_candidate_certificates import verify_move_90_even_partition
+  print(verify_move_90_even_partition())
+  PY
+
+Partition result:
+  legal_even_replies=30
+  short_refutations=4
+  inherited_long_refutations=
+    (2,3), (6,4), (10,9), (14,31), (18,5), (22,29), (24,5),
+    (26,38), (30,29), (34,22), (38,26), (42,30), (46,35),
+    (50,38), (54,35), (58,43), (62,43), (70,277), (74,273)
+  new_long_refutations=(66,51), (82,47), (94,55), (98,45)
+  unresolved_long_replies=12, 86, 114
+
+Partition resource report:
+  User time (seconds): 41.78
+  System time (seconds): 0.14
+  Elapsed wall time: 0:41.98
+  Maximum resident set size (kbytes): 235432
+  Exit status: 0
+
+Independent native P reruns:
+  reply/response  canonical P generators                F    states    time   RSS
+  66 / 51         {16,20,28,51,66,90}                 129   515419   1.46s   55788 KB
+  82 / 47         {16,20,28,47,82,90}                 133   500069   1.41s   54316 KB
+  94 / 55         {16,20,28,55,90,94}                 157   786501   2.54s   85752 KB
+  98 / 45         {16,20,28,45,98}                    147   437973   1.27s   48376 KB
+
+Residual odd-frontier command form:
+  /usr/bin/time -f '...' /tmp/conway-sylver-native \
+      --odd-range 3 201 BASE_GENERATORS \
+    | awk '{rows++; last=$0; if ($2=="P") print "P_ROW",$0}
+           END {print "rows="rows,"last="last}'
+
+Residual exact results:
+  reply 12, base {12,16,20,90}:
+    rows=100; no P row
+    last=move=201 N winning_move=247 frobenius=299
+    cumulative_states=997423; elapsed=0:06.44; maxrss=105496 KB
+  reply 86, base {16,20,28,86,90}:
+    rows=100; no P row
+    last=move=201 N winning_move=187 frobenius=299
+    cumulative_states=12189350; elapsed=1:12.02; maxrss=1297284 KB
+  reply 114, base {16,20,28,90,114}:
+    rows=100; no P row
+    last=move=201 N winning_move=267 frobenius=303
+    cumulative_states=14167742; elapsed=1:29.05; maxrss=1482860 KB
+
+Interpretation:
+  The verifier recomputes all 30 legal even replies and a disjoint exhaustive
+  partition.  Four short replies are refuted by RUN_G4_MOVE_90_SHORT.txt.
+  Nineteen long replies reuse earlier certified responses: after each response
+  the destination semigroup already generates 90, so adding 90 changes no
+  game state.  Four more long replies reach the independently rerun native
+  finite P-positions above.  Therefore 27 of 30 even replies are N.
+
+  Replies 12, 86, and 114 remain unclassified.  Every direct odd child through
+  201 is exactly N for each, but long positions have no finite Quiet End
+  cutoff.  Odd replies above 229 to the base position likewise remain open.
+  No outcome for move 90 or the candidate {16,20,28} is claimed.

@@ -9,6 +9,7 @@ for a small certificate graph covering several responses after opening 16.
 from __future__ import annotations
 
 from dataclasses import dataclass
+from functools import cache
 from math import gcd
 from typing import Iterable
 
@@ -279,6 +280,7 @@ def _verify_finite_response(
         raise AssertionError(f"response {response} did not reach a P-position")
 
 
+@cache
 def verify_published_short_certificates() -> CertificateReport:
     """Verify the finite certificate graph containing the named short nodes.
 

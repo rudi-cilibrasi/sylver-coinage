@@ -59,5 +59,6 @@ Structural follow-up:
   winning moves are 6, 26, 27, and 57.  In particular {8,20,90} is N because
   move 26 reaches the already certified P-position {8,20,26}; it is not a
   prospective P-certificate.  RUN_G4_MOVE_90_SHORT.txt records the complete
-  correction and exact checks.  The other 26 legal even replies are long and
-  remain open.
+  correction and exact checks.  The other 26 legal even replies are long;
+  RUN_G4_MOVE_90_EVEN.txt later refutes 23 of them and preserves the exact
+  three-reply frontier.

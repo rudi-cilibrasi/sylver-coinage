@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+from functools import cache
 from math import gcd
 
 from sylver.short_certificates import (
@@ -72,6 +74,33 @@ G4_MOVE_90_SHORT_EVEN_REFUTATIONS = (
 )
 
 
+G4_MOVE_90_NATIVE_FINITE_P_POSITIONS = {
+    (16, 20, 28, 51, 66, 90),
+    (16, 20, 28, 47, 82, 90),
+    (16, 20, 28, 55, 90, 94),
+    (16, 20, 28, 45, 98),
+}
+
+G4_MOVE_90_NEW_LONG_REFUTATIONS = (
+    (66, 51),
+    (82, 47),
+    (94, 55),
+    (98, 45),
+)
+
+G4_MOVE_90_UNRESOLVED_LONG_REPLIES = (12, 86, 114)
+
+
+@dataclass(frozen=True)
+class Move90EvenReport:
+    legal_even_replies: int
+    short_refutations: int
+    inherited_long_refutations: tuple[tuple[int, int], ...]
+    new_long_refutations: tuple[tuple[int, int], ...]
+    unresolved_long_replies: tuple[int, ...]
+
+
+@cache
 def verify_g4_candidate_even_responses() -> tuple[tuple[int, int, str], ...]:
     """Verify the currently known finite even branches of the candidate."""
 
@@ -108,6 +137,7 @@ def verify_g4_candidate_even_responses() -> tuple[tuple[int, int, str], ...]:
     return G4_CANDIDATE_EVEN_RESPONSES
 
 
+@cache
 def verify_move_90_short_even_refutations() -> tuple[tuple[int, int, str], ...]:
     """Prove that every short even reply after move 90 is an N-position.
 
@@ -149,3 +179,59 @@ def verify_move_90_short_even_refutations() -> tuple[tuple[int, int, str], ...]:
         else:
             raise AssertionError(f"unknown move-90 destination {destination}")
     return G4_MOVE_90_SHORT_EVEN_REFUTATIONS
+
+
+@cache
+def verify_move_90_even_partition() -> Move90EvenReport:
+    """Verify 27 refuted even replies and the three-reply move-90 frontier."""
+
+    verify_g4_candidate_even_responses()
+    legal = set(legal_moves_at_gcd_two(G4_MOVE_90_CHILD))
+    short = {
+        response for response, _, _ in verify_move_90_short_even_refutations()
+    }
+
+    inherited: list[tuple[int, int]] = []
+    for move, response, _ in G4_CANDIDATE_EVEN_RESPONSES:
+        if move not in legal or move in short:
+            continue
+        original_child = minimal_generators((*G4_CANDIDATE, move))
+        original_target = minimal_generators((*original_child, response))
+        if not is_generated(original_target, 90):
+            continue
+        move_90_child = minimal_generators((*G4_MOVE_90_CHILD, move))
+        if is_generated(move_90_child, response):
+            raise AssertionError(f"inherited response {response} became illegal")
+        reached = minimal_generators((*move_90_child, response))
+        if reached != original_target:
+            raise AssertionError(f"move {move} did not preserve its P-destination")
+        inherited.append((move, response))
+
+    for move, response in G4_MOVE_90_NEW_LONG_REFUTATIONS:
+        child = minimal_generators((*G4_MOVE_90_CHILD, move))
+        if is_generated(child, response):
+            raise AssertionError(f"new response {response} to {move} is illegal")
+        reached = minimal_generators((*child, response))
+        if reached not in G4_MOVE_90_NATIVE_FINITE_P_POSITIONS:
+            raise AssertionError(f"unknown native move-90 destination {reached}")
+
+    inherited_moves = {move for move, _ in inherited}
+    new_moves = {move for move, _ in G4_MOVE_90_NEW_LONG_REFUTATIONS}
+    unresolved = set(G4_MOVE_90_UNRESOLVED_LONG_REPLIES)
+    parts = (short, inherited_moves, new_moves, unresolved)
+    if any(
+        left & right
+        for index, left in enumerate(parts)
+        for right in parts[index + 1 :]
+    ):
+        raise AssertionError("move-90 even reply classes overlap")
+    if set().union(*parts) != legal:
+        raise AssertionError("move-90 even reply partition is incomplete")
+
+    return Move90EvenReport(
+        len(legal),
+        len(short),
+        tuple(inherited),
+        G4_MOVE_90_NEW_LONG_REFUTATIONS,
+        G4_MOVE_90_UNRESOLVED_LONG_REPLIES,
+    )

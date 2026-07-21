@@ -49,5 +49,7 @@ Interpretation:
   90=26+8*8.  After 78, move 27 reaches the displayed exact finite P-position.
   After 102, move 57 reaches the other displayed exact finite P-position.
 
-  The remaining 26 even replies are long, not thereby classified, and odd
-  replies above 229 remain open.  No outcome for move 90 is claimed.
+  This certificate alone leaves 26 long replies unclassified.  The later
+  RUN_G4_MOVE_90_EVEN.txt reuses 19 existing P-destinations and adds four new
+  finite refutations, leaving only three long replies.  Odd replies above 229
+  remain open.  No outcome for move 90 is claimed.

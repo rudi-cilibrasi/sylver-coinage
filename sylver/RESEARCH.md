@@ -234,7 +234,24 @@ even refutations are fingerprinted in `RUN_G4_MOVE_90_SHORT.txt`.
 
 This does not settle move 90.  The remaining 26 even replies are long; the
 Quiet End Theorem does not make long positions N, and some may require very
-large winning moves.  Larger odd replies also remain open.
+large winning moves.  Nevertheless, 19 of them inherit an existing response
+from the candidate graph: after that response, 90 is already in the certified
+P semigroup and is redundant.  Four more have new direct odd responses:
+
+| Long even reply | Refuting odd move | Exact P child: Frobenius / states |
+| ---: | ---: | ---: |
+| 66 | 51 | 129 / 515,419 |
+| 82 | 47 | 133 / 500,069 |
+| 94 | 55 | 157 / 786,501 |
+| 98 | 45 | 147 / 437,973 |
+
+Thus **27 of all 30 legal even replies** are refuted.  The verifier recomputes
+the full disjoint partition; the only unresolved long replies are 12, 86, and
+114.  Exact native batches find no direct odd P child through 201 for any of
+those three.  Reply 114 reaches 14,167,742 shared states and 1.48 GB, so the
+linear scan stops there.  `RUN_G4_MOVE_90_EVEN.txt` fingerprints the partition,
+the four independently rerun P children, and all three bounded frontiers.
+Larger odd replies to the original move-90 child also remain open.
 
 The first unresolved even branch 12 reduces the candidate to `{12,16,20}`.
 The primary survey explicitly calls a good odd reply to this position

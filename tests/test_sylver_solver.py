@@ -3,7 +3,9 @@ import unittest
 from sylver.analyze_opening_16 import exceptional_odd_wins
 from sylver.analyze_g4_candidate import inspect_odd_children
 from sylver.g4_candidate_certificates import (
+    Move90EvenReport,
     verify_g4_candidate_even_responses,
+    verify_move_90_even_partition,
     verify_move_90_short_even_refutations,
 )
 from sylver.pairing_family import (
@@ -156,6 +158,36 @@ class FiniteSolverTests(unittest.TestCase):
                 (8, 26, "G"),
                 (78, 27, "finite"),
                 (102, 57, "finite"),
+            ),
+        )
+        self.assertEqual(
+            verify_move_90_even_partition(),
+            Move90EvenReport(
+                legal_even_replies=30,
+                short_refutations=4,
+                inherited_long_refutations=(
+                    (2, 3),
+                    (6, 4),
+                    (10, 9),
+                    (14, 31),
+                    (18, 5),
+                    (22, 29),
+                    (24, 5),
+                    (26, 38),
+                    (30, 29),
+                    (34, 22),
+                    (38, 26),
+                    (42, 30),
+                    (46, 35),
+                    (50, 38),
+                    (54, 35),
+                    (58, 43),
+                    (62, 43),
+                    (70, 277),
+                    (74, 273),
+                ),
+                new_long_refutations=((66, 51), (82, 47), (94, 55), (98, 45)),
+                unresolved_long_replies=(12, 86, 114),
             ),
         )
 
