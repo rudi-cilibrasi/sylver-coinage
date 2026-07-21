@@ -1,0 +1,185 @@
+"""Check finite branches of published short ``g=2`` P-position proofs.
+
+The Quiet End Theorem reduces odd moves above the Frobenius number of the
+divide-by-two semigroup to one theorem application.  The remaining odd moves
+and all even moves are finite.  This module checks those finite obligations
+for the small certificate graph used by the response ``12`` to ``{16,22}``.
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+from math import gcd
+from typing import Iterable
+
+from sylver.solver import FiniteSolver, solve_position
+
+
+def is_generated(generators: Iterable[int], value: int) -> bool:
+    """Return whether ``value`` is a nonnegative combination of generators."""
+
+    if value < 0:
+        return False
+    reachable = [False] * (value + 1)
+    reachable[0] = True
+    values = tuple(sorted(set(generators)))
+    for current in range(value + 1):
+        if not reachable[current]:
+            continue
+        for generator in values:
+            if current + generator <= value:
+                reachable[current + generator] = True
+    return reachable[value]
+
+
+def minimal_generators(generators: Iterable[int]) -> tuple[int, ...]:
+    """Return the unique minimal generators of the same additive monoid."""
+
+    result: list[int] = []
+    for value in sorted(set(generators)):
+        if value < 2:
+            raise ValueError("generators must exceed one")
+        if not is_generated(result, value):
+            result.append(value)
+    return tuple(result)
+
+
+def legal_moves_at_gcd_two(generators: Iterable[int]) -> tuple[int, ...]:
+    """Return every legal even move; odd moves form the infinite remainder."""
+
+    position = minimal_generators(generators)
+    if gcd(*position) != 2:
+        raise ValueError("position must have gcd two")
+    reduced = FiniteSolver(tuple(value // 2 for value in position))
+    return tuple(2 * gap for gap in reduced.gaps())
+
+
+@dataclass(frozen=True)
+class ShortNode:
+    name: str
+    generators: tuple[int, ...]
+    even_responses: tuple[tuple[int, int, str], ...]
+
+
+@dataclass(frozen=True)
+class CertificateReport:
+    nodes: int
+    exceptional_odd_children: int
+    even_children: int
+    external_pairing_edges: int
+
+
+NODES = (
+    ShortNode("C", (4, 6), ((2, 3, "finite"),)),
+    ShortNode(
+        "D",
+        (12, 16, 20, 22, 26),
+        (
+            (2, 3, "finite"),
+            (4, 6, "C"),
+            (6, 4, "C"),
+            (8, 47, "finite"),
+            (10, 31, "finite"),
+            (14, 13, "finite"),
+            (18, 11, "finite"),
+            (30, 183, "finite"),
+        ),
+    ),
+    ShortNode(
+        "P0",
+        (12, 16, 22),
+        (
+            (2, 3, "finite"),
+            (4, 6, "C"),
+            (6, 4, "C"),
+            # This is the one deliberately external edge.  The destination
+            # has the published (4n+1,4n+3) infinite pairing strategy.
+            (8, 18, "A"),
+            (10, 31, "finite"),
+            (14, 47, "finite"),
+            (18, 15, "finite"),
+            (20, 26, "D"),
+            (26, 20, "D"),
+            (30, 51, "finite"),
+            (42, 25, "finite"),
+        ),
+    ),
+)
+
+EXTERNAL_NODES = {"A": minimal_generators((8, 12, 18, 22))}
+
+
+def _verify_finite_response(
+    position: tuple[int, ...], opponent_move: int, response: int
+) -> None:
+    if is_generated(position, opponent_move):
+        raise AssertionError(f"claimed opponent move {opponent_move} is illegal")
+    child = minimal_generators((*position, opponent_move))
+    if is_generated(child, response):
+        raise AssertionError(f"claimed response {response} is illegal")
+    result = minimal_generators((*child, response))
+    if gcd(*result) != 1:
+        raise AssertionError("finite response did not reach gcd one")
+    if solve_position(result).is_winning:
+        raise AssertionError(f"response {response} did not reach a P-position")
+
+
+def verify_published_short_certificates() -> CertificateReport:
+    """Verify the finite certificate graph rooted at ``{12,16,22}``.
+
+    A successful return establishes every finite branch.  The mathematical
+    conclusion that each node is P additionally invokes the Quiet End Theorem
+    for large odd moves and the published infinite pairing strategy for node
+    A; those theorem obligations are recorded, not silently replaced by a
+    finite cutoff.
+    """
+
+    by_name = {node.name: node for node in NODES}
+    odd_children = 0
+    even_children = 0
+    external_edges = 0
+
+    for node in NODES:
+        position = minimal_generators(node.generators)
+        if position != node.generators or gcd(*position) != 2:
+            raise AssertionError(f"{node.name} is not canonical with gcd two")
+        reduced = FiniteSolver(tuple(value // 2 for value in position))
+        if not reduced.is_quiet_ender():
+            raise AssertionError(f"{node.name}/2 is not a quiet ender")
+
+        # Every odd move greater than this Frobenius number is handled by the
+        # Quiet End Theorem.  Check every non-losing odd move below it exactly.
+        for move in range(3, reduced.frobenius + 1, 2):
+            child = solve_position((*position, move))
+            if not child.is_winning or child.winning_move is None:
+                raise AssertionError(f"odd move {move} from {node.name} is not refuted")
+            _verify_finite_response(position, move, child.winning_move)
+            odd_children += 1
+
+        claimed_moves = {move for move, _, _ in node.even_responses}
+        actual_moves = set(legal_moves_at_gcd_two(position))
+        if claimed_moves != actual_moves:
+            raise AssertionError(
+                f"{node.name} even coverage mismatch: {claimed_moves ^ actual_moves}"
+            )
+
+        for move, response, destination in node.even_responses:
+            if destination == "finite":
+                _verify_finite_response(position, move, response)
+            else:
+                child = minimal_generators((*position, move))
+                if is_generated(child, response):
+                    raise AssertionError(f"illegal response {response} at {node.name}")
+                result = minimal_generators((*child, response))
+                if destination in by_name:
+                    expected = by_name[destination].generators
+                else:
+                    expected = EXTERNAL_NODES[destination]
+                    external_edges += 1
+                if result != expected:
+                    raise AssertionError(
+                        f"{node.name}: {move},{response} reached {result}, not {expected}"
+                    )
+            even_children += 1
+
+    return CertificateReport(len(NODES), odd_children, even_children, external_edges)

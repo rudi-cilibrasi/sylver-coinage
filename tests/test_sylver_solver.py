@@ -1,6 +1,12 @@
 import unittest
 
 from sylver.analyze_opening_16 import exceptional_odd_wins
+from sylver.short_certificates import (
+    CertificateReport,
+    legal_moves_at_gcd_two,
+    minimal_generators,
+    verify_published_short_certificates,
+)
 from sylver.solver import FiniteSolver, frobenius_number, solve_position
 
 
@@ -53,6 +59,26 @@ class FiniteSolverTests(unittest.TestCase):
     def test_non_coprime_position_is_rejected(self) -> None:
         with self.assertRaisesRegex(ValueError, "gcd 1"):
             FiniteSolver((16, 18))
+
+    def test_minimal_generators_remove_redundancy(self) -> None:
+        self.assertEqual(minimal_generators((4, 6, 8, 10, 22)), (4, 6))
+
+    def test_even_moves_of_published_short_position(self) -> None:
+        self.assertEqual(
+            legal_moves_at_gcd_two((12, 16, 22)),
+            (2, 4, 6, 8, 10, 14, 18, 20, 26, 30, 42),
+        )
+
+    def test_published_short_certificate_graph(self) -> None:
+        self.assertEqual(
+            verify_published_short_certificates(),
+            CertificateReport(
+                nodes=3,
+                exceptional_odd_children=17,
+                even_children=20,
+                external_pairing_edges=1,
+            ),
+        )
 
 
 if __name__ == "__main__":

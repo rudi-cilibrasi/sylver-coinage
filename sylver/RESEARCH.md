@@ -61,9 +61,32 @@ tested finite evaluator and a clean description of what remains: even response
 families and P-position certificates at gcd 2, 4, and 8.  Merely extending the
 gcd-one brute force will not settle `{16}`.
 
-The next implementation milestone is a certificate checker for gcd-2 pairing
-strategies, starting with the published P-position `{12,16,22}`.  A scalable
-attack then needs parametric response rules for the three gcd classes.
+### Attempt 2 — finite certificate graph for `{12,16,22}`
+
+The response `12` to `{16,22}` reaches the published P-position
+`P0={12,16,22}`.  Dividing by two gives the quiet ender `{6,8,11}`, whose
+Frobenius number is 21.  The Quiet End Theorem proves at once that every odd
+move above 21 produces a quiet ender and is losing.  Only ten non-losing odd
+moves below that threshold and eleven even moves remain.
+
+`short_certificates.py` now checks this finite frontier without a heuristic
+precision cutoff.  It also checks two subsidiary short P-position nodes,
+`{4,6}` and `{12,16,20,22,26}`.  In total it verifies 17 exceptional odd
+children and all 20 even children.  Every response reaches either an exactly
+solved finite P-position or one of the named certificate nodes.
+
+There is one explicit theorem boundary: after the even move 8 from `P0`, the
+response 18 reaches `{8,12,18,22}`.  Blok's published proof gives this member
+of the family `{8,12,8n+2,8n+6}` a simple infinite `(4n+1,4n+3)` pairing
+strategy.  The local checker records that external edge instead of pretending
+that a large finite truncation proves it.  Thus the certificate independently
+checks all arithmetic branches while retaining one cited infinite pairing
+lemma.
+
+This confirms a strategically important response already in the literature;
+it does not settle the opening `{16}`.  A scalable attack still needs a
+parametric rule covering every even second move in the gcd 2, 4, and 8
+classes.
 
 ### Sources
 
