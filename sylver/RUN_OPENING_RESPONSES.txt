@@ -1,7 +1,7 @@
 Sylver opening-16 partial strategy certificate, 2026-07-21
 
 Source SHA-256:
-  9f9069a6ebb0369b63bb39b1ff924e4134be661976e601dedb47bf6964597cac  short_certificates.py
+  e01d144c6529e8e8fd737feebc8b3af494f8404912784c72bc34704f69e9b025  short_certificates.py
   8a151b4395fc4c7a74f8e697949b456e90e143f4fe5dad59c07279213213840d  pairing_family.py
   7cdb3c0cc11bcabc671599f4cc20994d27c9ba25623b5400759fb562fb7d24c4  solver.py
 
@@ -16,24 +16,24 @@ Command:
   PY
 
 Output:
-  CertificateReport(nodes=9, exceptional_odd_children=78,
-                    even_children=87, external_pairing_edges=5,
-                    published_long_edges=1)
+  CertificateReport(nodes=11, exceptional_odd_children=103,
+                    even_children=114, external_pairing_edges=6,
+                    published_long_edges=2)
   ((2, 3, 'finite'), (4, 6, 'C'), (6, 7, 'finite'),
    (8, 14, 'E'), (10, 9, 'finite'), (12, 14, 'F'),
    (14, 8, 'E'), (18, 5, 'finite'), (22, 12, 'P0'))
 
 Resource report:
-  User time: 15.49 seconds
-  Elapsed wall time: 15.54 seconds
-  Maximum resident set size: 63,944 KB
+  User time: 26.15 seconds
+  Elapsed wall time: 26.25 seconds
+  Maximum resident set size: 67,792 KB
   Exit status: 0
 
 Interpretation:
-  Every finite arithmetic branch in the nine named short P-position nodes is
-  checked exactly.  Five external edges invoke the unbounded pairing theorem
+  Every finite arithmetic branch in the eleven named short P-position nodes is
+  checked exactly.  Six external edges invoke the unbounded pairing theorem
   documented in RESEARCH.md; the executable checker verifies each theorem
-  shape.  One edge reaches the published long P-position {8,10,22}, whose
+  shape.  Two edges reach the published long P-position {8,10,22}, whose
   status follows from the peer-reviewed periodicity computation rather than
   this finite checker.  The second output certifies replies to the nine
   displayed even moves after opening 16.

@@ -187,6 +187,12 @@ Move 38 is answered by 26, returning to the already certified node J.  Move
 checked through all 13 exceptional odd and 14 even children.  N likewise has
 no theorem dependency beyond the established Quiet End Theorem and `{4,6}`.
 
+Move 46 has the direct gcd-one response 35.  Move 50 is answered by 38,
+reaching the short node `M={16,20,28,38,50}`.  M's 15 exceptional odd and 16
+even children reduce to finite P-positions, earlier short nodes, and
+`O={8,20,30}`.  O is itself short; its only external boundaries are the same
+pairing family and published `{8,10,22}` computation already named above.
+
 The first unresolved even branch 12 reduces the candidate to `{12,16,20}`.
 The primary survey explicitly calls a good odd reply to this position
 unknown.  An exact bounded pass now excludes every odd reply through 101:
@@ -196,7 +202,7 @@ mistaking it for an unbounded answer.
 
 This finite result is consistent with the candidate being P but does not
 prove it.  A proof must still cover infinitely many larger odd moves and all
-remaining legal even moves, beginning with 12 and 46; no extrapolation
+remaining legal even moves, beginning with 12 and 54; no extrapolation
 from the checked range is used here.
 
 ### Sources
