@@ -175,6 +175,12 @@ def verify_published_short_certificates() -> CertificateReport:
                     expected = by_name[destination].generators
                 else:
                     expected = EXTERNAL_NODES[destination]
+                    # Import lazily to avoid the pairing-family module's
+                    # deliberate reuse of the elementary helpers above.
+                    from sylver.pairing_family import recognize_pairing_family
+
+                    if recognize_pairing_family(expected) is None:
+                        raise AssertionError("external node is not in the pairing family")
                     external_edges += 1
                 if result != expected:
                     raise AssertionError(

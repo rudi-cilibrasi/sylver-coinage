@@ -1,6 +1,11 @@
 import unittest
 
 from sylver.analyze_opening_16 import exceptional_odd_wins
+from sylver.pairing_family import (
+    pairing_family,
+    pairing_response,
+    recognize_pairing_family,
+)
 from sylver.short_certificates import (
     CertificateReport,
     legal_moves_at_gcd_two,
@@ -79,6 +84,41 @@ class FiniteSolverTests(unittest.TestCase):
                 external_pairing_edges=1,
             ),
         )
+
+    def test_infinite_pairing_family_even_gaps(self) -> None:
+        for parameter in range(1, 21):
+            with self.subTest(parameter=parameter):
+                family = pairing_family(parameter)
+                expected = {2, 4, 6}
+                expected.update(
+                    value
+                    for index in range(1, parameter)
+                    for value in (8 * index + 2, 8 * index + 6)
+                )
+                self.assertEqual(
+                    set(legal_moves_at_gcd_two(family.generators)), expected
+                )
+                for move in expected:
+                    response = pairing_response(parameter, move)
+                    self.assertEqual(pairing_response(parameter, response), move)
+
+    def test_infinite_pairing_family_odd_responses(self) -> None:
+        for parameter in (1, 2, 7, 20):
+            for move in range(3, 1_000, 2):
+                with self.subTest(parameter=parameter, move=move):
+                    response = pairing_response(parameter, move)
+                    self.assertEqual(pairing_response(parameter, response), move)
+
+    def test_pairing_family_recognition(self) -> None:
+        first = recognize_pairing_family((14, 8, 10, 12))
+        self.assertIsNotNone(first)
+        assert first is not None
+        self.assertEqual(first.parameter, 1)
+        family = recognize_pairing_family((22, 12, 18, 8))
+        self.assertIsNotNone(family)
+        assert family is not None
+        self.assertEqual(family.parameter, 2)
+        self.assertIsNone(recognize_pairing_family((8, 12, 18)))
 
 
 if __name__ == "__main__":

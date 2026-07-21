@@ -78,10 +78,32 @@ solved finite P-position or one of the named certificate nodes.
 There is one explicit theorem boundary: after the even move 8 from `P0`, the
 response 18 reaches `{8,12,18,22}`.  Blok's published proof gives this member
 of the family `{8,12,8n+2,8n+6}` a simple infinite `(4n+1,4n+3)` pairing
-strategy.  The local checker records that external edge instead of pretending
-that a large finite truncation proves it.  Thus the certificate independently
-checks all arithmetic branches while retaining one cited infinite pairing
-lemma.
+strategy.  `pairing_family.py` now recognizes this family, derives its complete
+finite set of even gaps, and checks every prescribed response for exact
+legality.  The infinite part is still a theorem, not a cutoff: apart from the
+special pairs `2 <-> 3` and `4 <-> 6`, its legal moves are partitioned as
+
+```text
+odd:   (4j+1, 4j+3),              j >= 1
+even:  (8j+2, 8j+6),        1 <= j < n.
+```
+
+To see the finite even formula, divide the position by two.  The semigroup
+`<4,6,4n+1,4n+3>` contains every even integer at least four and every odd
+integer at least `4n+1`; its gaps are exactly `1,2,3` and the odd integers from
+5 through `4n-1`.  Doubling gives precisely the displayed even moves.  Blok's
+pairing argument shows that adding both members of any available pair removes
+only complete remaining pairs; the smaller differences 2 and 4 are themselves
+unavailable until their special pair has been completed.  Hence the mate of a
+legal move is still legal, and eventually the opponent must play 1.  The tests
+check the derived even set for the first 20 symbolic members and thousands of
+individual response-legality obligations, while the proof supplies the
+unbounded quantifier.
+
+Thus the short certificate independently checks all finite arithmetic branches
+and now also verifies that its cited infinite edge has the exact hypotheses of
+the pairing theorem.  This removes a brittle hard-coded trust step, but does
+not turn the family theorem into a solution of `{16}`.
 
 This confirms a strategically important response already in the literature;
 it does not settle the opening `{16}`.  A scalable attack still needs a
