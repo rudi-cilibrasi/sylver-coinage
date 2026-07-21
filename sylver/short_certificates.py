@@ -174,6 +174,24 @@ NODES = (
             (50, 63, "finite"),
         ),
     ),
+    ShortNode(
+        "L",
+        (16, 20, 22, 28, 34),
+        (
+            (2, 3, "finite"),
+            (4, 6, "C"),
+            (6, 7, "finite"),
+            (8, 13, "finite"),
+            (10, 19, "finite"),
+            (12, 39, "finite"),
+            (14, 41, "finite"),
+            (18, 39, "finite"),
+            (24, 23, "finite"),
+            (26, 11, "finite"),
+            (30, 31, "finite"),
+            (46, 33, "finite"),
+        ),
+    ),
 )
 
 EXTERNAL_NODES = {

@@ -29,6 +29,7 @@ G4_CANDIDATE_EVEN_RESPONSES = (
     (24, 5, "finite"),
     (26, 38, "J"),
     (30, 29, "finite"),
+    (34, 22, "L"),
 )
 
 
@@ -43,11 +44,12 @@ def verify_g4_candidate_even_responses() -> tuple[tuple[int, int, str], ...]:
         if is_generated(child, response):
             raise AssertionError(f"response {response} to {move} is illegal")
         reached = minimal_generators((*child, response))
-        if destination in {"C", "G", "J"}:
+        if destination in {"C", "G", "J", "L"}:
             expected = {
                 "C": (4, 6),
                 "G": (8, 20, 26),
                 "J": (16, 20, 26, 28, 38),
+                "L": (16, 20, 22, 28, 34),
             }[destination]
             if reached != expected:
                 raise AssertionError(f"response reached {reached}, not {destination}")

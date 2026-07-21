@@ -177,6 +177,11 @@ and 13 even children, while the Quiet End Theorem handles every larger odd
 move.  Unlike G, J has no new external long-position dependency; its only
 non-finite edge reaches the already certified `{4,6}`.
 
+Move 34 is answered by 22.  The destination
+`L={16,20,22,28,34}` is another fully checked short P-position: 11
+exceptional odd children and all 12 even children close locally, with only
+the existing `{4,6}` certificate edge.
+
 The first unresolved even branch 12 reduces the candidate to `{12,16,20}`.
 The primary survey explicitly calls a good odd reply to this position
 unknown.  An exact bounded pass now excludes every odd reply through 101:
@@ -186,7 +191,7 @@ mistaking it for an unbounded answer.
 
 This finite result is consistent with the candidate being P but does not
 prove it.  A proof must still cover infinitely many larger odd moves and all
-remaining legal even moves, beginning with 12 and 34; no extrapolation
+remaining legal even moves, beginning with 12 and 38; no extrapolation
 from the checked range is used here.
 
 ### Sources
