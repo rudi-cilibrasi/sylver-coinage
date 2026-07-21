@@ -161,9 +161,17 @@ decidable by the finite solver.  All 27 odd moves from 3 through 55 are
 refuted, with an explicit winning response from the child in every case.
 `RUN_G4_CANDIDATE.txt` records the complete computation.
 
+There is also proof-grade finite progress on the even side.
+`g4_candidate_certificates.py` verifies replies to nine legal even moves:
+`2,4,6,10,14,18,22,24,30`.  Six of the new edges reach exact gcd-one
+P-positions, while the other three reach `{2,3}` or the separately certified
+`{4,6}`.  In particular, the previously unrecorded responses are
+`10->9`, `14->31`, `18->5`, `22->29`, `24->5`, and `30->29`.
+
 This finite result is consistent with the candidate being P but does not
 prove it.  A proof must still cover infinitely many larger odd moves and all
-legal even moves; no extrapolation from the checked range is used here.
+remaining legal even moves, beginning with 8, 12, and 26; no extrapolation
+from the checked range is used here.
 
 ### Sources
 
