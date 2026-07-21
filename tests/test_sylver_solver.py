@@ -10,6 +10,7 @@ from sylver.short_certificates import (
     CertificateReport,
     legal_moves_at_gcd_two,
     minimal_generators,
+    verify_opening_16_even_responses,
     verify_published_short_certificates,
 )
 from sylver.solver import FiniteSolver, frobenius_number, solve_position
@@ -78,10 +79,26 @@ class FiniteSolverTests(unittest.TestCase):
         self.assertEqual(
             verify_published_short_certificates(),
             CertificateReport(
-                nodes=3,
-                exceptional_odd_children=17,
-                even_children=20,
-                external_pairing_edges=1,
+                nodes=5,
+                exceptional_odd_children=33,
+                even_children=38,
+                external_pairing_edges=4,
+            ),
+        )
+
+    def test_certified_even_responses_after_opening_sixteen(self) -> None:
+        self.assertEqual(
+            verify_opening_16_even_responses(),
+            (
+                (2, 3, "finite"),
+                (4, 6, "C"),
+                (6, 7, "finite"),
+                (8, 14, "E"),
+                (10, 9, "finite"),
+                (12, 14, "F"),
+                (14, 8, "E"),
+                (18, 5, "finite"),
+                (22, 12, "P0"),
             ),
         )
 

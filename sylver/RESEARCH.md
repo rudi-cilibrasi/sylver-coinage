@@ -110,6 +110,45 @@ it does not settle the opening `{16}`.  A scalable attack still needs a
 parametric rule covering every even second move in the gcd 2, 4, and 8
 classes.
 
+### Attempt 3 — certified finite portion of the opening strategy
+
+The short certificate graph now also proves the published P-positions
+
+```text
+{8,14}       and       {12,14,16}.
+```
+
+Their divide-by-two semigroups are quiet enders with Frobenius number 17, so
+the Quiet End Theorem handles every sufficiently large odd move.  The checker
+solves all 16 exceptional odd children exactly.  It also exhausts each node's
+nine legal even moves: direct gcd-one replies handle twelve of the eighteen
+branches, three reach the already certified node `{4,6}`, and the other three
+reach the checked first member `{8,10,12,14}` of Blok's infinite pairing
+family.
+
+Across all five named short nodes, `verify_published_short_certificates` now
+checks 33 exceptional odd children, 38 even children, and four explicit edges
+to the pairing theorem.  No precision cutoff is involved.
+
+As a consequence, the following portion of a response strategy after opening
+16 is proof-grade:
+
+| Opponent's even move | Verified reply | P-position reached |
+| ---: | ---: | --- |
+| 2 | 3 | finite `{2,3}` |
+| 4 | 6 | `{4,6}` |
+| 6 | 7 | finite gcd-one node |
+| 8 | 14 | `{8,14}` |
+| 10 | 9 | finite gcd-one node |
+| 12 | 14 | `{12,14,16}` |
+| 14 | 8 | `{8,14}` |
+| 18 | 5 | finite gcd-one node |
+| 22 | 12 | `{12,16,22}` |
+
+`verify_opening_16_even_responses` checks legality and every destination.
+This is useful finite coverage but deliberately not a solution: moves 20, 24,
+26, and infinitely many larger even replies still require certified rules.
+
 ### Sources
 
 - George Sicherman, *The Care and Feeding of Enders*:

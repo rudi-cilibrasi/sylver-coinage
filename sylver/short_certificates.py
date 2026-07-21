@@ -3,7 +3,7 @@
 The Quiet End Theorem reduces odd moves above the Frobenius number of the
 divide-by-two semigroup to one theorem application.  The remaining odd moves
 and all even moves are finite.  This module checks those finite obligations
-for the small certificate graph used by the response ``12`` to ``{16,22}``.
+for a small certificate graph covering several responses after opening 16.
 """
 
 from __future__ import annotations
@@ -104,9 +104,44 @@ NODES = (
             (42, 25, "finite"),
         ),
     ),
+    ShortNode(
+        "E",
+        (8, 14),
+        (
+            (2, 3, "finite"),
+            (4, 6, "C"),
+            (6, 4, "C"),
+            (10, 19, "finite"),
+            # This reaches the first member {8,10,12,14} of Blok's
+            # {8,12,8n+2,8n+6} pairing family.
+            (12, 10, "A1"),
+            (18, 25, "finite"),
+            (20, 9, "finite"),
+            (26, 17, "finite"),
+            (34, 27, "finite"),
+        ),
+    ),
+    ShortNode(
+        "F",
+        (12, 14, 16),
+        (
+            (2, 3, "finite"),
+            (4, 6, "C"),
+            (6, 7, "finite"),
+            (8, 10, "A1"),
+            (10, 8, "A1"),
+            (18, 27, "finite"),
+            (20, 73, "finite"),
+            (22, 47, "finite"),
+            (34, 21, "finite"),
+        ),
+    ),
 )
 
-EXTERNAL_NODES = {"A": minimal_generators((8, 12, 18, 22))}
+EXTERNAL_NODES = {
+    "A": minimal_generators((8, 12, 18, 22)),
+    "A1": minimal_generators((8, 10, 12, 14)),
+}
 
 
 def _verify_finite_response(
@@ -125,7 +160,7 @@ def _verify_finite_response(
 
 
 def verify_published_short_certificates() -> CertificateReport:
-    """Verify the finite certificate graph rooted at ``{12,16,22}``.
+    """Verify the finite certificate graph containing the named short nodes.
 
     A successful return establishes every finite branch.  The mathematical
     conclusion that each node is P additionally invokes the Quiet End Theorem
@@ -189,3 +224,46 @@ def verify_published_short_certificates() -> CertificateReport:
             even_children += 1
 
     return CertificateReport(len(NODES), odd_children, even_children, external_edges)
+
+
+OPENING_16_EVEN_RESPONSES = (
+    (2, 3, "finite"),
+    (4, 6, "C"),
+    (6, 7, "finite"),
+    (8, 14, "E"),
+    (10, 9, "finite"),
+    (12, 14, "F"),
+    (14, 8, "E"),
+    (18, 5, "finite"),
+    (22, 12, "P0"),
+)
+
+
+def verify_opening_16_even_responses() -> tuple[tuple[int, int, str], ...]:
+    """Verify the currently certified even replies after opening move 16.
+
+    Each row is ``(opponent move, response, destination)``.  A finite
+    destination is solved exactly at gcd one; a named destination is one of
+    the P-position nodes checked by :func:`verify_published_short_certificates`.
+    This is deliberately a partial strategy, not a claim about every even
+    move after 16.
+    """
+
+    verify_published_short_certificates()
+    by_name = {node.name: node.generators for node in NODES}
+    opening = (16,)
+    for move, response, destination in OPENING_16_EVEN_RESPONSES:
+        if destination == "finite":
+            _verify_finite_response(opening, move, response)
+            continue
+        if is_generated(opening, move):
+            raise AssertionError(f"opening response {move} is illegal")
+        child = minimal_generators((*opening, move))
+        if is_generated(child, response):
+            raise AssertionError(f"reply {response} to {move} is illegal")
+        reached = minimal_generators((*child, response))
+        if reached != by_name[destination]:
+            raise AssertionError(
+                f"reply to {move} reached {reached}, not {destination}"
+            )
+    return OPENING_16_EVEN_RESPONSES
