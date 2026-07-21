@@ -50,6 +50,19 @@ Exact output (move -> winning response; Frobenius; cumulative states):
   491 -> 499; F=605; states=38635666
   493 -> 531; F=607; states=38877412
 
+Failed reciprocal-pair extrapolation:
+  The exact frontier contains several reciprocal P-destination pairs at gap
+  30.  A natural next finite candidate was tested directly:
+
+  /usr/bin/time -v /tmp/conway-sylver-native-1023 \
+      16 20 28 90 495 525
+
+  N winning_move=507 frobenius=549 states=37733367
+  elapsed=7:44.20; maximum RSS=6,207,004 KB; exit=0
+
+  Thus {16,20,28,90,495,525} is not P.  The observed reciprocal gap-30
+  examples do not extend to this natural translated candidate.
+
 Interpretation:
   Each direct odd move makes the gcd one.  Every row is an exact finite game
   evaluation and supplies a winning response, so none of the 18 odd replies

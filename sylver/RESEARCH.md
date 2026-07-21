@@ -272,6 +272,12 @@ move-90 position.  The endpoints do not yet yield a checked periodic or
 parametric pairing, so this compresses finite certificates without addressing
 the odd tail.
 
+The most immediate gap-30 extrapolation also fails exactly.  A fresh 1024-bit
+evaluation finds `{16,20,28,90,495,525}` is N, with winning move 507,
+Frobenius number 549, and 37,733,367 states.  This is recorded alongside the
+period-493 frontier and is evidence against that finite pattern becoming a
+simple translated family; it is not a classification of direct reply 495.
+
 The first unresolved even branch 12 reduces the candidate to `{12,16,20}`.
 The primary survey explicitly calls a good odd reply to this position
 unknown.  An exact bounded pass now excludes every odd reply through 101:
