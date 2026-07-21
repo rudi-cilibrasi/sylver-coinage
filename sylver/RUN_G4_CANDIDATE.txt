@@ -1,0 +1,32 @@
+Sylver gcd-four candidate audit, 2026-07-21
+
+Candidate:
+  {16,20,28}
+
+Source SHA-256:
+  f38c26c31eac26f2abca3cbfbbd9328f1d1848ee787f6db894974bb3656dfab5  analyze_g4_candidate.py
+  7cdb3c0cc11bcabc671599f4cc20994d27c9ba25623b5400759fb562fb7d24c4  solver.py
+
+Command:
+  /usr/bin/time -v python -m sylver.analyze_g4_candidate 55 16 20 28
+
+Exact output (opponent move -> refuting response):
+   3 ->   2    5 ->  17    7 ->   6    9 ->   6   11 ->  23
+  13 ->  63   15 ->  34   17 ->   5   19 ->  31   21 ->  33
+  23 ->  11   25 ->  29   27 ->  78   29 ->  22   31 ->  14
+  33 ->  21   35 ->  46   37 ->  11   39 ->  30   41 ->  11
+  43 ->  58   45 ->  98   47 -> 137   49 ->  26   51 ->  97
+  53 ->  65   55 -> 125
+
+Summary:
+  refuted odd children: 27/27 through 55
+  user time: 83.49 seconds
+  elapsed wall time: 1:23.94
+  maximum resident set size: 485,116 KB
+  exit status: 0
+
+Interpretation:
+  Every odd move in the stated finite range makes the gcd one, and the exact
+  finite solver finds a winning response from that child.  The result is
+  consistent with {16,20,28} being P.  It is not a P-position certificate:
+  all legal even moves and the unbounded odd tail remain unproved.

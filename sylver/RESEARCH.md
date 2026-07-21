@@ -151,6 +151,20 @@ report.  This is useful finite coverage but deliberately not a solution:
 moves 20, 24, 26, and infinitely many larger even replies still require
 certified rules.
 
+### Attempt 4 — the gcd-four candidate after move 20
+
+The recent primary survey explicitly identifies `{16,20,28}` as a possible
+gcd-four P-position.  If true, 28 would answer the still-open move 20 after
+the opening 16.  `analyze_g4_candidate.py` checks a clean necessary condition:
+because the candidate is all even, every odd child has gcd one and is exactly
+decidable by the finite solver.  All 27 odd moves from 3 through 55 are
+refuted, with an explicit winning response from the child in every case.
+`RUN_G4_CANDIDATE.txt` records the complete computation.
+
+This finite result is consistent with the candidate being P but does not
+prove it.  A proof must still cover infinitely many larger odd moves and all
+legal even moves; no extrapolation from the checked range is used here.
+
 ### Sources
 
 - George Sicherman, *The Care and Feeding of Enders*:

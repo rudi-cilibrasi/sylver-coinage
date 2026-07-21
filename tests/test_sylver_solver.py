@@ -1,6 +1,7 @@
 import unittest
 
 from sylver.analyze_opening_16 import exceptional_odd_wins
+from sylver.analyze_g4_candidate import inspect_odd_children
 from sylver.pairing_family import (
     pairing_family,
     pairing_response,
@@ -100,6 +101,13 @@ class FiniteSolverTests(unittest.TestCase):
                 (18, 5, "finite"),
                 (22, 12, "P0"),
             ),
+        )
+
+    def test_g4_candidate_bounded_odd_children(self) -> None:
+        results = inspect_odd_children((16, 20, 28), 11)
+        self.assertEqual(
+            tuple((result.move, result.response) for result in results),
+            ((3, 2), (5, 17), (7, 6), (9, 6), (11, 23)),
         )
 
     def test_infinite_pairing_family_even_gaps(self) -> None:
