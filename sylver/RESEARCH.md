@@ -162,14 +162,20 @@ refuted, with an explicit winning response from the child in every case.
 `RUN_G4_CANDIDATE.txt` records the complete computation.
 
 There is also proof-grade finite progress on the even side.
-`g4_candidate_certificates.py` verifies replies to ten legal even moves:
-`2,4,6,8,10,14,18,22,24,30`.  Move 8 is now answered by 26, reaching the
+`g4_candidate_certificates.py` verifies replies to eleven legal even moves:
+`2,4,6,8,10,14,18,22,24,26,30`.  Move 8 is answered by 26, reaching the
 short position `G={8,20,26}`.  The Quiet End Theorem handles G's unbounded
 odd tail, while the checker exhausts its nine exceptional odd children and
 ten even children.  Nine even edges finish in exact finite or pairing-family
 P-positions.  The remaining edge reaches `{8,10,22}`, proved P by Sicherman's
 peer-reviewed periodicity computation; this external theorem boundary is
 reported explicitly rather than hidden in a cutoff.
+
+Move 26 is now answered by 38.  Its destination
+`J={16,20,26,28,38}` is short: the checker exhausts all 12 exceptional odd
+and 13 even children, while the Quiet End Theorem handles every larger odd
+move.  Unlike G, J has no new external long-position dependency; its only
+non-finite edge reaches the already certified `{4,6}`.
 
 The first unresolved even branch 12 reduces the candidate to `{12,16,20}`.
 The primary survey explicitly calls a good odd reply to this position
@@ -180,7 +186,7 @@ mistaking it for an unbounded answer.
 
 This finite result is consistent with the candidate being P but does not
 prove it.  A proof must still cover infinitely many larger odd moves and all
-remaining legal even moves, beginning with 12 and 26; no extrapolation
+remaining legal even moves, beginning with 12 and 34; no extrapolation
 from the checked range is used here.
 
 ### Sources
