@@ -34,7 +34,7 @@ Interpretation:
 Finite even-branch certificate addendum:
 
   Source SHA-256:
-    791625eeb39c4a942a3503952a99cba55d964b0280432616a383ec7daaa128ae  g4_candidate_certificates.py
+    f4684aad92b811138d9e2ec3062d858bc0aec24730d9300bef703a8413c13d0f  g4_candidate_certificates.py
     e01d144c6529e8e8fd737feebc8b3af494f8404912784c72bc34704f69e9b025  short_certificates.py
     7cdb3c0cc11bcabc671599f4cc20994d27c9ba25623b5400759fb562fb7d24c4  solver.py
 
@@ -45,11 +45,11 @@ Finite even-branch certificate addendum:
      (30, 29, 'finite'), (34, 22, 'L'), (38, 26, 'J'),
      (42, 30, 'N'), (46, 35, 'finite'), (50, 38, 'M'),
      (54, 35, 'finite'), (58, 43, 'finite'), (62, 43, 'finite'),
-     (66, 305, 'native-finite'))
+     (66, 305, 'native-finite'), (70, 277, 'native-finite'))
 
-  User time: 24.65 seconds
-  Elapsed wall time: 24.78 seconds
-  Maximum resident set size: 106,920 KB
+  User time: 24.77 seconds
+  Elapsed wall time: 24.87 seconds
+  Maximum resident set size: 106,572 KB
   Exit status: 0
 
   Each row is (opponent move, response, destination).  A finite destination
@@ -58,4 +58,4 @@ Finite even-branch certificate addendum:
   exhausted by the checked C++ recurrence in RUN_G4_MOVE_66.txt.  G's only
   nonlocal dependency is the peer-reviewed periodicity computation proving
   that {8,10,22} is a long P-position.  The smallest unresolved even branches
-  are 12 and 70.
+  are 12 and 74.

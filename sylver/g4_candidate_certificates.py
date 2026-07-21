@@ -20,6 +20,7 @@ G4_CANDIDATE = (16, 20, 28)
 # canonical target here makes that separately checked boundary explicit.
 NATIVE_FINITE_P_POSITIONS = {
     (16, 20, 28, 66, 305),
+    (16, 20, 28, 70, 277),
 }
 
 # Opponent move, response, destination kind.  ``C`` is the already certified
@@ -47,6 +48,7 @@ G4_CANDIDATE_EVEN_RESPONSES = (
     (58, 43, "finite"),
     (62, 43, "finite"),
     (66, 305, "native-finite"),
+    (70, 277, "native-finite"),
 )
 
 

@@ -79,6 +79,10 @@ class NativeSylverSolverTests(unittest.TestCase):
             self.native_result((16, 20, 28, 66, 305)),
             (False, None, 395),
         )
+        self.assertEqual(
+            self.native_result((16, 20, 28, 70, 277)),
+            (False, None, 371),
+        )
 
     def test_native_solver_rejects_non_coprime_input(self) -> None:
         completed = subprocess.run(

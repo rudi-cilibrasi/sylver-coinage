@@ -194,15 +194,18 @@ even children reduce to finite P-positions, earlier short nodes, and
 `O={8,20,30}`.  O is itself short; its only external boundaries are the same
 pairing family and published `{8,10,22}` computation already named above.
 
-The next four branches also close directly at gcd one: move 54 is answered
+The next five branches also close directly at gcd one: move 54 is answered
 by 35, moves 58 and 62 are each answered by 43, and move 66 is answered by
-305.  These are exact finite P-position evaluations.  The last is materially
-larger, with Frobenius number 395 and 10,681,555 evaluated game states, so
+305.  Move 70 is answered by 277.  These are exact finite P-position
+evaluations.  The last two are materially larger: their Frobenius numbers are
+395 and 371 and their independent searches evaluate 10,681,555 and 11,442,992
+game states respectively, so
 `native_solver.cpp` implements the same bit-set recurrence in C++.  It is
 compiled with warnings enabled, differentially tested against the Python
 reference on small and medium controls, and independently reruns
-`{16,20,28,66,305}` as P in 59 seconds.  `RUN_G4_MOVE_66.txt` fingerprints
-the source, controls, and result; no precision cutoff is involved.
+both positions as P in about one minute apiece.  `RUN_G4_MOVE_66.txt` and
+`RUN_G4_MOVE_70.txt` fingerprint the sources, controls, and results; no
+precision cutoff is involved.
 
 The first unresolved even branch 12 reduces the candidate to `{12,16,20}`.
 The primary survey explicitly calls a good odd reply to this position
@@ -213,7 +216,7 @@ mistaking it for an unbounded answer.
 
 This finite result is consistent with the candidate being P but does not
 prove it.  A proof must still cover infinitely many larger odd moves and all
-remaining legal even moves, beginning with 12 and 70; no extrapolation
+remaining legal even moves, beginning with 12 and 74; no extrapolation
 from the checked range is used here.
 
 ### Sources
