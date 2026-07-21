@@ -1,0 +1,33 @@
+Sylver {12,16,20} bounded odd-response audit, 2026-07-21
+
+Source SHA-256:
+  f38c26c31eac26f2abca3cbfbbd9328f1d1848ee787f6db894974bb3656dfab5  analyze_g4_candidate.py
+  7cdb3c0cc11bcabc671599f4cc20994d27c9ba25623b5400759fb562fb7d24c4  solver.py
+
+Command:
+  /usr/bin/time -v python -m sylver.analyze_g4_candidate 101 12 16 20
+
+Exact output (candidate odd response -> reply showing its child is N):
+    3->2      5->9      7->6      9->5     11->29
+   13->27    15->21    17->6     19->33    21->15
+   23->33    25->51    27->13    29->11    31->10
+   33->19    35->65    37->42    39->22    41->23
+   43->85    45->34    47->26    49->131   51->25
+   53->34    55->45    57->111   59->25    61->50
+   63->157   65->18    67->141   69->135   71->34
+   73->14    75->37    77->66    79->133   81->163
+   83->205   85->43    87->197   89->187   91->169
+   93->43    95->161   97->235   99->201  101->219
+
+Summary:
+  refuted odd children: 50/50 through 101
+  user time: 203.00 seconds
+  elapsed wall time: 3:23.69
+  maximum resident set size: 418,688 KB
+  exit status: 0
+
+Interpretation:
+  A P-child would be a good odd reply to {12,16,20}.  None exists in the
+  stated range.  Every displayed second move is instead an exact winning
+  reply from that gcd-one child.  This is a finite exclusion, not evidence
+  that no larger odd reply exists.

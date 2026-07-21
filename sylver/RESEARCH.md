@@ -168,6 +168,13 @@ P-positions, while the other three reach `{2,3}` or the separately certified
 `{4,6}`.  In particular, the previously unrecorded responses are
 `10->9`, `14->31`, `18->5`, `22->29`, `24->5`, and `30->29`.
 
+The first unresolved even branch 12 reduces the candidate to `{12,16,20}`.
+The primary survey explicitly calls a good odd reply to this position
+unknown.  An exact bounded pass now excludes every odd reply through 101:
+each of the 50 children is N, with its refuting move preserved in
+`RUN_12_16_20_ODD.txt`.  This records the computational frontier without
+mistaking it for an unbounded answer.
+
 This finite result is consistent with the candidate being P but does not
 prove it.  A proof must still cover infinitely many larger odd moves and all
 remaining legal even moves, beginning with 8, 12, and 26; no extrapolation
