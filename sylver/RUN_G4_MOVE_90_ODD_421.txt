@@ -1,0 +1,124 @@
+Exact Sylver move-90 direct odd-response extension through 421, 2026-07-21
+
+Base position:
+  {16,20,28,90}
+
+Source SHA-256:
+  75c8cc6450c1314dc09186369bf2321dc9aee74cdffd1eff49cd34278e84b1ba  native_solver.cpp
+
+Test SHA-256:
+  c9069cc8f7109c832b64e1cc89276aca16ba7713c10ad3075b98d6a897b4a773  test_sylver_solver.py
+  c92c666ba7fb260d431bd68107ef821d15a1e432a296d817603e9867b6b853f8  test_sylver_native_solver.py
+
+Build commands:
+  g++ -std=c++20 -O3 -Wall -Wextra -pedantic \
+      sylver/native_solver.cpp -o /tmp/conway-sylver-native
+  g++ -std=c++20 -O3 -Wall -Wextra -pedantic \
+      -DSYLVER_NATIVE_WORDS=16 sylver/native_solver.cpp \
+      -o /tmp/conway-sylver-native-1023
+
+Both builds completed without diagnostics.  The second build uses sixteen
+64-bit words rather than eight and raises the exact Frobenius ceiling from
+511 to 1023; it changes no game recurrence.
+
+Batch command form:
+  /usr/bin/time -v BINARY --odd-range START END 16 20 28 90
+
+Completed batches:
+
+  odd moves   build       result   elapsed   maximum RSS   final states   final F
+  303--313    standard    all N     2:43.54    2,559,660     23,982,253       427
+  315--325    standard    all N     2:52.46    2,668,712     25,146,106       439
+  327--337    standard    all N     3:00.17    2,745,796     25,971,686       451
+  339--349    standard    all N     3:05.85    2,831,520     26,885,386       463
+  351--361    standard    all N     3:16.54    2,941,792     28,060,995       475
+  363--373    standard    all N     3:24.75    3,035,776     29,065,289       487
+  375--385    standard    all N     3:31.46    3,139,188     30,166,725       499
+  387--397    standard    all N     3:41.27    3,232,244     31,157,756       511
+  399--409    1024-bit    all N     6:24.01    5,342,956     32,204,418       523
+  411--421    1024-bit    all N     6:40.19    5,484,828     33,113,701       535
+
+Exact output (move -> winning response; Frobenius; cumulative states):
+
+  303 -> 333; F=417; states=22089086
+  305 -> 211; F=419; states=22948721
+  307 -> 345; F=421; states=23339513
+  309 -> 317; F=423; states=23744772
+  311 -> 269; F=425; states=23860161
+  313 -> 235; F=427; states=23982253
+  315 -> 257; F=429; states=22875417
+  317 -> 251; F=431; states=23619328
+  319 -> 349; F=433; states=24188218
+  321 -> 351; F=435; states=24675142
+  323 -> 421; F=437; states=24966668
+  325 -> 271; F=439; states=25146106
+  327 -> 365; F=441; states=24148799
+  329 -> 267; F=443; states=24892013
+  331 -> 114; F=445; states=25270923
+  333 -> 295; F=447; states=25475191
+  335 -> 449; F=449; states=25809109
+  337 -> 275; F=451; states=25971686
+  339 -> 297; F=453; states=25098946
+  341 -> 295; F=455; states=25723275
+  343 -> 393; F=457; states=26282804
+  345 -> 307; F=459; states=26468949
+  347 -> 297; F=461; states=26586959
+  349 -> 319; F=463; states=26885386
+  351 -> 321; F=465; states=25361956
+  353 -> 267; F=467; states=25990710
+  355 -> 385; F=469; states=27100896
+  357 -> 379; F=471; states=27613661
+  359 -> 385; F=473; states=27887282
+  361 -> 287; F=475; states=28060995
+  363 -> 385; F=477; states=27213093
+  365 -> 327; F=479; states=27551205
+  367 -> 385; F=481; states=28054985
+  369 -> 255; F=483; states=28269586
+  371 -> 397; F=485; states=28614422
+  373 -> 287; F=487; states=29065289
+  375 -> 413; F=489; states=28237378
+  377 -> 327; F=491; states=28751526
+  379 -> 357; F=493; states=28905730
+  381 -> 475; F=495; states=29550103
+  383 -> 409; F=497; states=29924976
+  385 -> 355; F=499; states=30166725
+  387 -> 413; F=501; states=29174126
+  389 -> 355; F=503; states=30032219
+  391 -> 409; F=505; states=30385468
+  393 -> 343; F=507; states=30618957
+  395 -> 429; F=509; states=30861341
+  397 -> 114; F=511; states=31157756
+  399 -> 405; F=513; states=30033847
+  401 -> 371; F=515; states=30866076
+  403 -> 457; F=517; states=31352415
+  405 -> 399; F=519; states=31623127
+  407 -> 437; F=521; states=31957973
+  409 -> 383; F=523; states=32204418
+  411 -> 461; F=525; states=31263761
+  413 -> 375; F=527; states=32076964
+  415 -> 457; F=529; states=32466152
+  417 -> 331; F=531; states=32542254
+  419 -> 437; F=533; states=32820309
+  421 -> 323; F=535; states=33113701
+
+Independent endpoint P-node reruns:
+  The final row claims that 323 reaches {16,20,28,90,323,421}.  Fresh memo
+  tables in both state widths independently evaluated this destination:
+
+  /tmp/conway-sylver-native-1023 16 20 28 90 323 421
+    P winning_move=none frobenius=425 states=23830683
+    elapsed=4:27.86; maximum RSS=4,034,820 KB; exit=0
+
+  /tmp/conway-sylver-native 16 20 28 90 323 421
+    P winning_move=none frobenius=425 states=23830683
+    elapsed=2:42.42; maximum RSS=2,545,492 KB; exit=0
+
+Interpretation:
+  Each direct odd move makes the gcd one.  Every row is an exact finite game
+  evaluation and supplies a winning response, so none of the 60 odd replies
+  from 303 through 421 reaches P.  Together with the previous records, all
+  210 direct odd replies from 3 through 421 are N.  The two independent final
+  reruns also pin the paired refutation 323 <-> 421 across both state widths.
+
+  This remains a finite exclusion.  Odd replies above 421 are unclassified,
+  so no outcome for {16,20,28,90} or {16,20,28} is claimed.

@@ -83,3 +83,7 @@ Interpretation:
   This closes the even-reply partition, not the move-90 branch.  Direct odd
   replies through 301 to {16,20,28,90} are exactly N, but its unbounded odd
   tail remains open.  No outcome for move 90 or {16,20,28} is claimed.
+
+Later refinement:
+  RUN_G4_MOVE_90_ODD_421.txt extends the exact direct odd frontier through
+  421.  The unbounded tail still remains open.

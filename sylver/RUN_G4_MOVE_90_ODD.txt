@@ -68,3 +68,8 @@ Later refinement:
   through 301 in six completed batches.  It also records the now-complete
   refutation of all 30 legal even replies after move 90.  This file remains
   the source fingerprint for the earlier checkpoint.
+
+Final refinement:
+  RUN_G4_MOVE_90_ODD_421.txt extends the direct odd frontier from 301 through
+  421, crosses the standard-width ceiling with a 1024-bit build, and
+  independently reruns its final P destination in both widths.
