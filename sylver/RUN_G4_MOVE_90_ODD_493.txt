@@ -1,0 +1,60 @@
+Exact Sylver move-90 direct odd-response extension through 493, 2026-07-21
+
+Base position:
+  {16,20,28,90}
+
+Source SHA-256:
+  75c8cc6450c1314dc09186369bf2321dc9aee74cdffd1eff49cd34278e84b1ba  native_solver.cpp
+
+Test SHA-256:
+  c9069cc8f7109c832b64e1cc89276aca16ba7713c10ad3075b98d6a897b4a773  test_sylver_solver.py
+  c92c666ba7fb260d431bd68107ef821d15a1e432a296d817603e9867b6b853f8  test_sylver_native_solver.py
+
+Build command:
+  g++ -std=c++20 -O3 -Wall -Wextra -pedantic \
+      -DSYLVER_NATIVE_WORDS=16 sylver/native_solver.cpp \
+      -o /tmp/conway-sylver-native-1023
+
+The build completed without diagnostics.  It uses sixteen 64-bit words and
+an exact maximum Frobenius number of 1023; no game precision cutoff is used.
+
+Batch command form:
+  /usr/bin/time -v /tmp/conway-sylver-native-1023 \
+      --odd-range START END 16 20 28 90
+
+Completed batches:
+
+  odd moves   result   elapsed   maximum RSS   final states   final F
+  459--469    all N     7:41.11    6,112,124     37,126,802       583
+  471--481    all N     7:37.47    6,201,328     37,700,128       595
+  483--493    all N     8:07.94    6,385,612     38,877,412       607
+
+Exact output (move -> winning response; Frobenius; cumulative states):
+
+  459 -> 465; F=573; states=35092307
+  461 -> 411; F=575; states=35825169
+  463 -> 489; F=577; states=36292397
+  465 -> 435; F=579; states=36663839
+  467 -> 475; F=581; states=36937625
+  469 -> 415; F=583; states=37126802
+  471 -> 495; F=585; states=36173456
+  473 -> 443; F=587; states=37067889
+  475 -> 381; F=589; states=37249457
+  477 -> 435; F=591; states=37465161
+  479 -> 381; F=593; states=37610171
+  481 -> 415; F=595; states=37700128
+  483 -> 513; F=597; states=37104540
+  485 -> 451; F=599; states=37854879
+  487 -> 489; F=601; states=38048005
+  489 -> 463; F=603; states=38383354
+  491 -> 499; F=605; states=38635666
+  493 -> 531; F=607; states=38877412
+
+Interpretation:
+  Each direct odd move makes the gcd one.  Every row is an exact finite game
+  evaluation and supplies a winning response, so none of the 18 odd replies
+  from 459 through 493 reaches P.  Together with the earlier records, all 246
+  direct odd replies from 3 through 493 are N.
+
+  This remains a finite exclusion.  Odd replies above 493 are unclassified,
+  so no outcome for {16,20,28,90} or {16,20,28} is claimed.
