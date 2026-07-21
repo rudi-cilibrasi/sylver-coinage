@@ -192,8 +192,9 @@ class FiniteSolverTests(unittest.TestCase):
                     (86, 227),
                     (94, 55),
                     (98, 45),
+                    (114, 331),
                 ),
-                unresolved_long_replies=(12, 114),
+                unresolved_long_replies=(12,),
             ),
         )
 

@@ -245,14 +245,16 @@ P semigroup and is redundant.  Four more have new direct odd responses:
 | 86 | 227 | 325 / 13,220,935 |
 | 94 | 55 | 157 / 786,501 |
 | 98 | 45 | 147 / 437,973 |
+| 114 | 331 | 433 / 23,849,826 |
 
-Thus **28 of all 30 legal even replies** are refuted.  The verifier recomputes
-the full disjoint partition; the only unresolved long replies are 12 and 114.
-Reply 12 has no direct odd P child through 301, and reply 114 has none through
-251.  `RUN_G4_MOVE_90_EVEN.txt` fingerprints the original 27-reply partition;
-`RUN_G4_MOVE_90_REPLY_86.txt` records the independent 13.2-million-state P
-rerun, updated partition, and extended two-reply frontier.  Larger odd replies
-to the original move-90 child also remain open.
+Thus **29 of all 30 legal even replies** are refuted.  The verifier recomputes
+the full disjoint partition; the only unresolved long reply is 12, with no
+direct odd P child through 413 (the current native verifier's Frobenius-511
+ceiling).  `RUN_G4_MOVE_90_EVEN.txt` fingerprints the original 27-reply
+partition; `RUN_G4_MOVE_90_REPLY_86.txt` and
+`RUN_G4_MOVE_90_REPLY_114.txt` record the later independent P reruns and
+frontier extensions.  Larger odd replies to the original move-90 child also
+remain open.
 
 The first unresolved even branch 12 reduces the candidate to `{12,16,20}`.
 The primary survey explicitly calls a good odd reply to this position

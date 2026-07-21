@@ -102,6 +102,7 @@ class NativeSylverSolverTests(unittest.TestCase):
             (16, 20, 28, 51, 66, 90): 129,
             (16, 20, 28, 55, 90, 94): 157,
             (16, 20, 28, 86, 90, 227): 325,
+            (16, 20, 28, 90, 114, 331): 433,
         }
         self.assertEqual(
             set(move_90_frobenius), G4_MOVE_90_NATIVE_FINITE_P_POSITIONS

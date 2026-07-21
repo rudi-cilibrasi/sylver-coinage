@@ -1,0 +1,62 @@
+Exact Sylver move-90 refutation of long even reply 114, 2026-07-21
+
+Source SHA-256:
+  85c7f20f93f43a464d0420c47c2bd39cd1818c7af5cc1d3cbdbef99a7a8bc3af  native_solver.cpp
+  410a514c97f8f7e3fea7626069faabc7c3d784eebebb101e03f8696426a62fce  g4_candidate_certificates.py
+
+Test SHA-256:
+  119c1a0ad22c4421f5a7732032abfd9e0c020814ed49fe679f6f0cdba773be0e  test_sylver_solver.py
+  ed0c944799600fb2e402e60895e3296a6ca5e088c8f7425d90f9fa007eb10be0  test_sylver_native_solver.py
+
+Discovery batch:
+  /tmp/conway-sylver-native --odd-range 303 351 16 20 28 90 114
+
+Completed result:
+  25 exact rows; first P row:
+    move=331 P winning_move=none frobenius=433
+    cumulative_states=24906102
+  final row:
+    move=351 N winning_move=285 frobenius=453
+    cumulative_states=26275178
+  elapsed=3:09.10; user=187.27s; maximum RSS=2774068 KB; exit=0
+
+Independent single-position command:
+  /usr/bin/time -v /tmp/conway-sylver-native 16 20 28 90 114 331
+
+Independent result:
+  P winning_move=none frobenius=433 states=23849826
+  elapsed=2:39.77; user=158.10s; maximum RSS=2547100 KB; exit=0
+
+Updated partition command:
+  /usr/bin/time -v python - <<'PY'
+  from sylver.g4_candidate_certificates import verify_move_90_even_partition
+  print(verify_move_90_even_partition())
+  PY
+
+Updated partition result:
+  legal even replies=30
+  short refutations=4
+  inherited long refutations=19
+  new long refutations=(66,51), (82,47), (86,227), (94,55), (98,45),
+    (114,331)
+  unresolved long reply=12
+  elapsed=0:41.23; maximum RSS=244256 KB; exit=0
+
+Residual reply-12 ceiling batch:
+  /usr/bin/time -v /tmp/conway-sylver-native --odd-range 303 413 12 16 20 90
+
+Residual result:
+  56/56 N; last move=413 -> 423; F=511; states=2386330
+  elapsed=0:23.37; user=23.14s; maximum RSS=275572 KB; exit=0
+
+Interpretation:
+  After opponent move 90 and candidate even reply 114, move 331 reaches the
+  independently evaluated finite P-position {16,20,28,90,114,331}.  Hence
+  reply 114 is N and 29 of the 30 legal even replies are now refuted.
+
+  The only unresolved even reply is 12.  Combining the earlier exact batches
+  with the ceiling batch excludes all its direct odd children through 413.
+  The next child has Frobenius number 513, beyond this verifier's 511-bit
+  model.  This is a bounded exclusion, not a Quiet End cutoff.  Odd replies
+  above 229 to the base move-90 position likewise remain open.  No outcome
+  for move 90 or {16,20,28} is claimed.

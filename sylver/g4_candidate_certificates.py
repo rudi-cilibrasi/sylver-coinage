@@ -80,6 +80,7 @@ G4_MOVE_90_NATIVE_FINITE_P_POSITIONS = {
     (16, 20, 28, 55, 90, 94),
     (16, 20, 28, 45, 98),
     (16, 20, 28, 86, 90, 227),
+    (16, 20, 28, 90, 114, 331),
 }
 
 G4_MOVE_90_NEW_LONG_REFUTATIONS = (
@@ -88,9 +89,10 @@ G4_MOVE_90_NEW_LONG_REFUTATIONS = (
     (86, 227),
     (94, 55),
     (98, 45),
+    (114, 331),
 )
 
-G4_MOVE_90_UNRESOLVED_LONG_REPLIES = (12, 114)
+G4_MOVE_90_UNRESOLVED_LONG_REPLIES = (12,)
 
 
 @dataclass(frozen=True)
@@ -185,7 +187,7 @@ def verify_move_90_short_even_refutations() -> tuple[tuple[int, int, str], ...]:
 
 @cache
 def verify_move_90_even_partition() -> Move90EvenReport:
-    """Verify 27 refuted even replies and the three-reply move-90 frontier."""
+    """Verify 29 refuted even replies and the one-reply move-90 frontier."""
 
     verify_g4_candidate_even_responses()
     legal = set(legal_moves_at_gcd_two(G4_MOVE_90_CHILD))

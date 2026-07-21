@@ -58,3 +58,9 @@ Interpretation:
   114.  Their displayed odd ranges are exact finite exclusions, not Quiet End
   cutoffs.  Odd replies above 229 to the base move-90 position also remain.
   No outcome for move 90 or {16,20,28} is claimed.
+
+Later refinement:
+  RUN_G4_MOVE_90_REPLY_114.txt proves that response 331 refutes long even
+  reply 114.  The updated exact partition has 29 refuted replies and only 12
+  unresolved.  This file remains the source fingerprint for the earlier
+  28-reply checkpoint.
