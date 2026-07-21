@@ -14,9 +14,18 @@ from sylver.solver import solve_position
 
 G4_CANDIDATE = (16, 20, 28)
 
+# This position is too large for the Python reference evaluator to re-run in
+# every unit test.  The independent native recurrence proves it P in
+# tests/test_sylver_native_solver.py and RUN_G4_MOVE_66.txt.  Keeping the exact
+# canonical target here makes that separately checked boundary explicit.
+NATIVE_FINITE_P_POSITIONS = {
+    (16, 20, 28, 66, 305),
+}
+
 # Opponent move, response, destination kind.  ``C`` is the already certified
 # gcd-two P-position {4,6}; every other destination has gcd one and is solved
-# directly by the exact finite evaluator.
+# by an exact finite evaluator.  The one large ``native-finite`` row is rerun
+# by the separately compiled differential control.
 G4_CANDIDATE_EVEN_RESPONSES = (
     (2, 3, "finite"),
     (4, 6, "C"),
@@ -37,6 +46,7 @@ G4_CANDIDATE_EVEN_RESPONSES = (
     (54, 35, "finite"),
     (58, 43, "finite"),
     (62, 43, "finite"),
+    (66, 305, "native-finite"),
 )
 
 
@@ -51,6 +61,12 @@ def verify_g4_candidate_even_responses() -> tuple[tuple[int, int, str], ...]:
         if is_generated(child, response):
             raise AssertionError(f"response {response} to {move} is illegal")
         reached = minimal_generators((*child, response))
+        if destination == "native-finite":
+            if reached not in NATIVE_FINITE_P_POSITIONS:
+                raise AssertionError(f"unknown native finite destination {reached}")
+            if gcd(*reached) != 1:
+                raise AssertionError("native finite response did not reach gcd one")
+            continue
         if destination in {"C", "G", "J", "L", "M", "N"}:
             expected = {
                 "C": (4, 6),

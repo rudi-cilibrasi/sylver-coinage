@@ -1,0 +1,48 @@
+Exact Sylver move-66 finite certificate, 2026-07-21
+
+Position:
+  {16,20,28,66,305}
+
+Source SHA-256:
+  85c7f20f93f43a464d0420c47c2bd39cd1818c7af5cc1d3cbdbef99a7a8bc3af  native_solver.cpp
+  7cdb3c0cc11bcabc671599f4cc20994d27c9ba25623b5400759fb562fb7d24c4  solver.py
+  8a39c27a3bc628c969782d9c5b9aa25138e23e437a6e36e5d80b31cd7f9d2102  test_sylver_native_solver.py
+
+Compiler:
+  g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+
+Compile command:
+  g++ -std=c++20 -O3 -Wall -Wextra -pedantic \
+      sylver/native_solver.cpp -o /tmp/conway-sylver-native
+
+Independent single-position command:
+  /usr/bin/time -f 'elapsed=%E user=%U rss=%MKB' \
+      /tmp/conway-sylver-native 16 20 28 66 305
+
+Exact output:
+  P winning_move=none frobenius=395 states=10681555
+  elapsed=0:59.06 user=58.34 rss=1156076KB
+
+Differential regression command:
+  python -m unittest tests.test_sylver_native_solver -q
+
+Exact summary:
+  Ran 3 tests in 68.256s
+  OK
+
+Interpretation:
+  After the opponent plays 66 from {16,20,28}, response 305 is legal and
+  makes the gcd one.  The native evaluator exhausts the resulting finite
+  game through its exact Frobenius number 395 and finds no non-losing move,
+  so the destination is P.  The test suite compiles the native source with
+  warnings enabled, compares it against the Python recurrence on five
+  controls, reproduces the previously difficult N-position at reply 81, and
+  reruns this P-position.
+
+  A shared-cache scan first found the reply.  Its range 295 through 325 used
+  the exact common Frobenius bound 415 and independently reported at move 305:
+
+    move=305 P winning_move=none frobenius=395 cumulative_states=10989654
+
+  The single-position run above is the proof record; the batch search is not
+  needed to trust the result.
