@@ -1,0 +1,47 @@
+Exact Sylver move-74 finite certificate, 2026-07-21
+
+Position:
+  {16,20,28,74,273}
+
+Source SHA-256:
+  85c7f20f93f43a464d0420c47c2bd39cd1818c7af5cc1d3cbdbef99a7a8bc3af  native_solver.cpp
+  7cdb3c0cc11bcabc671599f4cc20994d27c9ba25623b5400759fb562fb7d24c4  solver.py
+  263f091b7a0b8197e8f0148b1e79f4b27e416f41f97a74ccb32ad8425af24441  test_sylver_native_solver.py
+
+Compiler:
+  g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+
+Compile command:
+  g++ -std=c++20 -O3 -Wall -Wextra -pedantic \
+      sylver/native_solver.cpp -o /tmp/conway-sylver-native
+
+Independent single-position command:
+  /usr/bin/time -f 'elapsed=%E user=%U rss=%MKB' \
+      /tmp/conway-sylver-native 16 20 28 74 273
+
+Exact output:
+  P winning_move=none frobenius=371 states=12989520
+  elapsed=1:17.62 user=76.79 rss=1372260KB
+
+Differential regression command:
+  python -m unittest tests.test_sylver_native_solver -q
+
+Exact summary:
+  Ran 3 tests in 209.371s
+  OK
+
+Interpretation:
+  After the opponent plays 74 from {16,20,28}, response 273 is legal and
+  makes the gcd one.  The native evaluator exhausts the resulting finite
+  game through its exact Frobenius number 371 and finds no non-losing move,
+  so the destination is P.  The differential test suite independently reruns
+  this exact position alongside the Python-reference controls.
+
+  A shared-cache scan first found the reply.  Its exact range 247 through 277
+  used common Frobenius bound 375 and reported:
+
+    move=273 P winning_move=none frobenius=371 cumulative_states=13489896
+
+  The whole batch completed in 1:20.54 with maximum resident set size
+  1,434,560 KB.  The independent single-position run above is the proof
+  record; the batch search is not needed to trust the result.
