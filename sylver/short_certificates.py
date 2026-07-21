@@ -67,6 +67,7 @@ class CertificateReport:
     exceptional_odd_children: int
     even_children: int
     external_pairing_edges: int
+    published_long_edges: int
 
 
 NODES = (
@@ -136,11 +137,34 @@ NODES = (
             (34, 21, "finite"),
         ),
     ),
+    ShortNode(
+        "G",
+        (8, 20, 26),
+        (
+            (2, 3, "finite"),
+            (4, 6, "C"),
+            (6, 4, "C"),
+            # The peer-reviewed periodicity computation establishes H as P.
+            (10, 22, "H"),
+            # This is parameter 3 of Blok's infinite pairing family.
+            (12, 30, "A3"),
+            (14, 9, "finite"),
+            (18, 11, "finite"),
+            (22, 13, "finite"),
+            (30, 49, "finite"),
+            (38, 21, "finite"),
+        ),
+    ),
 )
 
 EXTERNAL_NODES = {
     "A": minimal_generators((8, 12, 18, 22)),
     "A1": minimal_generators((8, 10, 12, 14)),
+    "A3": minimal_generators((8, 12, 26, 30)),
+}
+
+PUBLISHED_LONG_NODES = {
+    "H": minimal_generators((8, 10, 22)),
 }
 
 
@@ -173,6 +197,7 @@ def verify_published_short_certificates() -> CertificateReport:
     odd_children = 0
     even_children = 0
     external_edges = 0
+    published_long_edges = 0
 
     for node in NODES:
         position = minimal_generators(node.generators)
@@ -208,7 +233,7 @@ def verify_published_short_certificates() -> CertificateReport:
                 result = minimal_generators((*child, response))
                 if destination in by_name:
                     expected = by_name[destination].generators
-                else:
+                elif destination in EXTERNAL_NODES:
                     expected = EXTERNAL_NODES[destination]
                     # Import lazily to avoid the pairing-family module's
                     # deliberate reuse of the elementary helpers above.
@@ -217,13 +242,24 @@ def verify_published_short_certificates() -> CertificateReport:
                     if recognize_pairing_family(expected) is None:
                         raise AssertionError("external node is not in the pairing family")
                     external_edges += 1
+                elif destination in PUBLISHED_LONG_NODES:
+                    expected = PUBLISHED_LONG_NODES[destination]
+                    published_long_edges += 1
+                else:
+                    raise AssertionError(f"unknown certificate destination {destination}")
                 if result != expected:
                     raise AssertionError(
                         f"{node.name}: {move},{response} reached {result}, not {expected}"
                     )
             even_children += 1
 
-    return CertificateReport(len(NODES), odd_children, even_children, external_edges)
+    return CertificateReport(
+        len(NODES),
+        odd_children,
+        even_children,
+        external_edges,
+        published_long_edges,
+    )
 
 
 OPENING_16_EVEN_RESPONSES = (

@@ -162,11 +162,14 @@ refuted, with an explicit winning response from the child in every case.
 `RUN_G4_CANDIDATE.txt` records the complete computation.
 
 There is also proof-grade finite progress on the even side.
-`g4_candidate_certificates.py` verifies replies to nine legal even moves:
-`2,4,6,10,14,18,22,24,30`.  Six of the new edges reach exact gcd-one
-P-positions, while the other three reach `{2,3}` or the separately certified
-`{4,6}`.  In particular, the previously unrecorded responses are
-`10->9`, `14->31`, `18->5`, `22->29`, `24->5`, and `30->29`.
+`g4_candidate_certificates.py` verifies replies to ten legal even moves:
+`2,4,6,8,10,14,18,22,24,30`.  Move 8 is now answered by 26, reaching the
+short position `G={8,20,26}`.  The Quiet End Theorem handles G's unbounded
+odd tail, while the checker exhausts its nine exceptional odd children and
+ten even children.  Nine even edges finish in exact finite or pairing-family
+P-positions.  The remaining edge reaches `{8,10,22}`, proved P by Sicherman's
+peer-reviewed periodicity computation; this external theorem boundary is
+reported explicitly rather than hidden in a cutoff.
 
 The first unresolved even branch 12 reduces the candidate to `{12,16,20}`.
 The primary survey explicitly calls a good odd reply to this position
@@ -177,7 +180,7 @@ mistaking it for an unbounded answer.
 
 This finite result is consistent with the candidate being P but does not
 prove it.  A proof must still cover infinitely many larger odd moves and all
-remaining legal even moves, beginning with 8, 12, and 26; no extrapolation
+remaining legal even moves, beginning with 12 and 26; no extrapolation
 from the checked range is used here.
 
 ### Sources
@@ -186,6 +189,9 @@ from the checked range is used here.
   <https://sicherman.net/sylver/enders.html>
 - George Sicherman, published `{m,n}` outcomes:
   <https://sicherman.net/sylver/mnlist.html>
+- George Sicherman, *Theory and Practice of Sylver Coinage* (2002), including
+  the periodicity computation for `{8,10,22}`:
+  <https://doi.org/10.5281/zenodo.7590153>
 - Thomas Blok, *The 6-16 Tables* (2026):
   <https://sicherman.net/sylver/6-16Tables.pdf>
 - R. Eaton, K. Herzinger, I. Pierce, and J. Thompson, *Numerical Semigroups
