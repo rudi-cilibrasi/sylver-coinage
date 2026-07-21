@@ -182,6 +182,11 @@ Move 34 is answered by 22.  The destination
 exceptional odd children and all 12 even children close locally, with only
 the existing `{4,6}` certificate edge.
 
+Move 38 is answered by 26, returning to the already certified node J.  Move
+42 is answered by 30; its destination `N={16,20,28,30,42}` is short and is
+checked through all 13 exceptional odd and 14 even children.  N likewise has
+no theorem dependency beyond the established Quiet End Theorem and `{4,6}`.
+
 The first unresolved even branch 12 reduces the candidate to `{12,16,20}`.
 The primary survey explicitly calls a good odd reply to this position
 unknown.  An exact bounded pass now excludes every odd reply through 101:
@@ -191,7 +196,7 @@ mistaking it for an unbounded answer.
 
 This finite result is consistent with the candidate being P but does not
 prove it.  A proof must still cover infinitely many larger odd moves and all
-remaining legal even moves, beginning with 12 and 38; no extrapolation
+remaining legal even moves, beginning with 12 and 46; no extrapolation
 from the checked range is used here.
 
 ### Sources
