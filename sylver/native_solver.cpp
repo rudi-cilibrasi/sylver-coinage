@@ -22,7 +22,12 @@
 
 namespace {
 
-constexpr int kWords = 8;
+#ifndef SYLVER_NATIVE_WORDS
+#define SYLVER_NATIVE_WORDS 8
+#endif
+
+constexpr int kWords = SYLVER_NATIVE_WORDS;
+static_assert(kWords > 0, "SYLVER_NATIVE_WORDS must be positive");
 constexpr int kMaximumFrobenius = 64 * kWords - 1;
 
 struct State {
@@ -234,7 +239,8 @@ int main(int argc, char** argv) {
             }
             if (bound > kMaximumFrobenius) {
                 throw std::invalid_argument(
-                    "odd-range Frobenius bound exceeds native limit 511"
+                    "odd-range Frobenius bound exceeds native limit " +
+                    std::to_string(kMaximumFrobenius)
                 );
             }
             Solver solver(base, bound);
@@ -261,7 +267,10 @@ int main(int argc, char** argv) {
         const std::vector<int> generators = parse_generators(argc, argv, 1, true);
         const int frobenius = frobenius_number(generators);
         if (frobenius > kMaximumFrobenius) {
-            throw std::invalid_argument("Frobenius number exceeds native limit 511");
+            throw std::invalid_argument(
+                "Frobenius number exceeds native limit " +
+                std::to_string(kMaximumFrobenius)
+            );
         }
         Solver solver(generators, frobenius);
         const int move = solver.solve();

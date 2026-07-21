@@ -4,7 +4,10 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from sylver.g4_candidate_certificates import G4_MOVE_90_NATIVE_FINITE_P_POSITIONS
+from sylver.g4_candidate_certificates import (
+    G4_MOVE_90_NATIVE_FINITE_P_POSITIONS,
+    G4_MOVE_90_WIDE_NATIVE_FINITE_P_POSITIONS,
+)
 from sylver.solver import solve_position
 
 
@@ -35,14 +38,36 @@ class NativeSylverSolverTests(unittest.TestCase):
             check=True,
             cwd=ROOT,
         )
+        cls.wide_binary = Path(cls.temporary_directory.name) / "native_solver_1023"
+        subprocess.run(
+            [
+                compiler,
+                "-std=c++20",
+                "-O3",
+                "-Wall",
+                "-Wextra",
+                "-pedantic",
+                "-DSYLVER_NATIVE_WORDS=16",
+                str(SOURCE),
+                "-o",
+                str(cls.wide_binary),
+            ],
+            check=True,
+            cwd=ROOT,
+        )
 
     @classmethod
     def tearDownClass(cls) -> None:
         cls.temporary_directory.cleanup()
 
-    def native_result(self, generators: tuple[int, ...]) -> tuple[bool, int | None, int]:
+    def native_result(
+        self, generators: tuple[int, ...], *, wide: bool = False
+    ) -> tuple[bool, int | None, int]:
         completed = subprocess.run(
-            [str(self.binary), *(str(value) for value in generators)],
+            [
+                str(self.wide_binary if wide else self.binary),
+                *(str(value) for value in generators),
+            ],
             check=True,
             cwd=ROOT,
             capture_output=True,
@@ -123,6 +148,17 @@ class NativeSylverSolverTests(unittest.TestCase):
         )
         self.assertNotEqual(completed.returncode, 0)
         self.assertIn("gcd one", completed.stderr)
+
+    def test_wide_native_solver_reproduces_move_90_reply_12(self) -> None:
+        generators = (12, 16, 20, 90, 825)
+        self.assertEqual(
+            G4_MOVE_90_WIDE_NATIVE_FINITE_P_POSITIONS,
+            {generators},
+        )
+        self.assertEqual(
+            self.native_result(generators, wide=True),
+            (False, None, 923),
+        )
 
 
 if __name__ == "__main__":

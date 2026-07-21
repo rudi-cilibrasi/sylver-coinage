@@ -1,0 +1,85 @@
+Exact Sylver move-90 refutation of long even reply 12, 2026-07-21
+
+Source SHA-256:
+  75c8cc6450c1314dc09186369bf2321dc9aee74cdffd1eff49cd34278e84b1ba  native_solver.cpp
+  f8569bf816666a6a3a242b1cae918b4eb902720254b93d3d777b0414a8599d23  g4_candidate_certificates.py
+
+Test SHA-256:
+  c9069cc8f7109c832b64e1cc89276aca16ba7713c10ad3075b98d6a897b4a773  test_sylver_solver.py
+  c92c666ba7fb260d431bd68107ef821d15a1e432a296d817603e9867b6b853f8  test_sylver_native_solver.py
+
+Wide build command:
+  g++ -std=c++20 -O3 -Wall -Wextra -pedantic \
+    -DSYLVER_NATIVE_WORDS=16 native_solver.cpp \
+    -o /tmp/conway-sylver-native-1023
+
+The compile-time override makes each state sixteen 64-bit words and raises the
+maximum representable Frobenius number from 511 to 1023.  The default remains
+eight words.  Both builds completed without diagnostics.
+
+First ceiling-extension batch:
+  /usr/bin/time -v /tmp/conway-sylver-native-1023 \
+    --odd-range 415 613 12 16 20 90
+
+First batch result:
+  100/100 N; last move=613 -> 655; F=711; states=3722165
+  elapsed=1:15.32; user=74.86s; maximum RSS=621408 KB; exit=0
+
+Discovery batch:
+  /usr/bin/time -v /tmp/conway-sylver-native-1023 \
+    --odd-range 615 925 12 16 20 90
+
+Discovery result:
+  156 exact rows; first P row:
+    move=825 P winning_move=none frobenius=923
+    cumulative_states=5135643
+  final row:
+    move=925 N winning_move=825 frobenius=1023
+    cumulative_states=5780255
+  elapsed=2:30.65; user=149.65s; maximum RSS=980500 KB; exit=0
+
+Independent single-position command:
+  /usr/bin/time -v /tmp/conway-sylver-native-1023 12 16 20 90 825
+
+Independent result:
+  P winning_move=none frobenius=923 states=5054234
+  elapsed=1:52.93; user=112.17s; maximum RSS=867288 KB; exit=0
+
+Updated partition command:
+  /usr/bin/time -v python - <<'PY'
+  from sylver.g4_candidate_certificates import verify_move_90_even_partition
+  print(verify_move_90_even_partition())
+  PY
+
+Updated partition result:
+  legal even replies=30
+  short refutations=4
+  inherited long refutations=19
+  new long refutations=(12,825), (66,51), (82,47), (86,227), (94,55),
+    (98,45), (114,331)
+  unresolved long replies=none
+  elapsed=0:40.96; maximum RSS=244264 KB; exit=0
+
+Direct move-90 odd-frontier extension:
+  The default eight-word build evaluated fresh common-bound batches from
+  {16,20,28,90} after the earlier frontier at 229:
+
+    odd moves   result   elapsed   maximum RSS   final cumulative states
+    231--241    all N    1:56.19     1840608 KB                 17980010
+    243--253    all N    2:05.25     1945028 KB                 19097770
+    255--265    all N    2:19.40     2284884 KB                 20151897
+    267--277    all N    2:24.80     2290044 KB                 21107515
+    279--289    all N    2:32.81     2390464 KB                 22177898
+    291--301    all N    2:39.52     2471892 KB                 23048833
+
+  The last exact row is move=301 N winning_move=235 frobenius=415.
+
+Interpretation:
+  After opponent move 90 and candidate even reply 12, move 825 reaches the
+  independently evaluated finite P-position {12,16,20,90,825}.  Hence reply
+  12 is N and every one of the 30 legal even replies after move 90 is now
+  refuted.
+
+  This closes the even-reply partition, not the move-90 branch.  Direct odd
+  replies through 301 to {16,20,28,90} are exactly N, but its unbounded odd
+  tail remains open.  No outcome for move 90 or {16,20,28} is claimed.

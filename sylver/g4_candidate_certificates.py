@@ -83,7 +83,12 @@ G4_MOVE_90_NATIVE_FINITE_P_POSITIONS = {
     (16, 20, 28, 90, 114, 331),
 }
 
+G4_MOVE_90_WIDE_NATIVE_FINITE_P_POSITIONS = {
+    (12, 16, 20, 90, 825),
+}
+
 G4_MOVE_90_NEW_LONG_REFUTATIONS = (
+    (12, 825),
     (66, 51),
     (82, 47),
     (86, 227),
@@ -92,7 +97,7 @@ G4_MOVE_90_NEW_LONG_REFUTATIONS = (
     (114, 331),
 )
 
-G4_MOVE_90_UNRESOLVED_LONG_REPLIES = (12,)
+G4_MOVE_90_UNRESOLVED_LONG_REPLIES = ()
 
 
 @dataclass(frozen=True)
@@ -187,7 +192,7 @@ def verify_move_90_short_even_refutations() -> tuple[tuple[int, int, str], ...]:
 
 @cache
 def verify_move_90_even_partition() -> Move90EvenReport:
-    """Verify 29 refuted even replies and the one-reply move-90 frontier."""
+    """Verify exact refutations of all 30 legal even replies after move 90."""
 
     verify_g4_candidate_even_responses()
     legal = set(legal_moves_at_gcd_two(G4_MOVE_90_CHILD))
@@ -216,7 +221,10 @@ def verify_move_90_even_partition() -> Move90EvenReport:
         if is_generated(child, response):
             raise AssertionError(f"new response {response} to {move} is illegal")
         reached = minimal_generators((*child, response))
-        if reached not in G4_MOVE_90_NATIVE_FINITE_P_POSITIONS:
+        if reached not in (
+            G4_MOVE_90_NATIVE_FINITE_P_POSITIONS
+            | G4_MOVE_90_WIDE_NATIVE_FINITE_P_POSITIONS
+        ):
             raise AssertionError(f"unknown native move-90 destination {reached}")
 
     inherited_moves = {move for move, _ in inherited}

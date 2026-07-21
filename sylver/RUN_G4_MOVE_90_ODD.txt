@@ -62,3 +62,9 @@ Structural follow-up:
   correction and exact checks.  The other 26 legal even replies are long;
   RUN_G4_MOVE_90_EVEN.txt later refutes 23 of them and preserves the exact
   three-reply frontier.
+
+Later refinement:
+  RUN_G4_MOVE_90_REPLY_12.txt extends the exact direct odd frontier from 229
+  through 301 in six completed batches.  It also records the now-complete
+  refutation of all 30 legal even replies after move 90.  This file remains
+  the source fingerprint for the earlier checkpoint.

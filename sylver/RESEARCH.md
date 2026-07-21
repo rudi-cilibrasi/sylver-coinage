@@ -220,9 +220,9 @@ Move 86 is answered by 105.  Its exact child has Frobenius number 215 and is
 P after 4,122,547 states in a 19-second independent native run, recorded in
 `RUN_G4_MOVE_86.txt`.
 
-The next branch, move 90, has no direct odd P reply from 3 through 229.  Exact
-common-bound batches classify all 114 children as N; the final batches use up
-to 1.71 GB, so extending the same linear scan has sharply diminishing value.
+The next branch, move 90, has no direct odd P reply from 3 through 301.  Exact
+common-bound batches classify all 150 children as N; the final batch uses
+2.47 GB, so extending the same linear scan has sharply diminishing value.
 The even side has 30 legal replies.  Exactly four produce a short gcd-two
 position, and all four are now refuted.  Reply 4 allows move 6 to the certified
 `C={4,6}`; reply 8 allows move 26 to the certified `G={8,20,26}` (indeed
@@ -240,6 +240,7 @@ P semigroup and is redundant.  Four more have new direct odd responses:
 
 | Long even reply | Refuting odd move | Exact P child: Frobenius / states |
 | ---: | ---: | ---: |
+| 12 | 825 | 923 / 5,054,234 |
 | 66 | 51 | 129 / 515,419 |
 | 82 | 47 | 133 / 500,069 |
 | 86 | 227 | 325 / 13,220,935 |
@@ -247,14 +248,13 @@ P semigroup and is redundant.  Four more have new direct odd responses:
 | 98 | 45 | 147 / 437,973 |
 | 114 | 331 | 433 / 23,849,826 |
 
-Thus **29 of all 30 legal even replies** are refuted.  The verifier recomputes
-the full disjoint partition; the only unresolved long reply is 12, with no
-direct odd P child through 413 (the current native verifier's Frobenius-511
-ceiling).  `RUN_G4_MOVE_90_EVEN.txt` fingerprints the original 27-reply
-partition; `RUN_G4_MOVE_90_REPLY_86.txt` and
-`RUN_G4_MOVE_90_REPLY_114.txt` record the later independent P reruns and
-frontier extensions.  Larger odd replies to the original move-90 child also
-remain open.
+Thus **all 30 legal even replies** are refuted.  The verifier recomputes the
+full disjoint partition.  Reply 12 required a separately compiled 1024-bit
+state: odd move 825 reaches a 5.05-million-state P-position with Frobenius
+number 923.  `RUN_G4_MOVE_90_EVEN.txt` fingerprints the original 27-reply
+partition; the three `RUN_G4_MOVE_90_REPLY_*.txt` records preserve the later
+independent P reruns and frontier extensions.  Odd replies above 301 to the
+original move-90 child remain open, so move 90 itself is not classified.
 
 The first unresolved even branch 12 reduces the candidate to `{12,16,20}`.
 The primary survey explicitly calls a good odd reply to this position

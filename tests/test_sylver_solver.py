@@ -187,6 +187,7 @@ class FiniteSolverTests(unittest.TestCase):
                     (74, 273),
                 ),
                 new_long_refutations=(
+                    (12, 825),
                     (66, 51),
                     (82, 47),
                     (86, 227),
@@ -194,7 +195,7 @@ class FiniteSolverTests(unittest.TestCase):
                     (98, 45),
                     (114, 331),
                 ),
-                unresolved_long_replies=(12,),
+                unresolved_long_replies=(),
             ),
         )
 

@@ -60,3 +60,8 @@ Interpretation:
   model.  This is a bounded exclusion, not a Quiet End cutoff.  Odd replies
   above 229 to the base move-90 position likewise remain open.  No outcome
   for move 90 or {16,20,28} is claimed.
+
+Later refinement:
+  RUN_G4_MOVE_90_REPLY_12.txt proves that response 825 refutes the final long
+  even reply 12.  All 30 legal even replies are now refuted.  This file
+  remains the source fingerprint for the earlier 29-reply checkpoint.
