@@ -216,6 +216,10 @@ and the independent native run proves it P after 6,835,860 states in 35
 seconds.  The same differential and fingerprint controls apply; the smaller
 first search range is preserved in `RUN_G4_MOVE_82.txt`.
 
+Move 86 is answered by 105.  Its exact child has Frobenius number 215 and is
+P after 4,122,547 states in a 19-second independent native run, recorded in
+`RUN_G4_MOVE_86.txt`.
+
 The first unresolved even branch 12 reduces the candidate to `{12,16,20}`.
 The primary survey explicitly calls a good odd reply to this position
 unknown.  An exact bounded pass now excludes every odd reply through 101:
@@ -225,7 +229,7 @@ mistaking it for an unbounded answer.
 
 This finite result is consistent with the candidate being P but does not
 prove it.  A proof must still cover infinitely many larger odd moves and all
-remaining legal even moves, beginning with 12 and 86; no extrapolation
+remaining legal even moves, beginning with 12 and 90; no extrapolation
 from the checked range is used here.
 
 ### Sources
