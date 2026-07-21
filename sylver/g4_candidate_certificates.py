@@ -6,10 +6,11 @@ from math import gcd
 
 from sylver.short_certificates import (
     is_generated,
+    legal_moves_at_gcd_two,
     minimal_generators,
     verify_published_short_certificates,
 )
-from sylver.solver import solve_position
+from sylver.solver import FiniteSolver, solve_position
 
 
 G4_CANDIDATE = (16, 20, 28)
@@ -59,6 +60,18 @@ G4_CANDIDATE_EVEN_RESPONSES = (
 )
 
 
+G4_MOVE_90_CHILD = minimal_generators((*G4_CANDIDATE, 90))
+
+# Candidate even reply, opponent's refuting move, P-destination kind.  These
+# are exactly the replies whose divide-by-two semigroup is a quiet ender.
+G4_MOVE_90_SHORT_EVEN_REFUTATIONS = (
+    (4, 6, "C"),
+    (8, 26, "G"),
+    (78, 27, "finite"),
+    (102, 57, "finite"),
+)
+
+
 def verify_g4_candidate_even_responses() -> tuple[tuple[int, int, str], ...]:
     """Verify the currently known finite even branches of the candidate."""
 
@@ -93,3 +106,46 @@ def verify_g4_candidate_even_responses() -> tuple[tuple[int, int, str], ...]:
         if solve_position(reached).is_winning:
             raise AssertionError(f"response {response} to {move} is not P")
     return G4_CANDIDATE_EVEN_RESPONSES
+
+
+def verify_move_90_short_even_refutations() -> tuple[tuple[int, int, str], ...]:
+    """Prove that every short even reply after move 90 is an N-position.
+
+    This deliberately makes no claim about the other, long, gcd-two replies.
+    For each short reply, the displayed opponent move reaches either an
+    independently certified short P-node or an exactly evaluated finite
+    P-position.
+    """
+
+    verify_published_short_certificates()
+    short_replies: list[int] = []
+    for response in legal_moves_at_gcd_two(G4_MOVE_90_CHILD):
+        child = minimal_generators((*G4_MOVE_90_CHILD, response))
+        if child[0] == 2:
+            continue
+        reduced = FiniteSolver(tuple(value // 2 for value in child))
+        if reduced.is_quiet_ender():
+            short_replies.append(response)
+    claimed = tuple(response for response, _, _ in G4_MOVE_90_SHORT_EVEN_REFUTATIONS)
+    if tuple(short_replies) != claimed:
+        raise AssertionError("move-90 short even reply coverage mismatch")
+
+    named_destinations = {"C": (4, 6), "G": (8, 20, 26)}
+    for response, refutation, destination in G4_MOVE_90_SHORT_EVEN_REFUTATIONS:
+        child = minimal_generators((*G4_MOVE_90_CHILD, response))
+        if is_generated(child, refutation):
+            raise AssertionError(f"illegal refutation {refutation} after {response}")
+        reached = minimal_generators((*child, refutation))
+        if destination in named_destinations:
+            if reached != named_destinations[destination]:
+                raise AssertionError(
+                    f"{response},{refutation} reached {reached}, not {destination}"
+                )
+        elif destination == "finite":
+            if solve_position(reached).is_winning:
+                raise AssertionError(
+                    f"{response},{refutation} did not reach a finite P-position"
+                )
+        else:
+            raise AssertionError(f"unknown move-90 destination {destination}")
+    return G4_MOVE_90_SHORT_EVEN_REFUTATIONS

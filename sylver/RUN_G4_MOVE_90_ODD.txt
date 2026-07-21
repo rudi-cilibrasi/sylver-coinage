@@ -54,9 +54,10 @@ Interpretation:
   decide where a new batch must begin.
 
 Structural follow-up:
-  The legal even responses 4, 8, 78, and 102 lead to short positions.  The
-  response-4 child is immediately N because move 6 reaches {4,6}.  For the
-  response-8 child {8,20,90}, all odd moves are bounded by the Quiet End
-  Theorem and most even branches reduce to existing certificates, but its
-  branches 12, 26, and 30 have no direct odd P reply through 201.  That near
-  certificate remains a lead, not a claimed P-position.
+  The legal even responses 4, 8, 78, and 102 are exactly those that lead to
+  short positions.  A later exact pass refutes all four: their respective
+  winning moves are 6, 26, 27, and 57.  In particular {8,20,90} is N because
+  move 26 reaches the already certified P-position {8,20,26}; it is not a
+  prospective P-certificate.  RUN_G4_MOVE_90_SHORT.txt records the complete
+  correction and exact checks.  The other 26 legal even replies are long and
+  remain open.

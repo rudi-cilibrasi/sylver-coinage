@@ -2,7 +2,10 @@ import unittest
 
 from sylver.analyze_opening_16 import exceptional_odd_wins
 from sylver.analyze_g4_candidate import inspect_odd_children
-from sylver.g4_candidate_certificates import verify_g4_candidate_even_responses
+from sylver.g4_candidate_certificates import (
+    verify_g4_candidate_even_responses,
+    verify_move_90_short_even_refutations,
+)
 from sylver.pairing_family import (
     pairing_family,
     pairing_response,
@@ -144,6 +147,15 @@ class FiniteSolverTests(unittest.TestCase):
                 (78, 27),
                 (82, 145),
                 (86, 105),
+            ),
+        )
+        self.assertEqual(
+            verify_move_90_short_even_refutations(),
+            (
+                (4, 6, "C"),
+                (8, 26, "G"),
+                (78, 27, "finite"),
+                (102, 57, "finite"),
             ),
         )
 

@@ -223,11 +223,18 @@ P after 4,122,547 states in a 19-second independent native run, recorded in
 The next branch, move 90, has no direct odd P reply from 3 through 229.  Exact
 common-bound batches classify all 114 children as N; the final batches use up
 to 1.71 GB, so extending the same linear scan has sharply diminishing value.
-The four even responses that make a short gcd-two child were also inspected.
-The strongest, `{8,20,90}`, reduces most even branches to existing P nodes,
-but branches 12, 26, and 30 have no direct odd P reply through 201.  The full
-finite frontier and the one memory-bound batch transition are recorded in
-`RUN_G4_MOVE_90_ODD.txt`; no outcome for move 90 is claimed.
+The even side has 30 legal replies.  Exactly four produce a short gcd-two
+position, and all four are now refuted.  Reply 4 allows move 6 to the certified
+`C={4,6}`; reply 8 allows move 26 to the certified `G={8,20,26}` (indeed
+`90=26+8*8`); reply 78 allows move 27 to an exact 83,237-state P-position; and
+reply 102 allows move 57 to an exact 823,941-state P-position.  The verifier
+recomputes shortness rather than assuming this list and then rechecks every
+destination.  The odd frontier is in `RUN_G4_MOVE_90_ODD.txt`, and the short
+even refutations are fingerprinted in `RUN_G4_MOVE_90_SHORT.txt`.
+
+This does not settle move 90.  The remaining 26 even replies are long; the
+Quiet End Theorem does not make long positions N, and some may require very
+large winning moves.  Larger odd replies also remain open.
 
 The first unresolved even branch 12 reduces the candidate to `{12,16,20}`.
 The primary survey explicitly calls a good odd reply to this position

@@ -1,0 +1,53 @@
+Exact refutation of every short even reply at move 90, 2026-07-21
+
+Base position:
+  {16,20,28,90}
+
+Source SHA-256:
+  a965814ebc4858848071cf08f17cc20bfd3fd037e60b27ef57a243690fe7443e  g4_candidate_certificates.py
+  e01d144c6529e8e8fd737feebc8b3af494f8404912784c72bc34704f69e9b025  short_certificates.py
+  7cdb3c0cc11bcabc671599f4cc20994d27c9ba25623b5400759fb562fb7d24c4  solver.py
+
+Command:
+  /usr/bin/time -v python - <<'PY'
+  from sylver.g4_candidate_certificates import (
+      verify_move_90_short_even_refutations,
+  )
+  from sylver.short_certificates import minimal_generators
+  from sylver.solver import solve_position
+  print('refutations=', verify_move_90_short_even_refutations())
+  for position in (
+      (16,20,28,78,90,27),
+      (16,20,28,90,102,57),
+  ):
+      print(solve_position(minimal_generators(position)))
+  PY
+
+Result:
+  refutations= ((4, 6, 'C'), (8, 26, 'G'),
+                 (78, 27, 'finite'), (102, 57, 'finite'))
+  Solution(generators=(16,20,27,28,78), frobenius=93,
+           winning_move=None, states_evaluated=83237)
+  Solution(generators=(16,20,28,57,90,102), frobenius=155,
+           winning_move=None, states_evaluated=823941)
+
+Resource report:
+  User time (seconds): 42.44
+  System time (seconds): 0.14
+  Percent of CPU this job got: 99%
+  Elapsed wall time: 0:42.61
+  Maximum resident set size (kbytes): 234292
+  Exit status: 0
+
+Interpretation:
+  There are 30 legal even replies from {16,20,28,90}.  The verifier divides
+  each reply-child by two and independently checks the quiet-ender
+  antisymmetry criterion.  Exactly replies 4, 8, 78, and 102 are short.
+
+  Each is N.  After 4, move 6 reaches the certified P-node {4,6}.  After 8,
+  move 26 reaches the certified P-node {8,20,26}; 90 is then redundant because
+  90=26+8*8.  After 78, move 27 reaches the displayed exact finite P-position.
+  After 102, move 57 reaches the other displayed exact finite P-position.
+
+  The remaining 26 even replies are long, not thereby classified, and odd
+  replies above 229 remain open.  No outcome for move 90 is claimed.
