@@ -220,6 +220,15 @@ Move 86 is answered by 105.  Its exact child has Frobenius number 215 and is
 P after 4,122,547 states in a 19-second independent native run, recorded in
 `RUN_G4_MOVE_86.txt`.
 
+The next branch, move 90, has no direct odd P reply from 3 through 229.  Exact
+common-bound batches classify all 114 children as N; the final batches use up
+to 1.71 GB, so extending the same linear scan has sharply diminishing value.
+The four even responses that make a short gcd-two child were also inspected.
+The strongest, `{8,20,90}`, reduces most even branches to existing P nodes,
+but branches 12, 26, and 30 have no direct odd P reply through 201.  The full
+finite frontier and the one memory-bound batch transition are recorded in
+`RUN_G4_MOVE_90_ODD.txt`; no outcome for move 90 is claimed.
+
 The first unresolved even branch 12 reduces the candidate to `{12,16,20}`.
 The primary survey explicitly calls a good odd reply to this position
 unknown.  An exact bounded pass now excludes every odd reply through 101:

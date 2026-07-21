@@ -1,0 +1,62 @@
+Exact Sylver move-90 odd-response frontier, 2026-07-21
+
+Base position:
+  {16,20,28,90}
+
+Source SHA-256:
+  85c7f20f93f43a464d0420c47c2bd39cd1818c7af5cc1d3cbdbef99a7a8bc3af  native_solver.cpp
+
+Compiler:
+  g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+
+Compile command:
+  g++ -std=c++20 -O3 -Wall -Wextra -pedantic \
+      sylver/native_solver.cpp -o /tmp/conway-sylver-native
+
+Batch command form:
+  /tmp/conway-sylver-native --odd-range START END 16 20 28 90
+
+Completed exact ranges:
+
+  odd moves   result       elapsed     maximum RSS
+  3--65       all N         0:07.45       203,424 KB
+  67--133     all N         0:42.20       827,668 KB
+  135--181    all N         1:15.75     1,333,160 KB
+  183--199    all N         1:27.95*    1,496,384 KB
+  201--205    all N         1:27.36     1,532,036 KB
+  207--211    all N         1:30.68     1,566,548 KB
+  213--217    all N         1:33.85     1,620,868 KB
+  219--223    all N         1:37.98     1,673,408 KB
+  225--229    all N         1:42.88     1,710,052 KB
+
+  * The 183--209 invocation completed and printed exact rows through 199,
+    then met its 1.5 GB allocation ceiling while starting 201.  The fresh
+    201--205 invocation covers that boundary.  No incomplete row is counted.
+
+The completed rows in the boundary batch were:
+
+  183 -> 173    185 -> 299    187 -> 197    189 -> 50
+  191 -> 213    193 -> 163    195 -> 109    197 -> 179
+  199 -> 245
+
+Interpretation:
+  Each odd move makes the gcd one.  Every reported row is an exact finite
+  evaluation and gives a winning move from that child; hence no odd response
+  from 3 through 229 reaches P.  This does not determine the gcd-two position
+  {16,20,28,90}: larger odd moves and all legal even responses remain.
+
+  Batch mode uses the largest exact Frobenius number in a stated finite range
+  as a common bit bound.  Each child semigroup already fills every bit above
+  its own conductor, so sharing descendant memo states changes neither its
+  legal moves nor the recurrence.  The differential tests compare this
+  recurrence with the Python reference and independently rerun all accepted
+  large P children.  No game precision cutoff is used; the memory limits only
+  decide where a new batch must begin.
+
+Structural follow-up:
+  The legal even responses 4, 8, 78, and 102 lead to short positions.  The
+  response-4 child is immediately N because move 6 reaches {4,6}.  For the
+  response-8 child {8,20,90}, all odd moves are bounded by the Quiet End
+  Theorem and most even branches reduce to existing certificates, but its
+  branches 12, 26, and 30 have no direct odd P reply through 201.  That near
+  certificate remains a lead, not a claimed P-position.
