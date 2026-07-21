@@ -211,6 +211,11 @@ Move 78 returns to the smaller regime: the direct response 27 is an exact
 finite P-position with Frobenius number 93 and 83,237 evaluated states.  The
 Python and native evaluators agree on the outcome and state count.
 
+Move 82 is answered by 145.  Its exact finite child has Frobenius number 251
+and the independent native run proves it P after 6,835,860 states in 35
+seconds.  The same differential and fingerprint controls apply; the smaller
+first search range is preserved in `RUN_G4_MOVE_82.txt`.
+
 The first unresolved even branch 12 reduces the candidate to `{12,16,20}`.
 The primary survey explicitly calls a good odd reply to this position
 unknown.  An exact bounded pass now excludes every odd reply through 101:
@@ -220,7 +225,7 @@ mistaking it for an unbounded answer.
 
 This finite result is consistent with the candidate being P but does not
 prove it.  A proof must still cover infinitely many larger odd moves and all
-remaining legal even moves, beginning with 12 and 82; no extrapolation
+remaining legal even moves, beginning with 12 and 86; no extrapolation
 from the checked range is used here.
 
 ### Sources

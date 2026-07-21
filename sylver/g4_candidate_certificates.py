@@ -22,6 +22,7 @@ NATIVE_FINITE_P_POSITIONS = {
     (16, 20, 28, 66, 305),
     (16, 20, 28, 70, 277),
     (16, 20, 28, 74, 273),
+    (16, 20, 28, 82, 145),
 }
 
 # Opponent move, response, destination kind.  ``C`` is the already certified
@@ -52,6 +53,7 @@ G4_CANDIDATE_EVEN_RESPONSES = (
     (70, 277, "native-finite"),
     (74, 273, "native-finite"),
     (78, 27, "finite"),
+    (82, 145, "native-finite"),
 )
 
 

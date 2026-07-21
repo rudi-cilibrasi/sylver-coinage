@@ -142,6 +142,7 @@ class FiniteSolverTests(unittest.TestCase):
                 (70, 277),
                 (74, 273),
                 (78, 27),
+                (82, 145),
             ),
         )
 
