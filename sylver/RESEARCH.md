@@ -283,6 +283,68 @@ The primary survey explicitly calls a good odd reply to this position
 unknown.  The initial exact pass excluded every odd reply through 101.  A
 native shared-state continuation now extends that frontier through **409**:
 all 204 odd children are N, with a winning response preserved for every one.
+The semigroup at every one of these children has an unbounded closed form.
+For odd `m`,
+
+```text
+<12,16,20> = {0} union {4t : t >= 3},
+```
+
+and four copies of `m` already lie in that even subsemigroup.  Reduce the
+coefficient of `m` to `k=0,1,2,3`.  In the residue class `km (mod 4)`, every
+positive integer below `km` is a gap, `km` is represented, `km+4` and `km+8`
+are gaps, and every later integer is represented.  These four classes give
+all gaps exactly.  In particular,
+
+```text
+F(<12,16,20,m>) = 3m+8,
+genus(<12,16,20,m>) = (3m+13)/2.
+```
+
+`holdout_odd_semigroup_report` constructs the complete formula and compares
+it with the independent generic Apéry/bitset engine for every odd `m` through
+409.  This explains the linear Frobenius column and gives a parametric legal-
+move domain, but it does not determine the P/N outcome of its children.  It
+also pinpoints why the standard symmetry criterion does not apply.  Here `F`
+is odd and
+
+```text
+genus = (F+5)/2 = (F+1)/2 + 2,
+```
+
+so the semigroup is never symmetric; it cannot be pseudo-symmetric because
+its Frobenius number is odd.  The known theorem that either kind of semigroup
+gives an N-position therefore leaves this defect-two family untouched.
+Moreover, the gap formula shows that the only pseudo-Frobenius numbers are
+`3m+4` and `3m+8`: every lower gap remains a gap after adding at least one
+generator, while both displayed top gaps become represented after adding any
+positive semigroup element.  Since each exceeds half the Frobenius number,
+they are exactly the two legal end moves.  Thus the one-ender strategy-
+stealing theorem also fails uniformly for this type-two family.  See
+`RUN_12_16_20_SEMIGROUP_FORMULA.txt`.
+
+The same formula reduces a more careful strategy-stealing attempt to two
+parametric exceptions.  Put `F=3m+8` and provisionally play `F`.  Every other
+gap `x` except
+
+```text
+2m+4, 3m+4
+```
+
+makes `F` representable.  For a below-anchor gap in residue class `jm`, write
+`jm-x=d`, where `d` is a positive multiple of four; then
+`F-x=(3-j)m+(8+d)` is already in the old semigroup.  The top gaps `jm+8`
+give `F-x=(3-j)m`.  Among the gaps `jm+4`, two copies of 4 leave `3m`, two
+copies of `m+4` leave `m`, while `2m+4` and `3m+4` are the only failures.
+
+If the position after the provisional `F` is P, `F` wins directly.  If it is
+N and has a winning reply outside those two exceptions, that reply already
+eliminates `F`, so playing it directly reaches the same P-position.  Hence
+the only way this strategy-stealing probe can fail is if all its winning
+replies are confined to `2m+4` and `3m+4`.  The finite frontier always finds
+a nonexceptional reply, but proving that for every odd `m` is exactly the
+unbounded step still missing.
+
 The latest 2048-bit batch reaches `F=1235`, evaluates 53,604,605 cumulative
 states, and peaks at 15.70 GB.  Its final response 1007 reaches the
 independently rerun P-position `{12,16,20,409,1007}`, with Frobenius number
@@ -304,6 +366,8 @@ remaining legal even moves, beginning with 12 and 90; no extrapolation
 from the checked range is used here.
 
 ### Sources
+
+- <https://math.colgate.edu/~integers/yg2/yg2.pdf>
 
 - George Sicherman, *The Care and Feeding of Enders*:
   <https://sicherman.net/sylver/enders.html>

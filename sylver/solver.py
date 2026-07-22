@@ -61,6 +61,53 @@ def frobenius_number(generators: Sequence[int]) -> int:
 
 
 @dataclass(frozen=True)
+class HoldoutOddSemigroupReport:
+    """Closed-form gap data for ``<12,16,20,m>`` with odd ``m``."""
+
+    move: int
+    frobenius: int
+    genus: int
+    gaps: tuple[int, ...]
+
+
+def holdout_odd_semigroup_report(move: int) -> HoldoutOddSemigroupReport:
+    """Return the complete gaps of ``<12,16,20,move>`` in closed form.
+
+    The even subsemigroup is
+
+    ``<12,16,20> = {0} union {4*t : t >= 3}``.
+
+    Since ``move`` is odd, every coefficient of it reduces uniquely modulo
+    four: four copies already belong to the even subsemigroup.  In the residue
+    represented by ``k*move``, ``0 <= k < 4``, every positive value below
+    ``k*move`` is therefore a gap; ``k*move`` is represented; the next two
+    values ``k*move+4`` and ``k*move+8`` are gaps; and every later value is
+    represented.  This partitions all four residue classes exactly.
+    """
+
+    if (
+        not isinstance(move, int)
+        or isinstance(move, bool)
+        or move < 3
+        or move % 2 == 0
+    ):
+        raise ValueError("move must be an odd integer at least three")
+    gaps: list[int] = []
+    for coefficient in range(4):
+        anchor = coefficient * move
+        residue = anchor % 4
+        first_positive = residue or 4
+        gaps.extend(range(first_positive, anchor, 4))
+        gaps.extend((anchor + 4, anchor + 8))
+    result = tuple(sorted(gaps))
+    frobenius = 3 * move + 8
+    genus = (3 * move + 13) // 2
+    if result[-1] != frobenius or len(result) != genus:
+        raise AssertionError("closed-form holdout gap count failed")
+    return HoldoutOddSemigroupReport(move, frobenius, genus, result)
+
+
+@dataclass(frozen=True)
 class Solution:
     """Exact outcome of a finite position."""
 

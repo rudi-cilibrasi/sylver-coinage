@@ -20,7 +20,13 @@ from sylver.short_certificates import (
     verify_opening_16_even_responses,
     verify_published_short_certificates,
 )
-from sylver.solver import FiniteSolver, frobenius_number, solve_position
+from sylver.solver import (
+    FiniteSolver,
+    HoldoutOddSemigroupReport,
+    frobenius_number,
+    holdout_odd_semigroup_report,
+    solve_position,
+)
 
 
 class FiniteSolverTests(unittest.TestCase):
@@ -63,6 +69,19 @@ class FiniteSolverTests(unittest.TestCase):
         for response in range(3, 32, 2):
             with self.subTest(response=response):
                 self.assertTrue(FiniteSolver((16, response)).is_quiet_ender())
+
+    def test_holdout_odd_semigroups_have_closed_form_gaps(self) -> None:
+        for move in range(3, 410, 2):
+            with self.subTest(move=move):
+                report = holdout_odd_semigroup_report(move)
+                generic = FiniteSolver((12, 16, 20, move))
+                self.assertEqual(report.gaps, generic.gaps())
+                self.assertEqual(report.frobenius, generic.frobenius)
+        endpoint = holdout_odd_semigroup_report(409)
+        self.assertIsInstance(endpoint, HoldoutOddSemigroupReport)
+        self.assertEqual((endpoint.frobenius, endpoint.genus), (1235, 620))
+        with self.assertRaisesRegex(ValueError, "odd integer"):
+            holdout_odd_semigroup_report(410)
 
     def test_exceptional_odd_wins_reproduce_published_responses(self) -> None:
         self.assertEqual(exceptional_odd_wins(6), (7,))

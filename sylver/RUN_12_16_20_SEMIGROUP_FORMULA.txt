@@ -1,0 +1,76 @@
+Sylver {12,16,20,m} odd semigroup formula, 2026-07-21
+
+Source SHA-256:
+  fe17c5fbb77b036131250af033b0bae7fa200daca4cadb01ceccb12fa6434a3d  solver.py
+
+Test SHA-256:
+  4d317ef5885083547aa66704bd01d52a3dbdb3b4ce49ee77ba17c86e014d8bb7  test_sylver_solver.py
+
+Theorem:
+  For every odd integer m >= 3,
+
+    <12,16,20> = {0} union {4*t : t >= 3}.
+
+  Four copies of m belong to this even subsemigroup, so every coefficient of
+  m reduces uniquely to k in {0,1,2,3}.  In residue class k*m modulo four:
+
+    - every positive integer below k*m is a gap;
+    - k*m is represented;
+    - k*m+4 and k*m+8 are gaps; and
+    - k*m+4*t is represented for every t >= 3.
+
+  These four residue classes partition the positive integers.  Therefore the
+  complete gap set, not just its endpoint, is explicit and
+
+    Frobenius(<12,16,20,m>) = 3*m+8,
+    genus(<12,16,20,m>) = (3*m+13)/2.
+
+  Since the Frobenius number is odd, symmetry would require genus
+  (F+1)/2.  The displayed genus is instead (F+5)/2, a constant defect of two;
+  pseudo-symmetry requires even F.  Thus the standard symmetric-or-pseudo-
+  symmetric sufficient condition for an N-position cannot settle this tail.
+
+  The same residue description leaves exactly two pseudo-Frobenius numbers,
+  3*m+4 and 3*m+8.  They are both above F/2 and hence are precisely the two
+  end moves of the Sylver position.  The standard one-ender strategy-stealing
+  theorem therefore cannot settle any member of the family either.
+
+Strategy-stealing bottleneck:
+  Set F=3*m+8 and provisionally play F.  A direct calculation in the four
+  gap classes proves that every other legal move makes F representable except
+
+    2*m+4 and 3*m+4.
+
+  Below-anchor gaps x satisfy F-x=(3-j)*m+(8+j*m-x), with the second term an
+  even-semigroup element at least 12.  Top gaps j*m+8 eliminate F in one
+  copy.  For the j*m+4 gaps, two copies handle 4 and m+4; the displayed two
+  exceptions are the remaining j=2,3 cases.  Thus the ordinary strategy-
+  stealing probe proves the child N unless every winning response after F is
+  confined to those two moves.  The finite frontier has a nonexceptional
+  winning response in every row, but no unbounded proof of that fact is known.
+
+Exact checks:
+  holdout_odd_semigroup_report constructs the closed-form gaps.  For every
+  odd m from 3 through 409, the focused test compares the entire tuple with
+  the independent generic Apéry/bitset semigroup engine.  At m=409 it gives
+  Frobenius 1235 and genus 620, explaining the endpoint frontier record.
+
+Focused regression command:
+  /usr/bin/time -v python -m unittest \
+    tests.test_sylver_solver.FiniteSolverTests.test_holdout_odd_semigroups_have_closed_form_gaps -v
+
+Result:
+  Ran 1 test in 0.024s
+  OK
+
+Resources:
+  elapsed=0:00.08; user=0.07s; maximum RSS=18984 KB; exit=0
+
+Output fingerprints:
+  e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  stdout
+  cf26e82748277bf5a56ba7f1c3446532675f37acb0b4631989b9fcba261c3acc  stderr
+  6af2b4386a2027eb85155709ef20c2c845be6b135b3d7d6f1ab51eb2dc16a98e  time
+
+Scope:
+  This is an unbounded semigroup and legal-domain theorem.  It does not give
+  an infinite response pairing and does not decide whether {12,16,20} is P.
