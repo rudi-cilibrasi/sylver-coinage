@@ -251,6 +251,47 @@ NODES = (
         ),
     ),
     ShortNode(
+        # Blok's 2022 report on even positions containing 14 lists this node
+        # as P; the branches below re-derive it exactly.
+        "R",
+        (14, 16, 20, 26),
+        (
+            (2, 3, "finite"),
+            (4, 6, "C"),
+            (6, 4, "C"),
+            (8, 9, "finite"),
+            (10, 11, "finite"),
+            (12, 73, "finite"),
+            (18, 11, "finite"),
+            (22, 31, "finite"),
+            (24, 47, "finite"),
+            (38, 43, "finite"),
+        ),
+    ),
+    ShortNode(
+        # Sicherman's P-position list claims this node; every branch is
+        # re-derived exactly, closing through K and R.
+        "S",
+        (16, 20, 30, 34, 44),
+        (
+            (2, 3, "finite"),
+            (4, 6, "C"),
+            (6, 4, "C"),
+            (8, 19, "finite"),
+            (10, 24, "K"),
+            (12, 11, "finite"),
+            (14, 26, "R"),
+            (18, 5, "finite"),
+            (22, 61, "finite"),
+            (24, 10, "K"),
+            (26, 14, "R"),
+            (28, 15, "finite"),
+            (38, 39, "finite"),
+            (42, 79, "finite"),
+            (58, 67, "finite"),
+        ),
+    ),
+    ShortNode(
         "M",
         (16, 20, 28, 38, 50),
         (
