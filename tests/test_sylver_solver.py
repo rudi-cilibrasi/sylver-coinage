@@ -8,6 +8,12 @@ from sylver.g4_candidate_certificates import (
     verify_move_90_even_partition,
     verify_move_90_short_even_refutations,
 )
+from sylver.eight_twelve import (
+    configuration_certificate,
+    eight_twelve_pair,
+    holdout_even_reply_resolution,
+    verify_eight_twelve_pairing,
+)
 from sylver.pairing_family import (
     pairing_family,
     pairing_response,
@@ -241,6 +247,45 @@ class FiniteSolverTests(unittest.TestCase):
                 with self.subTest(parameter=parameter, move=move):
                     response = pairing_response(parameter, move)
                     self.assertEqual(pairing_response(parameter, response), move)
+
+    def test_eight_twelve_pairing_certificates(self) -> None:
+        report = verify_eight_twelve_pairing()
+        self.assertEqual(report.exhaustive_configurations, 1_024)
+        self.assertEqual(report.parametric_configurations, 180)
+        self.assertEqual(report.total_whole_pairs_checked, 10_381)
+
+        base = configuration_certificate(False, False, (), ())
+        self.assertEqual(base.generators, (8, 12))
+        self.assertEqual(base.class_minima, (0, None, None, None, 12, None, None, None))
+        self.assertEqual(base.whole_pairs[:4], ((2, 3), (4, 6), (5, 7), (9, 11)))
+
+        # The mate map is an involution on every legal move except 1.
+        self.assertIsNone(eight_twelve_pair(1))
+        for move in (2, 3, 4, 6, 5, 7, 9, 11, 10, 14, 18, 22, 401, 403):
+            mate = eight_twelve_pair(move)
+            assert mate is not None
+            self.assertEqual(eight_twelve_pair(mate), move)
+        with self.assertRaisesRegex(ValueError, "not legal"):
+            eight_twelve_pair(12)
+        with self.assertRaisesRegex(ValueError, "positive integer"):
+            eight_twelve_pair(0)
+
+        # Independent finite cross-checks: gcd-one pair completions of
+        # {8,12} are P for the exact solver, and either half-pair is N with
+        # the mate as a winning reply.
+        for generators in ((8, 12, 5, 7), (8, 12, 13, 15), (8, 12, 13, 15, 17, 19)):
+            self.assertIsNone(solve_position(generators).winning_move)
+        for half, mate in ((5, 7), (9, 11), (3, 2)):
+            self.assertIsNone(solve_position((8, 12, half, mate)).winning_move)
+
+    def test_holdout_even_reply_resolution(self) -> None:
+        resolution = holdout_even_reply_resolution()
+        self.assertEqual(resolution.holdout, (12, 16, 20))
+        self.assertEqual(resolution.winning_reply, 8)
+        self.assertEqual(resolution.reached_position, (8, 12))
+        self.assertEqual(resolution.candidate_branch, (12, 16, 20))
+        self.assertEqual(minimal_generators((12, 16, 20, 8)), (8, 12))
+        self.assertEqual(minimal_generators((16, 20, 28, 12)), (12, 16, 20))
 
     def test_pairing_family_recognition(self) -> None:
         first = recognize_pairing_family((14, 8, 10, 12))
