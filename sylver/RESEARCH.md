@@ -281,17 +281,16 @@ simple translated family; it is not a classification of direct reply 495.
 The first unresolved even branch 12 reduces the candidate to `{12,16,20}`.
 The primary survey explicitly calls a good odd reply to this position
 unknown.  The initial exact pass excluded every odd reply through 101.  A
-native shared-state continuation now extends that frontier through **281**:
-all 140 odd children are N, with a winning response preserved for every one.
+native shared-state continuation now extends that frontier through **337**:
+all 168 odd children are N, with a winning response preserved for every one.
 The new batches cross the standard 511-bit Frobenius ceiling under the same
 separately compiled 1024-bit build used for the move-90 audit.  The last batch
-peaks at 2.67 GB, substantially below the earlier wide-build control.
-Independent standard- and wide-width reruns agree that the final response 115
-reaches the P-position `{12,16,20,115,281}`, with Frobenius number 289 and
-852,852 evaluated states.  `RUN_12_16_20_ODD.txt` preserves the initial pass;
-`RUN_12_16_20_ODD_281.txt` records the native continuation, both build modes,
-and the cross-width endpoint.  This remains a finite frontier, not an
-unbounded answer.
+peaks at 4.98 GB.  Independent standard- and wide-width reruns agree that the
+final response 147 reaches the P-position `{12,16,20,147,337}`, with Frobenius
+number 345 and 1,669,034 evaluated states.  `RUN_12_16_20_ODD.txt` preserves
+the initial pass; `RUN_12_16_20_ODD_281.txt` and
+`RUN_12_16_20_ODD_337.txt` record the native continuations and cross-width
+endpoints.  This remains a finite frontier, not an unbounded answer.
 
 This finite result is consistent with the candidate being P but does not
 prove it.  A proof must still cover infinitely many larger odd moves and all

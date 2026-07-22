@@ -1,0 +1,83 @@
+Sylver {12,16,20} native odd-response extension through 337, 2026-07-21
+
+Source SHA-256:
+  75c8cc6450c1314dc09186369bf2321dc9aee74cdffd1eff49cd34278e84b1ba  native_solver.cpp
+
+Test SHA-256:
+  c9069cc8f7109c832b64e1cc89276aca16ba7713c10ad3075b98d6a897b4a773  test_sylver_solver.py
+  c92c666ba7fb260d431bd68107ef821d15a1e432a296d817603e9867b6b853f8  test_sylver_native_solver.py
+
+Build commands:
+  g++ -std=c++20 -O3 -march=native -Wall -Wextra -pedantic \
+      sylver/native_solver.cpp -o /tmp/conway-sylver-native
+  g++ -std=c++20 -O3 -march=native -Wall -Wextra -pedantic \
+      -DSYLVER_NATIVE_WORDS=16 sylver/native_solver.cpp \
+      -o /tmp/conway-sylver-native-1023-next
+
+Binary SHA-256:
+  e085a5c02d7d2dbc6d559a9338c5ebd1e4f79a1e4adc2a1216d95075ee665cf4  standard
+  0bff39fb90cf3e862c36873808c5be3ef9cc8a22aea4740390d4ee7ce7aec901  1024-bit
+
+Batch command form:
+  /usr/bin/time -v BINARY --odd-range START END 12 16 20
+
+Completed continuation batches:
+
+  odd moves   build       result   elapsed   maximum RSS   final states   final F
+  283--311    1024-bit    all N    12:18.17    4,161,384     24,642,034       941
+  313--337    1024-bit    all N    18:39.29    4,983,768     29,905,803     1,019
+
+Exact output (move -> winning response; Frobenius; cumulative states):
+
+  283 -> 661; F=857; states=11496767
+  285 -> 691; F=863; states=17897267
+  287 -> 117; F=869; states=17931421
+  289 -> 663; F=875; states=18913017
+  291 -> 677; F=881; states=19692729
+  293 -> 719; F=887; states=20243201
+  295 -> 117; F=893; states=20266756
+  297 -> 683; F=899; states=20806171
+  299 -> 129; F=905; states=20833425
+  301 -> 699; F=911; states=21380481
+  303 -> 753; F=917; states=22404554
+  305 -> 651; F=923; states=22835739
+  307 -> 733; F=929; states=23482883
+  309 -> 743; F=935; states=24082224
+  311 -> 753; F=941; states=24642034
+  313 -> 791; F=947; states=16149867
+  315 -> 717; F=953; states=24816976
+  317 -> 787; F=959; states=25520904
+  319 -> 797; F=965; states=26475289
+  321 -> 775; F=971; states=27154747
+  323 -> 805; F=977; states=27523513
+  325 -> 763; F=983; states=28082910
+  327 -> 153; F=989; states=28115455
+  329 -> 147; F=995; states=28157605
+  331 -> 885; F=1001; states=29012360
+  333 -> 763; F=1007; states=29830197
+  335 -> 153; F=1013; states=29866456
+  337 -> 147; F=1019; states=29905803
+
+Resource details:
+  283--311: user=735.01s; system=2.98s; exit=0
+  313--337: user=1114.96s; system=4.14s; exit=0
+
+Independent endpoint P-node reruns:
+  The final row says that 147 reaches {12,16,20,147,337}.  Fresh memo tables
+  in both state widths independently give
+
+  /tmp/conway-sylver-native 12 16 20 147 337
+    P winning_move=none frobenius=345 states=1669034
+    elapsed=0:17.55; user=17.39s; maximum RSS=177708 KB; exit=0
+
+  /tmp/conway-sylver-native-1023-next 12 16 20 147 337
+    P winning_move=none frobenius=345 states=1669034
+    elapsed=0:28.80; user=28.57s; maximum RSS=282024 KB; exit=0
+
+Interpretation:
+  Every odd move from the all-even base makes the gcd one.  Every row is an
+  exact finite evaluation with a winning response, so none of the 28 new odd
+  replies from 283 through 337 reaches P.  Together with the prior records,
+  all 168 direct odd replies from 3 through 337 are N.  Odd replies above 337
+  and the legal even branches remain unclassified, so {12,16,20} and its
+  parent candidate are not claimed P.
