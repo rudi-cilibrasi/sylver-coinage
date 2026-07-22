@@ -467,6 +467,60 @@ the present node set works and Sicherman's list offers no three-generator
 154 exceptional odd children, 169 even children, 6 pairing edges, 4
 published edges, 1 native-finite edge.
 
+### Attempt 7 — the move-26 frontier: `{16,26}` is short and under siege
+
+`{16,26}` appears in no published table: Sicherman's `{m,n}` list stops at
+`{15,26}`, and his `{16,20}` row ends mid-bracket.  Yet its divide-by-two
+monoid `<8,13>` is a coprime pair, hence a quiet ender with Frobenius 83,
+so `{16,26}` is a **short** position: its outcome is decided by finitely
+many children — 23 exceptional odd moves and 42 even moves.  If every one
+of them is an N-position then 26 is a winning reply to the opening 16 and
+the bounty question is answered with `a(16)=2`; if some child is P, that
+child answers move 26 and the certified table grows again.  Either way
+this is the first bounded reformulation of a live branch of the problem.
+
+Progress so far, all exact:
+
+- **Odd side closed.**  Native scans refute every odd reply through 99
+  (covering all 23 exceptional odds; larger odds lie in `<8,13>` and lose
+  by the Quiet End Theorem).  The Python reference independently
+  reconfirms every exceptional odd through 57, the largest taking
+  18,718,660 states; the four largest are native-verified.
+
+- **29 of 42 even children refuted**, through the certified node graph
+  (`C,G,K,F,H`) and exact odd replies found by staged native scans, for
+  example `18->5`, `40->11`, `62->59`, `72->43`, `140->13`.
+
+- **The pair phenomenon.**  The children after 36 and 56 have *no odd
+  refutation at all*: their halves are quiet enders and every exceptional
+  odd child is N (native scans; Python reconfirms all 15 for the combined
+  node).  They refute **each other**: the new position
+
+  ```text
+  {16,26,36,56}   is a P-position,
+  ```
+
+  proved by the same short-node discipline — quiet-ender half
+  `<8,13,18,28>` with Frobenius 51, fifteen exceptional odd children all
+  N (Python re-verified), and all 26 even children refuted, the last
+  being the deep long child after 102, where the odd reply **201** wins
+  (`{16,26,36,56,102,201}` is P with Frobenius 287, 27,865,056 states).
+  This position is on no published list.  Consequently the `{16,26}`
+  children 36 and 56 are both N, answered by one another.
+
+- **Remaining open children of `{16,26}`:** 60, 70, 82, 86, 88, 92, 98,
+  114, 118, 124, 134, 150, 166.  Eleven have partial odd scans that
+  simply need finishing; 60 has resisted through 303; and 88 is a third
+  odd-complete candidate whose even children interlock with the pair
+  (`<16,26,88,36>=<16,26,36>` and `<16,26,88,56>=<16,26,56>`, both now
+  known N, so 88's refutation, if any, lies among its other children).
+
+The gcd-four candidate work also surfaced a cautionary correction kept in
+Attempt 6: `{16,20,34,58}` fell to the odd reply 291 only after 124 exact
+refusals, and here `{16,26,36,56,102}` fell at 201 after 149 — deep odd
+winners are the norm on this frontier, exactly as Blok's "nearly short"
+heuristic predicts.
+
 ### Sources
 
 - <https://math.colgate.edu/~integers/yg2/yg2.pdf>
