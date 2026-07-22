@@ -281,15 +281,16 @@ simple translated family; it is not a classification of direct reply 495.
 The first unresolved even branch 12 reduces the candidate to `{12,16,20}`.
 The primary survey explicitly calls a good odd reply to this position
 unknown.  The initial exact pass excluded every odd reply through 101.  A
-native shared-state continuation now extends that frontier through **337**:
-all 168 odd children are N, with a winning response preserved for every one.
-The new batches cross the standard 511-bit Frobenius ceiling under the same
-separately compiled 1024-bit build used for the move-90 audit.  The last batch
-peaks at 4.98 GB.  Independent standard- and wide-width reruns agree that the
-final response 147 reaches the P-position `{12,16,20,147,337}`, with Frobenius
-number 345 and 1,669,034 evaluated states.  `RUN_12_16_20_ODD.txt` preserves
-the initial pass; `RUN_12_16_20_ODD_281.txt` and
-`RUN_12_16_20_ODD_337.txt` record the native continuations and cross-width
+native shared-state continuation now extends that frontier through **361**:
+all 180 odd children are N, with a winning response preserved for every one.
+The latest batch crosses the 1023 Frobenius ceiling under a separately
+compiled 2048-bit build; it reaches `F=1091`, evaluates 36,738,408 cumulative
+states, and peaks at 10.64 GB.  Independent standard- and 2048-bit reruns
+agree that the final response 171 reaches the P-position
+`{12,16,20,171,361}`, with Frobenius number 369 and 2,698,494 evaluated
+states.  `RUN_12_16_20_ODD.txt` preserves the initial pass;
+`RUN_12_16_20_ODD_281.txt`, `RUN_12_16_20_ODD_337.txt`, and
+`RUN_12_16_20_ODD_361.txt` record the native continuations and cross-width
 endpoints.  This remains a finite frontier, not an unbounded answer.
 
 This finite result is consistent with the candidate being P but does not

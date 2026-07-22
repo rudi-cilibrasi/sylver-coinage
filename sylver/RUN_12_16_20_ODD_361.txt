@@ -1,0 +1,67 @@
+Sylver {12,16,20} native odd-response extension through 361, 2026-07-21
+
+Source SHA-256:
+  75c8cc6450c1314dc09186369bf2321dc9aee74cdffd1eff49cd34278e84b1ba  native_solver.cpp
+
+Test SHA-256:
+  c9069cc8f7109c832b64e1cc89276aca16ba7713c10ad3075b98d6a897b4a773  test_sylver_solver.py
+  c92c666ba7fb260d431bd68107ef821d15a1e432a296d817603e9867b6b853f8  test_sylver_native_solver.py
+
+Build commands:
+  g++ -std=c++20 -O3 -march=native -Wall -Wextra -pedantic \
+      sylver/native_solver.cpp -o /tmp/conway-sylver-standard-361
+  g++ -std=c++20 -O3 -march=native -Wall -Wextra -pedantic \
+      -DSYLVER_NATIVE_WORDS=32 sylver/native_solver.cpp \
+      -o /tmp/conway-sylver-native-2047
+
+Binary SHA-256:
+  e085a5c02d7d2dbc6d559a9338c5ebd1e4f79a1e4adc2a1216d95075ee665cf4  standard
+  8043403291aad5c08e30df97dd75aa2782422c0b26dcd640cf90e17a3ef70d49  2048-bit
+
+Batch command:
+  /usr/bin/time -v /tmp/conway-sylver-native-2047 \
+      --odd-range 339 361 12 16 20
+
+Exact output (move -> winning response; Frobenius; cumulative states):
+  339 -> 821; F=1025; states=19247654
+  341 -> 883; F=1031; states=31097905
+  343 -> 845; F=1037; states=32057336
+  345 -> 819; F=1043; states=33325058
+  347 -> 849; F=1049; states=33936519
+  349 -> 895; F=1055; states=34617355
+  351 -> 145; F=1061; states=34656673
+  353 -> 887; F=1067; states=35245696
+  355 -> 881; F=1073; states=36119002
+  357 -> 867; F=1079; states=36660583
+  359 -> 145; F=1085; states=36695713
+  361 -> 171; F=1091; states=36738408
+
+Batch resources:
+  elapsed=29:14.07; user=1747.06s; system=6.49s
+  maximum RSS=10643948 KB; exit=0
+  output SHA-256=6e80ad065cfb46a897632e675e72f4df22f736e38387e746ba4992d9603729f3
+  time SHA-256=2a18381b54bc641713e57c0b61f42aeb30949b90873ec49dae23357faf5e4d01
+
+Independent endpoint P-node reruns:
+  The final row says that 171 reaches {12,16,20,171,361}.  Fresh memo tables
+  in two independently compiled widths give identical exact results:
+
+  /tmp/conway-sylver-standard-361 12 16 20 171 361
+    P winning_move=none frobenius=369 states=2698494
+    elapsed=0:23.31; user=23.09s; maximum RSS=292816 KB; exit=0
+
+  /tmp/conway-sylver-native-2047 12 16 20 171 361
+    P winning_move=none frobenius=369 states=2698494
+    elapsed=0:49.00; user=48.54s; maximum RSS=798792 KB; exit=0
+
+Interpretation:
+  Every odd move from the all-even base makes the gcd one.  Every row is an
+  exact finite evaluation with a winning response, so none of the 12 new odd
+  replies from 339 through 361 reaches P.  Together with the prior records,
+  all 180 direct odd replies from 3 through 361 are N.
+
+Scope:
+  Odd replies above 361 and the legal even branches remain unclassified, so
+  {12,16,20} and its parent candidate are not claimed P.  The 2048-bit build
+  removes a representation ceiling; it does not replace the infinite tail by
+  a finite proof.
