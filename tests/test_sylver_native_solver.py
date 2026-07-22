@@ -8,6 +8,7 @@ from sylver.g4_candidate_certificates import (
     G4_MOVE_90_NATIVE_FINITE_P_POSITIONS,
     G4_MOVE_90_WIDE_NATIVE_FINITE_P_POSITIONS,
 )
+from sylver.short_certificates import SHORT_NATIVE_FINITE_P_POSITIONS
 from sylver.solver import solve_position
 
 
@@ -97,6 +98,16 @@ class NativeSylverSolverTests(unittest.TestCase):
                 )
 
     def test_native_solver_reproduces_hard_branches(self) -> None:
+        # The deep child of short node T={16,20,34} after the even move 58:
+        # the Python reference reproduced the same P outcome once with
+        # 3,407,297 states, which is too slow for every suite run.
+        self.assertEqual(
+            SHORT_NATIVE_FINITE_P_POSITIONS, {(16, 20, 34, 58, 291)}
+        )
+        self.assertEqual(
+            self.native_result((16, 20, 34, 58, 291)),
+            (False, None, 353),
+        )
         self.assertEqual(
             self.native_result((16, 20, 28, 66, 81)),
             (True, 107, 171),

@@ -416,11 +416,64 @@ would answer move 20 outright.  The list likewise claims `{10,16,24}`
 now the highest-value finite computations in this campaign, ahead of any
 further odd-frontier extension.
 
+### Attempt 6 — moves 20 and 24 after opening 16 are answered
+
+Sicherman's P-position list carries the explicit request "I welcome
+independent confirmation (or refutation)."  This attempt supplies
+proof-grade confirmations that close the two lowest open rows of the
+certified opening-16 response table.
+
+**Move 24 is answered by 10.**  The new short node `K={10,16,24}`
+(claimed P in Blok's g=2 report) is certified: its half `<5,8,12>` is a
+verified quiet ender with Frobenius 19, the nine bounded odd children are
+refuted exactly, and the ten even children close through `{2,3}`, `{4,6}`,
+two published `{8,10,22}` periodicity edges (note `<10,16,24,8>=<8,10>`),
+and exact finite P-positions, including Blok's replies 31, 5, and 47
+after the even moves 12, 28, and 38.  A cautionary detail: this
+repository's earlier shorthand "an odd move in the reduced semigroup
+cannot win" is valid only when the half is a quiet ender, a hypothesis
+`verify_published_short_certificates` has always enforced; the position
+`{10,16,24,28}`, whose half has a second end at 9, is answered by the odd
+move 5 *inside* its half, exactly as Blok's table says.
+
+**Move 20 is answered by 34.**  The new short node `T={16,20,34}` is
+certified P, superseding the entire `{16,20,28}` gcd-four candidate
+campaign, including its unresolved move-90 tail.  The half `<8,10,17>` is
+a verified quiet ender with Frobenius 39; the thirteen exceptional odd
+children are refuted exactly; and the twenty even children close through
+the certified nodes `C,G,K,L,R,S`, exact finite P-positions (the child
+after 12 falls to 45, after 62 to 25, after 78 to 27), and one deep
+native-verified child.  Two further Sicherman/Blok claims were certified
+en route as nodes `R={14,16,20,26}` and `S={16,20,30,34,44}`; `S` closes
+through both `K` and `R`.
+
+The only hard branch is the even move 58: `{16,20,34,58}` is long (its
+half `<8,10,17,29>` has a second end at 9), so no Quiet End shortcut
+exists.  Exact native scans refute every odd reply from 3 through 501
+except **291**, which wins: `{16,20,34,58,291}` is P with Frobenius 353,
+proved by the native recurrence (3,498,711 cumulative states) and
+reproduced independently by the Python reference evaluator (3,407,297
+states).  The certificate suite verifies the edge's legality and
+destination and pins the deep P evaluation in the native test module,
+following the same native-finite convention as the g4 candidate rows.
+
+With these rows the certified table answers **every even move from 2
+through 24** after opening 16; odd moves lose by Hutchings' theorem.  The
+lowest uncertified branch is now the even move 26, where no reply into
+the present node set works and Sicherman's list offers no three-generator
+`{16,26,x}` claim; the natural candidates are new nodes such as
+`{14,16,26}`-derived positions from Blok's 2022 report.  See
+`RUN_MOVE_20_ANSWER.txt` and the refreshed certificate totals: 15 nodes,
+154 exceptional odd children, 169 even children, 6 pairing edges, 4
+published edges, 1 native-finite edge.
+
 ### Sources
 
 - <https://math.colgate.edu/~integers/yg2/yg2.pdf>
 - Thomas Blok, *Sylver Coinage positions with g=2* (2021):
   <https://sicherman.net/sylver/Sylver_Coinage_positions_with_g=2.pdf>
+- Thomas Blok, *Sylver Coinage even positions in 14* (2022):
+  <https://sicherman.net/sylver/Sylver_Coinage_even_positions_in_14.pdf>
 - George Sicherman, *Some P-Positions With g>1*:
   <https://sicherman.net/sylver/ppos.html>
 

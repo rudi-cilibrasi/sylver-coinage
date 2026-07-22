@@ -1,0 +1,81 @@
+Sylver opening 16: move 20 is answered by 34, 2026-07-22
+
+Source SHA-256:
+  fd16b48aa29ee19df8a2386398d5cd48b6702ec32ba413cee0d6cf827f047939  short_certificates.py
+
+Test SHA-256:
+  02840c3d5d4e4c721b4a39633b9e68a41e04899f12b1182ea16b55daf7d3205e  test_sylver_solver.py
+  b0209bb99b944e0181adc1a8829eeb0a8ec8326db71dc48ada756ae2b37f0bb1  test_sylver_native_solver.py
+
+Claim:
+  {16,20,34} is a P-position.  Consequently the certified response table
+  after opening 16 gains the row 20 -> 34, and the former gcd-four
+  candidate {16,20,28} is no longer needed to answer move 20.
+
+Provenance:
+  Sicherman's independently published P-position list claims {16,20,34}
+  (https://sicherman.net/sylver/ppos.html, "I welcome independent
+  confirmation").  This run supplies that confirmation at proof grade.
+
+Certificate structure (short node T in short_certificates.py):
+  - The divide-by-two monoid <8,10,17> is a verified quiet ender with
+    Frobenius number 39, so the Quiet End Theorem refutes every odd move
+    in it; the thirteen exceptional odd children 3,5,7,9,11,13,15,19,21,
+    23,29,31,39 are refuted exactly by the Python evaluator inside the
+    certificate suite.
+  - The twenty even children close as
+      2->3, 4->6, 6->4 (C), 8->26 (G), 10->9, 12->45, 14->26 (R),
+      18->5, 22->28 (L), 24->10 (K), 26->8 (G), 28->22 (L), 30->44 (S),
+      38->15, 42->15, 44->30 (S), 46->19, 58->291 (native finite),
+      62->25, 78->27,
+    where C,G,K,L,R,S are certified short nodes of this repository and
+    unlabeled rows reach exact finite P-positions solved in the suite.
+  - New nodes certified today to support this and the move-24 row:
+      K={10,16,24}   (Blok g=2 report; replies 31, 5, 47 for its
+                      children after 12, 28, 38; two {8,10,22} edges),
+      R={14,16,20,26} (Blok 14-report),
+      S={16,20,30,34,44} (Sicherman list; closes through K and R).
+
+The deep child after 58:
+  {16,20,34,58} is long: its half <8,10,17,29> has a second end at 9, so
+  no Quiet End shortcut exists.  Exact native scans refute every odd
+  reply 3..501 except 291:
+
+    move=291 P winning_move=none frobenius=353 cumulative_states=3498711
+
+  The Python reference evaluator independently reproduced
+  {16,20,34,58,291} as P with 3,407,297 states in 122 seconds.  The
+  native rerun is pinned in tests/test_sylver_native_solver.py; the
+  Python suite verifies the edge's legality and destination and defers
+  the deep P evaluation to that native test, following the repository's
+  existing native-finite convention for the g4 candidate.
+
+Focused regression command:
+  /usr/bin/time -v python -m unittest \
+    tests.test_sylver_solver.FiniteSolverTests.test_published_short_certificate_graph \
+    tests.test_sylver_solver.FiniteSolverTests.test_certified_even_responses_after_opening_sixteen -v
+
+Result and resources:
+  Ran 2 tests in 57.770s; OK
+  elapsed=0:57.84; maximum RSS=239840 KB; exit=0
+
+Output fingerprints:
+  e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  stdout
+  a153df0884f2ad4ae25b8754714a21707cd4f650dd38695a430bacc526bc4d79  stderr
+  f3140f08ed2ef1451ae7409ccb1a60e924875a37b77caf10932b0c3d25d9dad5  time
+  a356094c657539e2cd1dc1cee9f6dfd94c823a65aba84ce4fbc2de8732676330  child-58 native odd scan 3-251 (125 N rows, no P)
+  b6eb4e55179d1905e50b700c59ecbccc4735b1fadb05a48dffefbab478aca844  child-58 native odd scan 253-501 (291 P; all others N)
+
+Full-suite commands (both green in this run):
+  python -m unittest tests.test_sylver_solver
+  python -m unittest tests.test_sylver_native_solver
+
+Certificate totals after this change:
+  15 nodes, 154 exceptional odd children, 169 even children, 6 pairing
+  edges, 4 published {8,10,22} edges, 1 native finite edge.
+
+Scope:
+  The certified table now answers every even move from 2 through 24
+  after opening 16 (rows 2,4,6,8,10,12,14,18,20,22,24; odd moves lose by
+  Hutchings' theorem).  Move 26 and infinitely many larger even moves
+  remain, so the opening {16} itself is still unsolved.

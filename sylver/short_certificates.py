@@ -69,6 +69,16 @@ class CertificateReport:
     even_children: int
     external_pairing_edges: int
     published_long_edges: int
+    native_finite_edges: int
+
+
+# This deep child of node T is too large for the Python evaluator inside
+# every unit test.  The independent native recurrence proves it P in
+# tests/test_sylver_native_solver.py and RUN_MOVE_20_ANSWER.txt, and the
+# Python reference reproduced the same outcome once (3,407,297 states).
+SHORT_NATIVE_FINITE_P_POSITIONS = {
+    (16, 20, 34, 58, 291),
+}
 
 
 NODES = (
@@ -292,6 +302,37 @@ NODES = (
         ),
     ),
     ShortNode(
+        # Sicherman's P-position list claims this node, which answers the
+        # long-open move 20 after opening 16.  Every branch is re-derived:
+        # thirteen exceptional odd children close exactly, and the twenty
+        # even children close through C, G, K, L, R, S, exact finite
+        # P-positions, and one deep native-verified child after 58.
+        "T",
+        (16, 20, 34),
+        (
+            (2, 3, "finite"),
+            (4, 6, "C"),
+            (6, 4, "C"),
+            (8, 26, "G"),
+            (10, 9, "finite"),
+            (12, 45, "finite"),
+            (14, 26, "R"),
+            (18, 5, "finite"),
+            (22, 28, "L"),
+            (24, 10, "K"),
+            (26, 8, "G"),
+            (28, 22, "L"),
+            (30, 44, "S"),
+            (38, 15, "finite"),
+            (42, 15, "finite"),
+            (44, 30, "S"),
+            (46, 19, "finite"),
+            (58, 291, "native-finite"),
+            (62, 25, "finite"),
+            (78, 27, "finite"),
+        ),
+    ),
+    ShortNode(
         "M",
         (16, 20, 28, 38, 50),
         (
@@ -357,6 +398,7 @@ def verify_published_short_certificates() -> CertificateReport:
     even_children = 0
     external_edges = 0
     published_long_edges = 0
+    native_finite_edges = 0
 
     for node in NODES:
         position = minimal_generators(node.generators)
@@ -385,6 +427,20 @@ def verify_published_short_certificates() -> CertificateReport:
         for move, response, destination in node.even_responses:
             if destination == "finite":
                 _verify_finite_response(position, move, response)
+            elif destination == "native-finite":
+                if is_generated(position, move):
+                    raise AssertionError(f"claimed opponent move {move} is illegal")
+                child = minimal_generators((*position, move))
+                if is_generated(child, response):
+                    raise AssertionError(f"claimed response {response} is illegal")
+                reached = minimal_generators((*child, response))
+                if gcd(*reached) != 1:
+                    raise AssertionError("native finite response is not gcd one")
+                if reached not in SHORT_NATIVE_FINITE_P_POSITIONS:
+                    raise AssertionError(
+                        f"unknown native finite destination {reached}"
+                    )
+                native_finite_edges += 1
             else:
                 child = minimal_generators((*position, move))
                 if is_generated(child, response):
@@ -418,6 +474,7 @@ def verify_published_short_certificates() -> CertificateReport:
         even_children,
         external_edges,
         published_long_edges,
+        native_finite_edges,
     )
 
 
@@ -430,6 +487,7 @@ OPENING_16_EVEN_RESPONSES = (
     (12, 14, "F"),
     (14, 8, "E"),
     (18, 5, "finite"),
+    (20, 34, "T"),
     (22, 12, "P0"),
     (24, 10, "K"),
 )
