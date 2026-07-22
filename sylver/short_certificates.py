@@ -231,6 +231,26 @@ NODES = (
         ),
     ),
     ShortNode(
+        # Blok's g=2 report analyzes every even position containing 10 and
+        # reports this node as P; the graph below re-derives every branch.
+        "K",
+        (10, 16, 24),
+        (
+            (2, 3, "finite"),
+            (4, 6, "C"),
+            (6, 4, "C"),
+            # <10,16,24,8> = <8,10>, and the peer-reviewed periodicity
+            # computation for {8,10,22} answers it, exactly as at node G.
+            (8, 22, "H"),
+            (12, 31, "finite"),
+            (14, 11, "finite"),
+            (18, 11, "finite"),
+            (22, 8, "H"),
+            (28, 5, "finite"),
+            (38, 47, "finite"),
+        ),
+    ),
+    ShortNode(
         "M",
         (16, 20, 28, 38, 50),
         (
@@ -370,6 +390,7 @@ OPENING_16_EVEN_RESPONSES = (
     (14, 8, "E"),
     (18, 5, "finite"),
     (22, 12, "P0"),
+    (24, 10, "K"),
 )
 
 
