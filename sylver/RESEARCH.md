@@ -281,18 +281,22 @@ simple translated family; it is not a classification of direct reply 495.
 The first unresolved even branch 12 reduces the candidate to `{12,16,20}`.
 The primary survey explicitly calls a good odd reply to this position
 unknown.  The initial exact pass excluded every odd reply through 101.  A
-native shared-state continuation now extends that frontier through **385**:
-all 192 odd children are N, with a winning response preserved for every one.
-The latest batch crosses the 1023 Frobenius ceiling under a separately
-compiled 2048-bit build; it reaches `F=1163`, evaluates 44,606,745 cumulative
-states, and peaks at 13.17 GB.  Independent standard- and 2048-bit reruns
-agree that the final response 175 reaches the P-position
-`{12,16,20,175,385}`, with Frobenius number 393 and 2,914,743 evaluated
-states.  `RUN_12_16_20_ODD.txt` preserves the initial pass;
+native shared-state continuation now extends that frontier through **409**:
+all 204 odd children are N, with a winning response preserved for every one.
+The latest 2048-bit batch reaches `F=1235`, evaluates 53,604,605 cumulative
+states, and peaks at 15.70 GB.  Its final response 1007 reaches the
+independently rerun P-position `{12,16,20,409,1007}`, with Frobenius number
+1015 and 33,717,278 evaluated states under clean 1024- and 2048-bit tables.
+Across the full frontier, 42 reciprocal response pairs compress 84 rows; they
+remain finite pairings, not a tail theorem.  `RUN_12_16_20_ODD.txt` preserves
+the initial pass;
 `RUN_12_16_20_ODD_281.txt`, `RUN_12_16_20_ODD_337.txt`, and
-`RUN_12_16_20_ODD_361.txt`, and `RUN_12_16_20_ODD_385.txt` record the native
-continuations and cross-width endpoints.  This remains a finite frontier, not
-an unbounded answer.
+`RUN_12_16_20_ODD_361.txt`, `RUN_12_16_20_ODD_385.txt`, and
+`RUN_12_16_20_ODD_409.txt` record the native continuations and endpoint
+checks.  The latest batch's double-digit-gigabyte table triggers the explicit
+stopping rule: resume only for an infinite pairing, periodicity, or another
+parametric tail theorem.  This remains a finite frontier, not an unbounded
+answer.
 
 This finite result is consistent with the candidate being P but does not
 prove it.  A proof must still cover infinitely many larger odd moves and all
