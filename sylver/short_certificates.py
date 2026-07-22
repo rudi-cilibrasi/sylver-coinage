@@ -72,12 +72,25 @@ class CertificateReport:
     native_finite_edges: int
 
 
-# This deep child of node T is too large for the Python evaluator inside
-# every unit test.  The independent native recurrence proves it P in
-# tests/test_sylver_native_solver.py and RUN_MOVE_20_ANSWER.txt, and the
-# Python reference reproduced the same outcome once (3,407,297 states).
+# These deep finite P-positions are too large for the Python evaluator
+# inside every unit test.  The independent native recurrence proves each
+# one P in tests/test_sylver_native_solver.py; the Python reference
+# reproduced node T's entry (3,407,297 states) and every node-V entry that
+# fits a batch budget, including the deepest, {16,26,36,56,102,201}, with
+# exactly the native state count 27,865,056.  See RUN_MOVE_20_ANSWER.txt
+# and RUN_MOVE_26_ANSWER.txt.
 SHORT_NATIVE_FINITE_P_POSITIONS = {
     (16, 20, 34, 58, 291),
+    (16, 26, 30, 36, 99),
+    (16, 26, 36, 44, 56, 57),
+    (16, 26, 36, 46, 56, 153),
+    (16, 26, 36, 50, 56, 109),
+    (16, 26, 36, 54, 56, 83),
+    (16, 26, 36, 53, 56, 66),
+    (16, 26, 36, 37, 56, 70),
+    (16, 26, 36, 56, 76, 131),
+    (16, 26, 36, 55, 56, 86),
+    (16, 26, 36, 56, 102, 201),
 }
 
 
@@ -330,6 +343,41 @@ NODES = (
             (58, 291, "native-finite"),
             (62, 25, "finite"),
             (78, 27, "finite"),
+        ),
+    ),
+    ShortNode(
+        # A new P-position on no published list: the {16,26} children after
+        # 36 and 56 have no odd refutation and answer each other here.  The
+        # half <8,13,18,28> is a quiet ender with Frobenius 51.
+        "V",
+        (16, 26, 36, 56),
+        (
+            (2, 3, "finite"),
+            (4, 6, "C"),
+            (6, 4, "C"),
+            (8, 20, "G"),
+            (10, 24, "K"),
+            (12, 14, "F"),
+            (14, 12, "F"),
+            (18, 5, "finite"),
+            (20, 8, "G"),
+            (22, 43, "finite"),
+            (24, 10, "K"),
+            (28, 27, "finite"),
+            (30, 99, "native-finite"),
+            (34, 11, "finite"),
+            (38, 15, "finite"),
+            (40, 23, "finite"),
+            (44, 57, "native-finite"),
+            (46, 153, "native-finite"),
+            (50, 109, "native-finite"),
+            (54, 83, "native-finite"),
+            (60, 23, "finite"),
+            (66, 53, "native-finite"),
+            (70, 37, "native-finite"),
+            (76, 131, "native-finite"),
+            (86, 55, "native-finite"),
+            (102, 201, "native-finite"),
         ),
     ),
     ShortNode(

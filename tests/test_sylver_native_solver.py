@@ -98,16 +98,33 @@ class NativeSylverSolverTests(unittest.TestCase):
                 )
 
     def test_native_solver_reproduces_hard_branches(self) -> None:
-        # The deep child of short node T={16,20,34} after the even move 58:
-        # the Python reference reproduced the same P outcome once with
-        # 3,407,297 states, which is too slow for every suite run.
+        # Deep children of the short nodes T={16,20,34} and V={16,26,36,56}
+        # are too slow for the Python evaluator inside every suite run; the
+        # Python reference reproduced T's entry (3,407,297 states) and every
+        # V entry it attempted, including {16,26,36,56,102,201} with exactly
+        # the native state count 27,865,056.
+        short_native = {
+            (16, 20, 34, 58, 291): 353,
+            (16, 26, 30, 36, 99): 169,
+            (16, 26, 36, 44, 56, 57): 123,
+            (16, 26, 36, 46, 56, 153): 239,
+            (16, 26, 36, 50, 56, 109): 179,
+            (16, 26, 36, 54, 56, 83): 159,
+            (16, 26, 36, 53, 56, 66): 139,
+            (16, 26, 36, 37, 56, 70): 113,
+            (16, 26, 36, 56, 76, 131): 217,
+            (16, 26, 36, 55, 56, 86): 131,
+            (16, 26, 36, 56, 102, 201): 287,
+        }
         self.assertEqual(
-            SHORT_NATIVE_FINITE_P_POSITIONS, {(16, 20, 34, 58, 291)}
+            SHORT_NATIVE_FINITE_P_POSITIONS, set(short_native)
         )
-        self.assertEqual(
-            self.native_result((16, 20, 34, 58, 291)),
-            (False, None, 353),
-        )
+        for generators, frobenius in short_native.items():
+            with self.subTest(generators=generators):
+                self.assertEqual(
+                    self.native_result(generators),
+                    (False, None, frobenius),
+                )
         self.assertEqual(
             self.native_result((16, 20, 28, 66, 81)),
             (True, 107, 171),

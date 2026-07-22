@@ -111,12 +111,12 @@ class FiniteSolverTests(unittest.TestCase):
         self.assertEqual(
             verify_published_short_certificates(),
             CertificateReport(
-                nodes=15,
-                exceptional_odd_children=154,
-                even_children=169,
+                nodes=16,
+                exceptional_odd_children=179,
+                even_children=195,
                 external_pairing_edges=6,
                 published_long_edges=4,
-                native_finite_edges=1,
+                native_finite_edges=11,
             ),
         )
 
