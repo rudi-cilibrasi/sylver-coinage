@@ -1,0 +1,77 @@
+Sylver opening 16: the move-26 frontier and the P-position {16,26,36,56}, 2026-07-22
+
+Context:
+  With moves 2-24 answered (RUN_MOVE_20_ANSWER.txt), the lowest open even
+  reply to the opening 16 is 26.  {16,26} appears in no published table:
+  Sicherman's {m,n} list stops at {15,26}.  Its divide-by-two monoid
+  <8,13> is a coprime pair, hence a quiet ender with Frobenius number 83,
+  so {16,26} is short: the branch is decided by 23 exceptional odd
+  children and 42 even children.  If every child is N, then 26 wins
+  against the opening 16 and a(16)=2; if some child is P, that child
+  answers move 26.  All results below are exact native-recurrence
+  evaluations; the Python reference reproduces every spot check tried.
+
+Odd side of {16,26} (closed):
+  Native scans refute every odd reply 3..99; odd replies above 83 lie in
+  <8,13> and lose by the Quiet End Theorem.  The Python evaluator
+  independently reconfirmed every exceptional odd through 57 (largest:
+  18,718,660 states).  Saved record: 49 exact N rows, SHA-256
+  56eea9148950dad2acf0badf5ac7792823689e07146d9382abe86e7ded73d4c0.
+
+Even side of {16,26} (29 of 42 children refuted):
+  Routed through certified nodes:
+    2->3, 4->6 (C), 6->4 (C), 8->20 (G), 10->24 (K), 12->14 (F),
+    14->12 (F), 20->8 (G), 24->10 (K).
+  Exact odd refutations (child -> winning reply):
+    18->5, 22->15, 28->63, 30->73, 34->151, 38->97, 40->11, 44->25,
+    46->17, 50->31, 54->31, 62->59, 66->29, 72->43, 76->83, 102->79,
+    108->53, 140->13.
+  Refuted through the new pair position (below): 36->56 and 56->36.
+  Open: 60 (no odd winner through 199 plus partial coverage to 501),
+  88 (odd-complete, see below), and 70, 82, 86, 92, 98, 114, 118, 124,
+  134, 150, 166 with partial odd scans (typically complete through
+  80-120) that need deeper segments.
+
+New P-position: {16,26,36,56}.
+  The children of {16,26} after 36 and 56 have no odd refutation at all;
+  each half is a quiet ender and every exceptional odd child is N.  They
+  refute each other: <16,26,36,56> has quiet-ender half <8,13,18,28>
+  with Frobenius 51; its fifteen exceptional odd children are all N
+  (native scans, and the Python evaluator reconfirmed all fifteen,
+  largest 1,342,603 states); and its 26 even children are all refuted:
+    2->3, 4->6, 6->4, 8->20 (G), 10->24 (K), 12->14 (F), 14->12 (F),
+    20->8 (G), 24->10 (K), 18->5, 22->43, 28->27, 30->99, 34->11,
+    38->15, 40->23, 44->57, 46->153, 50->109, 54->83, 60->23, 66->53,
+    70->37, 76->131, 86->55,
+  and the deep long child after 102, whose half <8,13,18,28,51> has a
+  second end and no Quiet End shortcut: native scans refute every odd
+  reply 3..199 and 251..399, and the odd reply 201 wins:
+
+    move=201 P winning_move=none frobenius=287 cumulative_states=27865056
+
+  Hence {16,26,36,56} is a P-position.  It is on no published list.
+  Consequently both {16,26,36} and {16,26,56} are N-positions, answered
+  by one another's second generator.
+
+Third odd-complete child: {16,26,88}.
+  Its half <8,13,44> is a quiet ender with Frobenius 75 and its 21
+  exceptional odd children are all N, so any refutation of 88 must be
+  even.  Nine of its even children absorb 88 and inherit the sibling
+  refutations above (e.g. <16,26,88,22> = <16,22,26>, refuted by 15);
+  its children after 36 and 56 are exactly {16,26,36} and {16,26,56},
+  now known N.  The remaining eighteen children are unresolved, so 88 is
+  open in both directions.
+
+Campaign log fingerprints (scan transcripts):
+  13101b3f1f0cedd0d161f820b98728e75351fc1d66c11566e58097d841db4f47  {16,26} children scan
+  69012d96d4d1e12c7b0dd7d1ffe0702ec477c5eefcdbde81859e669e6ac7b73c  {16,26,36} children scan
+  31921a5f06bb934d81596c10c57fc8dc7198a2b6d820a236ae0c81f3f10c45c4  {16,26,36,56} children scan
+  b34226389b932a52211f23338c07a2760873aae80a5d54dc0b29db35f95a934a  final wave (partials and 88)
+
+Scope and next steps:
+  Move 26 is not yet answered and {16,26} is not yet classified.  The
+  campaign is finite: it closes when the thirteen open children are
+  resolved, each by a deeper odd scan (winning odd replies at depth
+  201-291 are the norm on this frontier) or by a new short sub-node.
+  Every deep claim above is reproducible with native_solver.cpp
+  (--odd-range) and spot-checkable with the Python reference.
