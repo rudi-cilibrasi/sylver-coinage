@@ -44,12 +44,14 @@ The boundary X = {16,26,82,88}:
   X is long: its half <8,13,41,44> has a second end at 9, so the Quiet
   End Theorem gives no odd-tail closure and no finite certificate of
   P-ness exists with the repository's present tools.  Exact scans refute
-  every odd reply 3..433 (200+ children, each with a recorded winning
-  response; full-range record aad97f...  and ledger 3b6498...); no
-  translation pattern r(x+p)=r(x)+p is visible in the reply data.  At
-  this depth a single further candidate costs roughly 80 CPU-minutes and
-  50 GB (move 287 of the sibling scan took 338,502,368 states), so
-  further linear scanning is not a viable path on this hardware.
+  every odd reply 3..407 (203 children, each with a recorded winning
+  response; full-range record aad97f..., ledger 3b6498..., and final
+  sortie record 1dbaea67697006fbcd085d3e6200832d2910ca0f7077568bead9b8b3
+  b9a3e8d3 with rows 403->285, 405->355, 407->347); no translation
+  pattern r(x+p)=r(x)+p is visible in the reply data.  At this depth a
+  single further candidate costs roughly 80 CPU-minutes and 50 GB (the
+  candidate 403 alone accumulated 351,800,959 states), so further linear
+  scanning is not a viable path on this hardware.
 
 Auxiliary ready node W = {16,26,62,98} (half <8,13,31,49>, quiet, F=67):
   All 18 exceptional odd children are N (exact rows in the session

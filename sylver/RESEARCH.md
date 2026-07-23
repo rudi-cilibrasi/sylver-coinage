@@ -545,7 +545,7 @@ U is N  <=>  X is P,
 
 and either branch resolves both stubborn children at once.  `X` is long
 (its half `<8,13,41,44>` has a second end), exact scans refute every odd
-reply through 433 with no translation pattern in the 200 recorded
+reply through 407 with no translation pattern in the 200 recorded
 winning responses, and a single further candidate at this depth costs
 about 80 CPU-minutes and 50 GB.  The campaign therefore ends where the
 `{16,20,28,90}` tail ended: at a long position whose classification
