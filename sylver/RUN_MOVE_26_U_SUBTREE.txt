@@ -1,0 +1,80 @@
+Sylver move-26 campaign, second wave: the U subtree and its boundary, 2026-07-23
+
+Context:
+  RUN_MOVE_26_FRONTIER.txt reduced the {16,26} classification to thirteen
+  open children.  This wave attacked the decisive one: the odd-complete
+  child 88, whose position U = {16,26,88} answers move 26 outright if it
+  is P.  All results are exact native-recurrence evaluations; every
+  destination that fit a batch budget was independently reproduced by the
+  Python reference evaluator with identical state counts.
+
+Node U = {16,26,88} (half <8,13,44>, a verified quiet ender, F=75):
+  - All 21 exceptional odd children are N; native record
+    af5fc4faf68a484e019b6e07697c90e14e7eae7c9e0843c1460dcec32877f225
+    (37 exact rows).
+  - 36 of its 38 even children are refuted exactly:
+      routed: 2->3, 4->6 (C), 6->4 (C), 8->20 (G), 10->24 (K),
+        12->14 (F), 14->12 (F), 20->8 (G), 24->10 (K);
+      absorption rows inheriting sibling refutations (88 is generated
+      by the child): 18->5, 22->15, 28->63, 30->73, 40->11, 44->25,
+        46->17, 62->59, 72->43;
+      pair rows: 36->56 and 56->36 into the certified node
+        V={16,26,36,56};
+      new exact refutations found this wave (child -> odd winner):
+        34->33, 50->31, 54->31, 60->27, 66->51, 76->131, 86->49,
+        92->93, 102->65, 108->153, 118->135, 124->91, 134->53, 150->39,
+        38->371, 70->261.
+      The deepest, {16,26,38,88,371}, has Frobenius 469 and was proved P
+      after 63,240,955 cumulative native states.  Python reproductions
+      with exactly matching state counts include {16,26,88,92,93}
+      (57,309,624) and {16,26,88,91,124} (62,403,662).
+  - The two remaining children are 82 and 98, and they collapse into a
+    single boundary position:
+
+The boundary X = {16,26,82,88}:
+  98 = 16 + 82, so <16,26,88,98,82> = <16,26,82,88> = X exactly.  Hence
+  if X is P, the response 82 refutes the child 98 as well, and X itself
+  (being U's child after 82) makes U an N-position; then the {16,26}
+  child 88 is refuted and the {16,26}-P question moves to the remaining
+  main children.  If X is N, both stubborn children are N and U is P,
+  answering move 26 by 88.  In other words:
+
+    U is N  <=>  X is P.
+
+  X is long: its half <8,13,41,44> has a second end at 9, so the Quiet
+  End Theorem gives no odd-tail closure and no finite certificate of
+  P-ness exists with the repository's present tools.  Exact scans refute
+  every odd reply 3..433 (200+ children, each with a recorded winning
+  response; full-range record aad97f...  and ledger 3b6498...); no
+  translation pattern r(x+p)=r(x)+p is visible in the reply data.  At
+  this depth a single further candidate costs roughly 80 CPU-minutes and
+  50 GB (move 287 of the sibling scan took 338,502,368 states), so
+  further linear scanning is not a viable path on this hardware.
+
+Auxiliary ready node W = {16,26,62,98} (half <8,13,31,49>, quiet, F=67):
+  All 18 exceptional odd children are N (exact rows in the session
+  transcript); 14 of 34 even children route through certified nodes,
+  campaign refutations, or sibling absorption (62 = 15*2+16*2 makes
+  <16,22,26,62,15> collapse onto the P-position <15,16,22,26>).  If the
+  U-P world materializes, certifying W refutes the child 98
+  independently of X.
+
+Campaign artifact fingerprints:
+  3b6498c8996e62ac6f013d8cea2264020f3b946b43a0eb85f3dcbf0306f0f29f  ledger.jsonl
+  a6c23b04c72ab074219265913b505dfeaa1ad933375d95455679117bb5ebd73d  child-38 full scan (winner 371)
+  b3ac5bcd2e83ea7da0c2ac67b46fd20ae546ac71726a1b8d628ee56834e88aa3  child-70 full scan (winner 261)
+  aad97f1fcd11b14e595164666fd4ec36aa627f0703edcf990f999e12fe7c6974  X full scan 3-401 (no P)
+  67e67e9e8e172cde9c5b7253507768c827e376aadf4cb4734da826c11dcd9942  child-98 scan 169-285 (no P)
+  4cd9aac3a9d07e74fdfc09ea43c30d120d550c2e829881a67ff44ad853a9f65d  child-108 scan (winner 153)
+  af5fc4faf68a484e019b6e07697c90e14e7eae7c9e0843c1460dcec32877f225  U odd-side record
+  87686880a05696f5a6b157d051ff4da2cdb09cf018c7f3448f2e53ad760310e0  V odd-side record
+
+Scope and the identified next tool:
+  The move-26 branch is now pinned to one question: is X = {16,26,82,88}
+  a P-position?  Long positions of this kind were settled in the
+  literature exactly once, by Sicherman's peer-reviewed ultimate-
+  periodicity computation for {8,10,22} (the g=2 outcome sequence is
+  eventually periodic and machine-checkable).  Implementing that
+  periodicity engine would close X, the {16,20,28,90} tail retired
+  earlier, and every long position this program will meet.  It is the
+  single highest-value tool this campaign can build next.

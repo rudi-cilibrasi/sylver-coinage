@@ -521,6 +521,39 @@ refusals, and here `{16,26,36,56,102}` fell at 201 after 149 — deep odd
 winners are the norm on this frontier, exactly as Blok's "nearly short"
 heuristic predicts.
 
+### Attempt 8 — the U subtree falls to a single boundary position
+
+The second campaign wave certified the pair position `V={16,26,36,56}`
+as a repository node (16 nodes, 179 exceptional odd children, 195 even
+children, 11 native-finite edges) and drove the decisive odd-complete
+child 88 nearly to closure.  `U={16,26,88}` has a verified quiet-ender
+half with Frobenius 75, all 21 exceptional odd children refuted, and 36
+of 38 even children answered — through the certified graph, through nine
+absorption rows that inherit sibling refutations, through the pair rows
+`36->56` and `56->36` into `V`, and through sixteen new exact odd
+winners, the deepest being `{16,26,38,88,371}` (Frobenius 469;
+63,240,955 cumulative states).  Python reproductions with exactly
+matching state counts confirm every destination that fit a batch budget,
+including two above 57 million states.
+
+The two remaining children collapse into one another: `98 = 16+82`, so
+`<16,26,88,98,82> = <16,26,82,88> = X` exactly.  Consequently
+
+```text
+U is N  <=>  X is P,
+```
+
+and either branch resolves both stubborn children at once.  `X` is long
+(its half `<8,13,41,44>` has a second end), exact scans refute every odd
+reply through 433 with no translation pattern in the 200 recorded
+winning responses, and a single further candidate at this depth costs
+about 80 CPU-minutes and 50 GB.  The campaign therefore ends where the
+`{16,20,28,90}` tail ended: at a long position whose classification
+needs Sicherman's ultimate-periodicity method (the tool that settled
+`{8,10,22}`), not more linear scanning.  `RUN_MOVE_26_U_SUBTREE.txt`
+preserves the exact state, including the ready sub-node
+`W={16,26,62,98}` (odd side fully clean) for the U-P world.
+
 ### Sources
 
 - <https://math.colgate.edu/~integers/yg2/yg2.pdf>
