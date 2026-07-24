@@ -1,0 +1,132 @@
+Sylver row-409 ultimate-periodicity campaign, 2026-07-23--24
+
+Objective:
+  Continue the most promising opening-16 branch at
+  X={16,26,82,88}, reusing the exact odd rows through 407 and the initial
+  periodicity cache.  Seek either a P child, which would make X N, or an
+  exact repeated stable full snapshot, which would certify that the odd tail
+  contains no P child.  Preserve every completed finite fallback even if the
+  wall-clock budget expires.
+
+Outcome and scope:
+  The campaign substantially enlarged and accelerated the exact dependency
+  closure for the first unrecorded row X+409, but did not finish that row.
+  It emitted no P-HIT and no PERIOD certificate.  Therefore it does not
+  classify X, U={16,26,88}, move 26, or opening 16.
+
+Final artifact fingerprints:
+  f1606dc03e6f27981e380c0d9b8d5e26df036a65ec1d7350e1b347bb2229bc8b  periodicity.py
+  7658086e095a76d8e8ea48dbde0d05ac92cb2ac2f53dbe56c774feaab5e4bd97  periodicity_engine.cpp
+  da9b29df5af79902d7694706ffe0f00ec1bb2b5c70f9579ac207152c1fa75283  test_sylver_periodicity.py
+  35cf1b023974b799b170e11d9ba3b1cc4188b136b77964a279faee3499f3d32c  periodicity_x.cache
+  aad97f1fcd11b14e595164666fd4ec36aa627f0703edcf990f999e12fe7c6974  full_82.txt
+  1dbaea67697006fbcd085d3e6200832d2910ca0f7077568bead9b8b3b9a3e8d3  x_sortie.txt
+  dfec35268cb37771233082c38764e8d1bbf37daa73fb566c23512f0459318546  promoted executable
+
+Normalized starting state:
+  Loading the 203 recorded X+x outcomes through x=407, their exact winning
+  P-destinations, and the initial lower-window checkpoint produced 368
+  distinct cached positions: 213 N and 155 P.  Counts below are measured
+  relative to that normalized seed, not merely to physical input lines.
+
+Phase 1 -- original engine:
+  Source fingerprint:
+    6b625461d2e8b3088f22995446852377f795d4253b8d2b90c87085b39114950d
+  Elapsed: 12:11:16; user: 43,792.29 s; system: 9.88 s;
+  maximum RSS: 5,336,600 KB.
+  The run added 702 completed exact outcomes (683 N and 19 P), bringing the
+  normalized cache to 1,070 entries.  It produced no X+409 result, P-HIT, or
+  PERIOD.  For more than six hours it remained inside row-409 dependency
+  closure without another completed result.
+
+Diagnosis and correction:
+  The ring cache used by evaluate() was too small for the active recursion
+  graph and repeatedly evicted row-local subproblems.  A diagnostic without
+  the new memo performed 150 million evaluation calls in 3:55 while reaching
+  only 225 shapes and eight even parts.
+
+  The promoted source makes these proof-preserving changes:
+    * maintain an exact (shape,row) memo for the active row and clear it at
+      every row boundary;
+    * avoid materializing an even child when its already-known first-P reset
+      threshold proves that child dead;
+    * save the exact cache to a temporary file and atomically rename it;
+    * aggregate finite-fallback logging and expose row/backfill, shape, and
+      even-part progress counters.
+
+  The memo changes evaluation order and reuse only.  It is not included in a
+  finite-state snapshot and cannot itself create a P-HIT or period match.
+
+Corrected validation pass:
+  A 10:23 validation run peaked at 97,104 KB and added 10,244 completed exact
+  outcomes, producing 11,314 entries.  Comparing all inherited keys against
+  the phase-1 cache found zero conflicting outcomes.  Representative entries
+  were independently recomputed by sylver/native_solver.cpp:
+
+    {5,6}                         N,        10 states
+    {8,26,117,121}               P,    63,312 states
+    {16,20,26,109,123,127}       P,   637,444 states
+
+  Each outcome and exact state count agreed.
+
+Phase 2 -- promoted authoritative run:
+  Command:
+    timeout --signal=INT --kill-after=30s 224m \
+      /tmp/conway-sylver-periodicity-promoted \
+      sylver/move26_data/periodicity_x.cache 409 \
+      --base-record sylver/move26_data/full_82.txt \
+      --base-record sylver/move26_data/x_sortie.txt \
+      16 26 82 88
+
+  Elapsed: 3:44:00; user: 13,397.62 s; system: 6.82 s; CPU: 99%;
+  maximum RSS: 1,325,608 KB; swaps: 0.  Exit 124 is the configured timeout.
+  The process handled SIGINT without leaving a cache temporary file.
+
+  This run added 7,185 completed exact outcomes, growing the cache from
+  11,314 to 18,499 entries.  At the 7,000-completion marker it had evaluated
+  4,072,029,617 finite-solver states, registered at least 10,000 translated
+  shapes and 148 even parts, and was still scanning the row-409 closure.
+  The final 185 completed outcomes landed after that aggregate marker.
+
+Final exact checkpoint:
+  total distinct positions: 18,499
+  N positions:              17,494
+  P positions:               1,005
+  duplicate cache keys:          0
+  conflicting outcomes:          0
+  additions over seed:       18,131 = 17,281 N + 850 P
+
+  The cache contains many internal P-positions, but none was a P-HIT for the
+  root row.  It contains no completed X+409 classification.  The timeout may
+  have interrupted one active fallback; only completed outcomes were saved.
+
+Final verification:
+  python -m unittest tests.test_sylver_periodicity -v
+    6 tests in 4.111 s, PASS
+  python -m unittest tests.test_sylver_solver -q
+    19 tests in 189.250 s, PASS
+  python -m py_compile sylver/periodicity.py tests/test_sylver_periodicity.py
+    PASS
+  g++ -std=c++20 -O2 -DNDEBUG -Wall -Wextra -Wpedantic \
+      sylver/periodicity_engine.cpp -o /tmp/conway-sylver-periodicity-verify
+    PASS, no warnings
+  O3 rebuild versus promoted executable: bit-for-bit SHA-256 match
+  cache uniqueness/conflict audit: PASS
+  git diff --check: PASS
+
+Safe reproduction from a copy:
+  cp sylver/move26_data/periodicity_x.cache /tmp/conway-periodicity-X.cache
+  g++ -std=c++20 -O3 -DNDEBUG -Wall -Wextra -Wpedantic \
+      sylver/periodicity_engine.cpp -o /tmp/conway-sylver-periodicity
+  /tmp/conway-sylver-periodicity \
+      /tmp/conway-periodicity-X.cache 409 \
+      --base-record sylver/move26_data/full_82.txt \
+      --base-record sylver/move26_data/x_sortie.txt \
+      16 26 82 88
+
+Next exact step:
+  Resume row 409 from periodicity_x.cache with the corrected engine.  Do not
+  restart the direct odd scan.  If future restarts spend most of their time
+  reconstructing translated shapes rather than adding finite outcomes, add
+  a versioned translated-row checkpoint; retain exact snapshot comparison
+  and never infer periodicity from a finite prefix or hash equality.

@@ -554,6 +554,88 @@ needs Sicherman's ultimate-periodicity method (the tool that settled
 preserves the exact state, including the ready sub-node
 `W={16,26,62,98}` (odd side fully clean) for the U-P world.
 
+### Attempt 9 — the ultimate-periodicity engine is operational
+
+The missing gcd-two tail tool now exists in two independently exercised
+forms.  `periodicity.py` is an executable specification of the Periodicity
+Theorem recurrence, and `periodicity_engine.cpp` is its checkpointed native
+campaign implementation.  If `f` is the Frobenius number of the divide-by-two
+even part and `tbar=2f`, every translated state is an even oversemigroup plus
+a bounded set of odd-anchor offsets.  Odd replies below the window reset to a
+single anchor and are summarized by a monotone P-hit flag; replies above the
+window are generated.  Exact full-window snapshots, taken only after every
+flag is stable, are compared with Brent's algorithm.  A match is an equality
+of bit-packed states, not a hash collision.
+
+Three differential controls cross the translated threshold and agree with
+the independent finite solver.  Both implementations certify periods
+`(start,length)=(9,4)` for `{4,6}`, `(57,4)` for `{6,16}` (whose P child is
+7), and `(49,8)` for the published long P-position `{8,10,22}`.  The latter
+uses 50 shapes and also passes an AddressSanitizer/UndefinedBehaviorSanitizer
+run.  The native tests load all 203 exact `X+x` campaign rows through 407 and
+confirm that external cached rows cannot trigger a premature period.
+
+For `X`, the engine reuses each recorded N row and its exact P-destination,
+then reconstructs the first genuinely new translated row at 409.  The first
+ten lower-window dependencies are now independently checkpointed N:
+
+```text
+{16,26,55,82,88,173}   F=157     4,045,437 states
+{16,26,71,82,88,173}   F=163    26,701,579 states
+{16,26,81,82,88,173}   F=183    39,023,226 states
+{16,26,82,87,88,173}   F=179     1,129,858 states
+{16,26,82,88,97,173}   F=183    57,242,953 states
+{16,26,82,88,101,173}  F=219    50,185,744 states
+{16,26,82,88,103,173}  F=195    49,349,028 states
+{16,26,82,88,107,173}  F=209    68,120,815 states
+{16,26,82,88,111,173}  F=229     8,560,698 states
+{16,26,82,88,113,173}  F=185    43,850,109 states
+```
+
+The eleventh dependency `{16,26,82,88,117,173}` has Frobenius 235 and is the
+frontier of this initial checkpoint.  These are exact advances inside the
+periodic recurrence, but they do **not** yet decide `X+409`, much less `X`,
+`U`, move 26, or the opening.  See `RUN_PERIODICITY_ENGINE.txt`; the
+resumable cache is `move26_data/periodicity_x.cache`.
+
+### Attempt 10 — 16-hour dependency-closure campaign
+
+The first long continuation exposed a performance bug rather than a
+mathematical obstruction.  It added 702 exact outcomes but then spent more
+than six hours reconstructing the same row-409 subproblems while a small
+ring cache evicted them.  It was stopped after 12:11:16 at 5,336,600 KB peak
+RSS.  A no-memo diagnostic reproduced the failure mode: 150 million
+evaluation calls in 3:55 while reaching only 225 shapes and eight even
+parts.  The engine now prunes children whose reset flag already decides
+them, memoizes every `(shape,row)` result for the lifetime of the active row,
+writes the exact cache by atomic rename, and reports dependency-closure
+progress.  The row memo is cleared at every row boundary, so it does not
+alter the finite-state recurrence or become part of a period certificate.
+
+The corrected validation pass completed 10,244 exact fallbacks in 10:23 with
+a 97,104 KB peak and no disagreement with the 1,070-entry inherited cache.
+The promoted continuation then ran for 3:44:00 at 99% CPU with a 1,325,608 KB
+peak.  It completed another 7,185 exact positions; at its 7,000-result marker
+it had evaluated 4,072,029,617 finite-solver states.  The final cache has
+18,499 distinct positions, comprising 17,494 N and 1,005 P positions, with
+no duplicate keys or conflicting outcomes.  Relative to the normalized
+368-position imported seed, the campaign contributed 18,131 exact outcomes
+(17,281 N and 850 P).  High-Frobenius internal P-positions as well as N
+positions occur in the cache; neither outcome is being inferred from search
+time or a finite prefix.
+
+The optimization is independently guarded by the same six differential
+periodicity tests, including the published `{8,10,22}` certificate, and all
+19 finite-solver regression tests.  Representative cache entries were also
+recomputed with the standalone native solver with exactly matching outcomes
+and state counts.  Nevertheless the closure still did **not** finish
+`X+409`, emit a `P-HIT`, or repeat a stable full snapshot.  Thus `X`, `U`,
+move 26, and opening 16 remain undecided.  The concrete advance is a much
+faster, bounded-memory exact engine and a cache nearly fifty times the
+normalized starting size.  Resume row 409 from this cache; do not restart
+the direct odd scan.  `RUN_PERIODICITY_16H.txt` contains the phase timings,
+fingerprints, validation commands, and exact final counts.
+
 ### Sources
 
 - <https://math.colgate.edu/~integers/yg2/yg2.pdf>

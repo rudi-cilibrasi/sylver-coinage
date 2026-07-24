@@ -1,0 +1,124 @@
+Sylver gcd-two ultimate-periodicity engine, 2026-07-23
+
+Historical-checkpoint note:
+  The fingerprints and ten-dependency frontier below describe the initial
+  engine checkpoint.  The cache and engine were subsequently continued and
+  optimized during the 16-hour campaign recorded in
+  RUN_PERIODICITY_16H.txt; use that later record for the current frontier.
+
+Objective:
+  Replace linear odd-child scans of long gcd-two positions with the finite-
+  state computation supplied by the Periodicity Theorem, and apply it to the
+  boundary X={16,26,82,88}.  This run builds and validates the missing tool;
+  it does not yet classify X or the opening-16 move 26.
+
+Frozen artifact fingerprints:
+  f1606dc03e6f27981e380c0d9b8d5e26df036a65ec1d7350e1b347bb2229bc8b  periodicity.py
+  6b625461d2e8b3088f22995446852377f795d4253b8d2b90c87085b39114950d  periodicity_engine.cpp
+  da9b29df5af79902d7694706ffe0f00ec1bb2b5c70f9579ac207152c1fa75283  test_sylver_periodicity.py
+  81c7205aa8f1b6ca52a65ec5ae370dcf1866e2e9e28634c1d7817b80633b082a  periodicity_x.cache
+  aad97f1fcd11b14e595164666fd4ec36aa627f0703edcf990f999e12fe7c6974  full_82.txt
+  1dbaea67697006fbcd085d3e6200832d2910ca0f7077568bead9b8b3b9a3e8d3  x_sortie.txt
+
+Finite-state reduction implemented:
+  Let E be an even oversemigroup of the starting position, let f be the
+  Frobenius number after division by two, and put tbar=2f.  A gcd-one child is
+  represented by E and its live odd anchors.
+
+  * An odd move below min(anchor)-tbar resets every anchor and leaves a
+    single-anchor state.  Its outcome is represented by one monotone P-hit
+    flag for E.
+  * An odd move above max(anchor)+tbar is generated and illegal.
+  * Live anchors span at most tbar.  Once their minimum exceeds tbar, two
+    anchors sum above every even gap and three sum above the odd reply
+    window, so the complete recurrence depends only on E and the anchor
+    offsets.
+  * Even oversemigroups, anchor-offset shapes, all outcome rows in the last
+    tbar window, and stable reset flags form a finite state.  Exact equality
+    of two states certifies repetition forever.
+
+  sylver/periodicity.py is the executable specification.  The C++ engine is
+  the campaign implementation: transitions are materialized lazily in game
+  order, every new even part reconstructs its complete earlier singleton
+  history, finite fallbacks select the smallest sufficient 64-bit word count,
+  and completed fallbacks are checkpointed immediately.  Period detection
+  uses exact bit-packed snapshots with Brent's algorithm, not a hash match.
+  Snapshots are rejected while any reset flag is transient.  When external
+  exact rows are loaded, cycle detection waits until their largest anchor and
+  the entire tbar window have passed, preventing an incomplete-oracle cycle.
+
+Differential controls:
+  python -m unittest tests.test_sylver_periodicity -v
+
+  The Python recurrence agrees with the independent finite solver across the
+  translated threshold for {4,6}, {6,16}, and {8,10,22}.  Both engines return
+  the same exact small tail certificates:
+
+    {4,6}:       period start 9,  length 4, no P child;
+    {6,16}:      period start 57, length 4, unique recorded P child 7;
+    {8,10,22}:   period start 49, length 8, no P child.
+
+  The last is Sicherman's published long P-position and is the primary
+  positive control.  A -fsanitize=address,undefined build completes it with
+  the same start, length, and 50 registered shapes and no sanitizer report.
+  The test suite also loads all 203 exact X rows below and verifies that they
+  reproduce the no-P frontier through 407 without a false early period.
+
+  Final checks:
+    tests.test_sylver_periodicity: 6 tests, 3.987 s, PASS;
+    tests.test_sylver_solver:      19 tests, 194.832 s, PASS;
+    Python byte-compilation: PASS;
+    C++20 -O2 -Wall -Wextra -Wpedantic build: PASS, no warnings;
+    ASan+UBSan {8,10,22} control: PASS, no sanitizer report;
+    git diff --check: PASS.
+
+Reuse of the exact X campaign:
+  The engine accepts --base-record files in the native scan format.  Each
+  row imports both the stated outcome of X+x and, for an N row, the exact
+  P-destination X+x+winning_move.  The existing records provide 203 base
+  outcomes and their winning children:
+
+    sylver/move26_data/full_82.txt   odd 3..401, all N;
+    sylver/move26_data/x_sortie.txt  odd 403..407, all N.
+
+First translated-frontier checkpoints:
+  Advancing to the first new child X+409 requires lower-window finite states.
+  The finalized checkpointing run proved these ten new states N:
+
+    {16,26,55,82,88,173}  F=157      4,045,437 states
+    {16,26,71,82,88,173}  F=163     26,701,579 states
+    {16,26,81,82,88,173}  F=183     39,023,226 states
+    {16,26,82,87,88,173}  F=179      1,129,858 states
+    {16,26,82,88,97,173}  F=183     57,242,953 states
+    {16,26,82,88,101,173} F=219     50,185,744 states
+    {16,26,82,88,103,173} F=195     49,349,028 states
+    {16,26,82,88,107,173} F=209     68,120,815 states
+    {16,26,82,88,111,173} F=229      8,560,698 states
+    {16,26,82,88,113,173} F=185     43,850,109 states
+
+  Their outcomes are retained in
+  sylver/move26_data/periodicity_x.cache.  The next dependency is
+  {16,26,82,88,117,173}, with F=235.  None of these finite N results by
+  itself classifies X+409, X, U, or the opening move 26.
+
+  The checkpointed campaign evaluated 348,209,447 finite-solver states across
+  these ten independent destinations.  It was manually paused at the stated
+  eleventh dependency after 31:27.46 elapsed, with a 4,886,296 KB peak RSS;
+  no outcome is claimed for that interrupted dependency.
+
+Reproduction/resumption:
+  cp sylver/move26_data/periodicity_x.cache /tmp/conway-periodicity-X.cache
+  g++ -std=c++20 -O3 -DNDEBUG -Wall -Wextra -Wpedantic \
+      sylver/periodicity_engine.cpp -o /tmp/conway-sylver-periodicity
+  /tmp/conway-sylver-periodicity \
+      /tmp/conway-periodicity-X.cache 409 \
+      --base-record sylver/move26_data/full_82.txt \
+      --base-record sylver/move26_data/x_sortie.txt \
+      16 26 82 88
+
+Scope:
+  This is a proof-grade implementation advance and an exact extension of the
+  dependency frontier, not a solution of the bounty problem.  A P-HIT for the
+  base row would prove X N.  Otherwise only an exact repeated full snapshot
+  after all external-cache anchors have left the window can prove the odd
+  tail contains no P child.  No finite-prefix extrapolation is permitted.
