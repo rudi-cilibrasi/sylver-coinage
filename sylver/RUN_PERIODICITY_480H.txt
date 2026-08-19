@@ -1,0 +1,218 @@
+Sylver Coinage row-409 ultimate-periodicity campaign: cumulative 480-hour record
+=================================================================================
+
+Status: exact finite frontier advance; no classification
+Campaign start: 2026-08-09 00:23:04 PDT
+Campaign checkpoint: 2026-08-14 00:03:12 PDT
+Configured compute window: 119:40:00 plus a 20-minute audit margin
+Observed worker compute wall time: 119:40:00
+Checkpoint-save tail: 8 seconds
+
+Question
+--------
+
+The remaining move-26 boundary is
+
+  X = {16,26,82,88}.
+
+This run resumed the checksummed active row for X+409.  A P result for a
+legal translated child would be emitted as P-HIT; an exact repeated stable
+full snapshot would establish ultimate periodicity.  Neither occurred, so
+the finite work below does not classify X, U={16,26,88}, move 26, or the
+opening after 16.
+
+Inputs and executable
+---------------------
+
+  cache:       sylver/move26_data/periodicity_x.cache
+  rowstate:    sylver/move26_data/periodicity_x.cache.rowstate
+  base record: sylver/move26_data/full_82.txt
+  base record: sylver/move26_data/x_sortie.txt
+  generators:  16 26 82 88
+  maximum n:   409
+
+  source SHA-256:
+    597e8da61d07b96a3925804bc91c29c44155393c794aba5487677ddbea39e0ba
+  periodicity-test SHA-256:
+    65ff4cd386e3974c2e672b3907c72a3da1e84bec5bf395eb0d7b1a0b87487020
+  full_82 SHA-256:
+    aad97f1fcd11b14e595164666fd4ec36aa627f0703edcf990f999e12fe7c6974
+  x_sortie SHA-256:
+    1dbaea67697006fbcd085d3e6200832d2910ca0f7077568bead9b8b3b9a3e8d3
+  campaign executable SHA-256:
+    45df135f62c1a8d47fa0e89a5b9107a1ca61b0fbd03e7c5255022098abf5c4f0
+
+The campaign command was equivalent to
+
+  timeout --signal=INT --kill-after=600s 7180m \
+    stdbuf -oL -eL /tmp/conway-sylver-periodicity-480h \
+    sylver/move26_data/periodicity_x.cache 409 \
+    --base-record sylver/move26_data/full_82.txt \
+    --base-record sylver/move26_data/x_sortie.txt \
+    16 26 82 88
+
+Starting checkpoint
+-------------------
+
+The authoritative start was audited before launch:
+
+  cache positions:       191,436 = 179,986 N + 11,450 P
+  active row:             n=409
+  scanned_to:             407
+  translated shapes:     198,492
+  even parts:             435
+  row evaluations:        19,379,294
+  restored exact counter: 129,933
+  latest aggregate marker: 129,000 outcomes / 334,077,713,961 states
+  cache SHA-256:
+    5eb6b4e6d30e754cbef158e89646fce1f8e82b1ccade1fc1347cf9bc1ad73cd8
+  rowstate SHA-256:
+    c1e6c637f4bc2e8042c7c82a24db31362b951c9b13a9bcbc074f08dfcfd1db55
+
+Exact progress
+--------------
+
+The continuation added 24,815 unique conflict-free outcomes:
+
+  N additions: 23,322
+  P additions:  1,493
+  final cache: 216,251 = 203,308 N + 12,943 P
+
+The restored exact counter advanced from 129,933 to 154,748.  Aggregate
+markers were emitted at every thousand completions from 130,000 through
+154,000.  The exact aggregate markers were:
+
+  completed   finite-solver states
+     130000       337770084019
+     131000       341049371239
+     132000       344490419864
+     133000       348685155083
+     134000       354498968557
+     135000       360664795870
+     136000       367420242337
+     137000       373270897523
+     138000       380041700281
+     139000       387459419659
+     140000       394085871915
+     141000       400072579312
+     142000       406870452715
+     143000       414405258721
+     144000       421264647439
+     145000       427561498492
+     146000       433093499770
+     147000       436081533357
+     148000       437104940874
+     149000       438703882305
+     150000       440666300203
+     151000       442596953999
+     152000       444080536943
+     153000       445854188637
+     154000       448043124906
+
+Another 748 exact outcomes were saved after the last marker; their state
+counts are not reconstructed or estimated.  Three verbose finite fallbacks
+returned internal P outcomes, including the two previously highlighted
+families ending 109,131,153,159 and 119,141,153,159.  Internal cached P
+positions are dependencies and are not P-HIT records.
+
+Orderly checkpoint
+------------------
+
+The configured SIGINT flushed the exact cache and atomically saved
+
+  ROW-CHECKPOINT saved ... active_n=409 scanned_to=407
+    shapes=220574 eparts=447 evaluations=22641268
+
+Thus the graph gained 22,082 shapes, 12 even parts, and 3,261,974 row
+evaluation calls.  Both the timeout and worker were gone after the save and
+no temporary cache or rowstate file remained.
+
+Final exact-cache audit
+-----------------------
+
+  total distinct positions: 216,251
+  N positions:              203,308
+  P positions:               12,943
+  duplicate cache keys:           0
+  conflicting outcomes:           0
+  malformed rows/values:          0
+  malformed/unsorted keys:        0
+  keys with gcd other than one:   0
+  cache SHA-256:
+    15886b3181560e5c1d515860bdb8e95678569b37c16fa32d74dd57af37e169a1
+  rowstate size: 504,832,835 bytes
+  rowstate SHA-256:
+    cd2a912587395e221d4956236db365f74a2c474d855c2d28d0e45551008a1c28
+  campaign-log SHA-256:
+    11c5fb05bf48e0ad6ee1dae3eae958acf57120ffa55ecacdf23565785ad41263
+
+Every cache key is strictly sorted and has gcd one.  The keys 16,26,82,88
+and 16,26,82,88,409 are both absent.  The campaign emitted zero P-HIT,
+PERIOD, LIMIT-REACHED, ERROR, or completed-row records.
+
+Resource record caveat
+----------------------
+
+The outer shell and /usr/bin/time wrapper were accidentally terminated
+during monitoring, while the timeout and worker survived under the user
+service manager.  Consequently the time file is empty and no wrapper exit
+status or final GNU-time summary is available.  This record does not invent
+those missing values.
+
+The surviving timeout retained its original 7180m argument and delivered
+SIGINT at 119:40:00.  Heartbeats observed the worker continuously at 99.7%
+CPU through elapsed 119:39:50, with 119:18:44 of CPU time, immediately before
+the signal.  The last full audit recorded VmHWM=1,650,760 KB; the machine had
+more than 55 GB available memory and about 4.8 GB free swap throughout the
+closing audits.  The checkpoint completed eight seconds after the timeout.
+
+Independent checkpoint-load audit
+---------------------------------
+
+A private copy of the final cache and rowstate loaded the exact saved
+frontier.  With --stop-after-evaluations 22641269 it advanced exactly one
+evaluation and atomically saved again:
+
+  load evaluations=22,641,268
+  save evaluations=22,641,269
+  exit=75
+  elapsed=8.00 s
+  maximum RSS=1,245,580 KB
+  private rowstate SHA-256 after advance:
+    88cb614dbfb39f4d0d620f8fd87887a0bbe0f5e653dc2bea89ebd2eda19fcedc
+
+The private cache remained byte-identical, and the repository cache and
+rowstate retained their final hashes above.
+
+Final verification
+------------------
+
+  python -m unittest tests.test_sylver_periodicity -v
+    7 tests in 5.695 s, PASS
+  python -m unittest tests.test_sylver_solver -q
+    19 tests in 196.227 s, PASS
+  python -m py_compile sylver/periodicity.py sylver/solver.py \
+      tests/test_sylver_periodicity.py tests/test_sylver_solver.py
+    PASS
+  g++ -std=c++20 -O2 -Wall -Wextra -Wpedantic \
+      sylver/periodicity_engine.cpp -o /tmp/.../periodicity-o2
+    PASS, no warnings
+  g++ -std=c++20 -O3 -Wall -Wextra -Wpedantic \
+      sylver/periodicity_engine.cpp -o /tmp/.../periodicity-o3
+    PASS, no warnings; bit-for-bit match to the campaign executable
+  ASan+UBSan interrupted/resumed {8,10,22} control:
+    PASS, first exit 75; resume exit 0; no sanitizer report;
+    PERIOD start=53 length=8 shapes=50
+  cache syntax/key-ordering/uniqueness/conflict/gcd audit: PASS
+  isolated one-evaluation rowstate resume: PASS
+  authoritative artifact hashes unchanged by private resume: PASS
+  git diff --check: PASS
+
+Next exact step
+---------------
+
+Resume the same cache with both base records and the same generators.  The
+default CACHE.rowstate will restore row 409 instead of rebuilding 220,574
+shapes.  Continue to require an actual P-HIT or an exact repeated stable full
+snapshot.  Do not infer an outcome from the finite frontier, and do not
+restart the exhausted direct odd scan.

@@ -636,6 +636,332 @@ normalized starting size.  Resume row 409 from this cache; do not restart
 the direct odd scan.  `RUN_PERIODICITY_16H.txt` contains the phase timings,
 fingerprints, validation commands, and exact final counts.
 
+### Attempt 11 — 24-hour row-409 continuation
+
+The corrected engine was continued from the audited 18,499-position cache
+for a fixed 23:40:00 process budget, leaving time for shutdown, verification,
+and documentation.  It ran at 99% CPU with a 1,280,684 KB peak and no swaps,
+registered at least 60,000 translated shapes and 304 even parts, and completed
+43,004 additional finite fallbacks.  The final exact cache has 61,503 distinct
+positions: 57,641 N and 3,862 P, with no duplicate keys, conflicting outcomes,
+malformed rows, or bad values.  The last aggregate marker reports
+29,006,854,338 finite-solver states at 43,000 additions; four further exact
+outcomes were saved before the configured timeout.
+
+The continuation crossed several coherent hard families exactly.  In
+particular `{16,26,38,50,60,k}` is N for every odd `k` from 109 through 119;
+the six searches required between 6.47 and 7.37 million states each.  Internal
+P-positions likewise grew by 2,857, so the engine is not treating long search
+time or a finite prefix as an outcome.  The final cache fingerprint is
+`c608b37cd54cf7378d87918971c58fa91d23de15a65521976736ccfd55ee9fc1`.
+
+The run nevertheless emitted no `P-HIT`, `PERIOD`, or completed `X+409`
+classification; `scanned_to` remained 407 and the key `{16,26,82,88,409}` is
+absent.  Thus `X`, `U`, move 26, and opening 16 remain undecided.  Both the six
+periodicity controls and all 19 finite-solver regressions pass after the run,
+and an O3 rebuild is bit-for-bit identical to the campaign executable.
+
+Resume row 409 from the enlarged cache rather than restarting the direct odd
+scan.  Since the next restart must reconstruct at least 60,000 shapes, the
+most promising engineering improvement is a proof-safe active-row checkpoint
+if replay begins to dominate: shape/even-part tables, transitions, ring
+stamps, reset flags, and the row memo must be serialized together.  See
+`RUN_PERIODICITY_24H.txt` for the command, every aggregate milestone, resource
+record, fingerprints, exact audit, and verification.
+
+### Attempt 12 — proof-safe active-row restart
+
+The row-409 replay risk identified by Attempt 11 is now removed.  The native
+engine writes a versioned binary `.rowstate` when `SIGINT` or `SIGTERM` is
+received, using a temporary file plus atomic rename.  The checkpoint includes
+the complete active recurrence state: even parts and fill edges, shapes and
+materialized transitions, ring values and stamps, singleton histories and
+reset flags, the active-row memo, P-hits, exact-work counters, and the exact
+cache entries on which those values depend.  Resume requires the current
+exact cache to contain that dependency set with identical outcomes.  A
+64-bit checksum and structural validation reject truncation, corruption,
+wrong generators, invalid graph references, and incompatible frontiers.
+
+Signals are only flags inside the handler.  The embedded finite solver polls
+at recurrence boundaries and unwinds normally, so a partially searched exact
+subgame is discarded while every completed fallback remains in the atomic
+text cache.  The active row is then saved at a safe C++ boundary.  On resume,
+the engine re-sweeps that row from its first shape; restored memo entries make
+completed calls cheap and the normal backfill loop catches a child registered
+immediately before interruption.  The local Brent candidate is deliberately
+reset rather than trusted across a restart.  This can delay a certificate but
+cannot create a false repeated snapshot.
+
+A deterministic test interrupts the published `{8,10,22}` control after 25
+evaluation calls, rejects a checksum-corrupted checkpoint, reloads the intact
+state, and recovers the exact 8-cycle with 50 shapes and no P-hit.  The same
+mechanism was exercised twice on a temporary copy of the real 61,503-entry
+`X` cache: the first stop saved row 409 at 1,000 evaluations with 207 shapes
+and four even parts; the second loaded it and advanced to 2,000 evaluations,
+214 shapes, and six even parts.  The phases took 0.08 and 0.07 seconds, and
+the second checkpoint was 2,375,024 bytes.  A separate real `SIGTERM` test
+exited 143 after atomically saving a loadable row checkpoint.  These bounded
+tests do not add an outcome or classify `X+409`; the audited exact cache is
+unchanged.
+See `RUN_PERIODICITY_CHECKPOINT.txt` for format, commands, fingerprints, and
+verification.
+
+### Attempt 13 — 24-hour proof-safe row-409 continuation
+
+The first real campaign using the active-row checkpoint ran for the fixed
+23:40:02 wall-clock budget from the audited 61,503-position cache.  It added
+17,602 conflict-free exact outcomes (16,418 N and 1,184 P), leaving 79,105
+distinct positions: 74,059 N and 5,046 P.  The last aggregate marker records
+25,212,605,176 finite-solver states at 17,000 additions; another 602 completed
+outcomes were atomically saved afterward.  The cache contains no malformed
+row, duplicate key, or conflicting outcome.
+
+The active row expanded from a cold restart to 88,003 translated shapes and
+330 even parts while `scanned_to` remained 407.  The configured `SIGINT` then
+flushed the exact cache and atomically saved row 409 at 8,824,393 evaluation
+calls.  The 196,330,507-byte version-1 rowstate has SHA-256
+`8c0c2551dd6f26b23bce001db235535ddb556b74880b4d85d878a5f8e93251cc`;
+the corresponding exact cache has SHA-256
+`04343b1746feeaa93614026e3be6c3599c90587bd38b7cd0705b5ff34cfd28f6`.
+Peak RSS was 884,576 KB with no swaps.
+
+The campaign emitted no `P-HIT`, `PERIOD`, or `LIMIT-REACHED`, and neither
+`{16,26,82,88}` nor `{16,26,82,88,409}` appears in the cache.  Thus this is a
+substantial exact frontier advance, not a classification of `X`, `U`, move
+26, or opening 16.  The checkpoint itself was audited on private copies: the
+engine loaded all 88,003 shapes and the exact dependency set, advanced from
+evaluation 8,824,393 to 8,824,394, and saved a new checkpoint in 4.11 seconds.
+The repository artifacts retained their hashes.  All seven periodicity tests,
+all 19 finite-solver tests, both warning-clean optimized builds, byte
+compilation, and `git diff --check` pass.
+
+The next exact continuation should use this cache and its default `.rowstate`
+with the same two base records.  That resumes row 409 rather than rebuilding
+the 88,003-shape graph.  It must still require an actual P-hit or an exact
+repeated stable full snapshot.  See `RUN_PERIODICITY_48H.txt` for every
+aggregate marker, command, fingerprint, cache audit, resource record, and
+resume verification.
+
+### Attempt 14 — saved-frontier continuation past 100,000 shapes
+
+The saved row-409 frontier then supported another fixed 23:40:02 campaign,
+this time without rebuilding the 88,003 shapes already known.  Startup loaded
+the prior 196 MB rowstate at 8,824,393 evaluation calls.  The continuation
+added 11,473 unique, conflict-free exact outcomes (10,848 N and 625 P), so the
+cache now contains 90,578 positions: 84,907 N and 5,671 P.  The restored
+aggregate counter reached 29,000 completed outcomes and 51,009,297,456
+finite-solver states at cache entry 90,503; another 75 outcomes were saved
+afterward, and their state counts are not estimated.
+
+The active graph grew by 14,802 shapes and 17 even parts.  At the configured
+interrupt the engine flushed the cache and atomically saved row 409 with
+`scanned_to=407`, 102,805 shapes, 347 even parts, and 10,376,913 evaluation
+calls.  The 229,278,530-byte rowstate has SHA-256
+`2548df87bdca4c414d86bf0b8e566b5757dc0dacdd926a49c74a5e674832690d`;
+the corresponding cache has SHA-256
+`060be51b92d1921d7dd89f0e29783b040bac8b7c560e919c611556c7aac7be1a`.
+Peak RSS was 983,940 KB, with no swaps or major page faults.
+
+The campaign again emitted no `P-HIT`, `PERIOD`, `LIMIT-REACHED`, or
+completed row.  Neither `{16,26,82,88}` nor `{16,26,82,88,409}` is cached, so
+the new finite frontier still does not classify `X`, `U`, move 26, or the
+opening.  On an isolated copy, the final checkpoint loaded all 102,805 shapes
+and advanced exactly from evaluation 10,376,913 to 10,376,914 before saving
+and exiting with the expected status 75.  The authoritative artifact hashes
+were unchanged.  All seven periodicity tests, all 19 finite-solver tests,
+byte compilation, both warning-clean optimized builds, binary reproduction,
+an ASan+UBSan interrupt/resume control, the cache audit, and
+`git diff --check` pass.
+
+Any further exact continuation should resume this rowstate rather than
+rebuild it or restart the exhausted direct odd scan.  Mathematical success
+still requires an actual P-hit or an exact repeated stable full snapshot.
+See `RUN_PERIODICITY_72H.txt` for the full command, cumulative-counter
+semantics, every marker, fingerprints, audit, resource record, and resume
+verification.
+
+### Attempt 15 — checkpoint continuation past 110,000 shapes
+
+The next fixed 23:40:03 campaign resumed the audited 229 MB rowstate at
+102,805 shapes and 10,376,913 evaluation calls.  It added 8,723 unique,
+conflict-free exact outcomes (8,321 N and 402 P), bringing the cache to
+99,301 positions: 93,228 N and 6,073 P.  The restored aggregate counter
+reached 37,000 completed outcomes and 73,121,625,852 finite-solver states at
+cache entry 98,503.  Another 798 completed outcomes were saved afterward;
+their solver-state counts are not estimated.
+
+The active graph grew by 9,321 shapes and one even part.  At the configured
+interrupt the engine flushed the cache and atomically saved row 409 with
+`scanned_to=407`, 112,126 shapes, 348 even parts, and 10,952,024 evaluation
+calls.  The 250,115,604-byte rowstate has SHA-256
+`13a83425079606f2f6f1255f15788b1fd92f4044d76f39cad89a4ecbbcf30111`;
+the corresponding cache has SHA-256
+`4b01e2a7bd1ddaa827d03352ea71c9d7692d7d44e2a47b58837db7b59fb96762`.
+Peak RSS was 1,019,940 KB with no swaps.
+
+The campaign again emitted no `P-HIT`, `PERIOD`, `LIMIT-REACHED`, error, or
+completed row.  Neither `{16,26,82,88}` nor `{16,26,82,88,409}` is cached, so
+the finite frontier still does not classify `X`, `U`, move 26, or the
+opening.  On an isolated copy, the final checkpoint loaded all 112,126 shapes
+and advanced exactly from evaluation 10,952,024 to 10,952,025 before saving
+and exiting with the expected status 75.  The authoritative artifact hashes
+were unchanged.  All seven periodicity tests, all 19 finite-solver tests,
+byte compilation, both warning-clean optimized builds, binary reproduction,
+an ASan+UBSan interrupt/resume control, the cache audit, and
+`git diff --check` pass.
+
+Any further exact continuation should resume this rowstate rather than
+rebuild it or restart the exhausted direct odd scan.  Mathematical success
+still requires an actual P-hit or an exact repeated stable full snapshot.
+See `RUN_PERIODICITY_96H.txt` for the full command, cumulative-counter
+semantics, every marker, fingerprints, audit, resource record, and resume
+verification.
+
+### Attempt 16 — checkpoint continuation to 117,895 shapes
+
+The next fixed 23:40:02 campaign resumed the audited 250 MB rowstate at
+112,126 shapes and 10,952,024 evaluation calls.  It added 7,752 unique,
+conflict-free exact outcomes (7,287 N and 465 P), bringing the cache to
+107,053 positions: 100,515 N and 6,538 P.  The restored aggregate counter
+reached 45,000 completed outcomes and 96,881,574,791 finite-solver states at
+cache entry 106,503.  Another 550 completed outcomes were saved afterward;
+their solver-state counts are not reconstructed or estimated.
+
+The active graph grew by 5,769 shapes and one even part.  At the configured
+interrupt the engine flushed the cache and atomically saved row 409 with
+`scanned_to=407`, 117,895 shapes, 349 even parts, and 12,843,850 evaluation
+calls.  The 267,852,422-byte rowstate has SHA-256
+`ddfc71bf8a3e841371bf89f6fd1de8d6eb0a6045f2b64599277f097027554bb4`;
+the corresponding cache has SHA-256
+`e5fdb8365cc32c5d3500f5e26eddd8180396566dfc2994aeaf7babf72a07b971`.
+Peak RSS was 1,178,784 KB with no swaps or major page faults.
+
+The campaign again emitted no `P-HIT`, `PERIOD`, `LIMIT-REACHED`, error, or
+completed row.  Neither `{16,26,82,88}` nor `{16,26,82,88,409}` is cached, so
+the finite frontier still does not classify `X`, `U`, move 26, or the
+opening.  On an isolated copy, the final checkpoint loaded all 117,895 shapes
+and advanced exactly from evaluation 12,843,850 to 12,843,851 before saving
+and exiting with the expected status 75.  The authoritative artifact hashes
+were unchanged.  All seven periodicity tests, all 19 finite-solver tests,
+byte compilation, both warning-clean optimized builds, binary reproduction,
+an ASan+UBSan interrupt/resume control, the cache audit, and
+`git diff --check` pass.
+
+Any further exact continuation should resume this rowstate rather than
+rebuild it or restart the exhausted direct odd scan.  Mathematical success
+still requires an actual P-hit or an exact repeated stable full snapshot.
+See `RUN_PERIODICITY_120H.txt` for the full command, cumulative-counter
+semantics, every marker, verbose exact completions, fingerprints, audit,
+resource record, and resume verification.
+
+### Attempt 17 — five-day checkpoint continuation to 149,895 shapes
+
+The audited 117,895-shape rowstate supported a fixed 119:40:09 continuation.
+It added 32,390 unique, conflict-free exact outcomes (30,722 N and 1,668 P),
+bringing the cache to 139,443 positions: 131,237 N and 8,206 P.  The restored
+aggregate counter reached 77,000 completed outcomes and 211,379,174,929
+finite-solver states at cache entry 138,503.  Another 940 outcomes were saved
+after that marker; their state counts are not reconstructed or estimated.
+
+The active graph grew by exactly 32,000 shapes and 33 even parts.  At the
+configured interrupt the engine flushed the cache and atomically saved row
+409 with `scanned_to=407`, 149,895 shapes, 382 even parts, and 16,212,095
+evaluation calls.  The 341,480,295-byte rowstate has SHA-256
+`4564c217ed2858d9ad3d41fdc3d4b6b04d1e1387fe6c4439a9bf85837030b39a`;
+the corresponding cache has SHA-256
+`b14ce9cf9af4a9963856cd378778acddcdccc3ca4f162e7c91e46cfb9e030650`.
+Peak RSS was 1,482,608 KB with no swaps.
+
+The campaign again emitted no `P-HIT`, `PERIOD`, `LIMIT-REACHED`, error, or
+completed row.  Neither `{16,26,82,88}` nor `{16,26,82,88,409}` is cached, so
+the finite frontier still does not classify `X`, `U`, move 26, or the
+opening.  On an isolated copy, the final checkpoint loaded all 149,895 shapes
+and advanced exactly from evaluation 16,212,095 to 16,212,096 before saving
+and exiting with the expected status 75.  The authoritative artifact hashes
+were unchanged.  All seven periodicity tests, all 19 finite-solver tests,
+byte compilation, both warning-clean optimized builds, binary reproduction,
+an ASan+UBSan interrupt/resume control, the cache audit, and
+`git diff --check` pass.
+
+Any further exact continuation should resume this rowstate rather than
+rebuild it or restart the exhausted direct odd scan.  Mathematical success
+still requires an actual P-hit or an exact repeated stable full snapshot.
+See `RUN_PERIODICITY_240H.txt` for the full command, every aggregate marker,
+fingerprints, audit, resource record, and resume verification.
+
+### Attempt 18 — second five-day continuation to 198,492 shapes
+
+The audited 149,895-shape rowstate supported another fixed 119:40:12
+continuation.  It added 51,993 unique, conflict-free exact outcomes (48,749 N
+and 3,244 P), bringing the cache to 191,436 positions: 179,986 N and 11,450
+P.  The restored aggregate counter reached 129,000 completed outcomes and
+334,077,713,961 finite-solver states at its last marker.  Another 933 outcomes
+were saved afterward; their state counts are not reconstructed or estimated.
+
+The active graph grew by 48,597 shapes and 53 even parts.  At the configured
+interrupt the engine flushed the cache and atomically saved row 409 with
+`scanned_to=407`, 198,492 shapes, 435 even parts, and 19,379,294 evaluation
+calls.  The 452,049,815-byte rowstate has SHA-256
+`c1e6c637f4bc2e8042c7c82a24db31362b951c9b13a9bcbc074f08dfcfd1db55`;
+the corresponding cache has SHA-256
+`5eb6b4e6d30e754cbef158e89646fce1f8e82b1ccade1fc1347cf9bc1ad73cd8`.
+Peak RSS was 1,620,844 KB, with no swaps.
+
+The campaign again emitted no `P-HIT`, `PERIOD`, `LIMIT-REACHED`, error, or
+completed row.  Neither `{16,26,82,88}` nor `{16,26,82,88,409}` is cached, so
+the finite frontier still does not classify `X`, `U`, move 26, or the
+opening.  On an isolated copy, the final checkpoint loaded all 198,492 shapes
+and advanced exactly from evaluation 19,379,294 to 19,379,295 before saving
+and exiting with the expected status 75.  The authoritative artifact hashes
+were unchanged.  All seven periodicity tests, all 19 finite-solver tests,
+byte compilation, both warning-clean optimized builds, binary reproduction,
+an ASan+UBSan interrupt/resume control, the cache audit, and
+`git diff --check` pass.
+
+Any further exact continuation should resume this rowstate rather than
+rebuild it or restart the exhausted direct odd scan.  Mathematical success
+still requires an actual P-hit or an exact repeated stable full snapshot.
+See `RUN_PERIODICITY_360H.txt` for the full command, every aggregate marker,
+fingerprints, audit, resource record, and resume verification.
+
+### Attempt 19 — third five-day continuation to 220,574 shapes
+
+The audited 198,492-shape rowstate supported a fixed 119:40:00 continuation.
+It added 24,815 unique, conflict-free exact outcomes (23,322 N and 1,493 P),
+bringing the cache to 216,251 positions: 203,308 N and 12,943 P.  The
+restored aggregate counter reached 154,000 completed outcomes and
+448,043,124,906 finite-solver states at its last marker.  Another 748 outcomes
+were saved afterward; their state counts are not reconstructed or estimated.
+
+The active graph grew by 22,082 shapes and 12 even parts.  At the configured
+interrupt the engine flushed the cache and atomically saved row 409 with
+`scanned_to=407`, 220,574 shapes, 447 even parts, and 22,641,268 evaluation
+calls.  The 504,832,835-byte rowstate has SHA-256
+`cd2a912587395e221d4956236db365f74a2c474d855c2d28d0e45551008a1c28`;
+the corresponding cache has SHA-256
+`15886b3181560e5c1d515860bdb8e95678569b37c16fa32d74dd57af37e169a1`.
+The last full resource audit retained a 1,650,760 KB high-water RSS.  The
+outer GNU-time wrapper was lost during monitoring while its timeout and
+worker survived, so no final time-wrapper record is claimed; process elapsed
+heartbeats and the surviving 7180-minute timeout certify the compute window.
+
+The campaign again emitted no `P-HIT`, `PERIOD`, `LIMIT-REACHED`, error, or
+completed row.  Neither `{16,26,82,88}` nor `{16,26,82,88,409}` is cached, so
+the finite frontier still does not classify `X`, `U`, move 26, or the
+opening.  On an isolated copy, the final checkpoint loaded all 220,574 shapes
+and advanced exactly from evaluation 22,641,268 to 22,641,269 before saving
+and exiting with the expected status 75 in 8.00 seconds.  The authoritative
+artifact hashes were unchanged.  All seven periodicity tests, all 19 finite-
+solver tests, byte compilation, both warning-clean optimized builds, binary
+reproduction, an ASan+UBSan interrupt/resume control, the cache audit, and
+`git diff --check` pass.
+
+Any further exact continuation should resume this rowstate rather than
+rebuild it or restart the exhausted direct odd scan.  Mathematical success
+still requires an actual P-hit or an exact repeated stable full snapshot.
+See `RUN_PERIODICITY_480H.txt` for the full command, every aggregate marker,
+fingerprints, audit, resource-record caveat, and resume verification.
+
 ### Sources
 
 - <https://math.colgate.edu/~integers/yg2/yg2.pdf>

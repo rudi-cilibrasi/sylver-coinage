@@ -1,0 +1,200 @@
+Sylver Coinage row-409 ultimate-periodicity campaign: cumulative 240-hour record
+=================================================================================
+
+Status: exact finite frontier advance; no classification
+Campaign start: 2026-07-29 21:03:53 PDT
+Campaign checkpoint: 2026-08-03 20:44:00 PDT
+Configured compute window: 119:40:00 plus a 20-minute audit margin
+Measured compute wall time: 119:40:09
+
+Question
+--------
+
+The remaining move-26 boundary is
+
+  X = {16,26,82,88}.
+
+This run resumed the checksummed active row for X+409.  A P result for a
+legal translated child would be emitted as P-HIT; an exact repeated stable
+full snapshot would establish ultimate periodicity.  Neither occurred, so
+the finite work below does not classify X, U={16,26,88}, move 26, or the
+opening after 16.
+
+Inputs and executable
+---------------------
+
+  cache:       sylver/move26_data/periodicity_x.cache
+  rowstate:    sylver/move26_data/periodicity_x.cache.rowstate
+  base record: sylver/move26_data/full_82.txt
+  base record: sylver/move26_data/x_sortie.txt
+  generators:  16 26 82 88
+  maximum n:   409
+
+  source SHA-256:
+    597e8da61d07b96a3925804bc91c29c44155393c794aba5487677ddbea39e0ba
+  periodicity-test SHA-256:
+    65ff4cd386e3974c2e672b3907c72a3da1e84bec5bf395eb0d7b1a0b87487020
+  full_82 SHA-256:
+    aad97f1fcd11b14e595164666fd4ec36aa627f0703edcf990f999e12fe7c6974
+  x_sortie SHA-256:
+    1dbaea67697006fbcd085d3e6200832d2910ca0f7077568bead9b8b3b9a3e8d3
+  campaign executable SHA-256:
+    45df135f62c1a8d47fa0e89a5b9107a1ca61b0fbd03e7c5255022098abf5c4f0
+
+The campaign command was equivalent to
+
+  timeout --signal=INT --kill-after=600s 7180m \
+    stdbuf -oL /tmp/conway-sylver-periodicity-240h \
+    sylver/move26_data/periodicity_x.cache 409 \
+    --base-record sylver/move26_data/full_82.txt \
+    --base-record sylver/move26_data/x_sortie.txt \
+    16 26 82 88
+
+Starting checkpoint
+-------------------
+
+The authoritative start was audited before launch:
+
+  cache positions:       107,053 = 100,515 N + 6,538 P
+  active row:             n=409
+  scanned_to:             407
+  translated shapes:     117,895
+  even parts:             349
+  row evaluations:        12,843,850
+  restored exact counter: 45,550
+  cache SHA-256:
+    e5fdb8365cc32c5d3500f5e26eddd8180396566dfc2994aeaf7babf72a07b971
+  rowstate SHA-256:
+    ddfc71bf8a3e841371bf89f6fd1de8d6eb0a6045f2b64599277f097027554bb4
+
+A private preflight copy loaded all 117,895 shapes, advanced exactly one
+evaluation, and exited with the expected status 75.  The authoritative
+artifacts retained the hashes above.
+
+Exact progress
+--------------
+
+The continuation added 32,390 unique conflict-free outcomes:
+
+  N additions: 30,722
+  P additions:  1,668
+  final cache: 139,443 = 131,237 N + 8,206 P
+
+The restored exact counter advanced from 45,550 to 77,940.  Aggregate markers
+were emitted at every thousand completions from 46,000 through 77,000.  The
+last exact aggregate marker was
+
+  EXACT progress completed=77000 states=211379174929 cache=138503
+
+Another 940 exact outcomes were saved after that marker; their state counts
+are not reconstructed or estimated.  The campaign log contains 208 selected
+verbose EXACT begin/end pairs: 203 N and five internal P outcomes.  These
+internal cached P positions are dependencies, not P-HIT records.
+
+Shape milestones were
+
+  SHAPES count=120000 eparts=349 scanned_to=407
+  SHAPES count=130000 eparts=355 scanned_to=407
+  SHAPES count=140000 eparts=371 scanned_to=407
+
+Orderly checkpoint
+------------------
+
+The configured SIGINT flushed the exact cache and atomically saved
+
+  ROW-CHECKPOINT saved ... active_n=409 scanned_to=407
+    shapes=149895 eparts=382 evaluations=16212095
+
+Thus the graph gained 32,000 shapes, 33 even parts, and 3,368,245 row
+evaluation calls.  The wrapper then reported CAMPAIGN_EXIT status=124, the
+expected GNU timeout status.  All worker/wrapper PIDs were gone and no .tmp
+file remained.
+
+Final exact-cache audit
+-----------------------
+
+  total distinct positions: 139,443
+  N positions:              131,237
+  P positions:                8,206
+  duplicate cache keys:           0
+  conflicting outcomes:           0
+  malformed rows/values:          0
+  malformed/unsorted keys:        0
+  cache SHA-256:
+    b14ce9cf9af4a9963856cd378778acddcdccc3ca4f162e7c91e46cfb9e030650
+  rowstate size: 341,480,295 bytes
+  rowstate SHA-256:
+    4564c217ed2858d9ad3d41fdc3d4b6b04d1e1387fe6c4439a9bf85837030b39a
+  campaign-log SHA-256:
+    6202fc41b8633745d98048ca2f739782566e27739b2016ea0cf7f5b6b14f3e02
+  resource-record SHA-256:
+    27d57c6f270ee7504b78c93d56d70d48a04f104c4a03c244e9ec279839e113e0
+
+The keys 16,26,82,88 and 16,26,82,88,409 are both absent.  The campaign
+emitted zero P-HIT, PERIOD, LIMIT-REACHED, ERROR, or completed-row records.
+
+Resource record
+---------------
+
+  elapsed: 119:40:09
+  user: 428,640.04 s
+  system: 959.29 s
+  CPU: 99%
+  maximum RSS: 1,482,608 KB
+  swaps: 0
+  exit: 124 (configured timeout after successful checkpoint)
+
+Independent checkpoint-load audit
+---------------------------------
+
+A private copy of the final cache and rowstate loaded the exact saved
+frontier.  With --stop-after-evaluations 16212096 it advanced exactly one
+evaluation and atomically saved again:
+
+  load evaluations=16,212,095
+  save evaluations=16,212,096
+  exit=75
+  elapsed=5.50 s
+  maximum RSS=854,128 KB
+
+The repository cache and rowstate hashes were unchanged afterward.
+
+Final verification
+------------------
+
+  python -m unittest tests.test_sylver_periodicity -v
+    7 tests in 5.336 s, PASS
+  python -m unittest tests.test_sylver_solver -q
+    19 tests in 192.849 s, PASS
+  python -m py_compile tests/test_sylver_periodicity.py \
+      tests/test_sylver_solver.py
+    PASS
+  g++ -std=c++20 -O2 -Wall -Wextra -Wpedantic \
+      sylver/periodicity_engine.cpp -o /tmp/conway-sylver-periodicity-240h-o2
+    PASS, no warnings
+  g++ -std=c++20 -O3 -Wall -Wextra -Wpedantic \
+      sylver/periodicity_engine.cpp -o /tmp/conway-sylver-periodicity-240h-o3-check
+    PASS, no warnings; bit-for-bit match to the campaign executable
+  ASan+UBSan interrupted/resumed {8,10,22} control:
+    PASS, first exit 75; resume exit 0; no sanitizer report;
+    PERIOD start=53 length=8 shapes=50
+  cache syntax/key-ordering/uniqueness/conflict audit: PASS
+  isolated one-evaluation rowstate resume: PASS
+  authoritative artifact hashes unchanged by private resume: PASS
+  git diff --check: PASS
+
+Next exact step
+---------------
+
+Resume the same cache with both base records and the same generators.  The
+default CACHE.rowstate will restore row 409 instead of rebuilding 149,895
+shapes.  Continue to require an actual P-HIT or an exact repeated stable full
+snapshot.  Do not infer an outcome from the finite frontier, and do not
+restart the exhausted direct odd scan.
+
+Subsequent campaign note, 2026-08-08:
+  A second 119:40 continuation saved row 409 at 198,492 shapes, 435 even
+  parts, and 19,379,294 evaluations.  The exact cache reached 191,436 unique
+  outcomes, and a private-copy load advanced exactly one evaluation.  See
+  RUN_PERIODICITY_360H.txt.  This 240-hour record remains the immutable
+  starting-checkpoint record for that continuation.

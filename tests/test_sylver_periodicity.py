@@ -128,6 +128,75 @@ class NativePeriodicityTests(unittest.TestCase):
             (),
         )
 
+    def test_native_active_row_checkpoint_resumes_safely(self) -> None:
+        cache = Path(self.tempdir.name) / "checkpoint-resume.cache"
+        checkpoint = Path(f"{cache}.rowstate")
+        first = subprocess.run(
+            [
+                str(self.binary),
+                str(cache),
+                "201",
+                "--stop-after-evaluations",
+                "25",
+                "8",
+                "10",
+                "22",
+            ],
+            check=False,
+            capture_output=True,
+            text=True,
+            cwd=ROOT,
+            timeout=30,
+        )
+        self.assertEqual(first.returncode, 75, first.stderr)
+        self.assertTrue(checkpoint.is_file())
+        self.assertIn("ROW-CHECKPOINT saved", first.stdout)
+
+        # The state is proof input, so accidental corruption must fail closed.
+        corrupt_checkpoint = Path(self.tempdir.name) / "corrupt.rowstate"
+        corrupt_data = bytearray(checkpoint.read_bytes())
+        corrupt_data[-1] ^= 1
+        corrupt_checkpoint.write_bytes(corrupt_data)
+        corrupt = subprocess.run(
+            [
+                str(self.binary),
+                str(cache),
+                "201",
+                "--checkpoint-file",
+                str(corrupt_checkpoint),
+                "8",
+                "10",
+                "22",
+            ],
+            check=False,
+            capture_output=True,
+            text=True,
+            cwd=ROOT,
+            timeout=30,
+        )
+        self.assertEqual(corrupt.returncode, 2)
+        self.assertIn("checksum mismatch", corrupt.stderr)
+
+        resumed = subprocess.run(
+            [str(self.binary), str(cache), "201", "8", "10", "22"],
+            check=True,
+            capture_output=True,
+            text=True,
+            cwd=ROOT,
+            timeout=30,
+        )
+        output = tuple(resumed.stdout.splitlines())
+        self.assertTrue(any(line.startswith("ROW-CHECKPOINT loaded") for line in output))
+        self.assertTrue(
+            any(line.startswith("PERIOD ") and "length=8 shapes=50" in line
+                for line in output)
+        )
+        self.assertFalse(checkpoint.exists())
+        self.assertEqual(
+            tuple(line for line in output if line.startswith("P-HIT")),
+            (),
+        )
+
     def test_loaded_absolute_cache_is_flushed_before_period_search(self) -> None:
         # {4,6} is P, so its legal child after 101 is exactly N.  Merely
         # loading that absolute shortcut must defer cycle detection until the

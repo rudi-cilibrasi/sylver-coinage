@@ -19,14 +19,17 @@
 // snapshots are compared exactly (Brent's cycle algorithm), not by hash.
 //
 // Usage:
-//   periodicity_engine CACHE_FILE LIMIT [--base-record FILE]... GEN...
+//   periodicity_engine CACHE_FILE LIMIT [OPTIONS] GEN...
 //
 // Prints P-hits for the base even part as they are found, plus a period
 // certificate when detected.
 
 #include <algorithm>
 #include <array>
+#include <cerrno>
+#include <csignal>
 #include <cstdint>
+#include <cstring>
 #include <limits>
 #include <queue>
 #include <cstdio>
@@ -38,6 +41,7 @@
 #include <optional>
 #include <set>
 #include <sstream>
+#include <stdexcept>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -45,6 +49,171 @@
 namespace {
 
 using U64 = std::uint64_t;
+
+volatile std::sig_atomic_t interrupt_requested = 0;
+
+extern "C" void request_interrupt(int signal_number) {
+    interrupt_requested = signal_number;
+}
+
+struct CampaignInterrupted {};
+
+void throw_if_interrupted() {
+    if (interrupt_requested != 0) throw CampaignInterrupted{};
+}
+
+constexpr U64 kRowCheckpointMagic = 0x53594c524f573031ULL;  // SYLROW01
+constexpr U64 kRowCheckpointVersion = 1;
+constexpr U64 kCheckpointCountLimit = 100000000ULL;
+
+class CheckpointWriter {
+  public:
+    explicit CheckpointWriter(const std::string& path)
+        : out_(path, std::ios::binary | std::ios::trunc) {
+        if (!out_) throw std::runtime_error("cannot open checkpoint temporary file");
+    }
+
+    template <typename T>
+    void pod(const T& value) {
+        out_.write(reinterpret_cast<const char*>(&value), sizeof(value));
+        if (!out_) throw std::runtime_error("cannot write checkpoint");
+        hash_bytes(reinterpret_cast<const unsigned char*>(&value), sizeof(value));
+    }
+
+    void u64(U64 value) { pod(value); }
+    void i32(int value) { pod(static_cast<std::int32_t>(value)); }
+    void byte(std::uint8_t value) { pod(value); }
+
+    void text(const std::string& value) {
+        u64(value.size());
+        out_.write(value.data(), static_cast<std::streamsize>(value.size()));
+        if (!out_) throw std::runtime_error("cannot write checkpoint text");
+        hash_bytes(
+            reinterpret_cast<const unsigned char*>(value.data()), value.size());
+    }
+
+    void ints(const std::vector<int>& values) {
+        u64(values.size());
+        for (int value : values) i32(value);
+    }
+
+    void chars(const std::vector<char>& values) {
+        u64(values.size());
+        for (char value : values) byte(static_cast<std::uint8_t>(value));
+    }
+
+    void signed_chars(const std::vector<signed char>& values) {
+        u64(values.size());
+        for (signed char value : values)
+            byte(static_cast<std::uint8_t>(value));
+    }
+
+    void finish() {
+        out_.write(reinterpret_cast<const char*>(&hash_), sizeof(hash_));
+        if (!out_) throw std::runtime_error("cannot write checkpoint checksum");
+        out_.flush();
+        if (!out_) throw std::runtime_error("cannot flush checkpoint");
+        out_.close();
+        if (!out_) throw std::runtime_error("cannot close checkpoint");
+    }
+
+  private:
+    void hash_bytes(const unsigned char* data, std::size_t size) {
+        for (std::size_t i = 0; i < size; ++i) {
+            hash_ ^= data[i];
+            hash_ *= 1099511628211ULL;
+        }
+    }
+
+    std::ofstream out_;
+    U64 hash_ = 14695981039346656037ULL;
+};
+
+class CheckpointReader {
+  public:
+    explicit CheckpointReader(const std::string& path)
+        : in_(path, std::ios::binary) {
+        if (!in_) throw std::runtime_error("cannot open checkpoint");
+    }
+
+    template <typename T>
+    T pod() {
+        T value{};
+        in_.read(reinterpret_cast<char*>(&value), sizeof(value));
+        if (!in_) throw std::runtime_error("truncated checkpoint");
+        hash_bytes(reinterpret_cast<const unsigned char*>(&value), sizeof(value));
+        return value;
+    }
+
+    U64 u64() { return pod<U64>(); }
+    int i32() { return static_cast<int>(pod<std::int32_t>()); }
+    std::uint8_t byte() { return pod<std::uint8_t>(); }
+
+    U64 count() {
+        const U64 value = u64();
+        if (value > kCheckpointCountLimit)
+            throw std::runtime_error("checkpoint count exceeds safety limit");
+        return value;
+    }
+
+    std::string text() {
+        const U64 size = count();
+        if (size > 4096) throw std::runtime_error("checkpoint text is too long");
+        std::string value(static_cast<std::size_t>(size), '\0');
+        in_.read(value.data(), static_cast<std::streamsize>(size));
+        if (!in_) throw std::runtime_error("truncated checkpoint text");
+        hash_bytes(
+            reinterpret_cast<const unsigned char*>(value.data()), value.size());
+        return value;
+    }
+
+    std::vector<int> ints() {
+        const U64 size = count();
+        std::vector<int> values;
+        values.reserve(static_cast<std::size_t>(size));
+        for (U64 i = 0; i < size; ++i) values.push_back(i32());
+        return values;
+    }
+
+    std::vector<char> chars() {
+        const U64 size = count();
+        std::vector<char> values;
+        values.reserve(static_cast<std::size_t>(size));
+        for (U64 i = 0; i < size; ++i)
+            values.push_back(static_cast<char>(byte()));
+        return values;
+    }
+
+    std::vector<signed char> signed_chars() {
+        const U64 size = count();
+        std::vector<signed char> values;
+        values.reserve(static_cast<std::size_t>(size));
+        for (U64 i = 0; i < size; ++i)
+            values.push_back(static_cast<signed char>(byte()));
+        return values;
+    }
+
+    void finish() {
+        U64 expected_hash = 0;
+        in_.read(reinterpret_cast<char*>(&expected_hash), sizeof(expected_hash));
+        if (!in_) throw std::runtime_error("truncated checkpoint checksum");
+        if (expected_hash != hash_)
+            throw std::runtime_error("row checkpoint checksum mismatch");
+        if (in_.peek() != std::char_traits<char>::eof())
+            throw std::runtime_error("checkpoint has trailing data");
+    }
+
+  private:
+    void hash_bytes(const unsigned char* data, std::size_t size) {
+        for (std::size_t i = 0; i < size; ++i) {
+            hash_ ^= data[i];
+            hash_ *= 1099511628211ULL;
+        }
+    }
+
+    std::ifstream in_;
+    U64 hash_ = 14695981039346656037ULL;
+};
 
 int frobenius_of(const std::vector<int>& gens, int bound) {
     std::vector<char> reach(bound + 1, 0);
@@ -182,6 +351,9 @@ class ExactSolver {
         return state;
     }
     [[nodiscard]] int winning_move(const State<Words>& state) {
+        // A signal must never interrupt mutation of the recursive memo table.
+        // Poll at recurrence boundaries and unwind normally instead.
+        if (((++interrupt_polls_) & 0x3fffU) == 0) throw_if_interrupted();
         if (const auto found = memo_.find(state); found != memo_.end())
             return found->second;
         State<Words> paired_losers;
@@ -203,6 +375,7 @@ class ExactSolver {
     State<Words> mask_;
     State<Words> initial_;
     std::unordered_map<State<Words>, std::uint16_t, StateHash<Words>> memo_;
+    U64 interrupt_polls_ = 0;
 };
 
 struct ExactResult {
@@ -234,7 +407,9 @@ struct Engine {
     std::vector<int> half;
     int f = 0, tbar = 0, auto_min = 0;
     std::string cache_path;
+    std::string row_checkpoint_path;
     int scanned_to = 1;
+    U64 stop_after_evaluations = 0;
 
     // ---- even parts (oversemigroups of half, masks up to f) -------------
     // mask bit v set  <=>  half-value v is in the even part
@@ -408,6 +583,343 @@ struct Engine {
         dirty_cache = false;
     }
 
+    void save_row_checkpoint(int active_n) const {
+        const std::string temporary_path = row_checkpoint_path + ".tmp";
+        CheckpointWriter out(temporary_path);
+        out.u64(kRowCheckpointMagic);
+        out.u64(kRowCheckpointVersion);
+        out.ints(base);
+        out.i32(f);
+        out.i32(tbar);
+        out.i32(auto_min);
+        out.i32(window_slots);
+        out.i32(active_n);
+        out.i32(scanned_to);
+
+        // These are dependencies of already-computed row values.  A resume
+        // may have a larger cache, but it must contain this exact subset.
+        out.u64(base_cache.size());
+        for (const auto& [key, value] : base_cache) {
+            out.text(key);
+            out.byte(value ? 1 : 0);
+        }
+
+        out.u64(emask.size());
+        for (const auto& mask : emask) out.chars(mask);
+        out.u64(efill.size());
+        for (const auto& row : efill) out.ints(row);
+        out.ints(first_p);
+        out.ints(history_to);
+
+        out.u64(shapes.size());
+        for (const Shape& shape : shapes) {
+            out.i32(shape.eid);
+            out.ints(shape.offsets);
+            out.byte(shape.built ? 1 : 0);
+            out.u64(shape.odd_options.size());
+            for (const OddOption& option : shape.odd_options) {
+                out.ints(option.offsets);
+                out.i32(option.dmin);
+                out.i32(option.child);
+            }
+            out.ints(shape.even_children);
+        }
+
+        out.u64(ring.size());
+        for (const auto& row : ring) out.signed_chars(row);
+        out.u64(value_stamp.size());
+        for (const auto& row : value_stamp) out.ints(row);
+        out.u64(evaluation_calls);
+        out.u64(exact_completed);
+        out.u64(exact_states);
+
+        out.u64(row_memo.size());
+        for (const auto& [key, value] : row_memo) {
+            out.u64(key);
+            out.byte(static_cast<std::uint8_t>(value));
+        }
+        out.u64(base_p_hits.size());
+        for (int hit : base_p_hits) out.i32(hit);
+        out.finish();
+        if (std::rename(temporary_path.c_str(), row_checkpoint_path.c_str()) != 0)
+            throw std::runtime_error(
+                "cannot replace row checkpoint: " +
+                std::string(std::strerror(errno)));
+    }
+
+    bool load_row_checkpoint(int& active_n) {
+        std::ifstream probe(row_checkpoint_path, std::ios::binary);
+        if (!probe) return false;
+        probe.close();
+
+        CheckpointReader in(row_checkpoint_path);
+        if (in.u64() != kRowCheckpointMagic)
+            throw std::runtime_error("row checkpoint has wrong magic");
+        if (in.u64() != kRowCheckpointVersion)
+            throw std::runtime_error("unsupported row checkpoint version");
+        if (in.ints() != base || in.i32() != f || in.i32() != tbar
+            || in.i32() != auto_min || in.i32() != window_slots)
+            throw std::runtime_error("row checkpoint belongs to another engine");
+        active_n = in.i32();
+        const int loaded_scanned_to = in.i32();
+        if (active_n < 3 || active_n % 2 == 0
+            || loaded_scanned_to < 1 || loaded_scanned_to % 2 == 0
+            || active_n != loaded_scanned_to + 2)
+            throw std::runtime_error("row checkpoint has invalid scan frontier");
+
+        const U64 required_cache_size = in.count();
+        for (U64 i = 0; i < required_cache_size; ++i) {
+            const std::string key = in.text();
+            const std::uint8_t raw_value = in.byte();
+            if (raw_value > 1)
+                throw std::runtime_error("row checkpoint has invalid cache outcome");
+            const auto found = base_cache.find(key);
+            if (found == base_cache.end() || found->second != (raw_value != 0))
+                throw std::runtime_error(
+                    "current cache does not contain checkpoint dependency " + key);
+        }
+
+        const U64 epart_count = in.count();
+        std::vector<std::vector<char>> loaded_emask;
+        loaded_emask.reserve(static_cast<std::size_t>(epart_count));
+        for (U64 i = 0; i < epart_count; ++i)
+            loaded_emask.push_back(in.chars());
+        const U64 fill_count = in.count();
+        std::vector<std::vector<int>> loaded_efill;
+        loaded_efill.reserve(static_cast<std::size_t>(fill_count));
+        for (U64 i = 0; i < fill_count; ++i)
+            loaded_efill.push_back(in.ints());
+        std::vector<int> loaded_first_p = in.ints();
+        std::vector<int> loaded_history_to = in.ints();
+        if (epart_count == 0 || fill_count != epart_count
+            || loaded_first_p.size() != epart_count
+            || loaded_history_to.size() != epart_count)
+            throw std::runtime_error("row checkpoint has inconsistent even parts");
+        if (loaded_emask.front() != base_member_mask)
+            throw std::runtime_error("row checkpoint has wrong base even part");
+
+        std::vector<std::vector<int>> loaded_egaps;
+        std::map<std::vector<char>, int> loaded_eindex;
+        loaded_egaps.reserve(static_cast<std::size_t>(epart_count));
+        for (std::size_t eid = 0; eid < loaded_emask.size(); ++eid) {
+            const auto& mask = loaded_emask[eid];
+            if (mask.size() != static_cast<std::size_t>(f + 1))
+                throw std::runtime_error("row checkpoint has invalid even mask");
+            for (char value : mask)
+                if (value != 0 && value != 1)
+                    throw std::runtime_error("row checkpoint has non-Boolean mask");
+            if (mask.front() != 1)
+                throw std::runtime_error("checkpoint even part omits zero");
+            for (int value = 0; value <= f; ++value)
+                if (base_member_mask[static_cast<std::size_t>(value)]
+                    && !mask[static_cast<std::size_t>(value)])
+                    throw std::runtime_error(
+                        "checkpoint even part does not contain the base");
+            for (int left = 1; left <= f; ++left)
+                if (mask[static_cast<std::size_t>(left)])
+                    for (int right = 1; right <= f - left; ++right)
+                        if (mask[static_cast<std::size_t>(right)]
+                            && !mask[static_cast<std::size_t>(left + right)])
+                            throw std::runtime_error(
+                                "checkpoint even part is not addition-closed");
+            std::vector<int> gaps;
+            for (int value = 1; value <= f; ++value)
+                if (!mask[static_cast<std::size_t>(value)]) gaps.push_back(value);
+            if (loaded_efill[eid].size() != gaps.size())
+                throw std::runtime_error("row checkpoint has invalid fill table");
+            for (int child : loaded_efill[eid])
+                if (child < -1 || child >= static_cast<int>(epart_count))
+                    throw std::runtime_error("row checkpoint has invalid even child");
+            if (!loaded_eindex.emplace(mask, static_cast<int>(eid)).second)
+                throw std::runtime_error("row checkpoint has duplicate even parts");
+            loaded_egaps.push_back(std::move(gaps));
+        }
+        for (std::size_t eid = 0; eid < loaded_emask.size(); ++eid) {
+            for (std::size_t index = 0; index < loaded_efill[eid].size(); ++index) {
+                const int child = loaded_efill[eid][index];
+                if (child < 0) continue;
+                std::vector<char> expected = loaded_emask[eid];
+                expected[static_cast<std::size_t>(loaded_egaps[eid][index])] = 1;
+                bool changed = true;
+                while (changed) {
+                    changed = false;
+                    for (int value = 1; value <= f; ++value) {
+                        if (expected[static_cast<std::size_t>(value)]) continue;
+                        for (int left = 1; left < value; ++left)
+                            if (expected[static_cast<std::size_t>(left)]
+                                && expected[static_cast<std::size_t>(value - left)]) {
+                                expected[static_cast<std::size_t>(value)] = 1;
+                                changed = true;
+                                break;
+                            }
+                    }
+                }
+                if (expected != loaded_emask[static_cast<std::size_t>(child)])
+                    throw std::runtime_error(
+                        "row checkpoint has inconsistent even fill edge");
+            }
+        }
+
+        const U64 shape_count = in.count();
+        std::vector<Shape> loaded_shapes;
+        loaded_shapes.reserve(static_cast<std::size_t>(shape_count));
+        for (U64 i = 0; i < shape_count; ++i) {
+            Shape shape;
+            shape.eid = in.i32();
+            shape.offsets = in.ints();
+            const std::uint8_t built = in.byte();
+            if (built > 1)
+                throw std::runtime_error("row checkpoint has invalid shape flag");
+            shape.built = built != 0;
+            const U64 odd_count = in.count();
+            shape.odd_options.reserve(static_cast<std::size_t>(odd_count));
+            for (U64 j = 0; j < odd_count; ++j) {
+                OddOption option;
+                option.offsets = in.ints();
+                option.dmin = in.i32();
+                option.child = in.i32();
+                shape.odd_options.push_back(std::move(option));
+            }
+            shape.even_children = in.ints();
+            loaded_shapes.push_back(std::move(shape));
+        }
+
+        std::map<std::pair<int, std::vector<int>>, int> loaded_shape_index;
+        std::vector<int> loaded_single_sid(
+            static_cast<std::size_t>(epart_count), -1);
+        const auto valid_offsets = [](const std::vector<int>& offsets) {
+            if (offsets.empty() || offsets.front() != 0) return false;
+            for (std::size_t i = 1; i < offsets.size(); ++i)
+                if (offsets[i] <= offsets[i - 1] || offsets[i] % 2 != 0)
+                    return false;
+            return true;
+        };
+        for (std::size_t sid = 0; sid < loaded_shapes.size(); ++sid) {
+            const Shape& shape = loaded_shapes[sid];
+            if (shape.eid < 0 || shape.eid >= static_cast<int>(epart_count)
+                || !valid_offsets(shape.offsets))
+                throw std::runtime_error("row checkpoint has invalid shape");
+            if (!shape.built
+                && (!shape.odd_options.empty() || !shape.even_children.empty()))
+                throw std::runtime_error("unbuilt checkpoint shape has transitions");
+            if (shape.built
+                && shape.even_children.size()
+                       != loaded_egaps[static_cast<std::size_t>(shape.eid)].size())
+                throw std::runtime_error("checkpoint shape has invalid transitions");
+            for (const OddOption& option : shape.odd_options)
+                if (!valid_offsets(option.offsets) || option.child < -1
+                    || option.child >= static_cast<int>(shape_count))
+                    throw std::runtime_error("row checkpoint has invalid odd option");
+            for (int child : shape.even_children)
+                if (child < -1 || child >= static_cast<int>(shape_count))
+                    throw std::runtime_error("row checkpoint has invalid shape child");
+            const auto key = std::make_pair(shape.eid, shape.offsets);
+            if (!loaded_shape_index.emplace(key, static_cast<int>(sid)).second)
+                throw std::runtime_error("row checkpoint has duplicate shapes");
+            if (shape.offsets.size() == 1)
+                loaded_single_sid[static_cast<std::size_t>(shape.eid)] =
+                    static_cast<int>(sid);
+        }
+        if (loaded_shapes.empty() || loaded_shapes.front().eid != 0
+            || loaded_shapes.front().offsets != std::vector<int>{0})
+            throw std::runtime_error("row checkpoint has wrong base shape");
+        for (const Shape& shape : loaded_shapes) {
+            for (const OddOption& option : shape.odd_options)
+                if (option.child >= 0) {
+                    const Shape& child =
+                        loaded_shapes[static_cast<std::size_t>(option.child)];
+                    if (child.eid != shape.eid || child.offsets != option.offsets)
+                        throw std::runtime_error(
+                            "row checkpoint has inconsistent odd transition");
+                }
+            for (std::size_t index = 0;
+                 index < shape.even_children.size(); ++index) {
+                const int child = shape.even_children[index];
+                if (child >= 0) {
+                    const int child_eid = loaded_efill[
+                        static_cast<std::size_t>(shape.eid)][index];
+                    if (child_eid < 0
+                        || loaded_shapes[static_cast<std::size_t>(child)].eid
+                               != child_eid)
+                        throw std::runtime_error(
+                            "row checkpoint has inconsistent even transition");
+                }
+            }
+        }
+
+        const U64 ring_count = in.count();
+        std::vector<std::vector<signed char>> loaded_ring;
+        loaded_ring.reserve(static_cast<std::size_t>(ring_count));
+        for (U64 i = 0; i < ring_count; ++i)
+            loaded_ring.push_back(in.signed_chars());
+        const U64 stamp_count = in.count();
+        std::vector<std::vector<int>> loaded_value_stamp;
+        loaded_value_stamp.reserve(static_cast<std::size_t>(stamp_count));
+        for (U64 i = 0; i < stamp_count; ++i)
+            loaded_value_stamp.push_back(in.ints());
+        if (ring_count != shape_count || stamp_count != shape_count)
+            throw std::runtime_error("row checkpoint has inconsistent ring tables");
+        for (std::size_t sid = 0; sid < loaded_ring.size(); ++sid) {
+            if (loaded_ring[sid].size() != static_cast<std::size_t>(window_slots)
+                || loaded_value_stamp[sid].size()
+                       != static_cast<std::size_t>(window_slots))
+                throw std::runtime_error("row checkpoint has invalid ring width");
+            for (signed char value : loaded_ring[sid])
+                if (value < -1 || value > 1)
+                    throw std::runtime_error("row checkpoint has invalid outcome");
+        }
+        const U64 loaded_evaluation_calls = in.u64();
+        const U64 loaded_exact_completed = in.u64();
+        const U64 loaded_exact_states = in.u64();
+
+        const U64 memo_count = in.count();
+        std::unordered_map<U64, signed char> loaded_row_memo;
+        loaded_row_memo.reserve(static_cast<std::size_t>(memo_count));
+        for (U64 i = 0; i < memo_count; ++i) {
+            const U64 key = in.u64();
+            const signed char value = static_cast<signed char>(in.byte());
+            const U64 sid = key >> 32;
+            const U64 memo_m = key & 0xffffffffULL;
+            if (sid >= shape_count || memo_m < 3
+                || memo_m > static_cast<U64>(active_n) || memo_m % 2 == 0
+                || (value != 0 && value != 1)
+                || !loaded_row_memo.emplace(key, value).second)
+                throw std::runtime_error("row checkpoint has invalid row memo");
+        }
+        const U64 hit_count = in.count();
+        std::set<int> loaded_base_p_hits;
+        for (U64 i = 0; i < hit_count; ++i)
+            if (!loaded_base_p_hits.insert(in.i32()).second)
+                throw std::runtime_error("row checkpoint has duplicate P-hits");
+        in.finish();
+
+        emask = std::move(loaded_emask);
+        egaps = std::move(loaded_egaps);
+        efill = std::move(loaded_efill);
+        eindex = std::move(loaded_eindex);
+        first_p = std::move(loaded_first_p);
+        history_to = std::move(loaded_history_to);
+        single_sid = std::move(loaded_single_sid);
+        shapes = std::move(loaded_shapes);
+        shape_index = std::move(loaded_shape_index);
+        ring = std::move(loaded_ring);
+        value_stamp = std::move(loaded_value_stamp);
+        evaluation_calls = loaded_evaluation_calls;
+        exact_completed = loaded_exact_completed;
+        exact_states = loaded_exact_states;
+        row_memo = std::move(loaded_row_memo);
+        base_p_hits = std::move(loaded_base_p_hits);
+        scanned_to = loaded_scanned_to;
+        return true;
+    }
+
+    void remove_row_checkpoint() const {
+        if (std::remove(row_checkpoint_path.c_str()) != 0 && errno != ENOENT)
+            throw std::runtime_error(
+                "cannot remove completed row checkpoint: " +
+                std::string(std::strerror(errno)));
+    }
+
     static std::string generator_key(const std::vector<int>& gens) {
         std::ostringstream out;
         for (std::size_t i = 0; i < gens.size(); ++i)
@@ -575,6 +1087,10 @@ struct Engine {
     // or base region); returns 1 for P, 0 for N
     signed char evaluate(int sid, int m) {
         ++evaluation_calls;
+        if (interrupt_requested != 0
+            || (stop_after_evaluations != 0
+                && evaluation_calls >= stop_after_evaluations))
+            throw CampaignInterrupted{};
         if (evaluation_calls % 10000000 == 0)
             std::cout << "EVALUATIONS count=" << evaluation_calls
                       << " sid=" << sid
@@ -727,7 +1243,8 @@ int main(int argc, char** argv) {
     if (argc < 4) {
         std::cerr
             << "usage: periodicity_engine CACHE LIMIT "
-               "[--base-record FILE]... GEN...\n";
+               "[--base-record FILE]... [--checkpoint-file FILE] "
+               "[--stop-after-evaluations N] GEN...\n";
         return 1;
     }
     Engine eng;
@@ -742,10 +1259,43 @@ int main(int argc, char** argv) {
                 return 1;
             }
             base_records.emplace_back(argv[i]);
+        } else if (argument == "--checkpoint-file") {
+            if (++i >= argc) {
+                std::cerr << "--checkpoint-file requires a path\n";
+                return 1;
+            }
+            eng.row_checkpoint_path = argv[i];
+        } else if (argument == "--stop-after-evaluations") {
+            if (++i >= argc) {
+                std::cerr << "--stop-after-evaluations requires a count\n";
+                return 1;
+            }
+            try {
+                std::size_t parsed = 0;
+                const std::string count = argv[i];
+                eng.stop_after_evaluations = std::stoull(count, &parsed);
+                if (parsed != count.size() || eng.stop_after_evaluations == 0)
+                    throw std::invalid_argument("count");
+            } catch (const std::exception&) {
+                std::cerr << "invalid --stop-after-evaluations count\n";
+                return 1;
+            }
+        } else if (argument.rfind("--", 0) == 0) {
+            std::cerr << "unknown option: " << argument << "\n";
+            return 1;
         } else {
             eng.base.push_back(std::atoi(argv[i]));
         }
     }
+    if (eng.row_checkpoint_path.empty())
+        eng.row_checkpoint_path = eng.cache_path + ".rowstate";
+    if (eng.row_checkpoint_path == eng.cache_path
+        || eng.row_checkpoint_path == eng.cache_path + ".tmp") {
+        std::cerr << "row checkpoint must not overwrite the exact cache\n";
+        return 1;
+    }
+    std::signal(SIGINT, request_interrupt);
+    std::signal(SIGTERM, request_interrupt);
     eng.base = minimal_generators(eng.base);
     int g = 0;
     for (int v : eng.base) g = std::gcd(g, v);
@@ -777,48 +1327,92 @@ int main(int argc, char** argv) {
     eng.register_shape(0, {0});
     eng.load_cache();
     for (const std::string& path : base_records) eng.load_base_record(path);
+    int active_n = 0;
+    bool resume_active_row = false;
+    try {
+        resume_active_row = eng.load_row_checkpoint(active_n);
+    } catch (const std::exception& error) {
+        std::cerr << "cannot load row checkpoint: " << error.what() << "\n";
+        return 2;
+    }
+    if (resume_active_row && active_n > limit) {
+        std::cerr << "row checkpoint frontier exceeds requested limit\n";
+        return 2;
+    }
+    if (resume_active_row)
+        std::cout << "ROW-CHECKPOINT loaded path=" << eng.row_checkpoint_path
+                  << " active_n=" << active_n
+                  << " scanned_to=" << eng.scanned_to
+                  << " shapes=" << eng.shapes.size()
+                  << " eparts=" << eng.emask.size()
+                  << " evaluations=" << eng.evaluation_calls << std::endl;
     std::cout << "engine base=";
     for (int v : eng.base) std::cout << v << ",";
     std::cout << " f=" << eng.f << " tbar=" << eng.tbar << std::endl;
     // main loop with stamp syncing
-    {
-        long n = 1;
+    try {
+        long n = resume_active_row ? active_n : 1;
         std::vector<U64> checkpoint;
         int checkpoint_n = 0;
         long brent_power = 1;
         long brent_length = 0;
-        while (n < limit) {
-            n += 2;
-            eng.begin_row();
+        while (resume_active_row || n < limit) {
+            if (resume_active_row) {
+                // The saved row memo makes this replay cheap.  Sweeping from
+                // the beginning also completes any transition whose child
+                // was registered immediately before the interruption.
+                resume_active_row = false;
+            } else {
+                n += 2;
+                eng.begin_row();
+            }
             if (n == limit)
                 std::cout << "ROW begin n=" << n
                           << " shapes=" << eng.shapes.size()
                           << " eparts=" << eng.emask.size() << std::endl;
-            size_t count = eng.shapes.size();
-            for (size_t sid = 0; sid < count; ++sid)
-                eng.evaluate(static_cast<int>(sid), static_cast<int>(n));
-            while (count < eng.shapes.size()) {
-                size_t from = count;
-                count = eng.shapes.size();
-                std::cout << "BACKFILL begin n=" << n
-                          << " from=" << from
-                          << " to=" << count
-                          << " shapes=" << eng.shapes.size() << std::endl;
-                for (size_t sid = from; sid < count; ++sid) {
-                    if (sid != from && (sid - from) % 10000 == 0)
-                        std::cout << "BACKFILL progress n=" << n
-                                  << " sid=" << sid
-                                  << " to=" << count
-                                  << " shapes=" << eng.shapes.size() << std::endl;
-                    for (long m = std::max(3L, n - eng.tbar); m <= n; m += 2)
-                        eng.evaluate(static_cast<int>(sid), static_cast<int>(m));
+            try {
+                size_t count = eng.shapes.size();
+                for (size_t sid = 0; sid < count; ++sid)
+                    eng.evaluate(static_cast<int>(sid), static_cast<int>(n));
+                while (count < eng.shapes.size()) {
+                    size_t from = count;
+                    count = eng.shapes.size();
+                    std::cout << "BACKFILL begin n=" << n
+                              << " from=" << from
+                              << " to=" << count
+                              << " shapes=" << eng.shapes.size() << std::endl;
+                    for (size_t sid = from; sid < count; ++sid) {
+                        if (sid != from && (sid - from) % 10000 == 0)
+                            std::cout << "BACKFILL progress n=" << n
+                                      << " sid=" << sid
+                                      << " to=" << count
+                                      << " shapes=" << eng.shapes.size() << std::endl;
+                        for (long m = std::max(3L, n - eng.tbar); m <= n; m += 2)
+                            eng.evaluate(static_cast<int>(sid), static_cast<int>(m));
+                    }
+                    std::cout << "BACKFILL end n=" << n
+                              << " from=" << from
+                              << " to=" << count
+                              << " shapes=" << eng.shapes.size() << std::endl;
                 }
-                std::cout << "BACKFILL end n=" << n
-                          << " from=" << from
-                          << " to=" << count
-                          << " shapes=" << eng.shapes.size() << std::endl;
+                throw_if_interrupted();
+            } catch (const CampaignInterrupted&) {
+                eng.save_cache();
+                eng.save_row_checkpoint(static_cast<int>(n));
+                std::cout << "ROW-CHECKPOINT saved path="
+                          << eng.row_checkpoint_path
+                          << " active_n=" << n
+                          << " scanned_to=" << eng.scanned_to
+                          << " shapes=" << eng.shapes.size()
+                          << " eparts=" << eng.emask.size()
+                          << " evaluations=" << eng.evaluation_calls << std::endl;
+                return interrupt_requested == 0
+                    ? 75 : 128 + static_cast<int>(interrupt_requested);
             }
             eng.scanned_to = static_cast<int>(n);
+            // An older checkpoint is harmless, but once its row is complete
+            // it should not be mistaken for the next frontier after a crash.
+            eng.remove_row_checkpoint();
             if (n >= eng.auto_min + eng.tbar
                 && n > eng.external_cache_max_anchor + eng.tbar
                 && (n & 3) == 1
@@ -856,6 +1450,10 @@ int main(int argc, char** argv) {
         std::cout << "LIMIT-REACHED n=" << n
                   << " shapes=" << eng.shapes.size() << std::endl;
         eng.save_cache();
+    } catch (const std::exception& error) {
+        std::cerr << "periodicity engine checkpoint error: "
+                  << error.what() << "\n";
+        return 2;
     }
     return 0;
 }

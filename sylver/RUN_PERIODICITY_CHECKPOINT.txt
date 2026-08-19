@@ -1,0 +1,166 @@
+Sylver proof-safe active-row checkpoint, 2026-07-25
+
+Objective:
+  Preserve the expensive translated graph and all completed work inside the
+  active row of the gcd-two ultimate-periodicity engine.  This removes the
+  replay risk identified after the 23:40 row-409 campaign.  It does not by
+  itself classify X={16,26,82,88}, X+409, U={16,26,88}, move 26, or the
+  opening after 16.
+
+Final artifact fingerprints:
+  597e8da61d07b96a3925804bc91c29c44155393c794aba5487677ddbea39e0ba  periodicity_engine.cpp
+  65ff4cd386e3974c2e672b3907c72a3da1e84bec5bf395eb0d7b1a0b87487020  test_sylver_periodicity.py
+  c608b37cd54cf7378d87918971c58fa91d23de15a65521976736ccfd55ee9fc1  move26_data/periodicity_x.cache
+
+Interface and shutdown behavior:
+  The default active-row path is CACHE_FILE.rowstate.  It can be overridden
+  with --checkpoint-file FILE; the engine refuses a path that would overwrite
+  the exact cache.  SIGINT and SIGTERM set only a sig_atomic_t flag.  The
+  embedded exact recurrence polls at safe call boundaries and unwinds
+  normally.  Main then atomically flushes completed exact fallbacks, writes
+  FILE.tmp, verifies stream completion, and renames it over FILE.  A handled
+  signal returns 128+signal; the deterministic test hook
+  --stop-after-evaluations N returns 75.
+
+  Startup automatically loads a compatible rowstate after the exact cache
+  and all --base-record files.  It reports ROW-CHECKPOINT loaded, re-sweeps
+  the active row from its first shape, and uses the restored row memo for work
+  already completed.  The checkpoint is removed only after that row is
+  complete.  A stale earlier rowstate is therefore safe after a killed write.
+
+Version-1 state and validation:
+  The binary file begins with magic SYLROW01 and format version 1 and ends
+  with a 64-bit FNV-1a checksum.  It records:
+
+    * base generators and derived f/tbar/window parameters;
+    * active n and the last completed scan frontier;
+    * every exact-cache key/outcome on which the saved state depends;
+    * all even-part masks, lazy fill edges, gaps reconstructed from masks,
+      first-P flags, and singleton-history frontiers;
+    * every shape, offset vector, built transition specification, odd child,
+      and even child;
+    * complete outcome rings and value stamps;
+    * the active-row memo, base P-hits, evaluation counter, and exact-work
+      counters.
+
+  Load requires identical generators and derived parameters and a current
+  exact cache containing the recorded dependency set with identical values.
+  It checks the checksum, count limits, base even part, addition closure,
+  fill-edge closure, shape identity and references, ring dimensions and
+  values, row-memo keys, and exact end of file.  Maps and derived indexes are
+  rebuilt from the checked vectors.
+
+Proof boundary:
+  The local Brent comparison candidate is not serialized.  Resume begins a
+  fresh exact-snapshot comparison sequence, which can only delay a period
+  certificate.  It cannot manufacture one.  No outcome is inferred from the
+  checkpoint, elapsed time, a signal, or a finite scan prefix.
+
+Known-control interruption/resume:
+  The native regression interrupts the published long P-position
+  {8,10,22} after exactly 25 evaluation calls.  It saves row 17 at
+  scanned_to=15 with 11 shapes and one even part, flips one checksum byte and
+  confirms fail-closed rejection, then loads the intact checkpoint.  Resume
+  certifies length 8 with 50 shapes and no P-hit and removes the rowstate.
+  The fresh Brent state reports a later valid start (53 instead of the
+  uninterrupted control's 49); the period length and exact outcome agree.
+
+  An AddressSanitizer/UndefinedBehaviorSanitizer build completes the same
+  stop/resume control with no report:
+
+    first exit 75; ROW-CHECKPOINT saved
+    resume exit 0; ROW-CHECKPOINT loaded
+    PERIOD start=53 length=8 shapes=50
+
+Real-X bounded restart exercise:
+  This used a temporary copy of the audited 61,503-entry cache.  No repository
+  cache or mathematical outcome was changed.
+
+    phase 1: exit 75, elapsed 0:00.08, max RSS 13,048 KB
+      active_n=409 scanned_to=407 evaluations=1000
+      shapes=207 eparts=4
+
+    phase 2: loaded the phase-1 rowstate, then exit 75
+      elapsed 0:00.07, max RSS 10,864 KB
+      active_n=409 scanned_to=407 evaluations=2000
+      shapes=214 eparts=6
+      final rowstate size=2,375,024 bytes
+
+  A separate real SIGTERM exercise on a temporary X cache exited 143 after
+  saving at active_n=3.  A second process loaded that state and advanced from
+  evaluation 1 to evaluation 2 before deterministically checkpointing again.
+
+Verification:
+  python -m unittest tests.test_sylver_periodicity -v
+    7 tests in 5.073 s, PASS
+  python -m unittest tests.test_sylver_solver -q
+    19 tests in 195.596 s, PASS
+  python -m py_compile sylver/periodicity.py tests/test_sylver_periodicity.py
+    PASS
+  g++ -std=c++20 -O2 -DNDEBUG -Wall -Wextra -Wpedantic \
+      sylver/periodicity_engine.cpp -o /tmp/conway-sylver-periodicity-checkpoint-o2
+    PASS, no warnings
+  g++ -std=c++20 -O3 -DNDEBUG -Wall -Wextra -Wpedantic \
+      sylver/periodicity_engine.cpp -o /tmp/conway-sylver-periodicity-checkpoint-o3
+    PASS, no warnings
+  ASan+UBSan interrupted/resumed {8,10,22} control:
+    PASS, no sanitizer report
+  git diff --check:
+    PASS
+
+Next exact step:
+  Resume the real row-409 campaign with the audited cache, both base records,
+  and a timeout that sends SIGINT or SIGTERM with enough kill grace for a
+  potentially large atomic rowstate write.  Use the same cache and command on
+  the next invocation; automatic startup will load CACHE_FILE.rowstate.
+  Continue to require an actual P-HIT or exact repeated full snapshot before
+  making any claim about X.
+
+Subsequent campaign note, 2026-07-26:
+  The proof-safe mechanism was used for a full 23:40 continuation.  It saved
+  the real row-409 frontier with 88,003 shapes, 330 even parts, and 8,824,393
+  evaluations; a private-copy load advanced exactly one evaluation and saved
+  again.  See RUN_PERIODICITY_48H.txt.  The design record and hashes above
+  remain the immutable pre-campaign checkpoint implementation record.
+
+Subsequent campaign note, 2026-07-27:
+  A second checkpoint-backed 23:40 continuation saved row 409 at 102,805
+  shapes, 347 even parts, and 10,376,913 evaluations.  Its private-copy load
+  also advanced exactly one evaluation.  See RUN_PERIODICITY_72H.txt.  The
+  design record and hashes above remain the immutable pre-campaign checkpoint
+  implementation record.
+
+Subsequent campaign note, 2026-07-28:
+  A third checkpoint-backed 23:40 continuation saved row 409 at 112,126
+  shapes, 348 even parts, and 10,952,024 evaluations.  Its private-copy load
+  also advanced exactly one evaluation.  See RUN_PERIODICITY_96H.txt.  The
+  design record and hashes above remain the immutable pre-campaign checkpoint
+  implementation record.
+
+Subsequent campaign note, 2026-07-29:
+  A fourth checkpoint-backed 23:40 continuation saved row 409 at 117,895
+  shapes, 349 even parts, and 12,843,850 evaluations.  Its private-copy load
+  also advanced exactly one evaluation.  See RUN_PERIODICITY_120H.txt.  The
+  design record and hashes above remain the immutable pre-campaign checkpoint
+  implementation record.
+
+Subsequent campaign note, 2026-08-03:
+  A fifth checkpoint-backed continuation ran for 119:40:09 and saved row 409
+  at 149,895 shapes, 382 even parts, and 16,212,095 evaluations.  Its
+  private-copy load advanced exactly one evaluation.  See
+  RUN_PERIODICITY_240H.txt.  The design record and hashes above remain the
+  immutable pre-campaign checkpoint implementation record.
+
+Subsequent campaign note, 2026-08-08:
+  A sixth checkpoint-backed continuation ran for 119:40:12 and saved row 409
+  at 198,492 shapes, 435 even parts, and 19,379,294 evaluations.  Its
+  private-copy load advanced exactly one evaluation.  See
+  RUN_PERIODICITY_360H.txt.  The design record and hashes above remain the
+  immutable pre-campaign checkpoint implementation record.
+
+Subsequent campaign note, 2026-08-14:
+  A seventh checkpoint-backed continuation ran for 119:40:00 and saved row
+  409 at 220,574 shapes, 447 even parts, and 22,641,268 evaluations.  Its
+  private-copy load advanced exactly one evaluation.  See
+  RUN_PERIODICITY_480H.txt.  The design record and hashes above remain the
+  immutable pre-campaign checkpoint implementation record.

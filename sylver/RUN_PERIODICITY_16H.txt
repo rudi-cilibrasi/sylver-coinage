@@ -130,3 +130,8 @@ Next exact step:
   reconstructing translated shapes rather than adding finite outcomes, add
   a versioned translated-row checkpoint; retain exact snapshot comparison
   and never infer periodicity from a finite prefix or hash equality.
+
+Historical continuation note:
+  The subsequent 23:40 campaign is recorded in RUN_PERIODICITY_24H.txt.  It
+  expands this 18,499-position checkpoint to 61,503 exact positions without
+  resolving X+409; use the newer cache and record for any further resume.

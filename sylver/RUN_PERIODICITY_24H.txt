@@ -1,0 +1,157 @@
+Sylver row-409 ultimate-periodicity continuation, 2026-07-24--25
+
+Objective:
+  Continue the exact X={16,26,82,88} row-409 dependency closure from the
+  audited 16-hour checkpoint.  Seek either a P child, which would make X N,
+  or an exact repeated stable full snapshot, which would certify the odd tail.
+  Preserve each completed finite fallback even if the wall-clock budget ends
+  before row 409 closes.
+
+Starting checkpoint:
+  total distinct positions: 18,499
+  N positions:              17,494
+  P positions:               1,005
+  duplicate cache keys:          0
+  conflicting outcomes:          0
+  cache SHA-256:
+    35cf1b023974b799b170e11d9ba3b1cc4188b136b77964a279faee3499f3d32c
+
+Immutable artifact fingerprints:
+  7658086e095a76d8e8ea48dbde0d05ac92cb2ac2f53dbe56c774feaab5e4bd97  periodicity_engine.cpp
+  aad97f1fcd11b14e595164666fd4ec36aa627f0703edcf990f999e12fe7c6974  full_82.txt
+  1dbaea67697006fbcd085d3e6200832d2910ca0f7077568bead9b8b3b9a3e8d3  x_sortie.txt
+  dfec35268cb37771233082c38764e8d1bbf37daa73fb566c23512f0459318546  campaign executable
+
+Startup validation:
+  g++ -std=c++20 -O3 -DNDEBUG -Wall -Wextra -Wpedantic \
+      sylver/periodicity_engine.cpp -o /tmp/conway-sylver-periodicity-24h
+    PASS, no warnings
+  python -m unittest tests.test_sylver_periodicity -v
+    6 tests in 4.056 s, PASS
+
+Authoritative command:
+  /usr/bin/time -v timeout --signal=INT --kill-after=30s 1420m \
+    /tmp/conway-sylver-periodicity-24h \
+    sylver/move26_data/periodicity_x.cache 409 \
+    --base-record sylver/move26_data/full_82.txt \
+    --base-record sylver/move26_data/x_sortie.txt \
+    16 26 82 88
+
+  Started: 2026-07-24 09:48:21 America/Los_Angeles.
+  The 23:40 process budget deliberately leaves approximately 20 minutes for
+  shutdown checks, cache auditing, full regression tests, and documentation.
+
+Interim exact markers:
+  completed additions    cumulative finite-solver states    cache entries
+                 1,000                        550,245,852           19,499
+                 2,000                        611,128,133           20,499
+                 3,000                        777,284,444           21,499
+                 4,000                        920,470,847           22,499
+                 5,000                      1,195,372,475           23,499
+                 6,000                      1,560,892,739           24,499
+                 7,000                      1,927,287,786           25,499
+                 8,000                      2,295,730,654           26,499
+                 9,000                      2,871,576,341           27,499
+                10,000                      3,986,346,877           28,499
+                11,000                      4,725,973,507           29,499
+                12,000                      4,816,959,288           30,499
+                13,000                      5,186,093,342           31,499
+                14,000                      5,899,460,515           32,499
+                15,000                      6,733,846,508           33,499
+                16,000                      7,487,267,334           34,499
+                17,000                      8,409,392,266           35,499
+                18,000                      9,249,530,760           36,499
+                19,000                     10,544,728,503           37,499
+                20,000                     12,020,577,369           38,499
+                21,000                     14,027,742,963           39,499
+                22,000                     15,959,700,706           40,499
+                23,000                     20,022,242,447           41,499
+                24,000                     20,796,705,416           42,499
+                25,000                     20,878,036,088           43,499
+                26,000                     20,985,100,635           44,499
+                27,000                     21,210,973,952           45,499
+                28,000                     21,487,913,693           46,499
+                29,000                     21,555,570,433           47,499
+                30,000                     21,751,519,030           48,499
+                31,000                     22,111,364,758           49,499
+                32,000                     22,616,610,148           50,499
+                33,000                     23,636,780,887           51,499
+                34,000                     24,583,793,562           52,499
+                35,000                     25,500,925,732           53,499
+                36,000                     26,341,329,320           54,499
+                37,000                     26,558,449,756           55,499
+                38,000                     26,922,116,081           56,499
+                39,000                     27,280,951,043           57,499
+                40,000                     27,519,418,690           58,499
+                41,000                     27,921,799,486           59,499
+                42,000                     28,305,778,087           60,499
+                43,000                     29,006,854,338           61,499
+
+  The active closure registered at least 60,000 translated shapes and 304
+  even parts, all while scanned_to remained 407.  These are internal exact
+  advances, not a classification of X+409 or X.
+
+Final outcome, checkpoint audit, resource record, and verification:
+  The configured timeout landed immediately after the 43,000-result marker.
+  Four more completed outcomes were atomically saved before shutdown.  The
+  run emitted no P-HIT, PERIOD, LIMIT-REACHED, or completed X+409 result.
+  Therefore it does not classify X, U={16,26,88}, move 26, or opening 16.
+
+  Exit 124 is the configured timeout, not an engine failure.
+  Elapsed: 23:40:00; user: 84,864.35 s; system: 99.05 s; CPU: 99%;
+  maximum RSS: 1,280,684 KB; swaps: 0; major page faults: 0.
+  The process handled SIGINT without leaving a cache temporary file.
+
+Final exact checkpoint:
+  total distinct positions: 61,503
+  N positions:              57,641
+  P positions:               3,862
+  duplicate cache keys:          0
+  conflicting outcomes:          0
+  malformed rows/values:         0
+  additions this run:       43,004 = 40,147 N + 2,857 P
+  final cache SHA-256:
+    c608b37cd54cf7378d87918971c58fa91d23de15a65521976736ccfd55ee9fc1
+
+  Internal P-positions occur throughout the cache, but none was a P-HIT for
+  the base even part.  The key 16,26,82,88,409 is absent.  Only completed
+  finite outcomes were saved; the timeout may have interrupted one active
+  fallback.
+
+Representative new exact internal outcomes:
+  {16,26,38,50,60,k}, k=109,111,113,115,117,119, are all N after
+  6,468,709; 6,583,989; 6,661,393; 6,810,640; 6,699,023; and 7,365,211
+  states respectively.  Related positions with extra anchors also closed N,
+  including {16,26,38,50,60,111,121} after 5,925,648 states and
+  {16,26,38,50,60,113,123} after 6,505,897 states.  These are dependency
+  results, not a root classification.
+
+Final verification:
+  python -m unittest tests.test_sylver_periodicity -v
+    6 tests in 4.036 s, PASS
+  python -m unittest tests.test_sylver_solver -q
+    19 tests in 188.623 s, PASS
+  python -m py_compile sylver/periodicity.py tests/test_sylver_periodicity.py
+    PASS
+  g++ -std=c++20 -O2 -DNDEBUG -Wall -Wextra -Wpedantic \
+      sylver/periodicity_engine.cpp -o /tmp/conway-sylver-periodicity-verify-o2
+    PASS, no warnings
+  O3 rebuild versus campaign executable:
+    bit-for-bit SHA-256 match
+  cache uniqueness/conflict audit: PASS
+  git diff --check: PASS
+
+Next exact step:
+  Resume row 409 from this final cache; do not restart the direct odd scan.
+  Because a restart must reconstruct at least 60,000 translated shapes and
+  304 even parts before scanned_to can advance past 407, a versioned active-
+  row checkpoint is now the most promising engine improvement if another
+  long continuation spends substantial time replaying cached dependencies.
+  Any such checkpoint must serialize the immutable shape/even-part tables,
+  transitions, ring stamps, reset flags, and row memo together; it must not
+  weaken exact snapshot comparison or infer periodicity from a finite prefix.
+
+Subsequent implementation note (2026-07-25):
+  That active-row checkpoint is now implemented and validated.  See
+  RUN_PERIODICITY_CHECKPOINT.txt.  The campaign fingerprints and outcomes
+  above remain the immutable record of the preceding 23:40 computation.

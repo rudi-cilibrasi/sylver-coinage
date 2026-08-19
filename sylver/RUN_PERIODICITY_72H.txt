@@ -1,0 +1,207 @@
+Sylver proof-safe row-409 continuation, 2026-07-26--27
+
+Objective:
+  Continue the exact ultimate-periodicity search for
+  X={16,26,82,88} from the audited 79,105-position cache and saved active
+  row.  Seek either a P-HIT, which would classify a translated child, or an
+  exact repeated stable full snapshot.  Elapsed time, cache growth, and a
+  finite prefix are not mathematical outcomes.
+
+Starting state:
+  total distinct positions: 79,105
+  N positions:              74,059
+  P positions:               5,046
+  cache SHA-256:
+    04343b1746feeaa93614026e3be6c3599c90587bd38b7cd0705b5ff34cfd28f6
+  completed scan frontier: 407
+  active_n: 409
+  shapes: 88,003
+  even parts: 330
+  active-row evaluation calls: 8,824,393
+  rowstate bytes: 196,330,507
+  rowstate SHA-256:
+    8c0c2551dd6f26b23bce001db235535ddb556b74880b4d85d878a5f8e93251cc
+
+Immutable campaign fingerprints:
+  597e8da61d07b96a3925804bc91c29c44155393c794aba5487677ddbea39e0ba  periodicity_engine.cpp
+  65ff4cd386e3974c2e672b3907c72a3da1e84bec5bf395eb0d7b1a0b87487020  test_sylver_periodicity.py
+  aad97f1fcd11b14e595164666fd4ec36aa627f0703edcf990f999e12fe7c6974  full_82.txt
+  1dbaea67697006fbcd085d3e6200832d2910ca0f7077568bead9b8b3b9a3e8d3  x_sortie.txt
+  45df135f62c1a8d47fa0e89a5b9107a1ca61b0fbd03e7c5255022098abf5c4f0  campaign executable
+
+Authoritative command:
+  /usr/bin/time -v -o /tmp/conway-sylver-periodicity-72h.time \
+    timeout --signal=INT --kill-after=600s 1420m \
+    stdbuf -oL /tmp/conway-sylver-periodicity-72h \
+    sylver/move26_data/periodicity_x.cache 409 \
+    --base-record sylver/move26_data/full_82.txt \
+    --base-record sylver/move26_data/x_sortie.txt \
+    16 26 82 88
+
+  Standard output and error were line-buffered through tee to
+  /tmp/conway-sylver-periodicity-72h.log.  The surrounding pipefail wrapper
+  recorded CAMPAIGN_EXIT status=124.
+
+  Started: 2026-07-26 10:50:02 America/Los_Angeles.
+  Ended:   2026-07-27 10:30:05 America/Los_Angeles.
+  The 23:40 process budget left time for checkpoint audit, regressions, and
+  documentation.  A ten-minute kill grace protected the large atomic write.
+
+Exact aggregate markers:
+  The checkpoint restores the aggregate exact-work counters as well as the
+  graph.  Therefore `completed` below is cumulative from the 61,503-entry
+  baseline of the preceding campaign, not a count starting at zero for this
+  invocation.  The restored counter was 17,602; the second column subtracts
+  that value and is the current invocation's contribution.
+
+  cumulative completed    additions this run    cumulative solver states    cache entries
+              18,000                   398              27,290,786,023           79,503
+              19,000                 1,398              28,849,345,332           80,503
+              20,000                 2,398              30,846,496,951           81,503
+              21,000                 3,398              32,940,854,609           82,503
+              22,000                 4,398              35,268,298,314           83,503
+              23,000                 5,398              37,543,950,559           84,503
+              24,000                 6,398              39,812,963,417           85,503
+              25,000                 7,398              41,629,038,741           86,503
+              26,000                 8,398              44,164,778,903           87,503
+              27,000                 9,398              46,709,809,373           88,503
+              28,000                10,398              49,028,148,977           89,503
+              29,000                11,398              51,009,297,456           90,503
+
+  Another 75 exact outcomes were atomically saved after the final marker.
+  Thus the restored cumulative completed counter reached 29,075 and this
+  invocation added 11,473 outcomes.  Solver-state counts for those last 75
+  outcomes are not reconstructed or estimated.  The log contains 16 verbose
+  EXACT begin records and 16 matching EXACT end records; there is no
+  incomplete verbose pair.
+
+Structural frontier and final checkpoint:
+  Startup loaded the full saved graph rather than rebuilding it:
+
+    ROW-CHECKPOINT loaded active_n=409 scanned_to=407
+      shapes=88,003 eparts=330 evaluations=8,824,393
+
+  The active closure then passed these durable markers while scanned_to
+  remained 407:
+
+    90,000 shapes / 339 even parts
+    10,000,000 evaluation calls / 97,937 shapes / 339 even parts
+    100,000 shapes / 347 even parts
+
+  SIGINT was handled at a safe recurrence boundary.  The exact cache was
+  flushed first, then the rowstate was written through a temporary file and
+  atomically renamed:
+
+    active_n=409
+    scanned_to=407
+    shapes=102,805
+    even parts=347
+    active-row evaluation calls=10,376,913
+    rowstate bytes=229,278,530
+
+  This invocation added 14,802 shapes, 17 even parts, and 1,552,520 active-row
+  evaluation calls.  Neither the cache nor checkpoint left a .tmp file.  The
+  wrapper exit 124 is the configured GNU timeout result; the engine emitted
+  ROW-CHECKPOINT saved before CAMPAIGN_EXIT status=124.
+
+Final exact-cache audit:
+  total distinct positions: 90,578
+  N positions:              84,907
+  P positions:               5,671
+  duplicate cache keys:          0
+  conflicting outcomes:          0
+  malformed rows/values:         0
+  additions this run:       11,473 = 10,848 N + 625 P
+  cache SHA-256:
+    060be51b92d1921d7dd89f0e29783b040bac8b7c560e919c611556c7aac7be1a
+  rowstate SHA-256:
+    2548df87bdca4c414d86bf0b8e566b5757dc0dacdd926a49c74a5e674832690d
+  campaign-log SHA-256:
+    08fcee61338ded5dd821936f0742c06753796f7f709ecdbcfa9078b5adeae2c0
+  resource-record SHA-256:
+    f98f674c75cd84019e4cb08d54732e93145e2849dc21efc097910b0662d80222
+
+  The keys 16,26,82,88 and 16,26,82,88,409 are both absent.  Internal
+  P-positions occur in the cache, but the campaign emitted zero P-HIT,
+  PERIOD, LIMIT-REACHED, or completed-row records.  Therefore it does not
+  classify X, X+409, U={16,26,88}, move 26, or the opening after 16.
+
+Verbose exact outcomes:
+  All 16 logged dependencies resolved N:
+
+    {16,26,38,40,50,60,119,163}       3,296,456 states
+    {16,26,38,44,50,109}               4,613,254 states
+    {16,26,38,44,50,111}               4,733,961 states
+    {16,26,38,44,50,113}               4,826,461 states
+    {16,26,38,44,50,115}               4,838,577 states
+    {16,26,38,44,50,117}               4,998,367 states
+    {16,26,38,44,50,119}               4,608,373 states
+    {16,26,38,44,50,117,127}                 783 states
+    {16,26,34,38,44,119}               1,120,088 states
+    {16,26,38,44,50,56,119}            3,245,197 states
+    {16,26,38,44,50,62,109}            4,035,045 states
+    {16,26,38,44,50,62,111}            4,257,163 states
+    {16,26,38,44,50,62,113}            2,142,095 states
+    {16,26,38,44,50,62,115}            4,408,353 states
+    {16,26,38,44,50,62,117}            4,534,277 states
+    {16,26,38,44,50,62,119}            3,872,466 states
+
+Resource record:
+  elapsed: 23:40:02
+  user: 84,248.97 s
+  system: 175.00 s
+  CPU: 99%
+  maximum RSS: 983,940 KB
+  swaps: 0
+  major page faults: 0
+  exit: 124 (configured timeout after successful checkpoint)
+
+Independent checkpoint-load audit:
+  A private copy of the final cache and rowstate was loaded with the same two
+  base records and generators.  The loader verified the checksum, parameters,
+  exact dependency outcomes, graph references, rings, stamps, memo, and file
+  extent, then reported the exact saved frontier above.  With
+  --stop-after-evaluations 10376914 it advanced exactly one evaluation and
+  atomically saved a new private checkpoint:
+
+    load evaluations=10,376,913
+    save evaluations=10,376,914
+    exit=75
+    elapsed=3.59 s
+    maximum RSS=582,700 KB
+
+  The repository cache and rowstate hashes were rechecked afterward and were
+  unchanged.
+
+Final verification:
+  python -m unittest tests.test_sylver_periodicity -v
+    7 tests in 5.013 s, PASS
+  python -m unittest tests.test_sylver_solver -q
+    19 tests in 212.888 s, PASS
+  python -m py_compile sylver/periodicity.py tests/test_sylver_periodicity.py
+    PASS
+  g++ -std=c++20 -O2 -DNDEBUG -Wall -Wextra -Wpedantic \
+      sylver/periodicity_engine.cpp -o /tmp/conway-sylver-periodicity-72h-audit-o2
+    PASS, no warnings
+  g++ -std=c++20 -O3 -DNDEBUG -Wall -Wextra -Wpedantic \
+      sylver/periodicity_engine.cpp -o /tmp/conway-sylver-periodicity-72h-audit-o3
+    PASS, no warnings; bit-for-bit match to the campaign executable
+  ASan+UBSan interrupted/resumed {8,10,22} control:
+    PASS, expected first exit 75; no sanitizer report; exact 8-cycle recovered
+  cache syntax/ordering/uniqueness/conflict audit: PASS
+  isolated one-evaluation rowstate resume: PASS
+  git diff --check: PASS
+
+Next exact step:
+  Resume the same cache with both base records and the same generators.  The
+  default CACHE.rowstate will restore row 409 instead of rebuilding 102,805
+  shapes.  Continue to require an actual P-HIT or an exact repeated stable
+  full snapshot.  Do not infer an outcome from the finite frontier, and do
+  not restart the exhausted direct odd scan.
+
+Subsequent campaign note, 2026-07-28:
+  The saved frontier supported another full 23:40 continuation.  It enlarged
+  the exact cache to 99,301 positions and atomically saved row 409 at 112,126
+  shapes, 348 even parts, and 10,952,024 evaluations.  A private-copy load
+  advanced exactly one evaluation.  See RUN_PERIODICITY_96H.txt; this file
+  remains the immutable record of the preceding continuation.
