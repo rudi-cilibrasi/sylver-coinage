@@ -1,0 +1,96 @@
+X even-flank campaign: all 32 even children of X = {16,26,82,88} are N
+2026-08-19
+
+Context:
+  RUN_MOVE_26_U_SUBTREE.txt pinned the move-26 campaign to the boundary
+  X = {16,26,82,88}: U = {16,26,88} is N iff X is P, and if X is N then
+  88 answers move 26.  Exact scans had refuted every odd reply 3..407 and
+  the g=2 periodicity engine had ground the odd tail for ~480 hours, but
+  X's finitely many even replies had never been examined.  X's half
+  <8,13,41,44> has 32 gaps, so X has exactly 32 legal even moves:
+
+    2 4 6 8 10 12 14 18 20 22 24 28 30 34 36 38
+    40 44 46 50 54 56 60 62 66 70 72 76 86 92 102 118
+
+  Any even child that is P would prove X is N and answer move 26 by 88.
+  Every even child that is N is a mandatory ingredient of any future
+  X-is-P certificate.  This campaign settled all 32 exactly.
+
+Command:
+  python -m sylver.x_even_flank \
+    --cache sylver/move26_data/periodicity_x.cache \
+    --output sylver/move26_data/x_even_flank_run \
+    --workers 10 --sortie-moves 100 --timeout 3600 --rounds 3
+
+  The runner routes children through exact minimal-generator identities
+  into the audited 216,251-row periodicity cache and the certified node
+  graph, then scans the survivors' odd replies with the native recurrence
+  across 10 worker processes.  Root-level hints reorder the search only;
+  no outcome is inferred from search time, a finite prefix, or a
+  heuristic.  Two rounds sufficed; 569 exact scan rows were recorded.
+
+Result: **all 32 even children of X are N-positions.**
+
+  26 of 32 were refuted by pure routing, at zero new search cost: the
+  destination of one exact reply already lay in the audited periodicity
+  cache (the recycled 480-hour investment) or in the certified node graph
+  (C, F, G, V, and the classic pair {2,3}).  The complete per-child
+  table, with the refuting reply, mechanism, and exact destination for
+  every child, is preserved in
+  sylver/move26_data/x_even_flank_run/RUN_RECORD.txt together with the
+  source fingerprints of the three tools:
+
+    3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8  native_solver.cpp
+    634222aef29d6f585f5c6f40037508b7b85fca601fe3f9cfb5debfc23bc02484  parallel_solve.py
+    40f69c037d894f3cdcabffeb769c00d4794a7fcf2b81eedfc9a0c11ae3adfa42  x_even_flank.py
+
+  The remaining six children are long positions (each half has a second
+  end, so the Quiet End Theorem gives no closure and no pruning was
+  applied).  Bounded parallel sorties over odd replies 3..201 refuted
+  every one.  The six new P-positions, none on any published list:
+
+    child 44:  reply  25 -> {16,25,26,44}         F=97   304,243 states
+    child 46:  reply  17 -> {16,17,26,46}         F=87    47,285 states
+    child 66:  reply  51 -> {16,26,51,66,88}      F=137   8,512,431 states
+    child 70:  reply 115 -> {16,26,70,82,88,115}  F=207  54,293,247 states
+    child 76:  reply  83 -> {16,26,76,82,83,88}   F=169  33,256,442 states
+    child 86:  reply 105 -> {16,26,82,86,88,105}  F=197  58,090,730 states
+
+Independent verification:
+  The three destinations within the Python batch budget were reproduced
+  by the reference evaluator with exactly matching state counts (304,243;
+  47,285; 8,512,431).  All six were rerun standalone in both the 8-word
+  and 16-word native builds; every rerun agreed on outcome, Frobenius
+  number, and state count bit-for-bit with the campaign rows above.  Both
+  builds compile warning-clean under
+  -std=c++20 -O3 -Wall -Wextra -pedantic.
+
+Wall clock:
+  The whole flank — routing, both rounds, all six deep sorties — took
+  about one hour on 10 of this machine's 12 cores.  Two of the six deep
+  scans hit the one-hour per-job timeout after their refutation row was
+  already recorded; the exact rows preserved before each timeout are
+  marked job_completed=false in the ledger and only completed rows were
+  used.
+
+Artifacts:
+  3bfbcecce625a8cf02ede4eda72a3b47e1f15bf89272ec7a3c3a1df38a56ced6  move26_data/x_even_flank.cache (783 rows: 532 N, 251 P)
+  sylver/move26_data/x_even_flank_ledger.jsonl (569 scan rows)
+  sylver/move26_data/x_even_flank_run/RUN_RECORD.txt (per-child table)
+
+Cache merge:
+  The 783 flank rows were merged into the periodicity exact cache with
+  conflict detection: 716 rows were new, 67 already present with
+  identical outcomes, zero conflicts.  The cache grew from 216,251 to
+  216,967 rows.  SHA-256 before and after:
+
+    before  15886b3181560e5c1d515860bdb8e95678569b37c16fa32d74dd57af37e169a1
+    after   261fee852dd473336be5dd9a435ef4213f93374887a7caa27e626f148f0c9ff5
+
+What this does and does not prove:
+  It proves the entire even side of X is N.  Combined with the exact odd
+  refutations through 407, every known child of X is N; if X is N at all,
+  its winning reply is an odd move >= 409.  X, U, move 26, and the
+  opening therefore remain undecided — but the even half of any future
+  X-is-P certificate is now complete and audited, and the periodicity
+  engine's odd-tail question is the only remaining unknown for X.

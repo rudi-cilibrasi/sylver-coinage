@@ -1,0 +1,44 @@
+X even-flank campaign record
+command: base=16,26,82,88 cache=sylver/move26_data/periodicity_x.cache workers=10 sortie_moves=100 timeout=3600.0 rounds=3
+
+source fingerprints (sha256):
+  3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8  native_solver.cpp
+  634222aef29d6f585f5c6f40037508b7b85fca601fe3f9cfb5debfc23bc02484  parallel_solve.py
+  40f69c037d894f3cdcabffeb769c00d4794a7fcf2b81eedfc9a0c11ae3adfa42  x_even_flank.py
+
+rounds run: 2
+scan rows recorded: 569
+
+child statuses:
+  2: refuted by 3 via finite:{2,3} -> {2,3}
+  4: refuted by 6 via node:C -> {4,6}
+  6: refuted by 7 via cache -> {6,7,16}
+  8: refuted by 20 via node:G -> {8,20,26}
+  10: refuted by 9 via cache -> {9,10,16}
+  12: refuted by 14 via node:F -> {12,14,16}
+  14: refuted by 23 via cache -> {14,16,23,26}
+  18: refuted by 5 via cache -> {5,16,18}
+  20: refuted by 8 via node:G -> {8,20,26}
+  22: refuted by 15 via cache -> {15,16,22,26}
+  24: refuted by 15 via cache -> {15,16,24,26}
+  28: refuted by 63 via cache -> {16,26,28,63}
+  30: refuted by 73 via cache -> {16,26,30,73}
+  34: refuted by 33 via cache -> {16,26,33,34,88}
+  36: refuted by 37 via cache -> {16,26,36,37,82}
+  38: refuted by 79 via cache -> {16,26,38,79,82,88}
+  40: refuted by 11 via cache -> {11,16,26,40}
+  44: refuted by 25 via cache -> {16,25,26,44}
+  46: refuted by 17 via cache -> {16,17,26,46}
+  50: refuted by 31 via cache -> {16,26,31,50}
+  54: refuted by 43 via cache -> {16,26,43,54,82,88}
+  56: refuted by 36 via node:V -> {16,26,36,56}
+  60: refuted by 123 via cache -> {16,26,60,82,88,123}
+  62: refuted by 27 via cache -> {16,26,27,62,82}
+  66: refuted by 51 via cache -> {16,26,51,66,88}
+  70: refuted by 115 via cache -> {16,26,70,82,88,115}
+  72: refuted by 381 via cache -> {16,26,72,82,381}
+  76: refuted by 83 via cache -> {16,26,76,82,83,88}
+  86: refuted by 105 via cache -> {16,26,82,86,88,105}
+  92: refuted by 149 via cache -> {16,26,82,88,92,149}
+  102: refuted by 143 via cache -> {16,26,82,88,102,143}
+  118: refuted by 29 via cache -> {16,26,29,82,88,118}

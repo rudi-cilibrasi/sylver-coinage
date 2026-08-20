@@ -962,6 +962,51 @@ still requires an actual P-hit or an exact repeated stable full snapshot.
 See `RUN_PERIODICITY_480H.txt` for the full command, every aggregate marker,
 fingerprints, audit, resource-record caveat, and resume verification.
 
+### Attempt 20 — the even flank of X falls in one hour
+
+Every campaign against `X={16,26,82,88}` had attacked its odd side: 203
+exact odd refutations through 407, then ~480 hours of single-threaded
+periodicity grinding on the tail.  `X`'s **even** children — exactly 32,
+one per gap of the half `<8,13,41,44>` — had never been examined, even
+though any even P child would prove `X` N and answer move 26 by 88, and
+every even N child is a mandatory ingredient of an eventual `X`-is-P
+certificate.
+
+Three tools closed the flank.  `native_solver.cpp` gained a root-level
+hint pass (an outcome-invariant reordering: a hinted candidate that wins
+is returned at once, otherwise the unmodified exhaustive loop decides)
+and an explicit `--odd-list` mode so quiet-ender children scan only
+their exceptional odds.  `parallel_solve.py` runs scan jobs across ten
+worker processes with the audited cache row format, atomic writes, and
+conflict detection.  `x_even_flank.py` routes children through exact
+minimal-generator identities before any search: an odd or even reply
+whose destination already lies in the audited periodicity cache or the
+certified node graph refutes the child for free.
+
+The routing pass alone refuted **26 of 32** children in seconds — the
+480-hour periodicity investment recycled directly, since its dependency
+closure had already classified thousands of positions of the form
+`{16,26,82,88,+anchors}` that nobody had queried as refutations.  The
+six survivors (44, 46, 66, 70, 76, 86) are all long positions, so no
+Quiet End pruning was applied; bounded parallel sorties over odd replies
+3..201 refuted every one, the deepest being
+`{16,26,82,86,88,105}` (Frobenius 197; 58,090,730 states).  Python
+reproductions match exactly for the three destinations inside the batch
+budget; all six were rerun standalone in the 8- and 16-word builds with
+bit-for-bit agreement.  The 569 scan rows and six new P-positions (none
+on any published list) were merged into the exact cache with zero
+conflicts (216,251 -> 216,967 rows).  See `RUN_X_EVEN_FLANK.txt`.
+
+**Consequence.**  Every even child of `X` is N, and every odd child
+through 407 is N.  If `X` is N at all, its winning reply is an odd move
+of at least 409 — precisely the question the periodicity engine's row
+frontier addresses.  The even half of any `X`-is-P certificate is now
+complete and audited.  `X`, `U`, move 26, and the opening remain
+undecided; the engine campaign should resume from the saved 220,574-
+shape rowstate, now with the flank rows in its cache and with the
+parallel-fallback and hint machinery of this attempt available for its
+next upgrade.
+
 ### Sources
 
 - <https://math.colgate.edu/~integers/yg2/yg2.pdf>

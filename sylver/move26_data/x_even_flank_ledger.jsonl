@@ -1,0 +1,569 @@
+{"base": [16, 26, 46, 82], "move": 3, "outcome": "N", "winning_move": 2, "frobenius": 23, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 5, "outcome": "N", "winning_move": 18, "frobenius": 59, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 7, "outcome": "N", "winning_move": 6, "frobenius": 57, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 9, "outcome": "N", "winning_move": 10, "frobenius": 65, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 11, "outcome": "N", "winning_move": 18, "frobenius": 67, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 13, "outcome": "N", "winning_move": 69, "frobenius": 115, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 15, "outcome": "N", "winning_move": 22, "frobenius": 85, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 17, "outcome": "P", "winning_move": null, "frobenius": 87, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 19, "outcome": "N", "winning_move": 12, "frobenius": 85, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 21, "outcome": "N", "winning_move": 59, "frobenius": 123, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 23, "outcome": "N", "winning_move": 14, "frobenius": 125, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 25, "outcome": "N", "winning_move": 85, "frobenius": 111, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 27, "outcome": "N", "winning_move": 12, "frobenius": 103, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 29, "outcome": "N", "winning_move": 54, "frobenius": 131, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 31, "outcome": "N", "winning_move": 87, "frobenius": 133, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 33, "outcome": "N", "winning_move": 17, "frobenius": 135, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 35, "outcome": "N", "winning_move": 36, "frobenius": 111, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 37, "outcome": "N", "winning_move": 70, "frobenius": 139, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 39, "outcome": "N", "winning_move": 53, "frobenius": 141, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 41, "outcome": "N", "winning_move": 70, "frobenius": 143, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 43, "outcome": "N", "winning_move": 17, "frobenius": 119, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 45, "outcome": "N", "winning_move": 70, "frobenius": 147, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 47, "outcome": "N", "winning_move": 81, "frobenius": 149, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 49, "outcome": "N", "winning_move": 17, "frobenius": 151, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 51, "outcome": "N", "winning_move": 17, "frobenius": 137, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 53, "outcome": "N", "winning_move": 39, "frobenius": 155, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 55, "outcome": "N", "winning_move": 115, "frobenius": 157, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 57, "outcome": "N", "winning_move": 23, "frobenius": 159, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 59, "outcome": "N", "winning_move": 17, "frobenius": 161, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 61, "outcome": "N", "winning_move": 147, "frobenius": 163, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 63, "outcome": "N", "winning_move": 8, "frobenius": 165, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 65, "outcome": "N", "winning_move": 17, "frobenius": 167, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 67, "outcome": "N", "winning_move": 17, "frobenius": 169, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 69, "outcome": "N", "winning_move": 13, "frobenius": 171, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 71, "outcome": "N", "winning_move": 41, "frobenius": 173, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 73, "outcome": "N", "winning_move": 30, "frobenius": 175, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 75, "outcome": "N", "winning_move": 17, "frobenius": 177, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 77, "outcome": "N", "winning_move": 17, "frobenius": 179, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 79, "outcome": "N", "winning_move": 17, "frobenius": 181, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 81, "outcome": "N", "winning_move": 8, "frobenius": 183, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 83, "outcome": "N", "winning_move": 17, "frobenius": 185, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 85, "outcome": "N", "winning_move": 17, "frobenius": 187, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 87, "outcome": "N", "winning_move": 31, "frobenius": 189, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 89, "outcome": "N", "winning_move": 17, "frobenius": 191, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 91, "outcome": "N", "winning_move": 8, "frobenius": 193, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 93, "outcome": "N", "winning_move": 8, "frobenius": 195, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 95, "outcome": "N", "winning_move": 17, "frobenius": 197, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 97, "outcome": "N", "winning_move": 17, "frobenius": 199, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 99, "outcome": "N", "winning_move": 13, "frobenius": 201, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 101, "outcome": "N", "winning_move": 17, "frobenius": 203, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 103, "outcome": "N", "winning_move": 17, "frobenius": 205, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 105, "outcome": "N", "winning_move": 17, "frobenius": 207, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 107, "outcome": "N", "winning_move": 17, "frobenius": 209, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 109, "outcome": "N", "winning_move": 17, "frobenius": 211, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 111, "outcome": "N", "winning_move": 17, "frobenius": 213, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 113, "outcome": "N", "winning_move": 17, "frobenius": 215, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 115, "outcome": "N", "winning_move": 17, "frobenius": 217, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 117, "outcome": "N", "winning_move": 17, "frobenius": 219, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 119, "outcome": "N", "winning_move": 17, "frobenius": 221, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 121, "outcome": "N", "winning_move": 17, "frobenius": 223, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 123, "outcome": "N", "winning_move": 17, "frobenius": 225, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 125, "outcome": "N", "winning_move": 17, "frobenius": 227, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 127, "outcome": "N", "winning_move": 17, "frobenius": 229, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 129, "outcome": "N", "winning_move": 17, "frobenius": 231, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 131, "outcome": "N", "winning_move": 17, "frobenius": 233, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 133, "outcome": "N", "winning_move": 17, "frobenius": 235, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 135, "outcome": "N", "winning_move": 17, "frobenius": 237, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 137, "outcome": "N", "winning_move": 17, "frobenius": 239, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 139, "outcome": "N", "winning_move": 17, "frobenius": 241, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 141, "outcome": "N", "winning_move": 17, "frobenius": 243, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 143, "outcome": "N", "winning_move": 17, "frobenius": 245, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 145, "outcome": "N", "winning_move": 17, "frobenius": 247, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 147, "outcome": "N", "winning_move": 17, "frobenius": 249, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 149, "outcome": "N", "winning_move": 17, "frobenius": 251, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 151, "outcome": "N", "winning_move": 17, "frobenius": 253, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 153, "outcome": "N", "winning_move": 17, "frobenius": 255, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 155, "outcome": "N", "winning_move": 17, "frobenius": 257, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 157, "outcome": "N", "winning_move": 17, "frobenius": 259, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 159, "outcome": "N", "winning_move": 17, "frobenius": 261, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 161, "outcome": "N", "winning_move": 17, "frobenius": 263, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 163, "outcome": "N", "winning_move": 17, "frobenius": 265, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 165, "outcome": "N", "winning_move": 17, "frobenius": 267, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 167, "outcome": "N", "winning_move": 17, "frobenius": 269, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 169, "outcome": "N", "winning_move": 17, "frobenius": 271, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 171, "outcome": "N", "winning_move": 17, "frobenius": 273, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 173, "outcome": "N", "winning_move": 17, "frobenius": 275, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 175, "outcome": "N", "winning_move": 17, "frobenius": 277, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 177, "outcome": "N", "winning_move": 17, "frobenius": 279, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 179, "outcome": "N", "winning_move": 17, "frobenius": 281, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 181, "outcome": "N", "winning_move": 17, "frobenius": 283, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 183, "outcome": "N", "winning_move": 17, "frobenius": 285, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 185, "outcome": "N", "winning_move": 17, "frobenius": 287, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 187, "outcome": "N", "winning_move": 17, "frobenius": 289, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 189, "outcome": "N", "winning_move": 17, "frobenius": 291, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 191, "outcome": "N", "winning_move": 17, "frobenius": 293, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 193, "outcome": "N", "winning_move": 17, "frobenius": 295, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 195, "outcome": "N", "winning_move": 17, "frobenius": 297, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 197, "outcome": "N", "winning_move": 17, "frobenius": 299, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 199, "outcome": "N", "winning_move": 17, "frobenius": 301, "job_completed": true}
+{"base": [16, 26, 46, 82], "move": 201, "outcome": "N", "winning_move": 17, "frobenius": 303, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 3, "outcome": "N", "winning_move": 2, "frobenius": 23, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 5, "outcome": "N", "winning_move": 18, "frobenius": 43, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 7, "outcome": "N", "winning_move": 6, "frobenius": 57, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 9, "outcome": "N", "winning_move": 10, "frobenius": 65, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 11, "outcome": "N", "winning_move": 40, "frobenius": 83, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 13, "outcome": "N", "winning_move": 20, "frobenius": 85, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 15, "outcome": "N", "winning_move": 8, "frobenius": 81, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 17, "outcome": "N", "winning_move": 41, "frobenius": 89, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 19, "outcome": "N", "winning_move": 37, "frobenius": 91, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 21, "outcome": "N", "winning_move": 75, "frobenius": 93, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 23, "outcome": "N", "winning_move": 10, "frobenius": 89, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 25, "outcome": "P", "winning_move": null, "frobenius": 97, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 27, "outcome": "N", "winning_move": 8, "frobenius": 99, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 29, "outcome": "N", "winning_move": 23, "frobenius": 101, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 31, "outcome": "N", "winning_move": 20, "frobenius": 103, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 33, "outcome": "N", "winning_move": 38, "frobenius": 105, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 35, "outcome": "N", "winning_move": 20, "frobenius": 107, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 37, "outcome": "N", "winning_move": 19, "frobenius": 109, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 39, "outcome": "N", "winning_move": 40, "frobenius": 111, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 41, "outcome": "N", "winning_move": 13, "frobenius": 113, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 43, "outcome": "N", "winning_move": 35, "frobenius": 115, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 45, "outcome": "N", "winning_move": 56, "frobenius": 117, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 47, "outcome": "N", "winning_move": 43, "frobenius": 119, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 49, "outcome": "N", "winning_move": 59, "frobenius": 121, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 51, "outcome": "N", "winning_move": 25, "frobenius": 123, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 53, "outcome": "N", "winning_move": 55, "frobenius": 125, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 55, "outcome": "N", "winning_move": 53, "frobenius": 127, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 57, "outcome": "N", "winning_move": 25, "frobenius": 129, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 59, "outcome": "N", "winning_move": 19, "frobenius": 131, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 61, "outcome": "N", "winning_move": 11, "frobenius": 133, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 63, "outcome": "N", "winning_move": 28, "frobenius": 135, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 65, "outcome": "N", "winning_move": 85, "frobenius": 137, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 67, "outcome": "N", "winning_move": 25, "frobenius": 139, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 69, "outcome": "N", "winning_move": 25, "frobenius": 141, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 71, "outcome": "N", "winning_move": 17, "frobenius": 143, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 73, "outcome": "N", "winning_move": 25, "frobenius": 145, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 75, "outcome": "N", "winning_move": 21, "frobenius": 147, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 77, "outcome": "N", "winning_move": 25, "frobenius": 149, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 79, "outcome": "N", "winning_move": 29, "frobenius": 151, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 81, "outcome": "N", "winning_move": 57, "frobenius": 153, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 83, "outcome": "N", "winning_move": 25, "frobenius": 155, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 85, "outcome": "N", "winning_move": 25, "frobenius": 157, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 87, "outcome": "N", "winning_move": 101, "frobenius": 159, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 89, "outcome": "N", "winning_move": 25, "frobenius": 161, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 91, "outcome": "N", "winning_move": 25, "frobenius": 163, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 93, "outcome": "N", "winning_move": 25, "frobenius": 165, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 95, "outcome": "N", "winning_move": 25, "frobenius": 167, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 97, "outcome": "N", "winning_move": 107, "frobenius": 169, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 99, "outcome": "N", "winning_move": 25, "frobenius": 171, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 101, "outcome": "N", "winning_move": 25, "frobenius": 173, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 103, "outcome": "N", "winning_move": 25, "frobenius": 175, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 105, "outcome": "N", "winning_move": 25, "frobenius": 177, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 107, "outcome": "N", "winning_move": 25, "frobenius": 179, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 109, "outcome": "N", "winning_move": 25, "frobenius": 181, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 111, "outcome": "N", "winning_move": 25, "frobenius": 183, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 113, "outcome": "N", "winning_move": 25, "frobenius": 185, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 115, "outcome": "N", "winning_move": 25, "frobenius": 187, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 117, "outcome": "N", "winning_move": 25, "frobenius": 189, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 119, "outcome": "N", "winning_move": 25, "frobenius": 191, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 121, "outcome": "N", "winning_move": 25, "frobenius": 193, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 123, "outcome": "N", "winning_move": 25, "frobenius": 195, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 125, "outcome": "N", "winning_move": 25, "frobenius": 197, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 127, "outcome": "N", "winning_move": 25, "frobenius": 199, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 129, "outcome": "N", "winning_move": 25, "frobenius": 201, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 131, "outcome": "N", "winning_move": 25, "frobenius": 203, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 133, "outcome": "N", "winning_move": 25, "frobenius": 205, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 135, "outcome": "N", "winning_move": 25, "frobenius": 207, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 137, "outcome": "N", "winning_move": 25, "frobenius": 209, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 139, "outcome": "N", "winning_move": 25, "frobenius": 211, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 141, "outcome": "N", "winning_move": 25, "frobenius": 213, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 143, "outcome": "N", "winning_move": 25, "frobenius": 215, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 145, "outcome": "N", "winning_move": 25, "frobenius": 217, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 147, "outcome": "N", "winning_move": 25, "frobenius": 219, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 149, "outcome": "N", "winning_move": 25, "frobenius": 221, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 151, "outcome": "N", "winning_move": 25, "frobenius": 223, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 153, "outcome": "N", "winning_move": 25, "frobenius": 225, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 155, "outcome": "N", "winning_move": 25, "frobenius": 227, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 157, "outcome": "N", "winning_move": 25, "frobenius": 229, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 159, "outcome": "N", "winning_move": 25, "frobenius": 231, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 161, "outcome": "N", "winning_move": 25, "frobenius": 233, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 163, "outcome": "N", "winning_move": 25, "frobenius": 235, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 165, "outcome": "N", "winning_move": 25, "frobenius": 237, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 167, "outcome": "N", "winning_move": 25, "frobenius": 239, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 169, "outcome": "N", "winning_move": 25, "frobenius": 241, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 171, "outcome": "N", "winning_move": 25, "frobenius": 243, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 173, "outcome": "N", "winning_move": 25, "frobenius": 245, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 175, "outcome": "N", "winning_move": 25, "frobenius": 247, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 177, "outcome": "N", "winning_move": 25, "frobenius": 249, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 179, "outcome": "N", "winning_move": 25, "frobenius": 251, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 181, "outcome": "N", "winning_move": 25, "frobenius": 253, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 183, "outcome": "N", "winning_move": 25, "frobenius": 255, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 185, "outcome": "N", "winning_move": 25, "frobenius": 257, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 187, "outcome": "N", "winning_move": 25, "frobenius": 259, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 189, "outcome": "N", "winning_move": 25, "frobenius": 261, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 191, "outcome": "N", "winning_move": 25, "frobenius": 263, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 193, "outcome": "N", "winning_move": 25, "frobenius": 265, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 195, "outcome": "N", "winning_move": 25, "frobenius": 267, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 197, "outcome": "N", "winning_move": 25, "frobenius": 269, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 199, "outcome": "N", "winning_move": 25, "frobenius": 271, "job_completed": true}
+{"base": [16, 26, 44, 82], "move": 201, "outcome": "N", "winning_move": 25, "frobenius": 273, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 3, "outcome": "N", "winning_move": 2, "frobenius": 23, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 5, "outcome": "N", "winning_move": 18, "frobenius": 59, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 7, "outcome": "N", "winning_move": 6, "frobenius": 57, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 9, "outcome": "N", "winning_move": 10, "frobenius": 65, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 11, "outcome": "N", "winning_move": 40, "frobenius": 83, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 13, "outcome": "N", "winning_move": 69, "frobenius": 115, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 15, "outcome": "N", "winning_move": 22, "frobenius": 85, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 17, "outcome": "N", "winning_move": 21, "frobenius": 89, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 19, "outcome": "N", "winning_move": 40, "frobenius": 91, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 21, "outcome": "N", "winning_move": 17, "frobenius": 123, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 23, "outcome": "N", "winning_move": 14, "frobenius": 125, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 25, "outcome": "N", "winning_move": 33, "frobenius": 111, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 27, "outcome": "N", "winning_move": 45, "frobenius": 103, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 29, "outcome": "N", "winning_move": 79, "frobenius": 131, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 31, "outcome": "N", "winning_move": 50, "frobenius": 133, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 33, "outcome": "N", "winning_move": 25, "frobenius": 135, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 35, "outcome": "N", "winning_move": 71, "frobenius": 111, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 37, "outcome": "N", "winning_move": 91, "frobenius": 139, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 39, "outcome": "N", "winning_move": 125, "frobenius": 141, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 41, "outcome": "N", "winning_move": 49, "frobenius": 143, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 43, "outcome": "N", "winning_move": 19, "frobenius": 119, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 45, "outcome": "N", "winning_move": 17, "frobenius": 147, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 47, "outcome": "N", "winning_move": 25, "frobenius": 149, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 49, "outcome": "N", "winning_move": 41, "frobenius": 151, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 51, "outcome": "P", "winning_move": null, "frobenius": 137, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 53, "outcome": "N", "winning_move": 97, "frobenius": 155, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 55, "outcome": "N", "winning_move": 33, "frobenius": 157, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 57, "outcome": "N", "winning_move": 17, "frobenius": 159, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 59, "outcome": "N", "winning_move": 28, "frobenius": 161, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 61, "outcome": "N", "winning_move": 11, "frobenius": 163, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 63, "outcome": "N", "winning_move": 55, "frobenius": 165, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 65, "outcome": "N", "winning_move": 19, "frobenius": 167, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 67, "outcome": "N", "winning_move": 51, "frobenius": 169, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 69, "outcome": "N", "winning_move": 13, "frobenius": 171, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 71, "outcome": "N", "winning_move": 31, "frobenius": 173, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 73, "outcome": "N", "winning_move": 34, "frobenius": 175, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 75, "outcome": "N", "winning_move": 65, "frobenius": 177, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 77, "outcome": "N", "winning_move": 51, "frobenius": 179, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 79, "outcome": "N", "winning_move": 19, "frobenius": 181, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 81, "outcome": "N", "winning_move": 141, "frobenius": 183, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 83, "outcome": "N", "winning_move": 51, "frobenius": 185, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 85, "outcome": "N", "winning_move": 41, "frobenius": 187, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 87, "outcome": "N", "winning_move": 25, "frobenius": 189, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 89, "outcome": "N", "winning_move": 13, "frobenius": 191, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 91, "outcome": "N", "winning_move": 37, "frobenius": 193, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 93, "outcome": "N", "winning_move": 51, "frobenius": 195, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 95, "outcome": "N", "winning_move": 181, "frobenius": 197, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 97, "outcome": "N", "winning_move": 30, "frobenius": 199, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 99, "outcome": "N", "winning_move": 51, "frobenius": 201, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 101, "outcome": "N", "winning_move": 54, "frobenius": 203, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 103, "outcome": "N", "winning_move": 51, "frobenius": 205, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 105, "outcome": "N", "winning_move": 109, "frobenius": 207, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 107, "outcome": "N", "winning_move": 129, "frobenius": 209, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 109, "outcome": "N", "winning_move": 51, "frobenius": 211, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 111, "outcome": "N", "winning_move": 87, "frobenius": 213, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 113, "outcome": "N", "winning_move": 167, "frobenius": 215, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 115, "outcome": "N", "winning_move": 29, "frobenius": 217, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 117, "outcome": "N", "winning_move": 51, "frobenius": 219, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 119, "outcome": "N", "winning_move": 30, "frobenius": 221, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 121, "outcome": "N", "winning_move": 30, "frobenius": 223, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 123, "outcome": "N", "winning_move": 147, "frobenius": 225, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 125, "outcome": "N", "winning_move": 39, "frobenius": 227, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 127, "outcome": "N", "winning_move": 105, "frobenius": 229, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 129, "outcome": "N", "winning_move": 51, "frobenius": 231, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 131, "outcome": "N", "winning_move": 51, "frobenius": 233, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 133, "outcome": "N", "winning_move": 51, "frobenius": 235, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 135, "outcome": "N", "winning_move": 51, "frobenius": 237, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 137, "outcome": "N", "winning_move": 77, "frobenius": 239, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 139, "outcome": "N", "winning_move": 51, "frobenius": 241, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 141, "outcome": "N", "winning_move": 51, "frobenius": 243, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 143, "outcome": "N", "winning_move": 51, "frobenius": 245, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 145, "outcome": "N", "winning_move": 51, "frobenius": 247, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 147, "outcome": "N", "winning_move": 51, "frobenius": 249, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 149, "outcome": "N", "winning_move": 51, "frobenius": 251, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 151, "outcome": "N", "winning_move": 51, "frobenius": 253, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 153, "outcome": "N", "winning_move": 51, "frobenius": 255, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 155, "outcome": "N", "winning_move": 51, "frobenius": 257, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 157, "outcome": "N", "winning_move": 51, "frobenius": 259, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 159, "outcome": "N", "winning_move": 51, "frobenius": 261, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 161, "outcome": "N", "winning_move": 51, "frobenius": 263, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 163, "outcome": "N", "winning_move": 51, "frobenius": 265, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 165, "outcome": "N", "winning_move": 51, "frobenius": 267, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 167, "outcome": "N", "winning_move": 51, "frobenius": 269, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 169, "outcome": "N", "winning_move": 51, "frobenius": 271, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 171, "outcome": "N", "winning_move": 51, "frobenius": 273, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 173, "outcome": "N", "winning_move": 51, "frobenius": 275, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 175, "outcome": "N", "winning_move": 51, "frobenius": 277, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 177, "outcome": "N", "winning_move": 51, "frobenius": 279, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 179, "outcome": "N", "winning_move": 51, "frobenius": 281, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 181, "outcome": "N", "winning_move": 51, "frobenius": 283, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 183, "outcome": "N", "winning_move": 51, "frobenius": 285, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 185, "outcome": "N", "winning_move": 51, "frobenius": 287, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 187, "outcome": "N", "winning_move": 51, "frobenius": 289, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 189, "outcome": "N", "winning_move": 51, "frobenius": 291, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 191, "outcome": "N", "winning_move": 51, "frobenius": 293, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 193, "outcome": "N", "winning_move": 51, "frobenius": 295, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 195, "outcome": "N", "winning_move": 51, "frobenius": 297, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 197, "outcome": "N", "winning_move": 51, "frobenius": 299, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 199, "outcome": "N", "winning_move": 51, "frobenius": 301, "job_completed": true}
+{"base": [16, 26, 66, 88], "move": 201, "outcome": "N", "winning_move": 51, "frobenius": 303, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 3, "outcome": "N", "winning_move": 2, "frobenius": 23, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 5, "outcome": "N", "winning_move": 18, "frobenius": 59, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 7, "outcome": "N", "winning_move": 6, "frobenius": 57, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 9, "outcome": "N", "winning_move": 10, "frobenius": 65, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 11, "outcome": "N", "winning_move": 40, "frobenius": 83, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 13, "outcome": "N", "winning_move": 49, "frobenius": 105, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 15, "outcome": "N", "winning_move": 22, "frobenius": 81, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 17, "outcome": "N", "winning_move": 21, "frobenius": 89, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 19, "outcome": "N", "winning_move": 40, "frobenius": 91, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 21, "outcome": "N", "winning_move": 17, "frobenius": 113, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 23, "outcome": "N", "winning_move": 14, "frobenius": 99, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 25, "outcome": "N", "winning_move": 44, "frobenius": 97, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 27, "outcome": "N", "winning_move": 62, "frobenius": 119, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 29, "outcome": "N", "winning_move": 39, "frobenius": 121, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 31, "outcome": "N", "winning_move": 77, "frobenius": 123, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 33, "outcome": "N", "winning_move": 30, "frobenius": 109, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 35, "outcome": "N", "winning_move": 69, "frobenius": 127, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 37, "outcome": "N", "winning_move": 46, "frobenius": 129, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 39, "outcome": "N", "winning_move": 29, "frobenius": 131, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 41, "outcome": "N", "winning_move": 46, "frobenius": 133, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 43, "outcome": "N", "winning_move": 54, "frobenius": 135, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 45, "outcome": "N", "winning_move": 8, "frobenius": 137, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 47, "outcome": "N", "winning_move": 91, "frobenius": 139, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 49, "outcome": "N", "winning_move": 13, "frobenius": 141, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 51, "outcome": "N", "winning_move": 24, "frobenius": 143, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 53, "outcome": "N", "winning_move": 24, "frobenius": 145, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 55, "outcome": "N", "winning_move": 20, "frobenius": 147, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 57, "outcome": "N", "winning_move": 45, "frobenius": 149, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 59, "outcome": "N", "winning_move": 109, "frobenius": 151, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 61, "outcome": "N", "winning_move": 11, "frobenius": 153, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 63, "outcome": "N", "winning_move": 28, "frobenius": 155, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 65, "outcome": "N", "winning_move": 141, "frobenius": 157, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 67, "outcome": "N", "winning_move": 92, "frobenius": 159, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 69, "outcome": "N", "winning_move": 29, "frobenius": 161, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 71, "outcome": "N", "winning_move": 137, "frobenius": 163, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 73, "outcome": "N", "winning_move": 28, "frobenius": 165, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 75, "outcome": "N", "winning_move": 28, "frobenius": 167, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 77, "outcome": "N", "winning_move": 20, "frobenius": 169, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 79, "outcome": "N", "winning_move": 38, "frobenius": 171, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 81, "outcome": "N", "winning_move": 41, "frobenius": 173, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 83, "outcome": "N", "winning_move": 27, "frobenius": 175, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 85, "outcome": "N", "winning_move": 41, "frobenius": 177, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 87, "outcome": "N", "winning_move": 30, "frobenius": 179, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 89, "outcome": "N", "winning_move": 49, "frobenius": 181, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 91, "outcome": "N", "winning_move": 47, "frobenius": 183, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 93, "outcome": "N", "winning_move": 121, "frobenius": 185, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 95, "outcome": "N", "winning_move": 155, "frobenius": 187, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 97, "outcome": "N", "winning_move": 53, "frobenius": 189, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 99, "outcome": "N", "winning_move": 191, "frobenius": 191, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 101, "outcome": "N", "winning_move": 151, "frobenius": 193, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 103, "outcome": "N", "winning_move": 163, "frobenius": 195, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 105, "outcome": "N", "winning_move": 75, "frobenius": 197, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 107, "outcome": "N", "winning_move": 56, "frobenius": 199, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 109, "outcome": "N", "winning_move": 28, "frobenius": 201, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 111, "outcome": "N", "winning_move": 133, "frobenius": 203, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 113, "outcome": "N", "winning_move": 47, "frobenius": 205, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 115, "outcome": "P", "winning_move": null, "frobenius": 207, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 117, "outcome": "N", "winning_move": 81, "frobenius": 209, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 119, "outcome": "N", "winning_move": 27, "frobenius": 211, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 121, "outcome": "N", "winning_move": 93, "frobenius": 213, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 123, "outcome": "N", "winning_move": 31, "frobenius": 215, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 125, "outcome": "N", "winning_move": 133, "frobenius": 217, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 127, "outcome": "N", "winning_move": 149, "frobenius": 219, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 129, "outcome": "N", "winning_move": 139, "frobenius": 221, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 131, "outcome": "N", "winning_move": 50, "frobenius": 223, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 133, "outcome": "N", "winning_move": 111, "frobenius": 225, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 135, "outcome": "N", "winning_move": 147, "frobenius": 227, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 137, "outcome": "N", "winning_move": 71, "frobenius": 229, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 139, "outcome": "N", "winning_move": 67, "frobenius": 231, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 141, "outcome": "N", "winning_move": 65, "frobenius": 233, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 143, "outcome": "N", "winning_move": 67, "frobenius": 235, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 145, "outcome": "N", "winning_move": 107, "frobenius": 237, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 147, "outcome": "N", "winning_move": 115, "frobenius": 239, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 149, "outcome": "N", "winning_move": 127, "frobenius": 241, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 151, "outcome": "N", "winning_move": 50, "frobenius": 243, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 153, "outcome": "N", "winning_move": 129, "frobenius": 245, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 155, "outcome": "N", "winning_move": 95, "frobenius": 247, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 157, "outcome": "N", "winning_move": 107, "frobenius": 249, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 159, "outcome": "N", "winning_move": 171, "frobenius": 251, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 161, "outcome": "N", "winning_move": 211, "frobenius": 253, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 163, "outcome": "N", "winning_move": 103, "frobenius": 255, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 165, "outcome": "N", "winning_move": 201, "frobenius": 257, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 167, "outcome": "N", "winning_move": 115, "frobenius": 259, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 169, "outcome": "N", "winning_move": 107, "frobenius": 261, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 171, "outcome": "N", "winning_move": 131, "frobenius": 263, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 173, "outcome": "N", "winning_move": 115, "frobenius": 265, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 175, "outcome": "N", "winning_move": 173, "frobenius": 267, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 177, "outcome": "N", "winning_move": 243, "frobenius": 269, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 179, "outcome": "N", "winning_move": 115, "frobenius": 271, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 181, "outcome": "N", "winning_move": 219, "frobenius": 273, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 183, "outcome": "N", "winning_move": 115, "frobenius": 275, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 185, "outcome": "N", "winning_move": 115, "frobenius": 277, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 187, "outcome": "N", "winning_move": 227, "frobenius": 279, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 189, "outcome": "N", "winning_move": 115, "frobenius": 281, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 191, "outcome": "N", "winning_move": 34, "frobenius": 283, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 193, "outcome": "N", "winning_move": 115, "frobenius": 285, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 195, "outcome": "N", "winning_move": 115, "frobenius": 287, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 197, "outcome": "N", "winning_move": 115, "frobenius": 289, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 199, "outcome": "N", "winning_move": 115, "frobenius": 291, "job_completed": true}
+{"base": [16, 26, 70, 82, 88], "move": 201, "outcome": "N", "winning_move": 34, "frobenius": 293, "job_completed": true}
+{"base": [16, 26, 76, 82, 88], "move": 3, "outcome": "N", "winning_move": 2, "frobenius": 23, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 5, "outcome": "N", "winning_move": 18, "frobenius": 59, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 7, "outcome": "N", "winning_move": 6, "frobenius": 57, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 9, "outcome": "N", "winning_move": 10, "frobenius": 65, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 11, "outcome": "N", "winning_move": 40, "frobenius": 83, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 13, "outcome": "N", "winning_move": 47, "frobenius": 99, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 15, "outcome": "N", "winning_move": 22, "frobenius": 85, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 17, "outcome": "N", "winning_move": 21, "frobenius": 89, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 19, "outcome": "N", "winning_move": 40, "frobenius": 91, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 21, "outcome": "N", "winning_move": 17, "frobenius": 107, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 23, "outcome": "N", "winning_move": 14, "frobenius": 109, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 25, "outcome": "N", "winning_move": 33, "frobenius": 111, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 27, "outcome": "N", "winning_move": 45, "frobenius": 99, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 29, "outcome": "N", "winning_move": 36, "frobenius": 115, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 31, "outcome": "N", "winning_move": 50, "frobenius": 117, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 33, "outcome": "N", "winning_move": 25, "frobenius": 119, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 35, "outcome": "N", "winning_move": 37, "frobenius": 107, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 37, "outcome": "N", "winning_move": 35, "frobenius": 123, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 39, "outcome": "N", "winning_move": 56, "frobenius": 125, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 41, "outcome": "N", "winning_move": 45, "frobenius": 127, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 43, "outcome": "N", "winning_move": 113, "frobenius": 115, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 45, "outcome": "N", "winning_move": 17, "frobenius": 131, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 47, "outcome": "N", "winning_move": 13, "frobenius": 133, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 49, "outcome": "N", "winning_move": 29, "frobenius": 135, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 51, "outcome": "N", "winning_move": 56, "frobenius": 137, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 53, "outcome": "N", "winning_move": 36, "frobenius": 139, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 55, "outcome": "N", "winning_move": 109, "frobenius": 141, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 57, "outcome": "N", "winning_move": 17, "frobenius": 143, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 59, "outcome": "N", "winning_move": 23, "frobenius": 145, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 61, "outcome": "N", "winning_move": 11, "frobenius": 147, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 63, "outcome": "N", "winning_move": 28, "frobenius": 149, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 65, "outcome": "N", "winning_move": 119, "frobenius": 151, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 67, "outcome": "N", "winning_move": 66, "frobenius": 153, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 69, "outcome": "N", "winning_move": 50, "frobenius": 155, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 71, "outcome": "N", "winning_move": 67, "frobenius": 157, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 73, "outcome": "N", "winning_move": 28, "frobenius": 159, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 75, "outcome": "N", "winning_move": 13, "frobenius": 161, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 77, "outcome": "N", "winning_move": 53, "frobenius": 163, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 79, "outcome": "N", "winning_move": 38, "frobenius": 165, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 81, "outcome": "N", "winning_move": 41, "frobenius": 167, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 83, "outcome": "P", "winning_move": null, "frobenius": 169, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 85, "outcome": "N", "winning_move": 51, "frobenius": 171, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 87, "outcome": "N", "winning_move": 25, "frobenius": 173, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 89, "outcome": "N", "winning_move": 39, "frobenius": 175, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 91, "outcome": "N", "winning_move": 41, "frobenius": 177, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 93, "outcome": "N", "winning_move": 105, "frobenius": 179, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 95, "outcome": "N", "winning_move": 33, "frobenius": 181, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 97, "outcome": "N", "winning_move": 35, "frobenius": 183, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 99, "outcome": "N", "winning_move": 75, "frobenius": 185, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 101, "outcome": "N", "winning_move": 79, "frobenius": 187, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 103, "outcome": "N", "winning_move": 99, "frobenius": 189, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 105, "outcome": "N", "winning_move": 93, "frobenius": 191, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 107, "outcome": "N", "winning_move": 77, "frobenius": 193, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 109, "outcome": "N", "winning_move": 28, "frobenius": 195, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 111, "outcome": "N", "winning_move": 30, "frobenius": 197, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 113, "outcome": "N", "winning_move": 43, "frobenius": 199, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 115, "outcome": "N", "winning_move": 29, "frobenius": 201, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 117, "outcome": "N", "winning_move": 137, "frobenius": 203, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 119, "outcome": "N", "winning_move": 65, "frobenius": 205, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 121, "outcome": "N", "winning_move": 51, "frobenius": 207, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 123, "outcome": "N", "winning_move": 60, "frobenius": 209, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 125, "outcome": "N", "winning_move": 83, "frobenius": 211, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 127, "outcome": "N", "winning_move": 60, "frobenius": 213, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 129, "outcome": "N", "winning_move": 111, "frobenius": 215, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 131, "outcome": "N", "winning_move": 83, "frobenius": 217, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 133, "outcome": "N", "winning_move": 139, "frobenius": 219, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 135, "outcome": "N", "winning_move": 83, "frobenius": 221, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 137, "outcome": "N", "winning_move": 117, "frobenius": 223, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 139, "outcome": "N", "winning_move": 133, "frobenius": 225, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 141, "outcome": "N", "winning_move": 83, "frobenius": 227, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 143, "outcome": "N", "winning_move": 215, "frobenius": 229, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 145, "outcome": "N", "winning_move": 215, "frobenius": 231, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 147, "outcome": "N", "winning_move": 83, "frobenius": 233, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 149, "outcome": "N", "winning_move": 151, "frobenius": 235, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 151, "outcome": "N", "winning_move": 54, "frobenius": 237, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 153, "outcome": "N", "winning_move": 123, "frobenius": 239, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 155, "outcome": "N", "winning_move": 217, "frobenius": 241, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 157, "outcome": "N", "winning_move": 83, "frobenius": 243, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 159, "outcome": "N", "winning_move": 83, "frobenius": 245, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 161, "outcome": "N", "winning_move": 83, "frobenius": 247, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 163, "outcome": "N", "winning_move": 83, "frobenius": 249, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 165, "outcome": "N", "winning_move": 83, "frobenius": 251, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 167, "outcome": "N", "winning_move": 83, "frobenius": 253, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 169, "outcome": "N", "winning_move": 149, "frobenius": 255, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 171, "outcome": "N", "winning_move": 83, "frobenius": 257, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 173, "outcome": "N", "winning_move": 83, "frobenius": 259, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 175, "outcome": "N", "winning_move": 83, "frobenius": 261, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 177, "outcome": "N", "winning_move": 83, "frobenius": 263, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 179, "outcome": "N", "winning_move": 83, "frobenius": 265, "job_completed": false}
+{"base": [16, 26, 76, 82, 88], "move": 181, "outcome": "N", "winning_move": 83, "frobenius": 267, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 3, "outcome": "N", "winning_move": 2, "frobenius": 23, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 5, "outcome": "N", "winning_move": 18, "frobenius": 59, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 7, "outcome": "N", "winning_move": 6, "frobenius": 57, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 9, "outcome": "N", "winning_move": 10, "frobenius": 65, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 11, "outcome": "N", "winning_move": 40, "frobenius": 83, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 13, "outcome": "N", "winning_move": 47, "frobenius": 105, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 15, "outcome": "N", "winning_move": 22, "frobenius": 85, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 17, "outcome": "N", "winning_move": 21, "frobenius": 89, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 19, "outcome": "N", "winning_move": 40, "frobenius": 91, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 21, "outcome": "N", "winning_move": 17, "frobenius": 113, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 23, "outcome": "N", "winning_move": 14, "frobenius": 99, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 25, "outcome": "N", "winning_move": 23, "frobenius": 97, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 27, "outcome": "N", "winning_move": 62, "frobenius": 119, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 29, "outcome": "N", "winning_move": 50, "frobenius": 121, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 31, "outcome": "N", "winning_move": 66, "frobenius": 123, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 33, "outcome": "N", "winning_move": 34, "frobenius": 109, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 35, "outcome": "N", "winning_move": 69, "frobenius": 127, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 37, "outcome": "N", "winning_move": 93, "frobenius": 129, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 39, "outcome": "N", "winning_move": 33, "frobenius": 131, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 41, "outcome": "N", "winning_move": 53, "frobenius": 133, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 43, "outcome": "N", "winning_move": 54, "frobenius": 135, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 45, "outcome": "N", "winning_move": 17, "frobenius": 137, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 47, "outcome": "N", "winning_move": 13, "frobenius": 139, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 49, "outcome": "N", "winning_move": 141, "frobenius": 141, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 51, "outcome": "N", "winning_move": 85, "frobenius": 143, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 53, "outcome": "N", "winning_move": 13, "frobenius": 145, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 55, "outcome": "N", "winning_move": 115, "frobenius": 147, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 57, "outcome": "N", "winning_move": 17, "frobenius": 149, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 59, "outcome": "N", "winning_move": 13, "frobenius": 151, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 61, "outcome": "N", "winning_move": 11, "frobenius": 153, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 63, "outcome": "N", "winning_move": 28, "frobenius": 155, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 65, "outcome": "N", "winning_move": 29, "frobenius": 157, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 67, "outcome": "N", "winning_move": 137, "frobenius": 159, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 69, "outcome": "N", "winning_move": 35, "frobenius": 161, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 71, "outcome": "N", "winning_move": 121, "frobenius": 163, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 73, "outcome": "N", "winning_move": 28, "frobenius": 165, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 75, "outcome": "N", "winning_move": 28, "frobenius": 167, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 77, "outcome": "N", "winning_move": 101, "frobenius": 169, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 79, "outcome": "N", "winning_move": 38, "frobenius": 171, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 81, "outcome": "N", "winning_move": 127, "frobenius": 173, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 83, "outcome": "N", "winning_move": 27, "frobenius": 175, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 85, "outcome": "N", "winning_move": 51, "frobenius": 177, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 87, "outcome": "N", "winning_move": 92, "frobenius": 179, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 89, "outcome": "N", "winning_move": 117, "frobenius": 181, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 91, "outcome": "N", "winning_move": 31, "frobenius": 183, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 93, "outcome": "N", "winning_move": 37, "frobenius": 185, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 95, "outcome": "N", "winning_move": 123, "frobenius": 187, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 97, "outcome": "N", "winning_move": 103, "frobenius": 189, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 99, "outcome": "N", "winning_move": 50, "frobenius": 191, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 101, "outcome": "N", "winning_move": 31, "frobenius": 193, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 103, "outcome": "N", "winning_move": 41, "frobenius": 195, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 105, "outcome": "P", "winning_move": null, "frobenius": 197, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 107, "outcome": "N", "winning_move": 76, "frobenius": 199, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 109, "outcome": "N", "winning_move": 28, "frobenius": 201, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 111, "outcome": "N", "winning_move": 30, "frobenius": 203, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 113, "outcome": "N", "winning_move": 63, "frobenius": 205, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 115, "outcome": "N", "winning_move": 55, "frobenius": 207, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 117, "outcome": "N", "winning_move": 89, "frobenius": 209, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 119, "outcome": "N", "winning_move": 27, "frobenius": 211, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 121, "outcome": "N", "winning_move": 71, "frobenius": 213, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 123, "outcome": "N", "winning_move": 60, "frobenius": 215, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 125, "outcome": "N", "winning_move": 149, "frobenius": 217, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 127, "outcome": "N", "winning_move": 60, "frobenius": 219, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 129, "outcome": "N", "winning_move": 169, "frobenius": 221, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 131, "outcome": "N", "winning_move": 105, "frobenius": 223, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 133, "outcome": "N", "winning_move": 147, "frobenius": 225, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 135, "outcome": "N", "winning_move": 107, "frobenius": 227, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 137, "outcome": "N", "winning_move": 56, "frobenius": 229, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 139, "outcome": "N", "winning_move": 137, "frobenius": 231, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 141, "outcome": "N", "winning_move": 49, "frobenius": 233, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 143, "outcome": "N", "winning_move": 209, "frobenius": 235, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 145, "outcome": "N", "winning_move": 99, "frobenius": 237, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 147, "outcome": "N", "winning_move": 105, "frobenius": 239, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 149, "outcome": "N", "winning_move": 56, "frobenius": 241, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 151, "outcome": "N", "winning_move": 123, "frobenius": 243, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 153, "outcome": "N", "winning_move": 105, "frobenius": 245, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 155, "outcome": "N", "winning_move": 89, "frobenius": 247, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 157, "outcome": "N", "winning_move": 105, "frobenius": 249, "job_completed": false}
+{"base": [16, 26, 82, 86, 88], "move": 159, "outcome": "N", "winning_move": 99, "frobenius": 251, "job_completed": false}
