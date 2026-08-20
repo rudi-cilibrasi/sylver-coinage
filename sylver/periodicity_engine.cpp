@@ -1075,7 +1075,12 @@ struct Engine {
         if (const auto it = base_cache.find(key); it != base_cache.end())
             return it->second ? 1 : 0;
         if (!collect_mode) return exact_outcome(eid, anchors) ? 1 : 0;
-        if (pending_keys.insert(key).second)
+        // Cap the batch: one deep recursion can otherwise gather millions
+        // of pending positions before the sweep-level threshold is seen.
+        // A capped-out miss simply stays unknown and re-collects after the
+        // next batch resolves part of the frontier.
+        if (pending.size() < batch_pending * 4
+            && pending_keys.insert(key).second)
             pending.emplace_back(key, std::move(gens));
         return -1;
     }
@@ -1176,13 +1181,19 @@ struct Engine {
     std::vector<char> base_member_mask;
     bool base_member(int halfval) const { return base_member_mask[halfval]; }
 
-    void ensure_single_history(int eid) {
+    // Returns true when the singleton history is complete through
+    // scanned_to.  In collect mode an evaluation may be unknown; the
+    // history must then stop advancing, or a missed P would silently
+    // corrupt the first_p reset flag that the recurrence's outcomes
+    // depend on.  Callers treat an incomplete history as unknown.
+    bool ensure_single_history(int eid) {
         int sid = single_sid[eid];
         if (sid < 0) sid = register_shape(eid, {0});
         for (int m = history_to[eid] + 2; m <= scanned_to; m += 2) {
-            evaluate(sid, m);
+            if (evaluate(sid, m) < 0) return false;
             history_to[eid] = m;
         }
+        return true;
     }
 
     // ---- transitions -----------------------------------------------------
@@ -1291,8 +1302,13 @@ struct Engine {
                         const int neid = fill_epart(eid, index);
                         // Reset options from this even part depend on its
                         // entire earlier singleton history, not merely the
-                        // current recurrence window.
-                        ensure_single_history(neid);
+                        // current recurrence window.  An incomplete history
+                        // (pending exact dependency) defers this child: it
+                        // is neither materialized nor decided this sweep.
+                        if (!ensure_single_history(neid)) {
+                            saw_unknown = true;
+                            continue;
+                        }
                         // If that history already contains a P-position
                         // below the reset cutoff, the even child is N for
                         // this row regardless of its anchor offsets.  Do not

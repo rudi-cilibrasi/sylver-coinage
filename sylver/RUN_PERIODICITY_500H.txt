@@ -1,0 +1,79 @@
+Parallel periodicity block: the row-409 closure is measured, and it is vast
+2026-08-19 to 2026-08-20 (~21 h wall clock across three launches; cumulative
+campaign total ~501 h)
+
+Context:
+  After the even flank of X = {16,26,82,88} closed all-N
+  (RUN_X_EVEN_FLANK.txt), the engine gained batch-parallel exact
+  fallbacks and root-level hints (--exact-threads; commits 4e14000,
+  115b917, 4ce3c5b) and resumed the saved 220,574-shape row-409
+  frontier.  All ten periodicity tests, an ASan/UBSan interrupt-resume
+  control under threads, and an isolated-copy resume of the real
+  rowstate passed before launch.
+
+Launch 1 (~7 h, 8 threads): livelock, diagnosed and fixed.
+  Collect mode correctly refused to memoize unknown values, so every
+  sweep entry re-derived the entire unknown region down to the same
+  pending misses: 12,473,707,518 evaluations, shapes 220,574 -> 223,185,
+  zero batches.  SIGINT saved cleanly.  Fix: a transient per-sweep
+  unknown-memo, cleared before each re-sweep, never checkpointed, never
+  an outcome (commit 115b917).  The thrash log is preserved as
+  move26_data/periodicity_parallel_thrash.log.
+
+Launch 2 (~7 h, 8 threads): healthy expansion to 1,406,524 shapes.
+  Evaluations 12.47e9 -> 23.22e9; even parts 447 -> 1,051.  Stopped by
+  SIGINT on memory projection; 3.86 GB rowstate saved.  A batch-pending
+  threshold was added so early exact batches could prune expansion via
+  first_p reset flags (commit 4ce3c5b).
+
+Launch 3 (~7 h, 6 threads, threshold 20,000): the measurement.
+  Expansion continued to 3,157,209 shapes and 1,465 even parts
+  (evaluations 23.22e9 -> 50.29e9) with RSS tracking ~11-13 KB/shape.
+  A 42 GB guard sent SIGINT; at that moment the sweep had truncated
+  with **pending=12,541,230 distinct base-region exact positions** (the
+  per-sid threshold check could not see inside one deep recursion; a
+  4x-threshold cap now bounds this).  The 8.7 GB rowstate saved
+  atomically.
+
+Soundness audit finding (the important one):
+  Tracing 19 unexplained new cache rows exposed that
+  ensure_single_history discarded evaluate's return value.  In collect
+  mode evaluate may return unknown; history_to nevertheless advanced,
+  permanently marking a singleton history complete while missing
+  values.  A missed P would corrupt the first_p reset flag, which the
+  recurrence's *outcomes* depend on.  Serial mode is unaffected (inline
+  solves cannot be unknown).  Because launches 1-3 registered 1,018 new
+  even parts whose fresh histories swept under collect mode, all three
+  parallel rowstates are considered tainted and were discarded.  The
+  engine now stops history advancement at an unknown and defers the
+  dependent child as unknown for the sweep.
+  The 19 cache rows themselves are sound (solved inline during
+  checkpoint-load validation with collect mode off); two were
+  independently re-verified with the standalone native solver:
+    {16,26,38,61,82,88,123,127}  N (winner 11,     17,262 states)
+    {16,26,38,82,88,97,125,127}  N (winner 41,  5,439,343 states)
+
+State after the block (all audited):
+  rowstate: restored from git to the sound 480 h serial checkpoint,
+    SHA-256 cd2a912587395e221d4956236db365f74a2c474d855c2d28d0e45551008a1c28
+    (220,574 shapes, evaluations 22,641,268)
+  exact cache: 216,986 rows (216,967 post-flank + 19 verified), no
+    conflicts, no deletions
+  engine: parallel machinery fixed and regression-clean (10/10 tests);
+    no P-HIT, no PERIOD, X and move 26 remain undecided
+
+What the block established:
+  1.  Row X+409's dependency closure exceeds 3.15 million translated
+      shapes and 12.5 million distinct base-region exact positions —
+      at least 15x beyond everything the 480-hour serial campaign
+      reached, with expansion still unsaturated at the 45 GB memory
+      guard.  This is the first quantification of why the serial siege
+      never completed the row.
+  2.  The recycled exact cache absorbs nearly all base-region demand
+      during expansion: the binding constraint on this machine is
+      memory for the shape graph, not CPU for exact solves.
+  3.  Completing row 409 by brute closure requires order 10^7 exact
+      solves plus a shape graph beyond 62 GB under the present
+      representation.  On this machine that path needs either a
+      substantially more compact representation or a different
+      mathematical approach to the tail.

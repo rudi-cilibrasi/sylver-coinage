@@ -1007,6 +1007,50 @@ shape rowstate, now with the flank rows in its cache and with the
 parallel-fallback and hint machinery of this attempt available for its
 next upgrade.
 
+### Attempt 21 — the parallel engine measures the row-409 mountain
+
+The engine gained batch-parallel exact fallbacks behind
+`--exact-threads`: the row sweep collects base-region cache misses
+instead of solving them inline, solves each batch on a worker pool of
+independent embedded solvers, and re-sweeps with a warm memo.  Unknown
+values never reach the ring, row memo, `first_p`, or a snapshot, so the
+period certificate remains a function of exact outcomes only; with one
+thread the engine is unchanged.  Three ~7-hour launches against the
+saved row-409 frontier then taught three lessons, each caught by the
+monitoring-and-audit discipline rather than by luck
+(`RUN_PERIODICITY_500H.txt`).
+
+First, unmemoized unknowns livelock: without a transient per-sweep
+unknown-memo the first sweep re-derived the same pending region for
+12.5 billion evaluations.  Second, batching after a complete sweep is
+too late: expansion outran memory, so batches now trigger at a pending
+threshold, letting resolved P outcomes prune sibling expansion through
+the `first_p` reset flags while the closure is still being discovered.
+Third — the soundness finding — `ensure_single_history` discarded
+`evaluate`'s return value, so a collect-mode unknown could silently
+mark a singleton history complete and corrupt a reset flag that
+outcomes depend on.  The parallel rowstates were therefore discarded
+and the campaign state rolled back to the audited 480-hour serial
+checkpoint (`cd2a9125…`); the fix stops history advancement at an
+unknown and defers the dependent child.  Nineteen incidental exact
+rows survived (solved inline with collect off; two independently
+re-verified) and the cache stands at 216,986 conflict-free rows.
+
+The block's deliverable is the measurement.  Row `X+409`'s dependency
+closure exceeds **3.15 million translated shapes** and **12.5 million
+distinct base-region exact positions**, unsaturated at a 45 GB memory
+guard — at least 15x beyond everything 480 hours of serial grinding
+reached, and the first quantification of why that siege never finished
+the row.  During expansion the recycled cache absorbs nearly all exact
+demand: on this machine the binding constraint is memory for the shape
+graph, not CPU.  Completing row 409 by brute closure needs order 10^7
+exact solves and a graph beyond 62 GB as presently represented.  The
+odd tail of `X` is now known to be guarded by a genuinely enormous
+finite computation; the next investment decision (compact the
+representation, attack the other eleven open children of `{16,26}`
+directly, or put the measurement in front of the two other people who
+work this exact frontier) is recorded in the dashboards.
+
 ### Sources
 
 - <https://math.colgate.edu/~integers/yg2/yg2.pdf>
