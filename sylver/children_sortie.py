@@ -93,6 +93,8 @@ def main(argv: list[str] | None = None) -> int:
     arguments = parser.parse_args(argv)
 
     cache = load_cache(arguments.cache)
+    # A restarted sortie must not re-scan its own completed rows.
+    cache.update(load_cache(arguments.output / "children_sortie.cache"))
     statuses = route_children(cache, base=BASE)
     children = sorted(
         c for c, s in statuses.items() if s.status == "open" and c != 88
