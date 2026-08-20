@@ -581,6 +581,11 @@ struct Engine {
     std::set<std::string> pending_keys;
     // Recent distinct root winners; outcome-invariant reordering only.
     std::vector<int> hint_pool;
+    // Transient per-sweep memo of unknown (sid,m) nodes.  Without it every
+    // sweep entry re-derives the whole unknown-poisoned region down to the
+    // same pending misses and the first sweep never terminates.  Cleared
+    // before each re-sweep, never checkpointed, never an outcome.
+    std::set<U64> unknown_memo;
     U64 exact_completed = 0;
     U64 exact_states = 0;
 
@@ -1225,6 +1230,9 @@ struct Engine {
         if (const auto found = row_memo.find(memo_key);
             found != row_memo.end())
             return found->second;
+        if (collect_mode
+            && unknown_memo.find(memo_key) != unknown_memo.end())
+            return -1;
         signed char result;
         std::vector<int> anchors;
         for (int o : shapes[sid].offsets) anchors.push_back(m + o);
@@ -1234,7 +1242,10 @@ struct Engine {
             result = *cached ? 1 : 0;
         } else if (m < auto_min) {
             result = exact_or_collect(shapes[sid].eid, anchors);
-            if (result < 0) return -1;  // pending exact dependency; write nothing
+            if (result < 0) {
+                unknown_memo.insert(memo_key);
+                return -1;  // pending exact dependency; write nothing else
+            }
         } else {
             const int eid = shapes[sid].eid;
             bool winning = first_p[eid] <= m - tbar - 2;
@@ -1306,7 +1317,10 @@ struct Engine {
             // A P child decides the parent N even beside an unknown sibling;
             // otherwise an unknown child leaves the parent unknown, with no
             // ring, memo, or first_p writes until the batch resolves it.
-            if (!winning && saw_unknown) return -1;
+            if (!winning && saw_unknown) {
+                unknown_memo.insert(memo_key);
+                return -1;
+            }
             result = winning ? 0 : 1;
         }
         ring[sid][slot_of(m)] = result;
@@ -1520,6 +1534,7 @@ int main(int argc, char** argv) {
                     eng.collect_mode = eng.exact_threads > 1;
                     eng.pending.clear();
                     eng.pending_keys.clear();
+                    eng.unknown_memo.clear();
                     size_t count = eng.shapes.size();
                     for (size_t sid = 0; sid < count; ++sid)
                         eng.evaluate(static_cast<int>(sid), static_cast<int>(n));
