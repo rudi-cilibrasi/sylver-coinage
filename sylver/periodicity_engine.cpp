@@ -26,12 +26,14 @@
 
 #include <algorithm>
 #include <array>
+#include <atomic>
 #include <cerrno>
 #include <csignal>
 #include <cstdint>
 #include <cstring>
 #include <limits>
 #include <queue>
+#include <thread>
 #include <cstdio>
 #include <cstdlib>
 #include <fstream>
@@ -330,6 +332,21 @@ class ExactSolver {
         for (const int generator : generators_) initial_ = adjoin(initial_, generator);
     }
     [[nodiscard]] int solve() { return winning_move(initial_); }
+    // Hints reorder only the root-level search.  Any winning move is a valid
+    // N-certificate, so a hint that wins is returned immediately; otherwise
+    // the unmodified exhaustive loop decides.  Outcomes cannot change.
+    [[nodiscard]] int solve(const std::vector<int>& hints) {
+        if (const auto found = memo_.find(initial_); found != memo_.end())
+            return found->second;
+        for (const int hint : hints) {
+            if (hint < 2 || hint > frobenius_ || initial_.test(hint)) continue;
+            if (winning_move(adjoin(initial_, hint)) == 0) {
+                memo_.emplace(initial_, static_cast<std::uint16_t>(hint));
+                return hint;
+            }
+        }
+        return winning_move(initial_);
+    }
     [[nodiscard]] std::size_t states_evaluated() const { return memo_.size(); }
 
   private:
@@ -380,26 +397,33 @@ class ExactSolver {
 
 struct ExactResult {
     bool is_p;
+    int winning_move;  // 0 when P
     std::size_t states;
 };
 
 template <std::size_t Words>
 ExactResult solve_exact_with_words(
-    const std::vector<int>& generators, int frobenius
+    const std::vector<int>& generators, int frobenius,
+    const std::vector<int>& hints
 ) {
     ExactSolver<Words> solver(generators, frobenius);
-    const bool is_p = solver.solve() == 0;
-    return {is_p, solver.states_evaluated()};
+    const int move = solver.solve(hints);
+    return {move == 0, move, solver.states_evaluated()};
 }
 
 ExactResult solve_exact_position(
-    const std::vector<int>& generators, int frobenius
+    const std::vector<int>& generators, int frobenius,
+    const std::vector<int>& hints = {}
 ) {
-    if (frobenius <= 63) return solve_exact_with_words<1>(generators, frobenius);
-    if (frobenius <= 127) return solve_exact_with_words<2>(generators, frobenius);
-    if (frobenius <= 255) return solve_exact_with_words<4>(generators, frobenius);
-    if (frobenius <= 511) return solve_exact_with_words<8>(generators, frobenius);
-    return solve_exact_with_words<16>(generators, frobenius);
+    if (frobenius <= 63)
+        return solve_exact_with_words<1>(generators, frobenius, hints);
+    if (frobenius <= 127)
+        return solve_exact_with_words<2>(generators, frobenius, hints);
+    if (frobenius <= 255)
+        return solve_exact_with_words<4>(generators, frobenius, hints);
+    if (frobenius <= 511)
+        return solve_exact_with_words<8>(generators, frobenius, hints);
+    return solve_exact_with_words<16>(generators, frobenius, hints);
 }
 
 struct Engine {
@@ -546,6 +570,17 @@ struct Engine {
     std::unordered_map<std::string, bool> base_cache;
     int external_cache_max_anchor = 1;
     bool dirty_cache = false;
+    // Batch-parallel exact fallbacks.  In collect mode a base-region cache
+    // miss is queued instead of solved inline; unknown (-1) values are never
+    // written to the ring, row memo, or first_p, so the period certificate
+    // remains a function of exact outcomes only.  Pending work is transient
+    // and never checkpointed: an interrupt simply re-collects on resume.
+    int exact_threads = 1;
+    bool collect_mode = false;
+    std::vector<std::pair<std::string, std::vector<int>>> pending;
+    std::set<std::string> pending_keys;
+    // Recent distinct root winners; outcome-invariant reordering only.
+    std::vector<int> hint_pool;
     U64 exact_completed = 0;
     U64 exact_states = 0;
 
@@ -1001,7 +1036,7 @@ struct Engine {
         if (verbose)
             std::cout << "EXACT begin key=" << key
                       << " f=" << frob << std::endl;
-        const ExactResult exact = solve_exact_position(gens, frob);
+        const ExactResult exact = solve_exact_position(gens, frob, hint_pool);
         ++exact_completed;
         exact_states += exact.states;
         if (verbose) {
@@ -1015,11 +1050,97 @@ struct Engine {
         }
         base_cache[key] = exact.is_p;
         dirty_cache = true;
+        record_hint(exact.winning_move);
         // Finite fallbacks dominate runtime on hard fronts.  Persist each
         // completed result immediately so an interrupted tail run never has
         // to repeat a multi-minute exact subgame.
         save_cache();
         return exact.is_p;
+    }
+
+    signed char exact_or_collect(int eid, const std::vector<int>& anchors) {
+        std::vector<int> gens = position_generators(eid, anchors);
+        const std::string key = generator_key(gens);
+        if (const auto it = base_cache.find(key); it != base_cache.end())
+            return it->second ? 1 : 0;
+        if (!collect_mode) return exact_outcome(eid, anchors) ? 1 : 0;
+        if (pending_keys.insert(key).second)
+            pending.emplace_back(key, std::move(gens));
+        return -1;
+    }
+
+    void record_hint(int winner) {
+        if (winner <= 0) return;
+        for (const int existing : hint_pool)
+            if (existing == winner) return;
+        hint_pool.push_back(winner);
+        if (hint_pool.size() > 16)
+            hint_pool.erase(hint_pool.begin());
+    }
+
+    void solve_pending_parallel() {
+        struct Item {
+            std::string key;
+            std::vector<int> gens;
+            int frobenius = 0;
+            bool done = false;
+            ExactResult result{};
+        };
+        std::vector<Item> items;
+        items.reserve(pending.size());
+        for (auto& [key, gens] : pending) {
+            Item item;
+            item.key = key;
+            item.gens = std::move(gens);
+            item.frobenius = exact_frobenius(item.gens);
+            if (item.frobenius > kMaximumFrobenius) {
+                std::cerr << "base position exceeds solver capacity: "
+                          << item.key << "\n";
+                std::exit(2);
+            }
+            items.push_back(std::move(item));
+        }
+        pending.clear();
+        pending_keys.clear();
+        const std::vector<int> hints = hint_pool;  // frozen for the batch
+        std::atomic<std::size_t> next{0};
+        std::vector<std::thread> pool;
+        const std::size_t width = std::min<std::size_t>(
+            static_cast<std::size_t>(exact_threads), items.size());
+        for (std::size_t t = 0; t < width; ++t)
+            pool.emplace_back([&items, &next, &hints]() {
+                for (;;) {
+                    const std::size_t i = next.fetch_add(1);
+                    if (i >= items.size() || interrupt_requested != 0) return;
+                    try {
+                        items[i].result = solve_exact_position(
+                            items[i].gens, items[i].frobenius, hints);
+                        items[i].done = true;
+                    } catch (const CampaignInterrupted&) {
+                        return;
+                    }
+                }
+            });
+        for (std::thread& worker : pool) worker.join();
+        for (const Item& item : items) {
+            if (!item.done) continue;
+            ++exact_completed;
+            exact_states += item.result.states;
+            base_cache[item.key] = item.result.is_p;
+            record_hint(item.result.winning_move);
+            if (item.frobenius >= 180)
+                std::cout << "EXACT end key=" << item.key
+                          << " outcome=" << (item.result.is_p ? "P" : "N")
+                          << " states=" << item.result.states << std::endl;
+            else if (exact_completed % 1000 == 0)
+                std::cout << "EXACT progress completed=" << exact_completed
+                          << " states=" << exact_states
+                          << " cache=" << base_cache.size() << std::endl;
+        }
+        dirty_cache = true;
+        save_cache();
+        // Completed work is merged and saved; now honor any pending signal.
+        throw_if_interrupted();
     }
 
     std::vector<int> position_generators(
@@ -1112,10 +1233,12 @@ struct Engine {
         if (cached.has_value()) {
             result = *cached ? 1 : 0;
         } else if (m < auto_min) {
-            result = exact_outcome(shapes[sid].eid, anchors) ? 1 : 0;
+            result = exact_or_collect(shapes[sid].eid, anchors);
+            if (result < 0) return -1;  // pending exact dependency; write nothing
         } else {
             const int eid = shapes[sid].eid;
             bool winning = first_p[eid] <= m - tbar - 2;
+            bool saw_unknown = false;
             if (!winning) {
                 build_transition_specs(sid);
                 const std::size_t odd_count = shapes[sid].odd_options.size();
@@ -1139,6 +1262,7 @@ struct Engine {
                             cv = evaluate(child, cm);
                     }
                     if (cv == 1) { winning = true; break; }
+                    if (cv < 0) saw_unknown = true;
                 }
             }
             if (!winning) {
@@ -1176,8 +1300,13 @@ struct Engine {
                     }
                     const signed char cv = evaluate(child, m);
                     if (cv == 1) { winning = true; break; }
+                    if (cv < 0) saw_unknown = true;
                 }
             }
+            // A P child decides the parent N even beside an unknown sibling;
+            // otherwise an unknown child leaves the parent unknown, with no
+            // ring, memo, or first_p writes until the batch resolves it.
+            if (!winning && saw_unknown) return -1;
             result = winning ? 0 : 1;
         }
         ring[sid][slot_of(m)] = result;
@@ -1280,6 +1409,22 @@ int main(int argc, char** argv) {
                 std::cerr << "invalid --stop-after-evaluations count\n";
                 return 1;
             }
+        } else if (argument == "--exact-threads") {
+            if (++i >= argc) {
+                std::cerr << "--exact-threads requires a count\n";
+                return 1;
+            }
+            try {
+                std::size_t parsed = 0;
+                const std::string count = argv[i];
+                const long threads = std::stol(count, &parsed);
+                if (parsed != count.size() || threads < 1 || threads > 64)
+                    throw std::invalid_argument("count");
+                eng.exact_threads = static_cast<int>(threads);
+            } catch (const std::exception&) {
+                std::cerr << "invalid --exact-threads count\n";
+                return 1;
+            }
         } else if (argument.rfind("--", 0) == 0) {
             std::cerr << "unknown option: " << argument << "\n";
             return 1;
@@ -1371,29 +1516,39 @@ int main(int argc, char** argv) {
                           << " shapes=" << eng.shapes.size()
                           << " eparts=" << eng.emask.size() << std::endl;
             try {
-                size_t count = eng.shapes.size();
-                for (size_t sid = 0; sid < count; ++sid)
-                    eng.evaluate(static_cast<int>(sid), static_cast<int>(n));
-                while (count < eng.shapes.size()) {
-                    size_t from = count;
-                    count = eng.shapes.size();
-                    std::cout << "BACKFILL begin n=" << n
-                              << " from=" << from
-                              << " to=" << count
-                              << " shapes=" << eng.shapes.size() << std::endl;
-                    for (size_t sid = from; sid < count; ++sid) {
-                        if (sid != from && (sid - from) % 10000 == 0)
-                            std::cout << "BACKFILL progress n=" << n
-                                      << " sid=" << sid
-                                      << " to=" << count
-                                      << " shapes=" << eng.shapes.size() << std::endl;
-                        for (long m = std::max(3L, n - eng.tbar); m <= n; m += 2)
-                            eng.evaluate(static_cast<int>(sid), static_cast<int>(m));
+                for (;;) {
+                    eng.collect_mode = eng.exact_threads > 1;
+                    eng.pending.clear();
+                    eng.pending_keys.clear();
+                    size_t count = eng.shapes.size();
+                    for (size_t sid = 0; sid < count; ++sid)
+                        eng.evaluate(static_cast<int>(sid), static_cast<int>(n));
+                    while (count < eng.shapes.size()) {
+                        size_t from = count;
+                        count = eng.shapes.size();
+                        std::cout << "BACKFILL begin n=" << n
+                                  << " from=" << from
+                                  << " to=" << count
+                                  << " shapes=" << eng.shapes.size() << std::endl;
+                        for (size_t sid = from; sid < count; ++sid) {
+                            if (sid != from && (sid - from) % 10000 == 0)
+                                std::cout << "BACKFILL progress n=" << n
+                                          << " sid=" << sid
+                                          << " to=" << count
+                                          << " shapes=" << eng.shapes.size() << std::endl;
+                            for (long m = std::max(3L, n - eng.tbar); m <= n; m += 2)
+                                eng.evaluate(static_cast<int>(sid), static_cast<int>(m));
+                        }
+                        std::cout << "BACKFILL end n=" << n
+                                  << " from=" << from
+                                  << " to=" << count
+                                  << " shapes=" << eng.shapes.size() << std::endl;
                     }
-                    std::cout << "BACKFILL end n=" << n
-                              << " from=" << from
-                              << " to=" << count
-                              << " shapes=" << eng.shapes.size() << std::endl;
+                    if (eng.pending.empty()) break;
+                    std::cout << "EXACT-BATCH n=" << n
+                              << " pending=" << eng.pending.size()
+                              << " threads=" << eng.exact_threads << std::endl;
+                    eng.solve_pending_parallel();
                 }
                 throw_if_interrupted();
             } catch (const CampaignInterrupted&) {

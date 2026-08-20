@@ -215,6 +215,103 @@ class NativePeriodicityTests(unittest.TestCase):
         self.assertIn("LIMIT-REACHED n=101 shapes=3", output)
         self.assertFalse(any(line.startswith("PERIOD") for line in output))
 
+    def test_exact_threads_reproduce_all_period_certificates(self) -> None:
+        # Distinct cache paths: a shared cache would raise the loaded-anchor
+        # bound and legitimately defer period search for the legacy tests.
+        cases = (
+            ((2,), "PERIOD start=5 length=4 shapes=1", ("P-HIT n=3",)),
+            ((4, 6), "PERIOD start=9 length=4 shapes=3", ()),
+            ((6, 16), "PERIOD start=57 length=4 shapes=2", ("P-HIT n=7",)),
+            ((8, 10, 22), "PERIOD start=49 length=8 shapes=50", ()),
+        )
+        for base, period, hits in cases:
+            with self.subTest(base=base):
+                cache = Path(self.tempdir.name) / (
+                    "mt-" + "-".join(map(str, base)) + ".cache"
+                )
+                completed = subprocess.run(
+                    [
+                        str(self.binary),
+                        str(cache),
+                        "201",
+                        "--exact-threads",
+                        "4",
+                        *map(str, base),
+                    ],
+                    check=True,
+                    capture_output=True,
+                    text=True,
+                    cwd=ROOT,
+                    timeout=60,
+                )
+                output = tuple(completed.stdout.splitlines())
+                self.assertIn(period, output)
+                self.assertEqual(
+                    tuple(line for line in output if line.startswith("P-HIT")),
+                    hits,
+                )
+
+    def test_exact_threads_serial_and_parallel_caches_agree(self) -> None:
+        # Collect mode keeps scanning siblings past an unknown child, so it
+        # can solve dependencies that the serial early-exit never needed.
+        # The caches may therefore differ as sets; they must never conflict
+        # on a shared key, and the period certificate must be identical.
+        outcomes = {}
+        periods = {}
+        for label, threads in (("serial", "1"), ("parallel", "4")):
+            cache = Path(self.tempdir.name) / f"threads-{label}.cache"
+            completed = subprocess.run(
+                [
+                    str(self.binary),
+                    str(cache),
+                    "201",
+                    "--exact-threads",
+                    threads,
+                    "8",
+                    "10",
+                    "22",
+                ],
+                check=True,
+                capture_output=True,
+                text=True,
+                cwd=ROOT,
+                timeout=60,
+            )
+            rows = {}
+            for line in cache.read_text().splitlines():
+                key, _, value = line.rpartition(" ")
+                rows[key] = value
+            outcomes[label] = rows
+            periods[label] = tuple(
+                line
+                for line in completed.stdout.splitlines()
+                if line.startswith("PERIOD")
+            )
+        shared = set(outcomes["serial"]) & set(outcomes["parallel"])
+        self.assertGreater(len(shared), 0)
+        for key in shared:
+            self.assertEqual(
+                outcomes["serial"][key],
+                outcomes["parallel"][key],
+                f"conflicting outcome for {key}",
+            )
+        self.assertEqual(periods["serial"], periods["parallel"])
+        self.assertEqual(
+            periods["serial"], ("PERIOD start=49 length=8 shapes=50",)
+        )
+
+    def test_exact_threads_rejects_invalid_counts(self) -> None:
+        for bad in ("0", "-2", "65", "x"):
+            cache = Path(self.tempdir.name) / "bad-threads.cache"
+            completed = subprocess.run(
+                [str(self.binary), str(cache), "31", "--exact-threads", bad, "4", "6"],
+                capture_output=True,
+                text=True,
+                cwd=ROOT,
+                timeout=30,
+            )
+            self.assertNotEqual(completed.returncode, 0)
+
 
 if __name__ == "__main__":
     unittest.main()
