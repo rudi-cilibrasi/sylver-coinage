@@ -577,6 +577,12 @@ struct Engine {
     // and never checkpointed: an interrupt simply re-collects on resume.
     int exact_threads = 1;
     bool collect_mode = false;
+    // Solve a batch as soon as this many positions are pending instead of
+    // waiting for a complete sweep.  Early batches surface P outcomes whose
+    // first_p reset flags prune sibling expansion, shrinking the closure
+    // and bounding memory; correctness is unaffected because the collect
+    // loop still terminates only on a complete sweep with zero pending.
+    std::size_t batch_pending = 20000;
     std::vector<std::pair<std::string, std::vector<int>>> pending;
     std::set<std::string> pending_keys;
     // Recent distinct root winners; outcome-invariant reordering only.
@@ -1423,6 +1429,22 @@ int main(int argc, char** argv) {
                 std::cerr << "invalid --stop-after-evaluations count\n";
                 return 1;
             }
+        } else if (argument == "--batch-pending") {
+            if (++i >= argc) {
+                std::cerr << "--batch-pending requires a count\n";
+                return 1;
+            }
+            try {
+                std::size_t parsed = 0;
+                const std::string count = argv[i];
+                const long long threshold = std::stoll(count, &parsed);
+                if (parsed != count.size() || threshold < 1)
+                    throw std::invalid_argument("count");
+                eng.batch_pending = static_cast<std::size_t>(threshold);
+            } catch (const std::exception&) {
+                std::cerr << "invalid --batch-pending count\n";
+                return 1;
+            }
         } else if (argument == "--exact-threads") {
             if (++i >= argc) {
                 std::cerr << "--exact-threads requires a count\n";
@@ -1535,10 +1557,16 @@ int main(int argc, char** argv) {
                     eng.pending.clear();
                     eng.pending_keys.clear();
                     eng.unknown_memo.clear();
+                    bool truncated = false;
                     size_t count = eng.shapes.size();
-                    for (size_t sid = 0; sid < count; ++sid)
+                    for (size_t sid = 0; sid < count; ++sid) {
                         eng.evaluate(static_cast<int>(sid), static_cast<int>(n));
-                    while (count < eng.shapes.size()) {
+                        if (eng.pending.size() >= eng.batch_pending) {
+                            truncated = true;
+                            break;
+                        }
+                    }
+                    while (!truncated && count < eng.shapes.size()) {
                         size_t from = count;
                         count = eng.shapes.size();
                         std::cout << "BACKFILL begin n=" << n
@@ -1553,16 +1581,24 @@ int main(int argc, char** argv) {
                                           << " shapes=" << eng.shapes.size() << std::endl;
                             for (long m = std::max(3L, n - eng.tbar); m <= n; m += 2)
                                 eng.evaluate(static_cast<int>(sid), static_cast<int>(m));
+                            if (eng.pending.size() >= eng.batch_pending) {
+                                truncated = true;
+                                break;
+                            }
                         }
                         std::cout << "BACKFILL end n=" << n
                                   << " from=" << from
                                   << " to=" << count
                                   << " shapes=" << eng.shapes.size() << std::endl;
                     }
-                    if (eng.pending.empty()) break;
+                    if (eng.pending.empty()) {
+                        if (!truncated) break;
+                        continue;
+                    }
                     std::cout << "EXACT-BATCH n=" << n
                               << " pending=" << eng.pending.size()
-                              << " threads=" << eng.exact_threads << std::endl;
+                              << " threads=" << eng.exact_threads
+                              << (truncated ? " truncated=1" : "") << std::endl;
                     eng.solve_pending_parallel();
                 }
                 throw_if_interrupted();
