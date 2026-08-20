@@ -113,9 +113,11 @@ class Solver {
         }
     }
 
-    [[nodiscard]] int solve() { return winning_move(initial_); }
-    [[nodiscard]] int solve_after_adjoining(int move) {
-        return winning_move(adjoin(initial_, move));
+    [[nodiscard]] int solve(const std::vector<int>& hints = {}) {
+        return winning_move_hinted(initial_, hints);
+    }
+    [[nodiscard]] int solve_after_adjoining(int move, const std::vector<int>& hints = {}) {
+        return winning_move_hinted(adjoin(initial_, move), hints);
     }
     [[nodiscard]] std::size_t states_evaluated() const { return memo_.size(); }
 
@@ -142,6 +144,26 @@ class Solver {
             shift *= 2;
         }
         return state;
+    }
+
+    // Hints reorder only the root-level search.  Any winning move is a valid
+    // N-certificate, so a hint that wins is returned immediately; otherwise
+    // the unmodified exhaustive loop decides the position.  Outcomes cannot
+    // change, only the order in which root children are explored.
+    [[nodiscard]] int winning_move_hinted(const State& root, const std::vector<int>& hints) {
+        if (const auto found = memo_.find(root); found != memo_.end()) {
+            return found->second;
+        }
+        for (const int hint : hints) {
+            if (hint < 2 || hint > frobenius_ || root.test(hint)) {
+                continue;
+            }
+            if (winning_move(adjoin(root, hint)) == 0) {
+                memo_.emplace(root, static_cast<std::uint16_t>(hint));
+                return hint;
+            }
+        }
+        return winning_move(root);
     }
 
     [[nodiscard]] int winning_move(const State& state) {
@@ -204,10 +226,100 @@ class Solver {
     return generators;
 }
 
+[[nodiscard]] std::vector<int> parse_move_list(const std::string& text) {
+    std::vector<int> moves;
+    std::size_t begin = 0;
+    while (begin <= text.size()) {
+        std::size_t comma = text.find(',', begin);
+        if (comma == std::string::npos) {
+            comma = text.size();
+        }
+        const long value = std::stol(text.substr(begin, comma - begin));
+        if (value < 2 || value > std::numeric_limits<int>::max()) {
+            throw std::invalid_argument("listed moves must be integers greater than one");
+        }
+        moves.push_back(static_cast<int>(value));
+        begin = comma + 1;
+    }
+    return moves;
+}
+
+void run_move_scan(
+    const std::vector<int>& base,
+    const std::vector<int>& moves,
+    const std::vector<int>& hints
+) {
+    int bound = 0;
+    for (const int move : moves) {
+        std::vector<int> child = base;
+        child.push_back(move);
+        std::sort(child.begin(), child.end());
+        if (std::accumulate(
+                child.begin() + 1,
+                child.end(),
+                child.front(),
+                [](int left, int right) { return std::gcd(left, right); }
+            ) != 1) {
+            throw std::invalid_argument("every scanned child must have gcd one");
+        }
+        bound = std::max(bound, frobenius_number(child));
+    }
+    if (bound > kMaximumFrobenius) {
+        throw std::invalid_argument(
+            "scan Frobenius bound exceeds native limit " +
+            std::to_string(kMaximumFrobenius)
+        );
+    }
+    Solver solver(base, bound);
+    for (const int move : moves) {
+        std::vector<int> child = base;
+        child.push_back(move);
+        std::sort(child.begin(), child.end());
+        const int actual_frobenius = frobenius_number(child);
+        const int response = solver.solve_after_adjoining(move, hints);
+        std::cout << "move=" << move << ' '
+                  << (response == 0 ? "P" : "N") << " winning_move=";
+        if (response == 0) {
+            std::cout << "none";
+        } else {
+            std::cout << response;
+        }
+        // Flushed per row: a timed-out worker must not lose finished rows
+        // to block buffering.
+        std::cout << " frobenius=" << actual_frobenius
+                  << " cumulative_states=" << solver.states_evaluated()
+                  << std::endl;
+    }
+}
+
 }  // namespace
 
 int main(int argc, char** argv) {
     try {
+        std::vector<int> hints;
+        if (argc >= 3 && std::string(argv[1]) == "--hints") {
+            hints = parse_move_list(argv[2]);
+            argv += 2;
+            argc -= 2;
+        }
+        if (argc >= 2 && std::string(argv[1]) == "--odd-list") {
+            if (argc < 4) {
+                throw std::invalid_argument(
+                    "odd-list mode requires MOVES and base generators"
+                );
+            }
+            const std::vector<int> moves = parse_move_list(argv[2]);
+            for (const int move : moves) {
+                if (move < 3 || move % 2 == 0) {
+                    throw std::invalid_argument(
+                        "odd-list moves must be odd and at least 3"
+                    );
+                }
+            }
+            const std::vector<int> base = parse_generators(argc, argv, 3, false);
+            run_move_scan(base, moves, hints);
+            return EXIT_SUCCESS;
+        }
         if (argc >= 2 && std::string(argv[1]) == "--odd-range") {
             if (argc < 6) {
                 throw std::invalid_argument(
@@ -220,47 +332,11 @@ int main(int argc, char** argv) {
                 throw std::invalid_argument("odd range must have odd endpoints >= 3");
             }
             const std::vector<int> base = parse_generators(argc, argv, 4, false);
-            int bound = 0;
+            std::vector<int> moves;
             for (int move = start; move <= end; move += 2) {
-                std::vector<int> child = base;
-                child.push_back(move);
-                std::sort(child.begin(), child.end());
-                if (std::accumulate(
-                        child.begin() + 1,
-                        child.end(),
-                        child.front(),
-                        [](int left, int right) { return std::gcd(left, right); }
-                    ) != 1) {
-                    throw std::invalid_argument(
-                        "every odd-range child must have gcd one"
-                    );
-                }
-                bound = std::max(bound, frobenius_number(child));
+                moves.push_back(move);
             }
-            if (bound > kMaximumFrobenius) {
-                throw std::invalid_argument(
-                    "odd-range Frobenius bound exceeds native limit " +
-                    std::to_string(kMaximumFrobenius)
-                );
-            }
-            Solver solver(base, bound);
-            for (int move = start; move <= end; move += 2) {
-                std::vector<int> child = base;
-                child.push_back(move);
-                std::sort(child.begin(), child.end());
-                const int actual_frobenius = frobenius_number(child);
-                const int response = solver.solve_after_adjoining(move);
-                std::cout << "move=" << move << ' '
-                          << (response == 0 ? "P" : "N") << " winning_move=";
-                if (response == 0) {
-                    std::cout << "none";
-                } else {
-                    std::cout << response;
-                }
-                std::cout << " frobenius=" << actual_frobenius
-                          << " cumulative_states=" << solver.states_evaluated()
-                          << '\n';
-            }
+            run_move_scan(base, moves, hints);
             return EXIT_SUCCESS;
         }
 
@@ -273,7 +349,7 @@ int main(int argc, char** argv) {
             );
         }
         Solver solver(generators, frobenius);
-        const int move = solver.solve();
+        const int move = solver.solve(hints);
         std::cout << (move == 0 ? "P" : "N") << " winning_move=";
         if (move == 0) {
             std::cout << "none";

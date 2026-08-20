@@ -188,6 +188,54 @@ class NativeSylverSolverTests(unittest.TestCase):
             (False, None, 923),
         )
 
+    def run_native(self, *arguments: str) -> str:
+        return subprocess.run(
+            [str(self.binary), *arguments],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout
+
+    def test_hints_do_not_change_single_position_outcomes(self) -> None:
+        for generators in [(16, 6, 3), (16, 6, 7), (16, 10, 9), (16, 18, 5), (4, 6, 9)]:
+            reference = solve_position(generators)
+            plain = self.run_native(*map(str, generators))
+            hinted = self.run_native("--hints", "9,5,3,201", *map(str, generators))
+            expected = "N" if reference.is_winning else "P"
+            self.assertEqual(plain.split()[0], expected)
+            self.assertEqual(hinted.split()[0], expected)
+            winner = hinted.split()[1].removeprefix("winning_move=")
+            if winner != "none":
+                # Any reported winner must reach an exact P-position.
+                child = solve_position((*generators, int(winner)))
+                self.assertFalse(child.is_winning)
+
+    def test_odd_list_matches_odd_range(self) -> None:
+        range_output = self.run_native("--odd-range", "3", "13", "4", "6")
+        list_output = self.run_native("--odd-list", "3,5,7,9,11,13", "4", "6")
+        self.assertEqual(range_output, list_output)
+
+    def test_odd_list_supports_gaps_in_the_move_list(self) -> None:
+        output = self.run_native("--odd-list", "3,7,13", "4", "6")
+        moves = [line.split()[0] for line in output.strip().splitlines()]
+        self.assertEqual(moves, ["move=3", "move=7", "move=13"])
+
+    def test_hinted_odd_range_outcomes_match_plain(self) -> None:
+        plain = self.run_native("--odd-range", "3", "13", "6", "16")
+        hinted = self.run_native("--hints", "7", "--odd-range", "3", "13", "6", "16")
+        plain_outcomes = [line.split()[1] for line in plain.strip().splitlines()]
+        hinted_outcomes = [line.split()[1] for line in hinted.strip().splitlines()]
+        self.assertEqual(plain_outcomes, hinted_outcomes)
+
+    def test_odd_list_rejects_even_or_small_moves(self) -> None:
+        for bad in ("4", "1", "2,5"):
+            result = subprocess.run(
+                [str(self.binary), "--odd-list", bad, "4", "6"],
+                capture_output=True,
+                text=True,
+            )
+            self.assertNotEqual(result.returncode, 0)
+
 
 if __name__ == "__main__":
     unittest.main()
