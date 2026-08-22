@@ -1,0 +1,66 @@
+Head-on sortie against the open even children of {16,26}
+2026-08-21 to 2026-08-22 (~1 day wall clock, two launches)
+
+Context:
+  After the X even flank closed all-N and the parallel engine measured
+  row X+409's closure at >3.15M shapes (RUN_X_EVEN_FLANK.txt,
+  RUN_PERIODICITY_500H.txt), the campaign turned to the eleven other
+  open even children of {16,26}: any child {16,26,c} that is P answers
+  move 26 outright by the reply c, without deciding X.
+
+Recycling pass first (commit 15f5686):
+  sylver/scan_records.py banked every historical scan artifact —
+  the campaign ledger plus eight raw records — into the audited cache,
+  re-validating every row by recomputing the child's Frobenius number
+  against its claimed base.  2,373 outcomes entered with zero
+  conflicts.  This refuted child 134 for free (reply 89) and, after
+  the nine prose-only refutations of RUN_MOVE_26_FRONTIER.txt were
+  re-derived exactly (all P; largest {16,26,102,79} at 48,027,721
+  states), left eleven scannable children plus 88 (blocked on X).
+
+The sortie (sylver/children_sortie.py):
+  Depth-interleaved chunks over uncached odd replies through 401,
+  shallowest chunks across all children first, per-worker rlimits.
+  Launch 1 (10 workers, 30-move chunks) oversubscribed memory into
+  swap and was stopped; its 25 completed rows were preserved and the
+  driver gained a resume filter (commit 63b0da6).  Launch 2 (5
+  workers, 3 wide, 20-move chunks, 11 GB rlimit each) ran ~1 day.
+
+Result: 249 new exact rows banked (cache: 219,146 conflict-free
+  rows, SHA-256
+  7ab8db17222eaafdb02d7c1d5eb388416c8a71b3dfcde275b8f56343adeaa94e).
+  **No P child found.  Move 26 remains unanswered.**  Every scanned
+  reply is N.  The contiguous refuted frontier per child (every odd
+  reply 3..N proved N, first unknown following):
+
+    child  60: through 191    child 114: through  89
+    child  70: through 123    child 118: through  97
+    child  82: through 117    child 124: through  87
+    child  86: through 103    child 150: through  89
+    child  92: through 103    child 166: through  89
+    child  98: through  93
+
+  20 of 157 launch-2 ledger rows came from chunks that completed;
+  137 came from chunks that hit the 3 h timeout or the 11 GB memory
+  rlimit partway, banking their finished rows before dying.  Beyond
+  the frontiers above, single positions have Frobenius numbers in the
+  300s-500s and memos beyond 10 GB: the same wall the X odd scan hit
+  at 407 and the {12,16,20} scan hit at 409.
+
+What the sortie established:
+  1.  All eleven children resist through their frontiers with no P
+      and no visible pattern in the winners — consistent with Blok's
+      "nearly short" heuristic that deep odd winners are the norm.
+  2.  Linear odd scanning is exhausted on this machine for every open
+      branch of {16,26}: X (through 407 plus a 3.15M-shape closure
+      measurement), and now all eleven siblings (through 87-191).
+  3.  The bounded question "is {16,26} P?" now rests entirely on
+      twelve long children, each guarded by a computation of the
+      row-409 class.  Cheap flanks are exhausted; the next investment
+      is strategic (compact representation, or the periodicity method
+      applied to a cheaper child, or community engagement).
+
+Artifacts:
+  sylver/move26_data/children_sortie_run/children_sortie.cache (279 rows)
+  sylver/move26_data/children_sortie_run/children_sortie_ledger.jsonl (157 rows)
+  sylver/move26_data/children_sortie_run.log, children_sortie_run2.log

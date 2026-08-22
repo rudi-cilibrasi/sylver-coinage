@@ -1051,6 +1051,37 @@ representation, attack the other eleven open children of `{16,26}`
 directly, or put the measurement in front of the two other people who
 work this exact frontier) is recorded in the dashboards.
 
+### Attempt 22 — the sibling flank holds: recycling, then the same wall
+
+The eleven other open even children of `{16,26}` were attacked head-on,
+since any P child among them answers move 26 without deciding `X`.
+The recycling pass paid first, as it has all campaign: every historical
+scan artifact was banked into the audited cache with per-row Frobenius
+re-validation (2,373 outcomes, zero conflicts; `sylver/scan_records.py`),
+refuting child 134 outright by the banked reply 89, and the nine
+refutations that existed only as prose in `RUN_MOVE_26_FRONTIER.txt`
+were re-derived exactly (all P, largest 48 million states) and banked.
+
+The sortie itself (`sylver/children_sortie.py`, depth-interleaved
+chunks over uncached odd replies, per-worker memory rlimits) added 249
+exact rows across two launches and found **no P child**: every scanned
+reply to every child is N, with contiguous refuted frontiers from 87
+(child 124) to 191 (child 60).  Beyond them, single positions carry
+Frobenius numbers in the 300s-500s and memos past 10 GB — the same
+wall as `X` at 407 and `{12,16,20}` at 409.  See
+`RUN_CHILDREN_SORTIE.txt`.
+
+The strategic picture is now sharp.  `{16,26}`'s classification rests
+on twelve long children; every cheap flank (even replies, recycling,
+absorption, shallow odd scans) is exhausted; and each remaining branch
+is guarded by a computation of the measured row-409 class.  The three
+live options are a compact shape representation for the periodicity
+engine, running the periodicity method on a cheaper child than `X`
+(the engine accepts any gcd-2 base; a child with a smaller half
+Frobenius has a smaller translated state space), or placing the seven
+unpublished P-positions, the certified table, and the closure
+measurement before Sicherman and Blok.
+
 ### Sources
 
 - <https://math.colgate.edu/~integers/yg2/yg2.pdf>
