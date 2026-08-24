@@ -337,6 +337,88 @@ class NativePeriodicityTests(unittest.TestCase):
         parts_sum = sum(int(value) for value in fields.values())
         self.assertAlmostEqual(parts_sum / total, 1.0, delta=0.01)
 
+    def test_v1_checkpoint_fixture_migrates_and_completes(self) -> None:
+        # A frozen version-1 rowstate (saved by the pre-compaction engine at
+        # 25 evaluations into the {8,10,22} control) must load through the
+        # migration path — which re-derives every stored transition — and
+        # then recover the exact published period.
+        fixtures = ROOT / "tests" / "fixtures"
+        cache = Path(self.tempdir.name) / "v1-migrate.cache"
+        shutil.copy(fixtures / "ctl_810_22_v1.cache", cache)
+        shutil.copy(
+            fixtures / "ctl_810_22_v1.rowstate",
+            Path(self.tempdir.name) / "v1-migrate.cache.rowstate",
+        )
+        completed = subprocess.run(
+            [str(self.binary), str(cache), "201", "8", "10", "22"],
+            check=True,
+            capture_output=True,
+            text=True,
+            cwd=ROOT,
+            timeout=60,
+        )
+        output = tuple(completed.stdout.splitlines())
+        self.assertTrue(
+            any(line.startswith("ROW-CHECKPOINT loaded") for line in output)
+        )
+        # A resumed run's Brent anchor is deliberately reset, so the period
+        # may be certified at a later start; length and shapes are pinned.
+        self.assertTrue(
+            any(
+                line.startswith("PERIOD ") and "length=8 shapes=50" in line
+                for line in output
+            ),
+            output,
+        )
+
+    def test_compact_engine_matches_reference(self) -> None:
+        # Definitive layout gate: the pre-compaction engine (built from the
+        # frozen reference source) and the compact engine must emit the same
+        # certificate lines and identical cache files on the same runs.
+        reference_source = subprocess.run(
+            ["git", "show", "b9a7e5f:sylver/periodicity_engine.cpp"],
+            capture_output=True,
+            text=True,
+            cwd=ROOT,
+        )
+        if reference_source.returncode != 0:
+            self.skipTest("reference commit unavailable")
+        ref_cpp = Path(self.tempdir.name) / "reference_engine.cpp"
+        ref_cpp.write_text(reference_source.stdout)
+        ref_bin = Path(self.tempdir.name) / "reference_engine"
+        subprocess.run(
+            [
+                shutil.which("g++"), "-std=c++20", "-O2", "-pthread",
+                str(ref_cpp), "-o", str(ref_bin),
+            ],
+            check=True,
+            cwd=ROOT,
+        )
+        for base in ((8, 10, 22), (6, 16)):
+            with self.subTest(base=base):
+                outputs = {}
+                caches = {}
+                for label, binary in (("ref", ref_bin), ("new", self.binary)):
+                    cache = Path(self.tempdir.name) / (
+                        f"eq-{label}-" + "-".join(map(str, base)) + ".cache"
+                    )
+                    completed = subprocess.run(
+                        [str(binary), str(cache), "201", *map(str, base)],
+                        check=True,
+                        capture_output=True,
+                        text=True,
+                        cwd=ROOT,
+                        timeout=60,
+                    )
+                    outputs[label] = tuple(
+                        line
+                        for line in completed.stdout.splitlines()
+                        if line.startswith(("PERIOD", "P-HIT", "LIMIT"))
+                    )
+                    caches[label] = cache.read_text()
+                self.assertEqual(outputs["ref"], outputs["new"])
+                self.assertEqual(caches["ref"], caches["new"])
+
     def test_exact_threads_rejects_invalid_counts(self) -> None:
         for bad in ("0", "-2", "65", "x"):
             cache = Path(self.tempdir.name) / "bad-threads.cache"

@@ -65,7 +65,8 @@ void throw_if_interrupted() {
 }
 
 constexpr U64 kRowCheckpointMagic = 0x53594c524f573031ULL;  // SYLROW01
-constexpr U64 kRowCheckpointVersion = 1;
+constexpr U64 kRowCheckpointVersionCompact = 2;  // written by this engine
+constexpr U64 kRowCheckpointVersionLegacy = 1;   // still loadable (migrated)
 constexpr U64 kCheckpointCountLimit = 100000000ULL;
 
 class CheckpointWriter {
@@ -486,43 +487,124 @@ struct Engine {
         return result;
     }
 
-    bool even_member(int eid, int diff) const {  // diff even, full coords
+    static bool mask_even_member(
+        const std::vector<std::vector<char>>& masks, int frob,
+        int eid, int diff
+    ) {  // diff even, full coordinates
         int h = diff / 2;
-        if (h > f) return true;
+        if (h > frob) return true;
         if (h <= 0) return false;
-        return emask[eid][h];
+        return masks[static_cast<std::size_t>(eid)]
+                    [static_cast<std::size_t>(h)] != 0;
+    }
+    bool even_member(int eid, int diff) const {
+        return mask_even_member(emask, f, eid, diff);
     }
 
     // ---- shapes ----------------------------------------------------------
-    struct OddOption {
-        std::vector<int> offsets;
+    struct OddOption {          // 12 bytes; child offsets are recomputed on
+        int child = -1;         // demand from (parent offsets, r) through the
+        int r = 0;              // same canonicalization that built the spec.
         int dmin = 0;
-        int child = -1;
     };
 
+    static constexpr int kInlineOffsets = 5;
+
     struct Shape {
-        int eid;
-        std::vector<int> offsets;               // even, offsets[0] == 0
+        int eid = 0;
+        int offsets_spill = -1;          // index into offset_spill when wide
+        std::uint8_t offset_count = 0;
         // Transition specifications are cached without materializing their
         // child shapes.  Children are registered only when evaluation reaches
         // the corresponding option, matching the executable specification.
         bool built = false;
+        std::int32_t offsets_inline[kInlineOffsets] = {0, 0, 0, 0, 0};
         std::vector<OddOption> odd_options;
         std::vector<int> even_children;          // -1 until that option is used
     };
     std::vector<Shape> shapes;
-    std::map<std::pair<int, std::vector<int>>, int> shape_index;
+    std::vector<std::int32_t> offset_spill;
+    std::unordered_map<U64, int> shape_hash;
+    std::vector<std::pair<U64, int>> shape_hash_overflow;
+
+    std::vector<int> offsets_of(int sid) const {
+        const Shape& s = shapes[static_cast<std::size_t>(sid)];
+        std::vector<int> out;
+        out.reserve(s.offset_count);
+        if (s.offsets_spill < 0) {
+            for (int i = 0; i < s.offset_count; ++i)
+                out.push_back(s.offsets_inline[i]);
+        } else {
+            for (int i = 0; i < s.offset_count; ++i)
+                out.push_back(offset_spill[
+                    static_cast<std::size_t>(s.offsets_spill) + i]);
+        }
+        return out;
+    }
+
+    static U64 shape_key_hash(int eid, const std::vector<int>& offsets) {
+        U64 hash = 0x9e3779b97f4a7c15ULL ^ static_cast<U64>(
+            static_cast<std::uint32_t>(eid));
+        for (int o : offsets) {
+            U64 mixed = static_cast<U64>(static_cast<std::uint32_t>(o))
+                + 0x9e3779b97f4a7c15ULL + (hash << 6) + (hash >> 2);
+            mixed = (mixed ^ (mixed >> 30)) * 0xbf58476d1ce4e5b9ULL;
+            mixed = (mixed ^ (mixed >> 27)) * 0x94d049bb133111ebULL;
+            hash ^= mixed ^ (mixed >> 31);
+        }
+        return hash;
+    }
+
+    // Hash lookup with explicit verification: a hit is trusted only after
+    // the candidate's stored offsets compare equal, so hash quality affects
+    // speed, never correctness.
+    int find_shape(int eid, const std::vector<int>& offsets) const {
+        const U64 hash = shape_key_hash(eid, offsets);
+        if (const auto it = shape_hash.find(hash); it != shape_hash.end()) {
+            const int sid = it->second;
+            if (shapes[static_cast<std::size_t>(sid)].eid == eid
+                && offsets_of(sid) == offsets)
+                return sid;
+            for (const auto& [other_hash, other_sid] : shape_hash_overflow)
+                if (other_hash == hash
+                    && shapes[static_cast<std::size_t>(other_sid)].eid == eid
+                    && offsets_of(other_sid) == offsets)
+                    return other_sid;
+        }
+        return -1;
+    }
+
+    void pack_offsets(Shape& s, const std::vector<int>& offsets) {
+        if (offsets.size() > 255) {
+            std::cerr << "shape offset count exceeds representation\n";
+            std::exit(2);
+        }
+        s.offset_count = static_cast<std::uint8_t>(offsets.size());
+        if (offsets.size() <= static_cast<std::size_t>(kInlineOffsets)) {
+            s.offsets_spill = -1;
+            for (std::size_t i = 0; i < offsets.size(); ++i)
+                s.offsets_inline[i] = offsets[i];
+        } else {
+            s.offsets_spill = static_cast<int>(offset_spill.size());
+            for (int o : offsets) offset_spill.push_back(o);
+        }
+    }
 
     int register_shape(int eid, const std::vector<int>& offsets) {
-        auto key = std::make_pair(eid, offsets);
-        auto it = shape_index.find(key);
-        if (it != shape_index.end()) return it->second;
+        const int existing = find_shape(eid, offsets);
+        if (existing >= 0) return existing;
+        const U64 hash = shape_key_hash(eid, offsets);
         int id = static_cast<int>(shapes.size());
-        shape_index.emplace(key, id);
-        Shape s; s.eid = eid; s.offsets = offsets;
+        if (!shape_hash.emplace(hash, id).second)
+            shape_hash_overflow.emplace_back(hash, id);
+        Shape s;
+        s.eid = eid;
+        pack_offsets(s, offsets);
         shapes.push_back(std::move(s));
-        ring.emplace_back(window_slots, -1);
-        value_stamp.emplace_back(window_slots, -1);
+        ring_arena.resize(
+            ring_arena.size() + static_cast<std::size_t>(window_slots), -1);
+        stamp_arena.resize(
+            stamp_arena.size() + static_cast<std::size_t>(window_slots), -1);
         if (offsets.size() == 1) single_sid[eid] = id;
         if (id != 0 && id % 10000 == 0)
             std::cout << "SHAPES count=" << id
@@ -531,39 +613,147 @@ struct Engine {
         return id;
     }
 
-    std::vector<int> canonical(int eid, std::vector<int> anchors) const {
+    static std::vector<int> mask_canonical(
+        const std::vector<std::vector<char>>& masks, int frob,
+        int eid, std::vector<int> anchors
+    ) {
         std::sort(anchors.begin(), anchors.end());
         std::vector<int> live;
         for (int a : anchors) {
             bool absorbed = false;
             for (int b : live)
-                if (even_member(eid, a - b)) { absorbed = true; break; }
+                if (mask_even_member(masks, frob, eid, a - b)) {
+                    absorbed = true;
+                    break;
+                }
             if (!absorbed) live.push_back(a);
         }
         return live;
     }
+    std::vector<int> canonical(int eid, std::vector<int> anchors) const {
+        return mask_canonical(emask, f, eid, std::move(anchors));
+    }
+
+    // Deterministic odd-transition child spec against an explicit mask
+    // table: the shared kernel for building, lazy registration, and
+    // checkpoint migration/validation.
+    static std::pair<std::vector<int>, int> mask_odd_child_spec(
+        const std::vector<std::vector<char>>& masks, int frob,
+        int eid, const std::vector<int>& offsets, int r
+    ) {
+        const int BASEM = 1 << 20;
+        std::vector<int> anchors;
+        for (int o : offsets) anchors.push_back(BASEM + o);
+        anchors.push_back(BASEM + r);
+        anchors = mask_canonical(masks, frob, eid, std::move(anchors));
+        const int nmin = anchors.front();
+        std::vector<int> noff;
+        for (int a : anchors) noff.push_back(a - nmin);
+        return {std::move(noff), nmin - BASEM};
+    }
 
     // ---- ring buffer of outcomes ----------------------------------------
-    // ring[shape][slot(m)] in {-1 unknown, 0 N, 1 P}; slot = (m/2) % window_slots
+    // ring_at(shape, slot(m)) in {-1 unknown, 0 N, 1 P};
+    // slot = (m/2) % window_slots.  Flat arenas indexed sid*window_slots+slot.
     int window_slots = 0;
-    std::vector<std::vector<signed char>> ring;
+    std::vector<signed char> ring_arena;
+    std::vector<int> stamp_arena;
+    signed char& ring_at(int sid, int slot) {
+        return ring_arena[
+            static_cast<std::size_t>(sid) * window_slots
+            + static_cast<std::size_t>(slot)];
+    }
+    signed char ring_at(int sid, int slot) const {
+        return ring_arena[
+            static_cast<std::size_t>(sid) * window_slots
+            + static_cast<std::size_t>(slot)];
+    }
+    int& stamp_at(int sid, int slot) {
+        return stamp_arena[
+            static_cast<std::size_t>(sid) * window_slots
+            + static_cast<std::size_t>(slot)];
+    }
+    int stamp_at(int sid, int slot) const {
+        return stamp_arena[
+            static_cast<std::size_t>(sid) * window_slots
+            + static_cast<std::size_t>(slot)];
+    }
     U64 evaluation_calls = 0;
     // A newly discovered even part reconstructs its singleton history back
     // to 3.  That can revisit dependencies older than the bounded recurrence
     // ring and otherwise thrash entries that were computed earlier in the
     // same outer row.  Retain those exact values only until the row closes;
     // long scans still use bounded memory between rows.
-    std::unordered_map<U64, signed char> row_memo;
+    // Open-addressing insert-only map for the per-row memo (and, valueless,
+    // the per-sweep unknown memo).  Same contract as the unordered_map it
+    // replaces at about a third of the bytes.  The sentinel key ~0 encodes
+    // sid 0xffffffff, which no real shape id reaches.
+    struct FlatMemo {
+        static constexpr U64 kEmpty = ~0ULL;
+        std::vector<U64> keys;
+        std::vector<signed char> vals;
+        std::size_t used = 0;
+        void clear_reserve(std::size_t capacity_hint) {
+            std::size_t buckets = 64;
+            while (buckets < capacity_hint * 2) buckets <<= 1;
+            keys.assign(buckets, kEmpty);
+            vals.assign(buckets, 0);
+            used = 0;
+        }
+        bool find(U64 key, signed char& out) const {
+            if (keys.empty()) return false;
+            const std::size_t mask = keys.size() - 1;
+            std::size_t i =
+                static_cast<std::size_t>(key * 0x9e3779b97f4a7c15ULL) & mask;
+            while (keys[i] != kEmpty) {
+                if (keys[i] == key) { out = vals[i]; return true; }
+                i = (i + 1) & mask;
+            }
+            return false;
+        }
+        bool contains(U64 key) const {
+            signed char ignored;
+            return find(key, ignored);
+        }
+        void insert(U64 key, signed char value) {
+            if (keys.empty() || used * 10 >= keys.size() * 7) grow();
+            const std::size_t mask = keys.size() - 1;
+            std::size_t i =
+                static_cast<std::size_t>(key * 0x9e3779b97f4a7c15ULL) & mask;
+            while (keys[i] != kEmpty) {
+                if (keys[i] == key) { vals[i] = value; return; }
+                i = (i + 1) & mask;
+            }
+            keys[i] = key;
+            vals[i] = value;
+            ++used;
+        }
+        void grow() {
+            std::vector<U64> old_keys = std::move(keys);
+            std::vector<signed char> old_vals = std::move(vals);
+            const std::size_t buckets =
+                old_keys.empty() ? 64 : old_keys.size() * 2;
+            keys.assign(buckets, kEmpty);
+            vals.assign(buckets, 0);
+            used = 0;
+            for (std::size_t i = 0; i < old_keys.size(); ++i)
+                if (old_keys[i] != kEmpty) insert(old_keys[i], old_vals[i]);
+        }
+        std::size_t size() const { return used; }
+        std::size_t bytes() const {
+            return keys.capacity() * (sizeof(U64) + sizeof(signed char));
+        }
+    };
+    FlatMemo row_memo;
     int slot_of(int m) const { return (m / 2) % window_slots; }
     static U64 row_memo_key(int sid, int m) {
         return (static_cast<U64>(static_cast<std::uint32_t>(sid)) << 32)
              | static_cast<std::uint32_t>(m);
     }
     void begin_row() {
-        row_memo.clear();
-        if (row_memo.bucket_count() == 1) row_memo.reserve(262144);
+        row_memo.clear_reserve(262144);
     }
-    void end_row() { row_memo.clear(); }
+    void end_row() { row_memo.clear_reserve(0); }
     std::set<int> base_p_hits;
 
     // ---- base-region exact outcomes -------------------------------------
@@ -592,7 +782,7 @@ struct Engine {
     // sweep entry re-derives the whole unknown-poisoned region down to the
     // same pending misses and the first sweep never terminates.  Cleared
     // before each re-sweep, never checkpointed, never an outcome.
-    std::set<U64> unknown_memo;
+    FlatMemo unknown_memo;
     U64 exact_completed = 0;
     U64 exact_states = 0;
 
@@ -634,7 +824,7 @@ struct Engine {
         const std::string temporary_path = row_checkpoint_path + ".tmp";
         CheckpointWriter out(temporary_path);
         out.u64(kRowCheckpointMagic);
-        out.u64(kRowCheckpointVersion);
+        out.u64(kRowCheckpointVersionCompact);
         out.ints(base);
         out.i32(f);
         out.i32(tbar);
@@ -659,31 +849,31 @@ struct Engine {
         out.ints(history_to);
 
         out.u64(shapes.size());
-        for (const Shape& shape : shapes) {
+        for (std::size_t sid = 0; sid < shapes.size(); ++sid) {
+            const Shape& shape = shapes[sid];
             out.i32(shape.eid);
-            out.ints(shape.offsets);
+            out.ints(offsets_of(static_cast<int>(sid)));
             out.byte(shape.built ? 1 : 0);
             out.u64(shape.odd_options.size());
             for (const OddOption& option : shape.odd_options) {
-                out.ints(option.offsets);
+                out.i32(option.r);
                 out.i32(option.dmin);
                 out.i32(option.child);
             }
             out.ints(shape.even_children);
         }
 
-        out.u64(ring.size());
-        for (const auto& row : ring) out.signed_chars(row);
-        out.u64(value_stamp.size());
-        for (const auto& row : value_stamp) out.ints(row);
+        out.signed_chars(ring_arena);
+        out.ints(stamp_arena);
         out.u64(evaluation_calls);
         out.u64(exact_completed);
         out.u64(exact_states);
 
         out.u64(row_memo.size());
-        for (const auto& [key, value] : row_memo) {
-            out.u64(key);
-            out.byte(static_cast<std::uint8_t>(value));
+        for (std::size_t i = 0; i < row_memo.keys.size(); ++i) {
+            if (row_memo.keys[i] == FlatMemo::kEmpty) continue;
+            out.u64(row_memo.keys[i]);
+            out.byte(static_cast<std::uint8_t>(row_memo.vals[i]));
         }
         out.u64(base_p_hits.size());
         for (int hit : base_p_hits) out.i32(hit);
@@ -702,7 +892,9 @@ struct Engine {
         CheckpointReader in(row_checkpoint_path);
         if (in.u64() != kRowCheckpointMagic)
             throw std::runtime_error("row checkpoint has wrong magic");
-        if (in.u64() != kRowCheckpointVersion)
+        const U64 loaded_version = in.u64();
+        if (loaded_version != kRowCheckpointVersionCompact
+            && loaded_version != kRowCheckpointVersionLegacy)
             throw std::runtime_error("unsupported row checkpoint version");
         if (in.ints() != base || in.i32() != f || in.i32() != tbar
             || in.i32() != auto_min || in.i32() != window_slots)
@@ -807,11 +999,21 @@ struct Engine {
             }
         }
 
+        // Shapes are read into plain locals: canonical offsets stay as full
+        // vectors until every validation has passed, then pack at commit.
+        struct LoadedShape {
+            int eid = 0;
+            std::vector<int> offsets;
+            bool built = false;
+            std::vector<OddOption> options;          // r valid only in v2
+            std::vector<std::vector<int>> v1_offsets;  // v1 child offsets
+            std::vector<int> even_children;
+        };
         const U64 shape_count = in.count();
-        std::vector<Shape> loaded_shapes;
+        std::vector<LoadedShape> loaded_shapes;
         loaded_shapes.reserve(static_cast<std::size_t>(shape_count));
         for (U64 i = 0; i < shape_count; ++i) {
-            Shape shape;
+            LoadedShape shape;
             shape.eid = in.i32();
             shape.offsets = in.ints();
             const std::uint8_t built = in.byte();
@@ -819,19 +1021,28 @@ struct Engine {
                 throw std::runtime_error("row checkpoint has invalid shape flag");
             shape.built = built != 0;
             const U64 odd_count = in.count();
-            shape.odd_options.reserve(static_cast<std::size_t>(odd_count));
+            shape.options.reserve(static_cast<std::size_t>(odd_count));
+            if (loaded_version == kRowCheckpointVersionLegacy)
+                shape.v1_offsets.reserve(static_cast<std::size_t>(odd_count));
             for (U64 j = 0; j < odd_count; ++j) {
                 OddOption option;
-                option.offsets = in.ints();
-                option.dmin = in.i32();
-                option.child = in.i32();
-                shape.odd_options.push_back(std::move(option));
+                if (loaded_version == kRowCheckpointVersionLegacy) {
+                    shape.v1_offsets.push_back(in.ints());
+                    option.r = 0;  // regenerated during migration below
+                    option.dmin = in.i32();
+                    option.child = in.i32();
+                } else {
+                    option.r = in.i32();
+                    option.dmin = in.i32();
+                    option.child = in.i32();
+                }
+                shape.options.push_back(option);
             }
             shape.even_children = in.ints();
             loaded_shapes.push_back(std::move(shape));
         }
 
-        std::map<std::pair<int, std::vector<int>>, int> loaded_shape_index;
+        std::set<std::pair<int, std::vector<int>>> loaded_shape_keys;
         std::vector<int> loaded_single_sid(
             static_cast<std::size_t>(epart_count), -1);
         const auto valid_offsets = [](const std::vector<int>& offsets) {
@@ -842,26 +1053,33 @@ struct Engine {
             return true;
         };
         for (std::size_t sid = 0; sid < loaded_shapes.size(); ++sid) {
-            const Shape& shape = loaded_shapes[sid];
+            const LoadedShape& shape = loaded_shapes[sid];
             if (shape.eid < 0 || shape.eid >= static_cast<int>(epart_count)
                 || !valid_offsets(shape.offsets))
                 throw std::runtime_error("row checkpoint has invalid shape");
             if (!shape.built
-                && (!shape.odd_options.empty() || !shape.even_children.empty()))
+                && (!shape.options.empty() || !shape.even_children.empty()))
                 throw std::runtime_error("unbuilt checkpoint shape has transitions");
             if (shape.built
                 && shape.even_children.size()
                        != loaded_egaps[static_cast<std::size_t>(shape.eid)].size())
                 throw std::runtime_error("checkpoint shape has invalid transitions");
-            for (const OddOption& option : shape.odd_options)
-                if (!valid_offsets(option.offsets) || option.child < -1
+            for (std::size_t j = 0; j < shape.options.size(); ++j) {
+                const OddOption& option = shape.options[j];
+                if (option.child < -1
                     || option.child >= static_cast<int>(shape_count))
-                    throw std::runtime_error("row checkpoint has invalid odd option");
+                    throw std::runtime_error(
+                        "row checkpoint has invalid odd option");
+                if (loaded_version == kRowCheckpointVersionLegacy
+                    && !valid_offsets(shape.v1_offsets[j]))
+                    throw std::runtime_error(
+                        "row checkpoint has invalid odd option");
+            }
             for (int child : shape.even_children)
                 if (child < -1 || child >= static_cast<int>(shape_count))
                     throw std::runtime_error("row checkpoint has invalid shape child");
             const auto key = std::make_pair(shape.eid, shape.offsets);
-            if (!loaded_shape_index.emplace(key, static_cast<int>(sid)).second)
+            if (!loaded_shape_keys.emplace(key).second)
                 throw std::runtime_error("row checkpoint has duplicate shapes");
             if (shape.offsets.size() == 1)
                 loaded_single_sid[static_cast<std::size_t>(shape.eid)] =
@@ -870,15 +1088,18 @@ struct Engine {
         if (loaded_shapes.empty() || loaded_shapes.front().eid != 0
             || loaded_shapes.front().offsets != std::vector<int>{0})
             throw std::runtime_error("row checkpoint has wrong base shape");
-        for (const Shape& shape : loaded_shapes) {
-            for (const OddOption& option : shape.odd_options)
-                if (option.child >= 0) {
-                    const Shape& child =
-                        loaded_shapes[static_cast<std::size_t>(option.child)];
-                    if (child.eid != shape.eid || child.offsets != option.offsets)
-                        throw std::runtime_error(
-                            "row checkpoint has inconsistent odd transition");
-                }
+        for (const LoadedShape& shape : loaded_shapes) {
+            if (loaded_version == kRowCheckpointVersionLegacy) {
+                for (std::size_t j = 0; j < shape.options.size(); ++j)
+                    if (shape.options[j].child >= 0) {
+                        const LoadedShape& child = loaded_shapes[
+                            static_cast<std::size_t>(shape.options[j].child)];
+                        if (child.eid != shape.eid
+                            || child.offsets != shape.v1_offsets[j])
+                            throw std::runtime_error(
+                                "row checkpoint has inconsistent odd transition");
+                    }
+            }
             for (std::size_t index = 0;
                  index < shape.even_children.size(); ++index) {
                 const int child = shape.even_children[index];
@@ -894,34 +1115,120 @@ struct Engine {
             }
         }
 
-        const U64 ring_count = in.count();
-        std::vector<std::vector<signed char>> loaded_ring;
-        loaded_ring.reserve(static_cast<std::size_t>(ring_count));
-        for (U64 i = 0; i < ring_count; ++i)
-            loaded_ring.push_back(in.signed_chars());
-        const U64 stamp_count = in.count();
-        std::vector<std::vector<int>> loaded_value_stamp;
-        loaded_value_stamp.reserve(static_cast<std::size_t>(stamp_count));
-        for (U64 i = 0; i < stamp_count; ++i)
-            loaded_value_stamp.push_back(in.ints());
-        if (ring_count != shape_count || stamp_count != shape_count)
-            throw std::runtime_error("row checkpoint has inconsistent ring tables");
-        for (std::size_t sid = 0; sid < loaded_ring.size(); ++sid) {
-            if (loaded_ring[sid].size() != static_cast<std::size_t>(window_slots)
-                || loaded_value_stamp[sid].size()
-                       != static_cast<std::size_t>(window_slots))
-                throw std::runtime_error("row checkpoint has invalid ring width");
-            for (signed char value : loaded_ring[sid])
-                if (value < -1 || value > 1)
-                    throw std::runtime_error("row checkpoint has invalid outcome");
+        // Migration (v1): regenerate every built shape's option list through
+        // the shared enumeration kernel against the loaded masks and require
+        // it to reproduce the stored offsets and translations exactly.  The
+        // legacy checkpoint is thereby re-derived, not merely trusted.
+        // Validation (v2): re-derive a deterministic sample of options the
+        // same way; full strength was applied when the state was written and
+        // the checksum guards the bytes.
+        for (std::size_t sid = 0; sid < loaded_shapes.size(); ++sid) {
+            LoadedShape& shape = loaded_shapes[sid];
+            if (!shape.built) continue;
+            if (loaded_version == kRowCheckpointVersionLegacy) {
+                std::vector<OddOption> regenerated;
+                const int top = shape.offsets.back();
+                for (int r = -tbar; r <= top + tbar; r += 2) {
+                    if (r == 0) continue;
+                    if (std::find(shape.offsets.begin(), shape.offsets.end(), r)
+                        != shape.offsets.end())
+                        continue;
+                    bool illegal = false;
+                    for (int o : shape.offsets)
+                        if (o < r && mask_even_member(
+                                loaded_emask, f, shape.eid, r - o)) {
+                            illegal = true;
+                            break;
+                        }
+                    if (illegal) continue;
+                    regenerated.push_back({-1, r, 0});
+                }
+                if (regenerated.size() != shape.options.size())
+                    throw std::runtime_error(
+                        "legacy checkpoint odd options fail regeneration");
+                for (std::size_t j = 0; j < regenerated.size(); ++j) {
+                    const auto [noff, dmin] = mask_odd_child_spec(
+                        loaded_emask, f, shape.eid, shape.offsets,
+                        regenerated[j].r);
+                    if (dmin != shape.options[j].dmin
+                        || noff != shape.v1_offsets[j])
+                        throw std::runtime_error(
+                            "legacy checkpoint odd option fails re-derivation");
+                    shape.options[j].r = regenerated[j].r;
+                }
+                shape.v1_offsets.clear();
+                shape.v1_offsets.shrink_to_fit();
+            } else {
+                for (std::size_t j = 0; j < shape.options.size(); ++j) {
+                    if (j % 97 != 0 && shape.options[j].child < 0) continue;
+                    const auto [noff, dmin] = mask_odd_child_spec(
+                        loaded_emask, f, shape.eid, shape.offsets,
+                        shape.options[j].r);
+                    if (dmin != shape.options[j].dmin)
+                        throw std::runtime_error(
+                            "checkpoint odd option fails re-derivation");
+                    if (shape.options[j].child >= 0
+                        && loaded_shapes[static_cast<std::size_t>(
+                               shape.options[j].child)].offsets != noff)
+                        throw std::runtime_error(
+                            "checkpoint odd transition fails re-derivation");
+                }
+            }
+            if (sid % 50000 == 0 && sid != 0)
+                std::cout << "CHECKPOINT-VALIDATE shapes=" << sid
+                          << "/" << loaded_shapes.size() << std::endl;
         }
+
+        std::vector<signed char> loaded_ring_arena;
+        std::vector<int> loaded_stamp_arena;
+        const std::size_t arena_size =
+            static_cast<std::size_t>(shape_count)
+            * static_cast<std::size_t>(window_slots);
+        if (loaded_version == kRowCheckpointVersionLegacy) {
+            const U64 ring_count = in.count();
+            if (ring_count != shape_count)
+                throw std::runtime_error(
+                    "row checkpoint has inconsistent ring tables");
+            loaded_ring_arena.reserve(arena_size);
+            for (U64 i = 0; i < ring_count; ++i) {
+                const std::vector<signed char> row = in.signed_chars();
+                if (row.size() != static_cast<std::size_t>(window_slots))
+                    throw std::runtime_error(
+                        "row checkpoint has invalid ring width");
+                loaded_ring_arena.insert(
+                    loaded_ring_arena.end(), row.begin(), row.end());
+            }
+            const U64 stamp_count = in.count();
+            if (stamp_count != shape_count)
+                throw std::runtime_error(
+                    "row checkpoint has inconsistent ring tables");
+            loaded_stamp_arena.reserve(arena_size);
+            for (U64 i = 0; i < stamp_count; ++i) {
+                const std::vector<int> row = in.ints();
+                if (row.size() != static_cast<std::size_t>(window_slots))
+                    throw std::runtime_error(
+                        "row checkpoint has invalid ring width");
+                loaded_stamp_arena.insert(
+                    loaded_stamp_arena.end(), row.begin(), row.end());
+            }
+        } else {
+            loaded_ring_arena = in.signed_chars();
+            loaded_stamp_arena = in.ints();
+            if (loaded_ring_arena.size() != arena_size
+                || loaded_stamp_arena.size() != arena_size)
+                throw std::runtime_error(
+                    "row checkpoint has inconsistent ring tables");
+        }
+        for (signed char value : loaded_ring_arena)
+            if (value < -1 || value > 1)
+                throw std::runtime_error("row checkpoint has invalid outcome");
         const U64 loaded_evaluation_calls = in.u64();
         const U64 loaded_exact_completed = in.u64();
         const U64 loaded_exact_states = in.u64();
 
         const U64 memo_count = in.count();
-        std::unordered_map<U64, signed char> loaded_row_memo;
-        loaded_row_memo.reserve(static_cast<std::size_t>(memo_count));
+        FlatMemo loaded_row_memo;
+        loaded_row_memo.clear_reserve(static_cast<std::size_t>(memo_count));
         for (U64 i = 0; i < memo_count; ++i) {
             const U64 key = in.u64();
             const signed char value = static_cast<signed char>(in.byte());
@@ -930,8 +1237,9 @@ struct Engine {
             if (sid >= shape_count || memo_m < 3
                 || memo_m > static_cast<U64>(active_n) || memo_m % 2 == 0
                 || (value != 0 && value != 1)
-                || !loaded_row_memo.emplace(key, value).second)
+                || loaded_row_memo.contains(key))
                 throw std::runtime_error("row checkpoint has invalid row memo");
+            loaded_row_memo.insert(key, value);
         }
         const U64 hit_count = in.count();
         std::set<int> loaded_base_p_hits;
@@ -947,10 +1255,28 @@ struct Engine {
         first_p = std::move(loaded_first_p);
         history_to = std::move(loaded_history_to);
         single_sid = std::move(loaded_single_sid);
-        shapes = std::move(loaded_shapes);
-        shape_index = std::move(loaded_shape_index);
-        ring = std::move(loaded_ring);
-        value_stamp = std::move(loaded_value_stamp);
+        shapes.clear();
+        offset_spill.clear();
+        shape_hash.clear();
+        shape_hash_overflow.clear();
+        shapes.reserve(loaded_shapes.size());
+        shape_hash.reserve(loaded_shapes.size() * 2);
+        for (std::size_t sid = 0; sid < loaded_shapes.size(); ++sid) {
+            LoadedShape& loaded = loaded_shapes[sid];
+            const U64 hash = shape_key_hash(loaded.eid, loaded.offsets);
+            if (!shape_hash.emplace(hash, static_cast<int>(sid)).second)
+                shape_hash_overflow.emplace_back(hash, static_cast<int>(sid));
+            Shape s;
+            s.eid = loaded.eid;
+            s.built = loaded.built;
+            pack_offsets(s, loaded.offsets);
+            s.odd_options = std::move(loaded.options);
+            s.odd_options.shrink_to_fit();
+            s.even_children = std::move(loaded.even_children);
+            shapes.push_back(std::move(s));
+        }
+        ring_arena = std::move(loaded_ring_arena);
+        stamp_arena = std::move(loaded_stamp_arena);
         evaluation_calls = loaded_evaluation_calls;
         exact_completed = loaded_exact_completed;
         exact_states = loaded_exact_states;
@@ -1188,28 +1514,21 @@ struct Engine {
         auto vec_bytes = [](const auto& v) {
             return v.capacity() * sizeof(v[0]);
         };
-        std::size_t shapes_core = shapes.capacity() * sizeof(Shape);
+        std::size_t shapes_core = shapes.capacity() * sizeof(Shape)
+            + offset_spill.capacity() * sizeof(offset_spill[0]);
         std::size_t transitions = 0;
         for (const Shape& s : shapes) {
-            shapes_core += vec_bytes(s.offsets);
             transitions += s.odd_options.capacity() * sizeof(OddOption);
-            for (const OddOption& o : s.odd_options)
-                transitions += vec_bytes(o.offsets);
             transitions += vec_bytes(s.even_children);
         }
-        // std::map node: payload + two pointers-ish of bookkeeping; use a
-        // conservative fixed node overhead of 48 bytes plus key storage.
-        std::size_t index = 0;
-        for (const auto& [key, sid] : shape_index) {
-            (void)sid;
-            index += 48 + sizeof(key) + vec_bytes(key.second);
-        }
-        std::size_t ring_bytes = ring.capacity() * sizeof(ring[0]);
-        for (const auto& r : ring) ring_bytes += vec_bytes(r);
-        std::size_t stamp_bytes = value_stamp.capacity() * sizeof(value_stamp[0]);
-        for (const auto& s : value_stamp) stamp_bytes += vec_bytes(s);
-        std::size_t memo = row_memo.bucket_count() * sizeof(void*)
-            + row_memo.size() * (sizeof(std::pair<U64, signed char>) + 16);
+        std::size_t index = shape_hash.bucket_count() * sizeof(void*)
+            + shape_hash.size() * (sizeof(std::pair<U64, int>) + 16)
+            + shape_hash_overflow.capacity()
+                  * sizeof(shape_hash_overflow[0]);
+        std::size_t ring_bytes = ring_arena.capacity() * sizeof(ring_arena[0]);
+        std::size_t stamp_bytes =
+            stamp_arena.capacity() * sizeof(stamp_arena[0]);
+        std::size_t memo = row_memo.bytes() + unknown_memo.bytes();
         std::size_t cache_bytes = 0;
         for (const auto& [key, value] : base_cache) {
             (void)value;
@@ -1252,13 +1571,22 @@ struct Engine {
     }
 
     // ---- transitions -----------------------------------------------------
+    // Canonical child offsets and translation for the relative odd move r
+    // from a shape with the given offsets.  The single source of truth for
+    // both transition building and lazy child registration, so the two can
+    // never drift.
+    std::pair<std::vector<int>, int> odd_child_spec(
+        int eid, const std::vector<int>& offsets, int r
+    ) const {
+        return mask_odd_child_spec(emask, f, eid, offsets, r);
+    }
+
     void build_transition_specs(int sid) {
         if (shapes[sid].built) return;
         const int eid = shapes[sid].eid;
-        const std::vector<int> offsets = shapes[sid].offsets;  // copy
+        const std::vector<int> offsets = offsets_of(sid);
         const int top = offsets.back();
         std::vector<OddOption> odd_options;
-        const int BASEM = 1 << 20;   // large virtual anchor for arithmetic
         for (int r = -tbar; r <= top + tbar; r += 2) {
             if (r == 0) continue;
             if (std::find(offsets.begin(), offsets.end(), r) != offsets.end())
@@ -1267,15 +1595,11 @@ struct Engine {
             for (int o : offsets)
                 if (o < r && even_member(eid, r - o)) { illegal = true; break; }
             if (illegal) continue;
-            std::vector<int> anchors;
-            for (int o : offsets) anchors.push_back(BASEM + o);
-            anchors.push_back(BASEM + r);
-            anchors = canonical(eid, anchors);
-            int nmin = anchors.front();
-            std::vector<int> noff;
-            for (int a : anchors) noff.push_back(a - nmin);
-            odd_options.push_back({std::move(noff), nmin - BASEM, -1});
+            const auto [noff, dmin] = odd_child_spec(eid, offsets, r);
+            (void)noff;
+            odd_options.push_back({-1, r, dmin});
         }
+        odd_options.shrink_to_fit();
         shapes[sid].odd_options = std::move(odd_options);
         shapes[sid].even_children.assign(egaps[eid].size(), -1);
         shapes[sid].built = true;
@@ -1295,19 +1619,16 @@ struct Engine {
                       << " m=" << m
                       << " shapes=" << shapes.size()
                       << " eparts=" << emask.size() << std::endl;
-        signed char ring_value = ring[sid][slot_of(m)];
-        if (ring_value >= 0 && value_stamp[sid][slot_of(m)] == m)
+        signed char ring_value = ring_at(sid, slot_of(m));
+        if (ring_value >= 0 && stamp_at(sid, slot_of(m)) == m)
             return ring_value;
         const U64 memo_key = row_memo_key(sid, m);
-        if (const auto found = row_memo.find(memo_key);
-            found != row_memo.end())
-            return found->second;
-        if (collect_mode
-            && unknown_memo.find(memo_key) != unknown_memo.end())
-            return -1;
+        if (signed char memoized; row_memo.find(memo_key, memoized))
+            return memoized;
+        if (collect_mode && unknown_memo.contains(memo_key)) return -1;
         signed char result;
         std::vector<int> anchors;
-        for (int o : shapes[sid].offsets) anchors.push_back(m + o);
+        for (int o : offsets_of(sid)) anchors.push_back(m + o);
         const std::optional<bool> cached = cached_outcome(
             shapes[sid].eid, anchors);
         if (cached.has_value()) {
@@ -1315,7 +1636,7 @@ struct Engine {
         } else if (m < auto_min) {
             result = exact_or_collect(shapes[sid].eid, anchors);
             if (result < 0) {
-                unknown_memo.insert(memo_key);
+                unknown_memo.insert(memo_key, 1);
                 return -1;  // pending exact dependency; write nothing else
             }
         } else {
@@ -1331,8 +1652,14 @@ struct Engine {
                     const int dmin = shapes[sid].odd_options[index].dmin;
                     int child = shapes[sid].odd_options[index].child;
                     if (child < 0) {
-                        const auto offsets = shapes[sid].odd_options[index].offsets;
-                        child = register_shape(eid, offsets);
+                        const int r = shapes[sid].odd_options[index].r;
+                        auto [child_offsets, spec_dmin] =
+                            odd_child_spec(eid, offsets_of(sid), r);
+                        if (spec_dmin != dmin) {
+                            std::cerr << "odd transition spec drift\n";
+                            std::exit(2);
+                        }
+                        child = register_shape(eid, child_offsets);
                         shapes[sid].odd_options[index].child = child;
                     }
                     const int cm = m + dmin;
@@ -1340,8 +1667,8 @@ struct Engine {
                     if (cm == m && child == sid) continue;  // defensive
                     if (dmin == 0) cv = evaluate(child, m);
                     else {
-                        cv = ring[child][slot_of(cm)];
-                        if (cv < 0 || value_stamp[child][slot_of(cm)] != cm)
+                        cv = ring_at(child, slot_of(cm));
+                        if (cv < 0 || stamp_at(child, slot_of(cm)) != cm)
                             cv = evaluate(child, cm);
                     }
                     if (cv == 1) { winning = true; break; }
@@ -1374,7 +1701,7 @@ struct Engine {
                         // the same reset is not active yet.
                         if (first_p[neid] <= m - tbar - 2) continue;
                         std::vector<int> anchors;
-                        for (int o : shapes[sid].offsets)
+                        for (int o : offsets_of(sid))
                             anchors.push_back(BASEM + o);
                         anchors = canonical(neid, std::move(anchors));
                         if (anchors.front() != BASEM) {
@@ -1395,15 +1722,15 @@ struct Engine {
             // otherwise an unknown child leaves the parent unknown, with no
             // ring, memo, or first_p writes until the batch resolves it.
             if (!winning && saw_unknown) {
-                unknown_memo.insert(memo_key);
+                unknown_memo.insert(memo_key, 1);
                 return -1;
             }
             result = winning ? 0 : 1;
         }
-        ring[sid][slot_of(m)] = result;
-        value_stamp[sid][slot_of(m)] = m;
-        row_memo.emplace(memo_key, result);
-        if (result == 1 && shapes[sid].offsets.size() == 1) {
+        ring_at(sid, slot_of(m)) = result;
+        stamp_at(sid, slot_of(m)) = m;
+        row_memo.insert(memo_key, result);
+        if (result == 1 && shapes[sid].offset_count == 1) {
             int eid = shapes[sid].eid;
             first_p[eid] = std::min(first_p[eid], m);
             if (eid == 0 && base_p_hits.insert(m).second)
@@ -1412,7 +1739,6 @@ struct Engine {
         return result;
     }
 
-    std::vector<std::vector<int>> value_stamp;  // guards ring reuse
 
     bool flags_are_stable(int n) const {
         const int cutoff = n - tbar - 2;
@@ -1435,12 +1761,13 @@ struct Engine {
             int bit = 0;
             for (int m = n - tbar; m <= n; m += 2) {
                 const int slot = slot_of(m);
-                if (value_stamp[sid][slot] != m || ring[sid][slot] < 0) {
+                const int isid = static_cast<int>(sid);
+                if (stamp_at(isid, slot) != m || ring_at(isid, slot) < 0) {
                     std::cerr << "incomplete period snapshot at shape=" << sid
                               << " m=" << m << "\n";
                     std::exit(2);
                 }
-                if (ring[sid][slot] == 1) word |= U64{1} << bit;
+                if (ring_at(isid, slot) == 1) word |= U64{1} << bit;
                 if (++bit == 64) { out.push_back(word); word = 0; bit = 0; }
             }
             if (bit != 0) out.push_back(word);
@@ -1629,7 +1956,7 @@ int main(int argc, char** argv) {
                     eng.collect_mode = eng.exact_threads > 1;
                     eng.pending.clear();
                     eng.pending_keys.clear();
-                    eng.unknown_memo.clear();
+                    eng.unknown_memo.clear_reserve(1 << 16);
                     bool truncated = false;
                     size_t count = eng.shapes.size();
                     for (size_t sid = 0; sid < count; ++sid) {
