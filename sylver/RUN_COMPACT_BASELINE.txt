@@ -1,0 +1,31 @@
+Compact-engine campaign: measured memory baseline on the real frontier
+2026-08-24
+
+Inputs (immutable, gitignored local copies of the S3 originals):
+  b6171e8163c3cb1e74cb8bb517d65a46edcd69628d5ba896995923d557019d11  aws_frontier/periodicity_x.cache (267,847 rows)
+  be775b44974b06c22217caa89ec51a01c443875d7f34bc7dc4cf6d1fe47c1bac  aws_frontier/periodicity_x.cache.rowstate (756 MB, v1)
+
+Load: 324,404 shapes, 542 even parts, 605,165,923 evaluations —
+the final AWS box had advanced 137M evaluations past its last full
+4-hour marker before the graceful stop rescued this state.
+
+Baseline accounting (--memory-report, pre-compaction engine 0791baa):
+
+  MEMORY total=1450456393 shapes=35249200 transitions=931591044
+    index=32653968 ring=29520764 stamps=94725968 memo=300620856
+    basecache=26003537 eparts=91056 nshapes=324404
+
+  = 4,471 accounted bytes/shape.  The 13 KB/shape RSS figure from the
+  campaigns additionally reflects allocator overhead and fragmentation
+  from millions of small heap blocks — which the arena/packing work
+  eliminates as a side effect.
+
+Plan adjustment from measurement:
+  transitions (64%) and the row memo (21%) dominate.  The row memo was
+  not in the original spec; it joins Task 6 as a flat open-addressing
+  table (U64 -> int8, insert-only per row, cleared at row boundaries —
+  the exact contract the unordered_map provides today), because unlike
+  every other subsystem it scales with active-row work rather than
+  shape count and would otherwise dominate at 3M+ shapes.
+
+After-numbers land below as tasks complete.
