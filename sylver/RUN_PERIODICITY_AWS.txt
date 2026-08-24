@@ -1,0 +1,70 @@
+AWS spot continuation of the row-409 siege: the cache crosses a trillion states
+2026-08-23 to 2026-08-24 (~25.5 productive hours across three spot instances)
+
+Context and authorization:
+  After the local parallel block measured row X+409's dependency closure
+  (>3.15M shapes, >12.5M base-region exact positions, unsaturated at a
+  45 GB guard — RUN_PERIODICITY_500H.txt), a ~$100 AWS spot budget was
+  authorized to continue the siege on 512 GiB / 64 vCPU instances.  The
+  controller (sylver/aws/spot_userdata.sh) is fully self-governing: a
+  58 h dead-man timer armed before any other boot step, 4-hour SIGINT
+  checkpoint cycles with S3 sync, an adaptive memory guard that halves
+  worker width instead of dying, a spot-interruption rescue path, and
+  an off-box watchdog on a scoped IAM key.
+
+Instances (all spot, one-shot, terminate-on-shutdown):
+  1. r6a.16xlarge us-east-1c  ~40 min  $0.7  — first EXACT-BATCH at 48
+     threads blew past the 460 GB guard; checkpointed and stopped
+     (lesson: adaptive width).  A prior instance died at boot in 4 min
+     ($0.07) to a missing-awscli bootstrap bug; both lessons are in
+     sylver/aws/README.md.
+  2. r7a.16xlarge us-east-2b  ~6.3 h  $7.2  — healthy 32-thread cycles;
+     spot-reclaimed; full rescue.
+  3. r7a.16xlarge us-east-2a  ~16 h   $20.6 — three clean cycles, then
+     spot-reclaimed; full rescue (cache, 756 MB rowstate, logs synced
+     in the interruption window).
+  4. r5.16xlarge  us-east-2c  ~3 h    $3.7  — resumed, then brought
+     down deliberately by the graceful STOP path when the campaign
+     goal shifted from cache growth to write-up.
+
+  Total spend including EBS, S3, and egress: ~$33.5 of the ~$100
+  authorization.  Two AZ capacity rejections and one region-wide r6a
+  drought were routed around; every interruption was rescued with zero
+  exact-outcome loss.
+
+Results, all merged into the audited local cache with conflict
+detection (zero conflicts on a 48,701-row merge):
+
+  exact cache:   219,146 -> 267,847 rows (16,150 P / 251,697 N)
+    before  15886b3181560e5c1d515860bdb8e95678569b37c16fa32d74dd57af37e169a1
+    (flank/sortie merges intervened; see RUN_X_EVEN_FLANK.txt and
+     RUN_CHILDREN_SORTIE.txt for intermediate hashes)
+    after   e12150b61c8e97605824957eecfe178c8daaf0d3627b6ae2a22d6a46cda952fb
+  cumulative exact counter:  203,000 completed positions,
+    1,061,182,618,217 finite-solver states — the campaign's exact work
+    has crossed one trillion states.
+  shape graph:   220,574 -> 324,404+ translated shapes (resumable
+    756 MB rowstate retained in s3://sylver-conway-011608065382/output/
+    alongside campaign logs; deliberately not committed to git).
+  row evaluations: 22,641,268 -> 467,681,002+ at the last full marker.
+
+Independent verification:
+  {16,26,70,82,88,115,133,153,177} recomputed locally: N with
+  27,696,453 states — bit-for-bit equal to the AWS row (different CPU
+  family, same deterministic recurrence).  The zero-conflict merge
+  against 219K pre-existing rows is itself a mass differential test.
+
+What this establishes:
+  1.  Sustained drain rate at 32 threads is ~3,000 exact positions/hour
+      (~$0.0004/position on 64-vCPU spot).  Against the >=12.5M-position
+      closure, completing row 409 by brute force prices at $5K-$8K in
+      the optimistic scenario, $12K-$20K central, $50K+ pessimistic —
+      with graph memory (13 KB/shape) forcing TB-class instances beyond
+      ~10M shapes.  These are floors: the closure was still unsaturated.
+  2.  The row-409 computation is therefore beyond hobby-budget brute
+      force as engineered, and the campaign's next dollar is better
+      spent on theory (the Sicherman/Blok letter, which now carries
+      these numbers) or on the compact-representation engineering that
+      would shift every scenario left.
+  3.  No P-HIT, no PERIOD: X, U, move 26, and the opening remain
+      undecided.  Every artifact is audited, banked, and resumable.

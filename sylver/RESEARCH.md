@@ -1082,6 +1082,41 @@ Frobenius has a smaller translated state space), or placing the seven
 unpublished P-positions, the certified table, and the closure
 measurement before Sicherman and Blok.
 
+### Attempt 23 — the trillion-state cache: an AWS spot continuation
+
+A ~$100 spot authorization continued the row-409 siege on 64-vCPU /
+512 GiB instances.  The self-governing controller
+(`sylver/aws/spot_userdata.sh`: dead-man timer, 4-hour SIGINT
+checkpoint cycles with S3 sync, adaptive memory guard, spot-interruption
+rescue, off-box watchdog on a scoped IAM key) survived two AZ capacity
+rejections, one bootstrap bug, one memory-guard adaptation, and two
+spot reclamations with zero exact-outcome loss, at a total cost of
+about $33.50 (`RUN_PERIODICITY_AWS.txt`).
+
+Across ~25.5 productive hours the continuation drained the base-region
+backlog at roughly 3,000 exact positions per hour and grew the audited
+cache from 219,146 to **267,847 conflict-free outcomes** (16,150 P /
+251,697 N); the campaign's cumulative exact counter crossed **one
+trillion finite-solver states** (1,061,182,618,217 at 203,000 completed
+positions).  One deep row was recomputed locally bit-for-bit
+(N, 27,696,453 states) as a cross-architecture control, and the
+48,701-row merge against the existing cache is itself a mass
+differential test.  Of the new outcomes, 2,231 are P — the reset flags
+keep pruning, but no cascade collapsed the closure and no P appeared at
+minimum anchor 409.  The resumable 756 MB rowstate (324,404 shapes)
+is retained in S3.
+
+The economics are now measured rather than guessed: at ~$0.0004 per
+exact position against a >=12.5-million-position unsaturated closure,
+brute-force completion of row 409 — equivalently, of the whole `X`
+computation, since later rows reuse the graph — prices from ~$5K
+(optimistic) through ~$20K (central) to $50K+ (pessimistic), with graph
+memory forcing TB-class instances beyond ~10M shapes.  The campaign
+therefore stopped deliberately: the cache is banked, the frontier is
+resumable, and the next investment is the disclosure letter
+(`DRAFT_TO_SICHERMAN_BLOK.md`, now carrying these final numbers) and/or
+the compact-representation engineering, not more of the same compute.
+
 ### Sources
 
 - <https://math.colgate.edu/~integers/yg2/yg2.pdf>
