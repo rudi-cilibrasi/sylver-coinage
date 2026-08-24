@@ -300,6 +300,43 @@ class NativePeriodicityTests(unittest.TestCase):
             periods["serial"], ("PERIOD start=49 length=8 shapes=50",)
         )
 
+    def test_memory_report_accounts_for_subsystems(self) -> None:
+        cache = Path(self.tempdir.name) / "memreport.cache"
+        completed = subprocess.run(
+            [
+                str(self.binary),
+                str(cache),
+                "201",
+                "--memory-report",
+                "8",
+                "10",
+                "22",
+            ],
+            check=True,
+            capture_output=True,
+            text=True,
+            cwd=ROOT,
+            timeout=60,
+        )
+        lines = [
+            line
+            for line in completed.stdout.splitlines()
+            if line.startswith("MEMORY ")
+        ]
+        self.assertTrue(lines, "no MEMORY report emitted")
+        fields = dict(
+            part.split("=", 1) for part in lines[-1].split()[1:] if "=" in part
+        )
+        self.assertIn("total", fields)
+        total = int(fields.pop("total"))
+        self.assertGreater(total, 0)
+        self.assertIn("shapes", fields)
+        self.assertIn("transitions", fields)
+        self.assertIn("index", fields)
+        self.assertIn("ring", fields)
+        parts_sum = sum(int(value) for value in fields.values())
+        self.assertAlmostEqual(parts_sum / total, 1.0, delta=0.01)
+
     def test_exact_threads_rejects_invalid_counts(self) -> None:
         for bad in ("0", "-2", "65", "x"):
             cache = Path(self.tempdir.name) / "bad-threads.cache"

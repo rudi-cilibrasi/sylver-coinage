@@ -576,6 +576,7 @@ struct Engine {
     // remains a function of exact outcomes only.  Pending work is transient
     // and never checkpointed: an interrupt simply re-collects on resume.
     int exact_threads = 1;
+    bool memory_report_enabled = false;
     bool collect_mode = false;
     // Solve a batch as soon as this many positions are pending instead of
     // waiting for a complete sweep.  Early batches surface P outcomes whose
@@ -1181,6 +1182,60 @@ struct Engine {
     std::vector<char> base_member_mask;
     bool base_member(int halfval) const { return base_member_mask[halfval]; }
 
+    // Exact capacity-based byte accounting per subsystem.  The report is
+    // diagnostic only; it never affects outcomes or checkpoints.
+    void memory_report() const {
+        auto vec_bytes = [](const auto& v) {
+            return v.capacity() * sizeof(v[0]);
+        };
+        std::size_t shapes_core = shapes.capacity() * sizeof(Shape);
+        std::size_t transitions = 0;
+        for (const Shape& s : shapes) {
+            shapes_core += vec_bytes(s.offsets);
+            transitions += s.odd_options.capacity() * sizeof(OddOption);
+            for (const OddOption& o : s.odd_options)
+                transitions += vec_bytes(o.offsets);
+            transitions += vec_bytes(s.even_children);
+        }
+        // std::map node: payload + two pointers-ish of bookkeeping; use a
+        // conservative fixed node overhead of 48 bytes plus key storage.
+        std::size_t index = 0;
+        for (const auto& [key, sid] : shape_index) {
+            (void)sid;
+            index += 48 + sizeof(key) + vec_bytes(key.second);
+        }
+        std::size_t ring_bytes = ring.capacity() * sizeof(ring[0]);
+        for (const auto& r : ring) ring_bytes += vec_bytes(r);
+        std::size_t stamp_bytes = value_stamp.capacity() * sizeof(value_stamp[0]);
+        for (const auto& s : value_stamp) stamp_bytes += vec_bytes(s);
+        std::size_t memo = row_memo.bucket_count() * sizeof(void*)
+            + row_memo.size() * (sizeof(std::pair<U64, signed char>) + 16);
+        std::size_t cache_bytes = 0;
+        for (const auto& [key, value] : base_cache) {
+            (void)value;
+            cache_bytes += 64 + key.capacity();
+        }
+        std::size_t eparts = 0;
+        for (const auto& m : emask) eparts += vec_bytes(m);
+        for (const auto& [key, eid] : eindex) {
+            (void)eid;
+            eparts += 48 + vec_bytes(key);
+        }
+        const std::size_t total = shapes_core + transitions + index
+            + ring_bytes + stamp_bytes + memo + cache_bytes + eparts;
+        std::cout << "MEMORY total=" << total
+                  << " shapes=" << shapes_core
+                  << " transitions=" << transitions
+                  << " index=" << index
+                  << " ring=" << ring_bytes
+                  << " stamps=" << stamp_bytes
+                  << " memo=" << memo
+                  << " basecache=" << cache_bytes
+                  << " eparts=" << eparts
+                  << " nshapes=" << shapes.size()
+                  << std::endl;
+    }
+
     // Returns true when the singleton history is complete through
     // scanned_to.  In collect mode an evaluation may be unknown; the
     // history must then stop advancing, or a missed P would silently
@@ -1461,6 +1516,8 @@ int main(int argc, char** argv) {
                 std::cerr << "invalid --batch-pending count\n";
                 return 1;
             }
+        } else if (argument == "--memory-report") {
+            eng.memory_report_enabled = true;
         } else if (argument == "--exact-threads") {
             if (++i >= argc) {
                 std::cerr << "--exact-threads requires a count\n";
@@ -1619,6 +1676,7 @@ int main(int argc, char** argv) {
                 }
                 throw_if_interrupted();
             } catch (const CampaignInterrupted&) {
+                if (eng.memory_report_enabled) eng.memory_report();
                 eng.save_cache();
                 eng.save_row_checkpoint(static_cast<int>(n));
                 std::cout << "ROW-CHECKPOINT saved path="
@@ -1651,6 +1709,7 @@ int main(int argc, char** argv) {
                         std::cout << "PERIOD start=" << checkpoint_n
                               << " length=" << (n - checkpoint_n)
                               << " shapes=" << eng.shapes.size() << std::endl;
+                        if (eng.memory_report_enabled) eng.memory_report();
                         eng.save_cache();
                         return 0;
                     }
@@ -1671,6 +1730,7 @@ int main(int argc, char** argv) {
         }
         std::cout << "LIMIT-REACHED n=" << n
                   << " shapes=" << eng.shapes.size() << std::endl;
+        if (eng.memory_report_enabled) eng.memory_report();
         eng.save_cache();
     } catch (const std::exception& error) {
         std::cerr << "periodicity engine checkpoint error: "
