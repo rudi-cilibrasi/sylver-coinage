@@ -28,4 +28,36 @@ Plan adjustment from measurement:
   every other subsystem it scales with active-row work rather than
   shape count and would otherwise dominate at 3M+ shapes.
 
-After-numbers land below as tasks complete.
+After-numbers (compact engine 9f00b0a, same frontier, full v1
+migration with per-transition re-derivation in 5:46 wall clock —
+every one of the 324,404 shapes' option lists regenerated from the
+loaded masks and required to match the legacy bytes exactly):
+
+  MEMORY total=617382181 shapes=30146624 transitions=284640080
+    index=15650952 ring=21735068 stamps=86940272 memo=152174592
+    basecache=26003537 eparts=91056 nshapes=324404
+
+  before -> after by subsystem:
+    transitions  931.6 MB -> 284.6 MB   (3.3x)
+    memo         300.6 MB -> 152.2 MB   (2.0x)
+    stamps        94.7 MB ->  86.9 MB   (headers)
+    shapes        35.2 MB ->  30.1 MB
+    index         32.7 MB ->  15.7 MB   (2.1x)
+    ring          29.5 MB ->  21.7 MB
+    total       1450.5 MB -> 617.4 MB   (2.35x accounted)
+
+  The marginal per-shape cost (excluding the row-work-proportional memo
+  and the base cache) is now ~1,355 accounted bytes/shape, and peak RSS
+  through the whole load-migrate-save cycle was 1.89 GB against the
+  historical ~13 KB/shape RSS — the allocator-fragmentation win comes
+  on top of the accounted 2.35x.  The migrated version-2 rowstate is
+  also smaller on disk: 756.5 MB -> 488.3 MB.
+
+  Projected headroom on the 62 GB home box at ~2 KB/shape RSS:
+  roughly 20-25M shapes, about 7x beyond the largest closure frontier
+  ever measured (3.16M shapes at the 45 GB guard).
+
+Certification: 13/13 periodicity tests including the v1-fixture
+migration and the reference-equality gate (identical certificate lines
+and byte-identical caches versus the pre-compaction binary b9a7e5f),
+plus a clean ASan/UBSan interrupt-resume on the compact build.
