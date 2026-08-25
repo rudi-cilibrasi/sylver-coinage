@@ -1446,25 +1446,44 @@ struct Engine {
         pending.clear();
         pending_keys.clear();
         const std::vector<int> hints = hint_pool;  // frozen for the batch
-        std::atomic<std::size_t> next{0};
-        std::vector<std::thread> pool;
-        const std::size_t width = std::min<std::size_t>(
-            static_cast<std::size_t>(exact_threads), items.size());
-        for (std::size_t t = 0; t < width; ++t)
-            pool.emplace_back([&items, &next, &hints]() {
-                for (;;) {
-                    const std::size_t i = next.fetch_add(1);
-                    if (i >= items.size() || interrupt_requested != 0) return;
-                    try {
-                        items[i].result = solve_exact_position(
-                            items[i].gens, items[i].frobenius, hints);
-                        items[i].done = true;
-                    } catch (const CampaignInterrupted&) {
-                        return;
+        // Deep positions carry multi-gigabyte solver memos; running a full
+        // complement of them concurrently is what exhausts machines.  Light
+        // positions solve at full width, heavy ones at a narrow width.  The
+        // partition affects scheduling only — outcomes are order-independent.
+        std::stable_partition(
+            items.begin(), items.end(),
+            [](const Item& item) { return item.frobenius <= 255; });
+        std::size_t heavy_begin = items.size();
+        for (std::size_t i = 0; i < items.size(); ++i)
+            if (items[i].frobenius > 255) { heavy_begin = i; break; }
+        const auto run_span = [&](std::size_t begin, std::size_t end,
+                                  std::size_t width) {
+            if (begin >= end) return;
+            std::atomic<std::size_t> next{begin};
+            std::vector<std::thread> pool;
+            const std::size_t workers = std::min<std::size_t>(
+                width, end - begin);
+            for (std::size_t t = 0; t < workers; ++t)
+                pool.emplace_back([&items, &next, &hints, end]() {
+                    for (;;) {
+                        const std::size_t i = next.fetch_add(1);
+                        if (i >= end || interrupt_requested != 0) return;
+                        try {
+                            items[i].result = solve_exact_position(
+                                items[i].gens, items[i].frobenius, hints);
+                            items[i].done = true;
+                        } catch (const CampaignInterrupted&) {
+                            return;
+                        }
                     }
-                }
-            });
-        for (std::thread& worker : pool) worker.join();
+                });
+            for (std::thread& worker : pool) worker.join();
+        };
+        run_span(0, heavy_begin,
+                 static_cast<std::size_t>(exact_threads));
+        run_span(heavy_begin, items.size(),
+                 std::min<std::size_t>(
+                     3, static_cast<std::size_t>(exact_threads)));
         for (const Item& item : items) {
             if (!item.done) continue;
             ++exact_completed;
