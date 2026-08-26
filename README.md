@@ -82,5 +82,7 @@ history.
 ## Author
 
 Rudi Cilibrasi (<rudi@metagood.com>), with campaign engineering by
-Claude (Anthropic).  Independent confirmation or refutation of any
-result is warmly invited.
+Claude (Anthropic) and GPT 5.6 Sol (OpenAI).  AI subscriptions
+generously provided by [Metagood.com](https://metagood.com).
+Independent confirmation or refutation of any result is warmly
+invited.
