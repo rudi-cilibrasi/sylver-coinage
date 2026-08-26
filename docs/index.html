@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sylver Coinage — play the exact solver</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='13' font-size='13'%3E%E2%9A%92%3C/text%3E%3C/svg%3E">
 <style>
   :root {
     --bg: #ffffff; --fg: #1a1a24; --muted: #667; --card: #f4f5f8;
@@ -89,7 +90,7 @@
      by their minimal generating set.</p>
   <button id="loadCache" onclick="loadCache()">Load campaign cache (~10 MB)</button>
   <span id="cacheState" class="small"></span><br>
-  <input type="text" id="qpos" value="16,26,82,88,119,139,179" disabled>
+  <input type="text" id="qpos" value="16,26,55,82,88,173" disabled>
   <button id="qbtn" onclick="queryCache()" disabled>Look up</button>
   <p id="qresult"></p>
 </div>
@@ -105,7 +106,9 @@
   <p class="small">Move 26 is the live frontier: it reduces to whether
   X&nbsp;=&nbsp;{16,26,82,88} is a P-position.  Every odd reply to X
   through 407 and all 32 of its even children are proved N.  See
-  <a href="https://github.com/rudi-cilibrasi/sylver-coinage/blob/main/sylver/RESEARCH.md">the research log</a>.</p>
+  <a href="https://github.com/rudi-cilibrasi/sylver-coinage/blob/main/sylver/RESEARCH.md">the research log</a>
+  — and browse the <a href="tables.html">auto-generated campaign
+  tables</a> in the style of Blok's <i>6-16 Tables</i>.</p>
 </div>
 
 <p class="small">Rudi Cilibrasi, with Claude (Anthropic) and GPT 5.6 Sol
