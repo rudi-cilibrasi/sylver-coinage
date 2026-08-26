@@ -1,5 +1,9 @@
 # Sylver Coinage after opening 16 — a machine-verified campaign
 
+**▶ [Live demo](https://rudi-cilibrasi.github.io/sylver-coinage/):**
+play Sylver Coinage against the exact solver in your browser, and query
+the campaign's 273,000-outcome cache directly from this repository.
+
 This repository is the complete, auditable record of a computational
 campaign on **Sylver Coinage after the opening move 16** (Conway's prize
 question: does 16 have a winning reply, and which?).  Every claim below

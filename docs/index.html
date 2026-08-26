@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sylver Coinage — play the exact solver</title>
+<style>
+  :root {
+    --bg: #ffffff; --fg: #1a1a24; --muted: #667; --card: #f4f5f8;
+    --accent: #2456c4; --good: #197a3d; --bad: #b02a2a; --chip: #e3e8f4;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #14151c; --fg: #e8e9f0; --muted: #99a; --card: #1e2029;
+      --accent: #7aa2ff; --good: #5fd08a; --bad: #ff8080; --chip: #2a2e40;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0 auto; max-width: 60rem; padding: 1.2rem;
+    background: var(--bg); color: var(--fg);
+    font: 16px/1.55 system-ui, -apple-system, sans-serif;
+  }
+  h1 { font-size: 1.6rem; margin: .4rem 0 .2rem; }
+  h2 { font-size: 1.15rem; margin: 1.6rem 0 .5rem; }
+  .sub { color: var(--muted); margin: 0 0 1rem; }
+  .card { background: var(--card); border-radius: 10px; padding: 1rem 1.1rem; margin: .8rem 0; }
+  input[type=text] {
+    font: inherit; padding: .45rem .6rem; border-radius: 8px;
+    border: 1px solid var(--muted); background: var(--bg); color: var(--fg);
+    width: 14rem;
+  }
+  button {
+    font: inherit; padding: .45rem .9rem; border-radius: 8px; border: none;
+    background: var(--accent); color: #fff; cursor: pointer; margin: .15rem;
+  }
+  button.chip {
+    background: var(--chip); color: var(--fg); padding: .3rem .7rem;
+    border-radius: 999px; font-variant-numeric: tabular-nums;
+  }
+  button.chip:hover { outline: 2px solid var(--accent); }
+  .P { color: var(--good); font-weight: 600; }
+  .N { color: var(--bad); font-weight: 600; }
+  #log div { padding: .15rem 0; border-bottom: 1px dashed color-mix(in srgb, var(--muted) 30%, transparent); }
+  table { border-collapse: collapse; font-variant-numeric: tabular-nums; }
+  td, th { padding: .25rem .8rem; border-bottom: 1px solid color-mix(in srgb, var(--muted) 30%, transparent); text-align: right; }
+  a { color: var(--accent); }
+  .small { font-size: .85rem; color: var(--muted); }
+</style>
+</head>
+<body>
+<h1>Sylver Coinage — play the exact solver</h1>
+<p class="sub">
+  Two players alternately name positive integers that are not sums of
+  previously named ones; whoever is forced to name <b>1</b> loses.
+  This page runs the
+  <a href="https://github.com/rudi-cilibrasi/sylver-coinage">campaign's</a>
+  exact finite evaluator in your browser and can consult its audited
+  273,000-outcome cache as a remote database.
+</p>
+
+<div class="card">
+  <h2 style="margin-top:0">Play against perfect play</h2>
+  <p>Start from a position (comma-separated generators, gcd 1 — try
+     <a href="#" onclick="setPos('4,5');return false">4,5</a>,
+     <a href="#" onclick="setPos('5,7');return false">5,7</a>,
+     <a href="#" onclick="setPos('6,7');return false">6,7</a>,
+     <a href="#" onclick="setPos('7,8,13');return false">7,8,13</a>, or the
+     deep <a href="#" onclick="setPos('16,20,28,35,54');return false">16,20,28,35,54</a>):</p>
+  <input type="text" id="pos" value="5,7">
+  <button onclick="startGame()">Start game</button>
+  <button onclick="evaluatePos()">Just evaluate</button>
+  <p id="verdict"></p>
+  <div id="board"></div>
+  <div id="log"></div>
+  <p class="small">The browser solver handles Frobenius numbers up to
+  ~140 comfortably (it is the Python reference's algorithm, ported and
+  differentially tested to matching state counts).  Positions with
+  gcd&nbsp;&gt;&nbsp;1 have infinitely many legal odd moves and are
+  settled by the campaign's theorems rather than finite search — query
+  those against the cache below.</p>
+</div>
+
+<div class="card">
+  <h2 style="margin-top:0">Query the campaign cache</h2>
+  <p>The campaign proved 273,000+ exact outcomes (over 10<sup>12</sup>
+     evaluated states), many far beyond browser reach.  This fetches the
+     audited cache straight from the repository and looks positions up
+     by their minimal generating set.</p>
+  <button id="loadCache" onclick="loadCache()">Load campaign cache (~10 MB)</button>
+  <span id="cacheState" class="small"></span><br>
+  <input type="text" id="qpos" value="16,26,82,88,119,139,179" disabled>
+  <button id="qbtn" onclick="queryCache()" disabled>Look up</button>
+  <p id="qresult"></p>
+</div>
+
+<div class="card">
+  <h2 style="margin-top:0">The certified opening-16 table</h2>
+  <p>After the opening move 16, every even reply from 2 through 24 has a
+     certified winning answer (odd replies lose by Hutchings' theorem):</p>
+  <table>
+    <tr><th>Opponent plays</th><td>2</td><td>4</td><td>6</td><td>8</td><td>10</td><td>12</td><td>14</td><td>18</td><td>20</td><td>22</td><td>24</td></tr>
+    <tr><th>Certified reply</th><td>3</td><td>6</td><td>7</td><td>14</td><td>9</td><td>14</td><td>8</td><td>5</td><td>34</td><td>12</td><td>10</td></tr>
+  </table>
+  <p class="small">Move 26 is the live frontier: it reduces to whether
+  X&nbsp;=&nbsp;{16,26,82,88} is a P-position.  Every odd reply to X
+  through 407 and all 32 of its even children are proved N.  See
+  <a href="https://github.com/rudi-cilibrasi/sylver-coinage/blob/main/sylver/RESEARCH.md">the research log</a>.</p>
+</div>
+
+<p class="small">Rudi Cilibrasi, with Claude (Anthropic) and GPT 5.6 Sol
+(OpenAI); AI subscriptions by Metagood.com.  MIT licensed.</p>
+
+<script src="solver.js"></script>
+<script>
+"use strict";
+const RAW = "https://raw.githubusercontent.com/rudi-cilibrasi/sylver-coinage/main/";
+let game = null;
+let cache = null;
+
+function setPos(text) { document.getElementById("pos").value = text; }
+
+function parseGens(text) {
+  return text.split(",").map((s) => parseInt(s.trim(), 10));
+}
+
+function makeSolver(text) {
+  const gens = normalize(parseGens(text));
+  const frob = frobeniusNumber(gens);
+  if (frob > 200) throw new Error(
+    "Frobenius number " + frob + " is beyond the browser demo; " +
+    "use the native solver or the cache lookup below.");
+  if (frob > 140 && !confirm(
+    "Frobenius number is " + frob + " — this may take a while. Continue?"))
+    throw new Error("cancelled");
+  return new SylverSolver(gens);
+}
+
+function evaluatePos() {
+  const verdict = document.getElementById("verdict");
+  try {
+    const solver = makeSolver(document.getElementById("pos").value);
+    const result = solver.solve();
+    verdict.innerHTML = "{" + result.generators + "} is " +
+      (result.winningMove === null
+        ? "a <span class='P'>P-position</span> (the player to move loses" +
+          " with perfect play)"
+        : "an <span class='N'>N-position</span> — winning move <b>" +
+          result.winningMove + "</b>") +
+      ".  Frobenius " + result.frobenius + ", " +
+      result.statesEvaluated.toLocaleString() + " states evaluated.";
+    document.getElementById("board").innerHTML = "";
+    document.getElementById("log").innerHTML = "";
+  } catch (e) { verdict.textContent = e.message; }
+}
+
+function startGame() {
+  const verdict = document.getElementById("verdict");
+  try {
+    const solver = makeSolver(document.getElementById("pos").value);
+    game = { solver, state: solver.initialState, over: false };
+    verdict.textContent = "Your move — click a number (taking 1 loses).";
+    document.getElementById("log").innerHTML = "";
+    render();
+  } catch (e) { verdict.textContent = e.message; }
+}
+
+function render() {
+  const board = document.getElementById("board");
+  if (!game) { board.innerHTML = ""; return; }
+  const gaps = game.solver.gaps(game.state);
+  board.innerHTML = "Legal moves: " + gaps.map((m) =>
+    "<button class='chip' " + (game.over ? "disabled" : "") +
+    " onclick='humanMove(" + m + ")'>" + m + "</button>").join(" ");
+}
+
+function logLine(html) {
+  const log = document.getElementById("log");
+  const div = document.createElement("div");
+  div.innerHTML = html;
+  log.appendChild(div);
+}
+
+function humanMove(m) {
+  if (!game || game.over) return;
+  if (m === 1) {
+    logLine("You played <b>1</b> — <span class='bad N'>you lose!</span>");
+    game.over = true; render(); return;
+  }
+  game.state = game.solver.adjoin(game.state, m);
+  logLine("You played <b>" + m + "</b>.");
+  const moves = game.solver.legalMoves(game.state);
+  if (moves.length === 0) {
+    logLine("Only 1 remains — the solver must take it. " +
+            "<span class='P'>You win!</span>");
+    game.over = true; render(); return;
+  }
+  const reply = game.solver.winningMove(game.state);
+  const machineMove = reply !== 0 ? reply : moves[moves.length - 1];
+  game.state = game.solver.adjoin(game.state, machineMove);
+  logLine("Solver plays <b>" + machineMove + "</b>" +
+          (reply === 0 ? " <span class='small'>(lost position — stalling)</span>" : "") + ".");
+  if (game.solver.legalMoves(game.state).length === 0) {
+    logLine("Only 1 remains — you must take it. " +
+            "<span class='N'>The solver wins.</span>");
+    game.over = true;
+  }
+  render();
+}
+
+// ---- campaign cache as a remote database --------------------------------
+async function loadCache() {
+  const state = document.getElementById("cacheState");
+  document.getElementById("loadCache").disabled = true;
+  state.textContent = "fetching…";
+  try {
+    const response = await fetch(RAW + "sylver/move26_data/periodicity_x.cache");
+    if (!response.ok) throw new Error("HTTP " + response.status);
+    const text = await response.text();
+    cache = new Map();
+    for (const line of text.split("\n")) {
+      const seperator = line.lastIndexOf(" ");
+      if (seperator < 0) continue;
+      cache.set(line.slice(0, seperator), line.slice(seperator + 1) === "1");
+    }
+    state.textContent = cache.size.toLocaleString() + " audited outcomes loaded.";
+    document.getElementById("qpos").disabled = false;
+    document.getElementById("qbtn").disabled = false;
+  } catch (e) {
+    state.textContent = "fetch failed: " + e.message;
+    document.getElementById("loadCache").disabled = false;
+  }
+}
+
+function canRepresent(gens, value) {       // membership for gcd >= 1 sets
+  const reachable = new Array(value + 1).fill(false);
+  reachable[0] = true;
+  for (let v = 1; v <= value; ++v)
+    for (const g of gens)
+      if (v >= g && reachable[v - g]) { reachable[v] = true; break; }
+  return reachable[value];
+}
+
+function minimalGenerators(gens) {
+  const sorted = [...new Set(gens)].sort((a, b) => a - b);
+  const kept = [];
+  for (const g of sorted) {
+    const others = sorted.filter((x) => x !== g);
+    if (!canRepresent(others, g)) kept.push(g);
+  }
+  return kept;
+}
+
+function queryCache() {
+  const out = document.getElementById("qresult");
+  try {
+    const gens = minimalGenerators(parseGens(document.getElementById("qpos").value));
+    const key = gens.join(",");
+    if (!cache.has(key)) {
+      out.innerHTML = "{" + key + "} is not in the cache (it holds the " +
+        "move-26 campaign's frontier positions).";
+      return;
+    }
+    out.innerHTML = "{" + key + "} — proved " + (cache.get(key)
+      ? "<span class='P'>P</span> (previous player wins)"
+      : "<span class='N'>N</span> (player to move wins)") +
+      " by the campaign's exact native recurrence.";
+  } catch (e) { out.textContent = e.message; }
+}
+</script>
+</body>
+</html>
