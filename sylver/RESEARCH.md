@@ -1117,6 +1117,60 @@ resumable, and the next investment is the disclosure letter
 (`DRAFT_TO_SICHERMAN_BLOK.md`, now carrying these final numbers) and/or
 the compact-representation engineering, not more of the same compute.
 
+### Disclosure — 2026-08-26
+
+The campaign went public in two steps.  First, the Sylver-only portion
+of this repository's history was published at
+<https://github.com/rudi-cilibrasi/sylver-coinage> (76 filtered
+campaign commits plus a public README and MIT license; the 505 MB
+version-1 row checkpoint is attached to release v1.0 with its SHA-256
+pinned, and the private archive remains local and push-blocked).
+Second, the disclosure letter was sent to George Sicherman and Thomas
+Blok (`DRAFT_TO_SICHERMAN_BLOK.md` preserves it as transmitted).  It
+contains the independent confirmations of their published claims, the
+even-reply-8 resolution of the `{12,16,20}` holdout from the 2021 g=2
+report, the seven unpublished P-positions, the move-26 reduction to
+`X={16,26,82,88}` with its closed even flank, and the row-409 closure
+measurement — with two standing questions: whether any of the new
+positions were already known to them, and whether they see a route to
+the `X` computation that avoids the full dependency closure.  Every
+claim in the letter is self-service verifiable from the public
+repository.  The compact-engine home siege continues in checkpointed
+cycles while a reply is awaited.
+
+### Correspondence — 2026-08-27: Sicherman replies, with a correction
+
+George Sicherman replied within a day, and generously: "Thank you for
+all your work on Sylver Coinage!  I have long wished for independent
+confirmation of our results."  Of the `{8,10,22}` periodicity
+certificate — his first long P-position, originally computed on a
+network of SUN systems in the 1990s — he wrote that he is "relieved to
+learn that your results agree with mine."
+
+**A correction, gratefully recorded.**  The letter claimed seven
+P-positions "on no published list."  For one of them that was wrong:
+`{16,26,36,56}` (this repository's node `V`) already appears in
+Sicherman's online table of P-positions.  Attempt 7's novelty claim is
+therefore withdrawn; what this campaign actually produced for `V` is an
+*unwitting independent confirmation* with a full finite certificate —
+which, given his stated wish, may be the better outcome anyway.  The
+six remaining positions stand as apparently new; Sicherman notes the
+relevant regions "were analyzed by Thomas, using my software," so their
+priority awaits word from Blok, whom he has not heard from since March
+and will contact.  The certificates are machine-checked either way.
+The letter as sent is preserved unchanged in
+`DRAFT_TO_SICHERMAN_BLOK.md`; this entry is the correction of record,
+and the public repository's README was corrected in the same spirit.
+
+Two further remarks of his deserve the log.  On the `{12,16,20}` even
+reply: "We should have noticed this" — company this repository is glad
+to keep, since its own 409-deep odd frontier searched past the same
+two-line identity for weeks.  And on the campaign's central objective:
+"I used to think that {26} could not be analyzed fully.  In the light
+of your work, I withdraw my belief!" — the field's most experienced
+practitioner revising his assessment of the move-26 program's
+feasibility.  The correspondence continues.
+
 ### Sources
 
 - <https://math.colgate.edu/~integers/yg2/yg2.pdf>

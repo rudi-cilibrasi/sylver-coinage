@@ -25,8 +25,12 @@ exceeds 10^12 states.
   (`<12,16,20,8> = <8,12>`), completing a step left open in Blok's 2021
   g=2 report.  See `sylver/eight_twelve.py` and `sylver/RESEARCH.md`
   (Attempt 5).
-- **Seven P-positions on no published list**, including the certified
-  node `{16,26,36,56}`; full certificates in
+- **Six apparently new P-positions, plus an independent confirmation
+  of a seventh**: the certified node `{16,26,36,56}` turns out to
+  appear on G. Sicherman's online P-position table (our thanks for the
+  correction), making this campaign's full finite certificate for it an
+  unwitting independent verification; the other six await priority
+  checks against T. Blok's unpublished analyses.  Full certificates in
   `sylver/short_certificates.py` and the `RUN_*.txt` records.
 - **The move-26 program**: `{16,26}` is short; thirty of its 42 even
   children are refuted; the decisive child 88 reduces to the boundary
