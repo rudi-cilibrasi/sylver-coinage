@@ -1,0 +1,43 @@
+First compact-engine home block: five days, 18,178 exact outcomes, zero incidents
+2026-08-25 to 2026-08-30 (118 h block budget, 19 SIGINT checkpoint cycles)
+
+Command (via sylver/aws/home_siege_cycles.sh, engine commit 47894fb):
+  pe_siege2 compact_siege/periodicity_x.cache 409
+    --base-record full_82.txt --base-record x_sortie.txt
+    --exact-threads 8 --batch-pending 10000 --memory-report 16 26 82 88
+  6-hour cycles under timeout --signal=INT; 40 GB external RSS guard
+  (never fired); two-phase batches (heavy F>255 at width 3).
+
+Provenance: resumed the migrated v2 rowstate of the AWS frontier
+(324,404 shapes, evaluations 605,165,923) after an initial 13 h
+single-run stint (banked separately: cache 267,847 -> 269,213) and one
+OOM lesson that produced the two-phase batch fix and this cycle
+discipline.
+
+Results, all audited:
+  exact cache:  269,213 -> 286,025 rows (+18,178 conflict-free in the
+    block; 16,864 P / 269,161 N).  Authoritative-cache SHA-256 after
+    the zero-conflict merge:
+    a6e8127bc9a7defa591b7e470b88eac85eb59787e94caae6a7e5d68f6387dd28
+  evaluations:  673,278,981 -> 1,943,483,241 (+1.27 billion)
+  shapes:       324,404 -> 324,406 (the graph stays pinned at the
+    pending wall while the base-region backlog drains)
+  memory:       636.8 MB accounted at final checkpoint — the compact
+    representation held its 2.35x ratio through a five-day campaign
+  signals:      no P-HIT, no PERIOD, no guard fire, no crash; all 19
+    cycles checkpointed and resumed cleanly (rc=130 each)
+
+Rate observations:
+  ~154 solves/hour average over the block, but strongly accelerating:
+  early cycles banked ~650-800, the final four banked 1,052 / 1,361 /
+  1,498 / 1,072 as the persistent hint pool warmed — the last day ran
+  at roughly double the first day's rate.  If the trend holds, later
+  blocks are materially cheaper per outcome.
+
+What this block was for, honestly restated: the home box cannot drain
+the >=12.5M-position backlog (the AWS-measured economics stand); its
+value is the validated compact engine under real load, a durable
+trickle into the audited cache, and the first_p-cascade lottery.  The
+disclosure correspondence (RESEARCH.md, 2026-08-27) is the campaign's
+live strategic front; the siege continues in identical blocks while it
+plays out.

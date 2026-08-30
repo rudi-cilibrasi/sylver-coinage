@@ -1138,6 +1138,21 @@ claim in the letter is self-service verifiable from the public
 repository.  The compact-engine home siege continues in checkpointed
 cycles while a reply is awaited.
 
+### Attempt 24 — the first compact home block runs five days clean
+
+The compact engine's first full block (118 h in nineteen 6-hour SIGINT
+checkpoint cycles, 8 threads, two-phase batches) banked **18,178
+conflict-free exact outcomes** — cache 269,213 → 286,025 — and 1.27
+billion row evaluations with zero incidents: no guard fire, no crash,
+every cycle checkpointed and resumed cleanly, memory flat at 637 MB
+accounted.  The notable dynamic is acceleration: the persistent hint
+pool roughly doubled the solve rate between the first and last day
+(~700 to ~1,300-1,500 per cycle), so later blocks are cheaper per
+outcome.  No P-HIT, no period; the graph stays pinned at 324K shapes
+while the base-region backlog drains.  See `RUN_COMPACT_SIEGE.txt`.
+The siege continues in identical blocks while the disclosure
+correspondence below plays out.
+
 ### Correspondence — 2026-08-27: Sicherman replies, with a correction
 
 George Sicherman replied within a day, and generously: "Thank you for
