@@ -1143,9 +1143,13 @@ cycles while a reply is awaited.
 The compact engine's first full block (118 h in nineteen 6-hour SIGINT
 checkpoint cycles, 8 threads, two-phase batches) banked **18,178
 conflict-free exact outcomes** — cache 269,213 → 286,025 — and 1.27
-billion row evaluations with zero incidents: no guard fire, no crash,
-every cycle checkpointed and resumed cleanly, memory flat at 637 MB
-accounted.  The notable dynamic is acceleration: the persistent hint
+billion row evaluations; every cycle checkpointed and resumed cleanly
+and memory stayed flat at 637 MB accounted.  (Correction, 2026-08-30:
+the first version of this entry said "zero incidents"; a later log
+audit found three absorbed OOM-class SIGKILLs during the block — see
+the appended correction in `RUN_COMPACT_SIEGE.txt`.  Outcome totals
+are cache-derived and unaffected; the monitoring gap that let spikes
+outrun the guard is closed.)  The notable dynamic is acceleration: the persistent hint
 pool roughly doubled the solve rate between the first and last day
 (~700 to ~1,300-1,500 per cycle), so later blocks are cheaper per
 outcome.  No P-HIT, no period; the graph stays pinned at 324K shapes

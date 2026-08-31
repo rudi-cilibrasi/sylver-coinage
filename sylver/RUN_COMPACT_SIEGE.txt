@@ -24,8 +24,23 @@ Results, all audited:
     pending wall while the base-region backlog drains)
   memory:       636.8 MB accounted at final checkpoint — the compact
     representation held its 2.35x ratio through a five-day campaign
-  signals:      no P-HIT, no PERIOD, no guard fire, no crash; all 19
-    cycles checkpointed and resumed cleanly (rc=130 each)
+  signals:      no P-HIT, no PERIOD, no guard fire; all 19 cycles
+    checkpointed and resumed cleanly (rc=130 each)
+
+CORRECTION (2026-08-30, appended): the original text of this record
+claimed "no crash."  A later audit of the full log found three
+SIGKILL (rc=137, OOM-class) cycle deaths during this block — near
+evaluations 1.14e9 and twice consecutively near 1.34e9, the latter
+reaching crash-counter 2 of 3, one strike from the wrapper's
+crash-loop stop.  Every crash was absorbed by the cycle discipline:
+cache rows persist incrementally per batch, so losses were limited to
+each dead cycle's un-checkpointed rowstate progress, re-swept on
+resume.  The outcome totals, hashes, and evaluation counts above are
+cache- and checkpoint-derived and are unaffected.  The reporting
+error was ours: the block review never counted CYCLE-CRASH lines.
+The off-box RSS guard has been tightened from 600 s polling at 40 GB
+to 60 s polling at 38 GB so spikes are converted to clean SIGINT
+checkpoints rather than kernel kills.
 
 Rate observations:
   ~154 solves/hour average over the block, but strongly accelerating:
