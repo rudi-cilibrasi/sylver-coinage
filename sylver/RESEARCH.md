@@ -1157,6 +1157,21 @@ while the base-region backlog drains.  See `RUN_COMPACT_SIEGE.txt`.
 The siege continues in identical blocks while the disclosure
 correspondence below plays out.
 
+### Attempt 25 — second home block; the shape frontier moves
+
+The second 118-hour block banked another **18,986 conflict-free exact
+outcomes** (cache 286,025 → 305,011; 17,548 P) and 1.24 billion
+evaluations across nineteen cycles.  One early OOM-class SIGKILL was
+absorbed by the cycle discipline (the block-1 monitoring gap, now
+closed with a 60 s / 38 GB guard, had let one spike through); nothing
+recurred.  The new datum is the **shape graph: 324,406 → 329,245**.
+Block 1 held the graph flat while backfilling the pending wall; block 2
+began pushing the frontier itself.  That is a faint first hint the
+closure near row 409 could be finite-and-reachable rather than only
+large — far too little to call convergence, but the first directional
+signal in the whole siege.  No P-HIT, no period.  See
+`RUN_COMPACT_SIEGE.txt`.
+
 ### Correspondence — 2026-08-27: Sicherman replies, with a correction
 
 George Sicherman replied within a day, and generously: "Thank you for

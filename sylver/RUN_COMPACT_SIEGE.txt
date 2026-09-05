@@ -56,3 +56,20 @@ trickle into the audited cache, and the first_p-cascade lottery.  The
 disclosure correspondence (RESEARCH.md, 2026-08-27) is the campaign's
 live strategic front; the siege continues in identical blocks while it
 plays out.
+
+Block 2 (2026-08-30 to 2026-09-04, 118 h, 19 cycles):
+  exact cache:  286,025 -> 305,011 (+18,986 conflict-free; 17,548 P /
+    287,463 N).  Authoritative SHA-256 begins 07b4b858.
+  evaluations:  1,943,483,241 -> 3,179,365,369 (+1.24 billion)
+  shapes:       324,406 -> 329,245 (+4,839 -- the frontier moved this
+    block; the drain has begun pushing past the pending wall rather
+    than only backfilling)
+  incidents:    one OOM-class SIGKILL early in the block (before the
+    tightened 60 s / 38 GB guard took effect), absorbed by the cycle
+    discipline; no crash has recurred since and the guard has fired no
+    false positives.  No P-HIT, no period.
+  rate:         steady ~1,000/cycle, the block-1 acceleration having
+    plateaued as the hint pool saturated.
+The shape-frontier movement is the first sign the closure near row 409
+may be finite-and-reachable rather than merely large; far too early to
+read as convergence, but worth watching across further blocks.
