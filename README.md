@@ -15,6 +15,14 @@ exceeds 10^12 states.
 
 ## Headline results
 
+- **September 5 verification release:** independent confirmation of the
+  published P-position `{16,26,54,60,62}`, with all 38 root obligations
+  covered. The [report and reproducibility bundle](sylver/publication/plan2-2026-09-05/README.md)
+  include a fresh public reconstruction, 62 recomputed finite leaves,
+  41 matching Python cross-checks, and 27 passing tests. The certificate
+  names its three published P-position dependencies explicitly.
+  [Download the archive](sylver/publication/plan2-2026-09-05.tar.gz)
+  ([SHA-256](sylver/publication/plan2-2026-09-05.tar.gz.sha256)).
 - **A certified response table answering every even move 2–24 after
   opening 16** (odd moves lose by Hutchings' theorem).  Includes
   independent confirmations of published claims by G. Sicherman and
@@ -32,18 +40,20 @@ exceeds 10^12 states.
   unwitting independent verification; the other six await priority
   checks against T. Blok's unpublished analyses.  Full certificates in
   `sylver/short_certificates.py` and the `RUN_*.txt` records.
-- **The move-26 program**: `{16,26}` is short; thirty of its 42 even
-  children are refuted; the decisive child 88 reduces to the boundary
-  question *is `X={16,26,82,88}` a P-position?* — where every odd reply
-  through 407 and **all 32 even children of X are proved N**
-  (`sylver/RUN_X_EVEN_FLANK.txt`).
+- **The move-26 program, corrected September 5**: `{16,26}` is short;
+  thirty of its 42 even children are refuted. Its child
+  `U={16,26,88}` is P iff **both** `X={16,26,82,88}` and
+  `Q={16,26,88,98}` are N. The previous reduction to X alone was
+  unsupported. Every odd reply to X through 407 and **all 32 even
+  children of X are proved N** (`sylver/RUN_X_EVEN_FLANK.txt`).
+  See the [correction and counterexample](sylver/publication/plan2-2026-09-05/REPORT.md#correction-to-the-opening-16-reduction).
 - **The first size measurement of a g=2 periodicity computation of this
   class**: row X+409's dependency closure exceeds 3.15M translated
   shapes and 12.5M base-region exact positions, still unsaturated
   (`sylver/RUN_PERIODICITY_500H.txt`, `sylver/RUN_PERIODICITY_AWS.txt`);
   `{8,10,22}` needs 50 shapes for comparison.
 
-No open problem is claimed solved: `X`, move 26, and the opening remain
+No open problem is claimed solved: `X`, `Q`, move 26, and the opening remain
 undecided.  See `sylver/RESEARCH.md` for the complete attempt-by-attempt
 log, including negative results and two soundness bugs found and fixed
 by the audit discipline.
@@ -70,6 +80,7 @@ counts are deterministic and must match the run records exactly.
 | `sylver/native_solver.cpp` | the same recurrence in C++ (differentially tested) |
 | `sylver/periodicity_engine.cpp` | g=2 ultimate-periodicity engine: checkpointed, parallel exact fallbacks, compact v2 representation |
 | `sylver/short_certificates.py` | the certified P-node graph and opening-16 table |
+| `sylver/publication/plan2-2026-09-05/` | verification report, public certificate, source snapshot, and reproduction instructions |
 | `sylver/RESEARCH.md` | the full research log (Attempts 1–23) |
 | `sylver/RUN_*.txt` | fingerprinted run records for every campaign |
 | `sylver/move26_data/` | exact outcome cache (267,847 rows) and scan artifacts |

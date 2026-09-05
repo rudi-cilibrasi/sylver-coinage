@@ -1,0 +1,7 @@
+move=3 N winning_move=2 frobenius=23 cumulative_states=2
+move=5 N winning_move=13 frobenius=39 cumulative_states=34
+move=7 N winning_move=6 frobenius=41 cumulative_states=57
+move=9 N winning_move=7 frobenius=55 cumulative_states=105
+move=11 N winning_move=40 frobenius=83 cumulative_states=4156
+move=13 N winning_move=5 frobenius=85 cumulative_states=4161
+move=15 P winning_move=none frobenius=65 cumulative_states=8760

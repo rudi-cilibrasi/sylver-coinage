@@ -1,0 +1,734 @@
+{
+  "correction_controls": {
+    "Q_plus_82_equals_X": true,
+    "absorption_counterexample": true,
+    "counterexample_odd_period": 8,
+    "published_pairing_dependency": "8,10,12,14"
+  },
+  "facts": {
+    "finite-exact": 62,
+    "public-theorem": 3,
+    "short-cover": 5,
+    "winning-reply": 49
+  },
+  "finite_outcomes_recomputed": true,
+  "finite_replay": [
+    {
+      "outcome": "P",
+      "position": [
+        2,
+        3
+      ],
+      "python_control": true,
+      "states": 1
+    },
+    {
+      "outcome": "N",
+      "position": [
+        3,
+        16,
+        26
+      ],
+      "python_control": true,
+      "states": 2
+    },
+    {
+      "outcome": "N",
+      "position": [
+        5,
+        16,
+        54
+      ],
+      "python_control": true,
+      "states": 62
+    },
+    {
+      "outcome": "N",
+      "position": [
+        7,
+        16,
+        26
+      ],
+      "python_control": true,
+      "states": 31
+    },
+    {
+      "outcome": "N",
+      "position": [
+        3,
+        8
+      ],
+      "python_control": true,
+      "states": 2
+    },
+    {
+      "outcome": "N",
+      "position": [
+        5,
+        8
+      ],
+      "python_control": true,
+      "states": 13
+    },
+    {
+      "outcome": "N",
+      "position": [
+        7,
+        8,
+        20,
+        26
+      ],
+      "python_control": true,
+      "states": 13
+    },
+    {
+      "outcome": "N",
+      "position": [
+        8,
+        9,
+        20
+      ],
+      "python_control": true,
+      "states": 94
+    },
+    {
+      "outcome": "N",
+      "position": [
+        8,
+        11,
+        20,
+        26
+      ],
+      "python_control": true,
+      "states": 219
+    },
+    {
+      "outcome": "P",
+      "position": [
+        8,
+        9,
+        14,
+        20
+      ],
+      "python_control": true,
+      "states": 70
+    },
+    {
+      "outcome": "N",
+      "position": [
+        8,
+        15,
+        20,
+        26
+      ],
+      "python_control": true,
+      "states": 314
+    },
+    {
+      "outcome": "P",
+      "position": [
+        8,
+        11,
+        18,
+        20
+      ],
+      "python_control": true,
+      "states": 173
+    },
+    {
+      "outcome": "N",
+      "position": [
+        8,
+        19,
+        20,
+        26
+      ],
+      "python_control": true,
+      "states": 763
+    },
+    {
+      "outcome": "P",
+      "position": [
+        8,
+        13,
+        20,
+        22
+      ],
+      "python_control": true,
+      "states": 285
+    },
+    {
+      "outcome": "P",
+      "position": [
+        8,
+        20,
+        26,
+        30,
+        49
+      ],
+      "python_control": true,
+      "states": 3580
+    },
+    {
+      "outcome": "P",
+      "position": [
+        8,
+        20,
+        21,
+        26,
+        38
+      ],
+      "python_control": true,
+      "states": 1057
+    },
+    {
+      "outcome": "N",
+      "position": [
+        9,
+        16,
+        26
+      ],
+      "python_control": true,
+      "states": 340
+    },
+    {
+      "outcome": "N",
+      "position": [
+        3,
+        10
+      ],
+      "python_control": true,
+      "states": 2
+    },
+    {
+      "outcome": "N",
+      "position": [
+        7,
+        10,
+        16
+      ],
+      "python_control": true,
+      "states": 66
+    },
+    {
+      "outcome": "N",
+      "position": [
+        9,
+        10,
+        16,
+        24
+      ],
+      "python_control": true,
+      "states": 181
+    },
+    {
+      "outcome": "N",
+      "position": [
+        10,
+        11,
+        16,
+        24
+      ],
+      "python_control": true,
+      "states": 174
+    },
+    {
+      "outcome": "P",
+      "position": [
+        10,
+        12,
+        16,
+        31
+      ],
+      "python_control": true,
+      "states": 646
+    },
+    {
+      "outcome": "P",
+      "position": [
+        10,
+        11,
+        14,
+        16
+      ],
+      "python_control": true,
+      "states": 140
+    },
+    {
+      "outcome": "P",
+      "position": [
+        10,
+        11,
+        16,
+        18,
+        24
+      ],
+      "python_control": true,
+      "states": 207
+    },
+    {
+      "outcome": "N",
+      "position": [
+        10,
+        16,
+        19,
+        24
+      ],
+      "python_control": true,
+      "states": 80
+    },
+    {
+      "outcome": "P",
+      "position": [
+        5,
+        16,
+        24,
+        28
+      ],
+      "python_control": true,
+      "states": 55
+    },
+    {
+      "outcome": "P",
+      "position": [
+        10,
+        16,
+        24,
+        38,
+        47
+      ],
+      "python_control": true,
+      "states": 3196
+    },
+    {
+      "outcome": "N",
+      "position": [
+        11,
+        16,
+        26,
+        62
+      ],
+      "python_control": true,
+      "states": 4089
+    },
+    {
+      "outcome": "N",
+      "position": [
+        3,
+        14,
+        16
+      ],
+      "python_control": true,
+      "states": 2
+    },
+    {
+      "outcome": "N",
+      "position": [
+        5,
+        12,
+        14,
+        16
+      ],
+      "python_control": true,
+      "states": 20
+    },
+    {
+      "outcome": "P",
+      "position": [
+        6,
+        7,
+        16
+      ],
+      "python_control": true,
+      "states": 21
+    },
+    {
+      "outcome": "N",
+      "position": [
+        9,
+        12,
+        14,
+        16
+      ],
+      "python_control": true,
+      "states": 23
+    },
+    {
+      "outcome": "N",
+      "position": [
+        11,
+        12,
+        14,
+        16
+      ],
+      "python_control": true,
+      "states": 107
+    },
+    {
+      "outcome": "N",
+      "position": [
+        12,
+        14,
+        16,
+        17
+      ],
+      "python_control": true,
+      "states": 121
+    },
+    {
+      "outcome": "P",
+      "position": [
+        12,
+        14,
+        16,
+        18,
+        27
+      ],
+      "python_control": true,
+      "states": 1007
+    },
+    {
+      "outcome": "P",
+      "position": [
+        12,
+        14,
+        16,
+        20,
+        73
+      ],
+      "python_control": true,
+      "states": 4165
+    },
+    {
+      "outcome": "P",
+      "position": [
+        12,
+        14,
+        16,
+        22,
+        47
+      ],
+      "python_control": true,
+      "states": 2491
+    },
+    {
+      "outcome": "P",
+      "position": [
+        12,
+        14,
+        16,
+        21,
+        34
+      ],
+      "python_control": true,
+      "states": 941
+    },
+    {
+      "outcome": "N",
+      "position": [
+        15,
+        16,
+        26,
+        54
+      ],
+      "python_control": false,
+      "states": 11712
+    },
+    {
+      "outcome": "N",
+      "position": [
+        16,
+        17,
+        26,
+        54,
+        62
+      ],
+      "python_control": false,
+      "states": 23704
+    },
+    {
+      "outcome": "P",
+      "position": [
+        5,
+        16,
+        18
+      ],
+      "python_control": true,
+      "states": 50
+    },
+    {
+      "outcome": "N",
+      "position": [
+        16,
+        19,
+        26,
+        60,
+        62
+      ],
+      "python_control": false,
+      "states": 136103
+    },
+    {
+      "outcome": "P",
+      "position": [
+        15,
+        16,
+        22,
+        26
+      ],
+      "python_control": true,
+      "states": 5956
+    },
+    {
+      "outcome": "N",
+      "position": [
+        16,
+        23,
+        26,
+        54,
+        60
+      ],
+      "python_control": false,
+      "states": 10306
+    },
+    {
+      "outcome": "N",
+      "position": [
+        16,
+        25,
+        26,
+        54,
+        60,
+        62
+      ],
+      "python_control": false,
+      "states": 214744
+    },
+    {
+      "outcome": "P",
+      "position": [
+        16,
+        25,
+        26,
+        28,
+        62
+      ],
+      "python_control": false,
+      "states": 105133
+    },
+    {
+      "outcome": "P",
+      "position": [
+        16,
+        26,
+        30,
+        47,
+        54
+      ],
+      "python_control": false,
+      "states": 776389
+    },
+    {
+      "outcome": "N",
+      "position": [
+        16,
+        26,
+        33,
+        54,
+        60,
+        62
+      ],
+      "python_control": false,
+      "states": 1022399
+    },
+    {
+      "outcome": "P",
+      "position": [
+        16,
+        26,
+        34,
+        54,
+        62,
+        167
+      ],
+      "python_control": false,
+      "states": 5953889
+    },
+    {
+      "outcome": "P",
+      "position": [
+        16,
+        23,
+        26,
+        36,
+        54,
+        60
+      ],
+      "python_control": false,
+      "states": 146609
+    },
+    {
+      "outcome": "P",
+      "position": [
+        16,
+        26,
+        38,
+        60,
+        62,
+        77
+      ],
+      "python_control": false,
+      "states": 5428337
+    },
+    {
+      "outcome": "P",
+      "position": [
+        11,
+        16,
+        26,
+        40
+      ],
+      "python_control": true,
+      "states": 3740
+    },
+    {
+      "outcome": "N",
+      "position": [
+        16,
+        26,
+        41,
+        54,
+        60,
+        62
+      ],
+      "python_control": false,
+      "states": 1549726
+    },
+    {
+      "outcome": "P",
+      "position": [
+        16,
+        19,
+        26,
+        44,
+        62
+      ],
+      "python_control": false,
+      "states": 112852
+    },
+    {
+      "outcome": "P",
+      "position": [
+        16,
+        25,
+        26,
+        46,
+        54,
+        60
+      ],
+      "python_control": false,
+      "states": 251569
+    },
+    {
+      "outcome": "N",
+      "position": [
+        16,
+        26,
+        49,
+        54,
+        60,
+        62
+      ],
+      "python_control": false,
+      "states": 3213443
+    },
+    {
+      "outcome": "P",
+      "position": [
+        16,
+        26,
+        50,
+        54,
+        57,
+        60,
+        62
+      ],
+      "python_control": false,
+      "states": 3557265
+    },
+    {
+      "outcome": "P",
+      "position": [
+        16,
+        26,
+        54,
+        56,
+        60,
+        62,
+        91
+      ],
+      "python_control": false,
+      "states": 10108382
+    },
+    {
+      "outcome": "P",
+      "position": [
+        16,
+        26,
+        31,
+        54,
+        60,
+        66
+      ],
+      "python_control": false,
+      "states": 936185
+    },
+    {
+      "outcome": "P",
+      "position": [
+        13,
+        16,
+        54,
+        60,
+        62,
+        72
+      ],
+      "python_control": false,
+      "states": 57882
+    },
+    {
+      "outcome": "P",
+      "position": [
+        16,
+        26,
+        54,
+        60,
+        62,
+        71,
+        82
+      ],
+      "python_control": false,
+      "states": 9040253
+    },
+    {
+      "outcome": "P",
+      "position": [
+        16,
+        26,
+        27,
+        60,
+        62,
+        98
+      ],
+      "python_control": false,
+      "states": 611082
+    }
+  ],
+  "outcome": "P",
+  "published_P_dependencies": [
+    "8,10,12,14",
+    "8,10,22",
+    "8,12,26,30"
+  ],
+  "root": "16,26,54,60,62"
+}

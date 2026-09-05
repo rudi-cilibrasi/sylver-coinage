@@ -1,0 +1,11 @@
+move=3 N winning_move=2 frobenius=23 cumulative_states=2
+move=5 N winning_move=18 frobenius=49 cumulative_states=63
+move=7 N winning_move=6 frobenius=45 cumulative_states=86
+move=9 N winning_move=10 frobenius=65 cumulative_states=397
+move=11 N winning_move=21 frobenius=67 cumulative_states=3360
+move=13 N winning_move=33 frobenius=95 cumulative_states=26198
+move=15 N winning_move=38 frobenius=65 cumulative_states=36245
+move=17 N winning_move=30 frobenius=73 cumulative_states=55188
+move=19 N winning_move=85 frobenius=101 cumulative_states=122698
+move=21 N winning_move=11 frobenius=103 cumulative_states=122985
+move=23 P winning_move=none frobenius=89 cumulative_states=228146

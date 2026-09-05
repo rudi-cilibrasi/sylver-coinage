@@ -1,0 +1,24 @@
+{
+  "base_commit": "f5a8e036be6190299a4a77f0d7a02bab5bf0c088",
+  "evidence_origin": "fresh public reconstruction; no campaign cache or imported claims",
+  "included_private_documents": false,
+  "source_files": {
+    "sylver/__init__.py": "4bafc93414103712969e6a0b4e711a7a168bf280cb192572cc8fa706d12625c7",
+    "sylver/corpus_campaign.py": "278c80b7d7e47ffb3f7ba11c6bbff53dee9514d613664725129e89b0ab924548",
+    "sylver/eight_twelve.py": "4c2b990e1b9461f77311533ce23a2509207bcb0e122b09663e7f3da1d490c5f3",
+    "sylver/focus_campaign.py": "216258a28d2d71b90e81ad06586d09ffe0de4216b91da7586bbad747be4cae13",
+    "sylver/import_claims.py": "add5a321b00629ba9da1dfad4d251eb1f248422b4d5660e583d178c14195b525",
+    "sylver/native_solver.cpp": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+    "sylver/parallel_solve.py": "634222aef29d6f585f5c6f40037508b7b85fca601fe3f9cfb5debfc23bc02484",
+    "sylver/periodicity.py": "f1606dc03e6f27981e380c0d9b8d5e26df036a65ec1d7350e1b347bb2229bc8b",
+    "sylver/proof_graph.py": "5f2633ed055ddc8c60879317f906378b43c72c422da75bd15a6a1c5789e133c0",
+    "sylver/reconcile_campaign.py": "fc0a63c15404eab059c9fb6f8bc349b7c2dc7b7a5d9fabf4b60102a5ab80c68b",
+    "sylver/short_certificates.py": "7675fe927be6704ca7c60389061c61e82e5c3761b7086a1e5691b3bd9a5c5fd9",
+    "sylver/solver.py": "fe17c5fbb77b036131250af033b0bae7fa200daca4cadb01ceccb12fa6434a3d",
+    "sylver/x_even_flank.py": "6ef8415ddd46257981127501f423da810b685225c4f082547e11c266a00a36ff",
+    "tests/test_sylver_focus_campaign.py": "4be54b65380b39719f113afafe38b11050e590173de4604bf5e30413e0a7ad11",
+    "tests/test_sylver_import_claims.py": "9e882bfd1c7533470256db8d17031398de13c4e30a3192c9f00fe773d10a9609",
+    "tests/test_sylver_proof_graph.py": "52ef483e31878c323562a42a154754c8e0978e18b692c2b686b25a466be79748"
+  },
+  "source_state": "workspace snapshot including local changes; per-file hashes are authoritative"
+}

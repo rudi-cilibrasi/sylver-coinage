@@ -1,0 +1,571 @@
+"""Check finite branches of published short ``g=2`` P-position proofs.
+
+The Quiet End Theorem reduces odd moves above the Frobenius number of the
+divide-by-two semigroup to one theorem application.  The remaining odd moves
+and all even moves are finite.  This module checks those finite obligations
+for a small certificate graph covering several responses after opening 16.
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+from functools import cache
+from math import gcd
+from typing import Iterable
+
+from sylver.solver import FiniteSolver, solve_position
+
+
+def is_generated(generators: Iterable[int], value: int) -> bool:
+    """Return whether ``value`` is a nonnegative combination of generators."""
+
+    if value < 0:
+        return False
+    reachable = [False] * (value + 1)
+    reachable[0] = True
+    values = tuple(sorted(set(generators)))
+    for current in range(value + 1):
+        if not reachable[current]:
+            continue
+        for generator in values:
+            if current + generator <= value:
+                reachable[current + generator] = True
+    return reachable[value]
+
+
+def minimal_generators(generators: Iterable[int]) -> tuple[int, ...]:
+    """Return the unique minimal generators of the same additive monoid."""
+
+    result: list[int] = []
+    for value in sorted(set(generators)):
+        if value < 2:
+            raise ValueError("generators must exceed one")
+        if not is_generated(result, value):
+            result.append(value)
+    return tuple(result)
+
+
+def legal_moves_at_gcd_two(generators: Iterable[int]) -> tuple[int, ...]:
+    """Return every legal even move; odd moves form the infinite remainder."""
+
+    position = minimal_generators(generators)
+    if gcd(*position) != 2:
+        raise ValueError("position must have gcd two")
+    reduced = FiniteSolver(tuple(value // 2 for value in position))
+    return tuple(2 * gap for gap in reduced.gaps())
+
+
+@dataclass(frozen=True)
+class ShortNode:
+    name: str
+    generators: tuple[int, ...]
+    even_responses: tuple[tuple[int, int, str], ...]
+
+
+@dataclass(frozen=True)
+class CertificateReport:
+    nodes: int
+    exceptional_odd_children: int
+    even_children: int
+    external_pairing_edges: int
+    published_long_edges: int
+    native_finite_edges: int
+
+
+# These deep finite P-positions are too large for the Python evaluator
+# inside every unit test.  The independent native recurrence proves each
+# one P in tests/test_sylver_native_solver.py; the Python reference
+# reproduced node T's entry (3,407,297 states) and every node-V entry that
+# fits a batch budget, including the deepest, {16,26,36,56,102,201}, with
+# exactly the native state count 27,865,056.  See RUN_MOVE_20_ANSWER.txt
+# and RUN_MOVE_26_ANSWER.txt.
+SHORT_NATIVE_FINITE_P_POSITIONS = {
+    (16, 20, 34, 58, 291),
+    (16, 26, 30, 36, 99),
+    (16, 26, 36, 44, 56, 57),
+    (16, 26, 36, 46, 56, 153),
+    (16, 26, 36, 50, 56, 109),
+    (16, 26, 36, 54, 56, 83),
+    (16, 26, 36, 53, 56, 66),
+    (16, 26, 36, 37, 56, 70),
+    (16, 26, 36, 56, 76, 131),
+    (16, 26, 36, 55, 56, 86),
+    (16, 26, 36, 56, 102, 201),
+}
+
+
+NODES = (
+    ShortNode("C", (4, 6), ((2, 3, "finite"),)),
+    ShortNode(
+        "D",
+        (12, 16, 20, 22, 26),
+        (
+            (2, 3, "finite"),
+            (4, 6, "C"),
+            (6, 4, "C"),
+            (8, 47, "finite"),
+            (10, 31, "finite"),
+            (14, 13, "finite"),
+            (18, 11, "finite"),
+            (30, 183, "finite"),
+        ),
+    ),
+    ShortNode(
+        "P0",
+        (12, 16, 22),
+        (
+            (2, 3, "finite"),
+            (4, 6, "C"),
+            (6, 4, "C"),
+            # This is the one deliberately external edge.  The destination
+            # has the published (4n+1,4n+3) infinite pairing strategy.
+            (8, 18, "A"),
+            (10, 31, "finite"),
+            (14, 47, "finite"),
+            (18, 15, "finite"),
+            (20, 26, "D"),
+            (26, 20, "D"),
+            (30, 51, "finite"),
+            (42, 25, "finite"),
+        ),
+    ),
+    ShortNode(
+        "E",
+        (8, 14),
+        (
+            (2, 3, "finite"),
+            (4, 6, "C"),
+            (6, 4, "C"),
+            (10, 19, "finite"),
+            # This reaches the first member {8,10,12,14} of Blok's
+            # {8,12,8n+2,8n+6} pairing family.
+            (12, 10, "A1"),
+            (18, 25, "finite"),
+            (20, 9, "finite"),
+            (26, 17, "finite"),
+            (34, 27, "finite"),
+        ),
+    ),
+    ShortNode(
+        "F",
+        (12, 14, 16),
+        (
+            (2, 3, "finite"),
+            (4, 6, "C"),
+            (6, 7, "finite"),
+            (8, 10, "A1"),
+            (10, 8, "A1"),
+            (18, 27, "finite"),
+            (20, 73, "finite"),
+            (22, 47, "finite"),
+            (34, 21, "finite"),
+        ),
+    ),
+    ShortNode(
+        "G",
+        (8, 20, 26),
+        (
+            (2, 3, "finite"),
+            (4, 6, "C"),
+            (6, 4, "C"),
+            # The peer-reviewed periodicity computation establishes H as P.
+            (10, 22, "H"),
+            # This is parameter 3 of Blok's infinite pairing family.
+            (12, 30, "A3"),
+            (14, 9, "finite"),
+            (18, 11, "finite"),
+            (22, 13, "finite"),
+            (30, 49, "finite"),
+            (38, 21, "finite"),
+        ),
+    ),
+    ShortNode(
+        "J",
+        (16, 20, 26, 28, 38),
+        (
+            (2, 3, "finite"),
+            (4, 6, "C"),
+            (6, 7, "finite"),
+            (8, 21, "finite"),
+            (10, 9, "finite"),
+            (12, 29, "finite"),
+            (14, 43, "finite"),
+            (18, 5, "finite"),
+            (22, 25, "finite"),
+            (24, 5, "finite"),
+            (30, 23, "finite"),
+            (34, 11, "finite"),
+            (50, 63, "finite"),
+        ),
+    ),
+    ShortNode(
+        "L",
+        (16, 20, 22, 28, 34),
+        (
+            (2, 3, "finite"),
+            (4, 6, "C"),
+            (6, 7, "finite"),
+            (8, 13, "finite"),
+            (10, 19, "finite"),
+            (12, 39, "finite"),
+            (14, 41, "finite"),
+            (18, 39, "finite"),
+            (24, 23, "finite"),
+            (26, 11, "finite"),
+            (30, 31, "finite"),
+            (46, 33, "finite"),
+        ),
+    ),
+    ShortNode(
+        "N",
+        (16, 20, 28, 30, 42),
+        (
+            (2, 3, "finite"),
+            (4, 6, "C"),
+            (6, 7, "finite"),
+            (8, 23, "finite"),
+            (10, 9, "finite"),
+            (12, 11, "finite"),
+            (14, 31, "finite"),
+            (18, 5, "finite"),
+            (22, 91, "finite"),
+            (24, 5, "finite"),
+            (26, 27, "finite"),
+            (34, 67, "finite"),
+            (38, 67, "finite"),
+            (54, 15, "finite"),
+        ),
+    ),
+    ShortNode(
+        "O",
+        (8, 20, 30),
+        (
+            (2, 3, "finite"),
+            (4, 6, "C"),
+            (6, 4, "C"),
+            (10, 22, "H"),
+            (12, 26, "A3"),
+            (14, 9, "finite"),
+            (18, 11, "finite"),
+            (22, 13, "finite"),
+            (26, 49, "finite"),
+            (34, 19, "finite"),
+            (42, 23, "finite"),
+        ),
+    ),
+    ShortNode(
+        # Blok's g=2 report analyzes every even position containing 10 and
+        # reports this node as P; the graph below re-derives every branch.
+        "K",
+        (10, 16, 24),
+        (
+            (2, 3, "finite"),
+            (4, 6, "C"),
+            (6, 4, "C"),
+            # <10,16,24,8> = <8,10>, and the peer-reviewed periodicity
+            # computation for {8,10,22} answers it, exactly as at node G.
+            (8, 22, "H"),
+            (12, 31, "finite"),
+            (14, 11, "finite"),
+            (18, 11, "finite"),
+            (22, 8, "H"),
+            (28, 5, "finite"),
+            (38, 47, "finite"),
+        ),
+    ),
+    ShortNode(
+        # Blok's 2022 report on even positions containing 14 lists this node
+        # as P; the branches below re-derive it exactly.
+        "R",
+        (14, 16, 20, 26),
+        (
+            (2, 3, "finite"),
+            (4, 6, "C"),
+            (6, 4, "C"),
+            (8, 9, "finite"),
+            (10, 11, "finite"),
+            (12, 73, "finite"),
+            (18, 11, "finite"),
+            (22, 31, "finite"),
+            (24, 47, "finite"),
+            (38, 43, "finite"),
+        ),
+    ),
+    ShortNode(
+        # Sicherman's P-position list claims this node; every branch is
+        # re-derived exactly, closing through K and R.
+        "S",
+        (16, 20, 30, 34, 44),
+        (
+            (2, 3, "finite"),
+            (4, 6, "C"),
+            (6, 4, "C"),
+            (8, 19, "finite"),
+            (10, 24, "K"),
+            (12, 11, "finite"),
+            (14, 26, "R"),
+            (18, 5, "finite"),
+            (22, 61, "finite"),
+            (24, 10, "K"),
+            (26, 14, "R"),
+            (28, 15, "finite"),
+            (38, 39, "finite"),
+            (42, 79, "finite"),
+            (58, 67, "finite"),
+        ),
+    ),
+    ShortNode(
+        # Sicherman's P-position list claims this node, which answers the
+        # long-open move 20 after opening 16.  Every branch is re-derived:
+        # thirteen exceptional odd children close exactly, and the twenty
+        # even children close through C, G, K, L, R, S, exact finite
+        # P-positions, and one deep native-verified child after 58.
+        "T",
+        (16, 20, 34),
+        (
+            (2, 3, "finite"),
+            (4, 6, "C"),
+            (6, 4, "C"),
+            (8, 26, "G"),
+            (10, 9, "finite"),
+            (12, 45, "finite"),
+            (14, 26, "R"),
+            (18, 5, "finite"),
+            (22, 28, "L"),
+            (24, 10, "K"),
+            (26, 8, "G"),
+            (28, 22, "L"),
+            (30, 44, "S"),
+            (38, 15, "finite"),
+            (42, 15, "finite"),
+            (44, 30, "S"),
+            (46, 19, "finite"),
+            (58, 291, "native-finite"),
+            (62, 25, "finite"),
+            (78, 27, "finite"),
+        ),
+    ),
+    ShortNode(
+        # A new P-position on no published list: the {16,26} children after
+        # 36 and 56 have no odd refutation and answer each other here.  The
+        # half <8,13,18,28> is a quiet ender with Frobenius 51.
+        "V",
+        (16, 26, 36, 56),
+        (
+            (2, 3, "finite"),
+            (4, 6, "C"),
+            (6, 4, "C"),
+            (8, 20, "G"),
+            (10, 24, "K"),
+            (12, 14, "F"),
+            (14, 12, "F"),
+            (18, 5, "finite"),
+            (20, 8, "G"),
+            (22, 43, "finite"),
+            (24, 10, "K"),
+            (28, 27, "finite"),
+            (30, 99, "native-finite"),
+            (34, 11, "finite"),
+            (38, 15, "finite"),
+            (40, 23, "finite"),
+            (44, 57, "native-finite"),
+            (46, 153, "native-finite"),
+            (50, 109, "native-finite"),
+            (54, 83, "native-finite"),
+            (60, 23, "finite"),
+            (66, 53, "native-finite"),
+            (70, 37, "native-finite"),
+            (76, 131, "native-finite"),
+            (86, 55, "native-finite"),
+            (102, 201, "native-finite"),
+        ),
+    ),
+    ShortNode(
+        "M",
+        (16, 20, 28, 38, 50),
+        (
+            (2, 3, "finite"),
+            (4, 6, "C"),
+            (6, 7, "finite"),
+            (8, 30, "O"),
+            (10, 9, "finite"),
+            (12, 15, "finite"),
+            (14, 37, "finite"),
+            (18, 5, "finite"),
+            (22, 29, "finite"),
+            (24, 5, "finite"),
+            (26, 63, "finite"),
+            (30, 8, "O"),
+            (34, 22, "L"),
+            (42, 27, "finite"),
+            (46, 27, "finite"),
+            (62, 25, "finite"),
+        ),
+    ),
+)
+
+EXTERNAL_NODES = {
+    "A": minimal_generators((8, 12, 18, 22)),
+    "A1": minimal_generators((8, 10, 12, 14)),
+    "A3": minimal_generators((8, 12, 26, 30)),
+}
+
+PUBLISHED_LONG_NODES = {
+    "H": minimal_generators((8, 10, 22)),
+}
+
+
+def _verify_finite_response(
+    position: tuple[int, ...], opponent_move: int, response: int
+) -> None:
+    if is_generated(position, opponent_move):
+        raise AssertionError(f"claimed opponent move {opponent_move} is illegal")
+    child = minimal_generators((*position, opponent_move))
+    if is_generated(child, response):
+        raise AssertionError(f"claimed response {response} is illegal")
+    result = minimal_generators((*child, response))
+    if gcd(*result) != 1:
+        raise AssertionError("finite response did not reach gcd one")
+    if solve_position(result).is_winning:
+        raise AssertionError(f"response {response} did not reach a P-position")
+
+
+@cache
+def verify_published_short_certificates() -> CertificateReport:
+    """Verify the finite certificate graph containing the named short nodes.
+
+    A successful return establishes every finite branch.  The mathematical
+    conclusion that each node is P additionally invokes the Quiet End Theorem
+    for large odd moves and the published infinite pairing strategy for node
+    A; those theorem obligations are recorded, not silently replaced by a
+    finite cutoff.
+    """
+
+    by_name = {node.name: node for node in NODES}
+    odd_children = 0
+    even_children = 0
+    external_edges = 0
+    published_long_edges = 0
+    native_finite_edges = 0
+
+    for node in NODES:
+        position = minimal_generators(node.generators)
+        if position != node.generators or gcd(*position) != 2:
+            raise AssertionError(f"{node.name} is not canonical with gcd two")
+        reduced = FiniteSolver(tuple(value // 2 for value in position))
+        if not reduced.is_quiet_ender():
+            raise AssertionError(f"{node.name}/2 is not a quiet ender")
+
+        # Every odd move greater than this Frobenius number is handled by the
+        # Quiet End Theorem.  Check every non-losing odd move below it exactly.
+        for move in range(3, reduced.frobenius + 1, 2):
+            child = solve_position((*position, move))
+            if not child.is_winning or child.winning_move is None:
+                raise AssertionError(f"odd move {move} from {node.name} is not refuted")
+            _verify_finite_response(position, move, child.winning_move)
+            odd_children += 1
+
+        claimed_moves = {move for move, _, _ in node.even_responses}
+        actual_moves = set(legal_moves_at_gcd_two(position))
+        if claimed_moves != actual_moves:
+            raise AssertionError(
+                f"{node.name} even coverage mismatch: {claimed_moves ^ actual_moves}"
+            )
+
+        for move, response, destination in node.even_responses:
+            if destination == "finite":
+                _verify_finite_response(position, move, response)
+            elif destination == "native-finite":
+                if is_generated(position, move):
+                    raise AssertionError(f"claimed opponent move {move} is illegal")
+                child = minimal_generators((*position, move))
+                if is_generated(child, response):
+                    raise AssertionError(f"claimed response {response} is illegal")
+                reached = minimal_generators((*child, response))
+                if gcd(*reached) != 1:
+                    raise AssertionError("native finite response is not gcd one")
+                if reached not in SHORT_NATIVE_FINITE_P_POSITIONS:
+                    raise AssertionError(
+                        f"unknown native finite destination {reached}"
+                    )
+                native_finite_edges += 1
+            else:
+                child = minimal_generators((*position, move))
+                if is_generated(child, response):
+                    raise AssertionError(f"illegal response {response} at {node.name}")
+                result = minimal_generators((*child, response))
+                if destination in by_name:
+                    expected = by_name[destination].generators
+                elif destination in EXTERNAL_NODES:
+                    expected = EXTERNAL_NODES[destination]
+                    # Import lazily to avoid the pairing-family module's
+                    # deliberate reuse of the elementary helpers above.
+                    from sylver.pairing_family import recognize_pairing_family
+
+                    if recognize_pairing_family(expected) is None:
+                        raise AssertionError("external node is not in the pairing family")
+                    external_edges += 1
+                elif destination in PUBLISHED_LONG_NODES:
+                    expected = PUBLISHED_LONG_NODES[destination]
+                    published_long_edges += 1
+                else:
+                    raise AssertionError(f"unknown certificate destination {destination}")
+                if result != expected:
+                    raise AssertionError(
+                        f"{node.name}: {move},{response} reached {result}, not {expected}"
+                    )
+            even_children += 1
+
+    return CertificateReport(
+        len(NODES),
+        odd_children,
+        even_children,
+        external_edges,
+        published_long_edges,
+        native_finite_edges,
+    )
+
+
+OPENING_16_EVEN_RESPONSES = (
+    (2, 3, "finite"),
+    (4, 6, "C"),
+    (6, 7, "finite"),
+    (8, 14, "E"),
+    (10, 9, "finite"),
+    (12, 14, "F"),
+    (14, 8, "E"),
+    (18, 5, "finite"),
+    (20, 34, "T"),
+    (22, 12, "P0"),
+    (24, 10, "K"),
+)
+
+
+def verify_opening_16_even_responses() -> tuple[tuple[int, int, str], ...]:
+    """Verify the currently certified even replies after opening move 16.
+
+    Each row is ``(opponent move, response, destination)``.  A finite
+    destination is solved exactly at gcd one; a named destination is one of
+    the P-position nodes checked by :func:`verify_published_short_certificates`.
+    This is deliberately a partial strategy, not a claim about every even
+    move after 16.
+    """
+
+    verify_published_short_certificates()
+    by_name = {node.name: node.generators for node in NODES}
+    opening = (16,)
+    for move, response, destination in OPENING_16_EVEN_RESPONSES:
+        if destination == "finite":
+            _verify_finite_response(opening, move, response)
+            continue
+        if is_generated(opening, move):
+            raise AssertionError(f"opening response {move} is illegal")
+        child = minimal_generators((*opening, move))
+        if is_generated(child, response):
+            raise AssertionError(f"reply {response} to {move} is illegal")
+        reached = minimal_generators((*child, response))
+        if reached != by_name[destination]:
+            raise AssertionError(
+                f"reply to {move} reached {reached}, not {destination}"
+            )
+    return OPENING_16_EVEN_RESPONSES

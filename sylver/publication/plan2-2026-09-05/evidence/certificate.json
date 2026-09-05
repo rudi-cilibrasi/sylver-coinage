@@ -1,0 +1,1261 @@
+{
+  "facts": {
+    "10,11,14,16": {
+      "elapsed_seconds": 0.003316,
+      "frobenius": 29,
+      "kind": "finite-exact",
+      "native_words": 1,
+      "outcome": "P",
+      "states": 140,
+      "winning_move": null
+    },
+    "10,11,16,18,24": {
+      "elapsed_seconds": 0.003566,
+      "frobenius": 25,
+      "kind": "finite-exact",
+      "native_words": 1,
+      "outcome": "P",
+      "states": 207,
+      "winning_move": null
+    },
+    "10,11,16,24": {
+      "elapsed_seconds": 0.003008,
+      "frobenius": 39,
+      "kind": "finite-exact",
+      "native_words": 1,
+      "outcome": "N",
+      "states": 174,
+      "winning_move": 14
+    },
+    "10,12,14,16": {
+      "destination": "8,10,12,14",
+      "kind": "winning-reply",
+      "move": 8,
+      "outcome": "N"
+    },
+    "10,12,16": {
+      "destination": "10,12,16,31",
+      "kind": "winning-reply",
+      "move": 31,
+      "outcome": "N"
+    },
+    "10,12,16,31": {
+      "elapsed_seconds": 0.003158,
+      "frobenius": 49,
+      "kind": "finite-exact",
+      "native_words": 1,
+      "outcome": "P",
+      "states": 646,
+      "winning_move": null
+    },
+    "10,14,16": {
+      "destination": "10,11,14,16",
+      "kind": "winning-reply",
+      "move": 11,
+      "outcome": "N"
+    },
+    "10,16,18,24": {
+      "destination": "10,11,16,18,24",
+      "kind": "winning-reply",
+      "move": 11,
+      "outcome": "N"
+    },
+    "10,16,19,24": {
+      "elapsed_seconds": 0.003097,
+      "frobenius": 47,
+      "kind": "finite-exact",
+      "native_words": 1,
+      "outcome": "N",
+      "states": 80,
+      "winning_move": 7
+    },
+    "10,16,22,24": {
+      "destination": "8,10,22",
+      "kind": "winning-reply",
+      "move": 8,
+      "outcome": "N"
+    },
+    "10,16,24": {
+      "half_frobenius": 19,
+      "kind": "short-cover",
+      "obligations": [
+        {
+          "destination": "2",
+          "move": 2
+        },
+        {
+          "destination": "3,10",
+          "move": 3
+        },
+        {
+          "destination": "4,10",
+          "move": 4
+        },
+        {
+          "destination": "6,10",
+          "move": 6
+        },
+        {
+          "destination": "7,10,16",
+          "move": 7
+        },
+        {
+          "destination": "8,10",
+          "move": 8
+        },
+        {
+          "destination": "9,10,16,24",
+          "move": 9
+        },
+        {
+          "destination": "10,11,16,24",
+          "move": 11
+        },
+        {
+          "destination": "10,12,16",
+          "move": 12
+        },
+        {
+          "destination": "10,14,16",
+          "move": 14
+        },
+        {
+          "destination": "10,16,18,24",
+          "move": 18
+        },
+        {
+          "destination": "10,16,19,24",
+          "move": 19
+        },
+        {
+          "destination": "10,16,22,24",
+          "move": 22
+        },
+        {
+          "destination": "10,16,24,28",
+          "move": 28
+        },
+        {
+          "destination": "10,16,24,38",
+          "move": 38
+        }
+      ],
+      "outcome": "P",
+      "tail": "quiet-end-theorem"
+    },
+    "10,16,24,28": {
+      "destination": "5,16,24,28",
+      "kind": "winning-reply",
+      "move": 5,
+      "outcome": "N"
+    },
+    "10,16,24,38": {
+      "destination": "10,16,24,38,47",
+      "kind": "winning-reply",
+      "move": 47,
+      "outcome": "N"
+    },
+    "10,16,24,38,47": {
+      "elapsed_seconds": 0.006045,
+      "frobenius": 75,
+      "kind": "finite-exact",
+      "native_words": 2,
+      "outcome": "P",
+      "states": 3196,
+      "winning_move": null
+    },
+    "10,16,54": {
+      "destination": "10,16,24",
+      "kind": "winning-reply",
+      "move": 24,
+      "outcome": "N"
+    },
+    "11,12,14,16": {
+      "elapsed_seconds": 0.003673,
+      "frobenius": 31,
+      "kind": "finite-exact",
+      "native_words": 1,
+      "outcome": "N",
+      "states": 107,
+      "winning_move": 9
+    },
+    "11,16,26,40": {
+      "elapsed_seconds": 0.005058,
+      "frobenius": 61,
+      "kind": "finite-exact",
+      "native_words": 1,
+      "outcome": "P",
+      "states": 3740,
+      "winning_move": null
+    },
+    "11,16,26,62": {
+      "elapsed_seconds": 0.006267,
+      "frobenius": 83,
+      "kind": "finite-exact",
+      "native_words": 2,
+      "outcome": "N",
+      "states": 4089,
+      "winning_move": 40
+    },
+    "12,14,16": {
+      "half_frobenius": 17,
+      "kind": "short-cover",
+      "obligations": [
+        {
+          "destination": "2",
+          "move": 2
+        },
+        {
+          "destination": "3,14,16",
+          "move": 3
+        },
+        {
+          "destination": "4,14",
+          "move": 4
+        },
+        {
+          "destination": "5,12,14,16",
+          "move": 5
+        },
+        {
+          "destination": "6,14,16",
+          "move": 6
+        },
+        {
+          "destination": "8,12,14",
+          "move": 8
+        },
+        {
+          "destination": "9,12,14,16",
+          "move": 9
+        },
+        {
+          "destination": "10,12,14,16",
+          "move": 10
+        },
+        {
+          "destination": "11,12,14,16",
+          "move": 11
+        },
+        {
+          "destination": "12,14,16,17",
+          "move": 17
+        },
+        {
+          "destination": "12,14,16,18",
+          "move": 18
+        },
+        {
+          "destination": "12,14,16,20",
+          "move": 20
+        },
+        {
+          "destination": "12,14,16,22",
+          "move": 22
+        },
+        {
+          "destination": "12,14,16,34",
+          "move": 34
+        }
+      ],
+      "outcome": "P",
+      "tail": "quiet-end-theorem"
+    },
+    "12,14,16,17": {
+      "elapsed_seconds": 0.00342,
+      "frobenius": 39,
+      "kind": "finite-exact",
+      "native_words": 1,
+      "outcome": "N",
+      "states": 121,
+      "winning_move": 7
+    },
+    "12,14,16,18": {
+      "destination": "12,14,16,18,27",
+      "kind": "winning-reply",
+      "move": 27,
+      "outcome": "N"
+    },
+    "12,14,16,18,27": {
+      "elapsed_seconds": 0.003483,
+      "frobenius": 49,
+      "kind": "finite-exact",
+      "native_words": 1,
+      "outcome": "P",
+      "states": 1007,
+      "winning_move": null
+    },
+    "12,14,16,20": {
+      "destination": "12,14,16,20,73",
+      "kind": "winning-reply",
+      "move": 73,
+      "outcome": "N"
+    },
+    "12,14,16,20,73": {
+      "elapsed_seconds": 0.006637,
+      "frobenius": 95,
+      "kind": "finite-exact",
+      "native_words": 2,
+      "outcome": "P",
+      "states": 4165,
+      "winning_move": null
+    },
+    "12,14,16,21,34": {
+      "elapsed_seconds": 0.003247,
+      "frobenius": 43,
+      "kind": "finite-exact",
+      "native_words": 1,
+      "outcome": "P",
+      "states": 941,
+      "winning_move": null
+    },
+    "12,14,16,22": {
+      "destination": "12,14,16,22,47",
+      "kind": "winning-reply",
+      "move": 47,
+      "outcome": "N"
+    },
+    "12,14,16,22,47": {
+      "elapsed_seconds": 0.005114,
+      "frobenius": 67,
+      "kind": "finite-exact",
+      "native_words": 2,
+      "outcome": "P",
+      "states": 2491,
+      "winning_move": null
+    },
+    "12,14,16,34": {
+      "destination": "12,14,16,21,34",
+      "kind": "winning-reply",
+      "move": 21,
+      "outcome": "N"
+    },
+    "12,16,26": {
+      "destination": "12,14,16",
+      "kind": "winning-reply",
+      "move": 14,
+      "outcome": "N"
+    },
+    "13,16,54,60,62,72": {
+      "elapsed_seconds": 0.081409,
+      "frobenius": 95,
+      "kind": "finite-exact",
+      "native_words": 2,
+      "outcome": "P",
+      "states": 57882,
+      "winning_move": null
+    },
+    "14,16,26": {
+      "destination": "12,14,16",
+      "kind": "winning-reply",
+      "move": 12,
+      "outcome": "N"
+    },
+    "15,16,22,26": {
+      "elapsed_seconds": 0.008449,
+      "frobenius": 65,
+      "kind": "finite-exact",
+      "native_words": 2,
+      "outcome": "P",
+      "states": 5956,
+      "winning_move": null
+    },
+    "15,16,26,54": {
+      "elapsed_seconds": 0.012854,
+      "frobenius": 81,
+      "kind": "finite-exact",
+      "native_words": 2,
+      "outcome": "N",
+      "states": 11712,
+      "winning_move": 22
+    },
+    "16,17,26,54,62": {
+      "elapsed_seconds": 0.022729,
+      "frobenius": 89,
+      "kind": "finite-exact",
+      "native_words": 2,
+      "outcome": "N",
+      "states": 23704,
+      "winning_move": 23
+    },
+    "16,18,26": {
+      "destination": "5,16,18",
+      "kind": "winning-reply",
+      "move": 5,
+      "outcome": "N"
+    },
+    "16,19,26,44,62": {
+      "elapsed_seconds": 0.146427,
+      "frobenius": 91,
+      "kind": "finite-exact",
+      "native_words": 2,
+      "outcome": "P",
+      "states": 112852,
+      "winning_move": null
+    },
+    "16,19,26,60,62": {
+      "elapsed_seconds": 0.165075,
+      "frobenius": 101,
+      "kind": "finite-exact",
+      "native_words": 2,
+      "outcome": "N",
+      "states": 136103,
+      "winning_move": 44
+    },
+    "16,20,26,54": {
+      "destination": "8,20,26",
+      "kind": "winning-reply",
+      "move": 8,
+      "outcome": "N"
+    },
+    "16,22,26,62": {
+      "destination": "15,16,22,26",
+      "kind": "winning-reply",
+      "move": 15,
+      "outcome": "N"
+    },
+    "16,23,26,36,54,60": {
+      "elapsed_seconds": 0.212068,
+      "frobenius": 89,
+      "kind": "finite-exact",
+      "native_words": 2,
+      "outcome": "P",
+      "states": 146609,
+      "winning_move": null
+    },
+    "16,23,26,54,60": {
+      "elapsed_seconds": 0.011392,
+      "frobenius": 105,
+      "kind": "finite-exact",
+      "native_words": 2,
+      "outcome": "N",
+      "states": 10306,
+      "winning_move": 14
+    },
+    "16,24,26,54,60,62": {
+      "destination": "10,16,24",
+      "kind": "winning-reply",
+      "move": 10,
+      "outcome": "N"
+    },
+    "16,25,26,28,62": {
+      "elapsed_seconds": 0.113823,
+      "frobenius": 71,
+      "kind": "finite-exact",
+      "native_words": 2,
+      "outcome": "P",
+      "states": 105133,
+      "winning_move": null
+    },
+    "16,25,26,46,54,60": {
+      "elapsed_seconds": 0.354463,
+      "frobenius": 81,
+      "kind": "finite-exact",
+      "native_words": 2,
+      "outcome": "P",
+      "states": 251569,
+      "winning_move": null
+    },
+    "16,25,26,54,60,62": {
+      "elapsed_seconds": 0.272729,
+      "frobenius": 97,
+      "kind": "finite-exact",
+      "native_words": 2,
+      "outcome": "N",
+      "states": 214744,
+      "winning_move": 28
+    },
+    "16,26,27,60,62,98": {
+      "elapsed_seconds": 1.26348,
+      "frobenius": 109,
+      "kind": "finite-exact",
+      "native_words": 2,
+      "outcome": "P",
+      "states": 611082,
+      "winning_move": null
+    },
+    "16,26,28,62": {
+      "destination": "16,25,26,28,62",
+      "kind": "winning-reply",
+      "move": 25,
+      "outcome": "N"
+    },
+    "16,26,30,47,54": {
+      "elapsed_seconds": 1.625241,
+      "frobenius": 113,
+      "kind": "finite-exact",
+      "native_words": 2,
+      "outcome": "P",
+      "states": 776389,
+      "winning_move": null
+    },
+    "16,26,30,54": {
+      "destination": "16,26,30,47,54",
+      "kind": "winning-reply",
+      "move": 47,
+      "outcome": "N"
+    },
+    "16,26,31,54,60,66": {
+      "elapsed_seconds": 2.078773,
+      "frobenius": 103,
+      "kind": "finite-exact",
+      "native_words": 2,
+      "outcome": "P",
+      "states": 936185,
+      "winning_move": null
+    },
+    "16,26,33,54,60,62": {
+      "elapsed_seconds": 2.122756,
+      "frobenius": 105,
+      "kind": "finite-exact",
+      "native_words": 2,
+      "outcome": "N",
+      "states": 1022399,
+      "winning_move": 79
+    },
+    "16,26,34,54,62": {
+      "destination": "16,26,34,54,62,167",
+      "kind": "winning-reply",
+      "move": 167,
+      "outcome": "N"
+    },
+    "16,26,34,54,62,167": {
+      "elapsed_seconds": 22.19501,
+      "frobenius": 239,
+      "kind": "finite-exact",
+      "native_words": 4,
+      "outcome": "P",
+      "states": 5953889,
+      "winning_move": null
+    },
+    "16,26,36,54,60": {
+      "destination": "16,23,26,36,54,60",
+      "kind": "winning-reply",
+      "move": 23,
+      "outcome": "N"
+    },
+    "16,26,38,60,62": {
+      "destination": "16,26,38,60,62,77",
+      "kind": "winning-reply",
+      "move": 77,
+      "outcome": "N"
+    },
+    "16,26,38,60,62,77": {
+      "elapsed_seconds": 20.323929,
+      "frobenius": 159,
+      "kind": "finite-exact",
+      "native_words": 4,
+      "outcome": "P",
+      "states": 5428337,
+      "winning_move": null
+    },
+    "16,26,40,54,60,62": {
+      "destination": "11,16,26,40",
+      "kind": "winning-reply",
+      "move": 11,
+      "outcome": "N"
+    },
+    "16,26,41,54,60,62": {
+      "elapsed_seconds": 3.537299,
+      "frobenius": 113,
+      "kind": "finite-exact",
+      "native_words": 2,
+      "outcome": "N",
+      "states": 1549726,
+      "winning_move": 39
+    },
+    "16,26,44,54,62": {
+      "destination": "16,19,26,44,62",
+      "kind": "winning-reply",
+      "move": 19,
+      "outcome": "N"
+    },
+    "16,26,46,54,60": {
+      "destination": "16,25,26,46,54,60",
+      "kind": "winning-reply",
+      "move": 25,
+      "outcome": "N"
+    },
+    "16,26,49,54,60,62": {
+      "elapsed_seconds": 10.044983,
+      "frobenius": 131,
+      "kind": "finite-exact",
+      "native_words": 4,
+      "outcome": "N",
+      "states": 3213443,
+      "winning_move": 46
+    },
+    "16,26,50,54,57,60,62": {
+      "elapsed_seconds": 11.433902,
+      "frobenius": 129,
+      "kind": "finite-exact",
+      "native_words": 4,
+      "outcome": "P",
+      "states": 3557265,
+      "winning_move": null
+    },
+    "16,26,50,54,60,62": {
+      "destination": "16,26,50,54,57,60,62",
+      "kind": "winning-reply",
+      "move": 57,
+      "outcome": "N"
+    },
+    "16,26,54,56,60,62": {
+      "destination": "16,26,54,56,60,62,91",
+      "kind": "winning-reply",
+      "move": 91,
+      "outcome": "N"
+    },
+    "16,26,54,56,60,62,91": {
+      "elapsed_seconds": 40.614651,
+      "frobenius": 157,
+      "kind": "finite-exact",
+      "native_words": 4,
+      "outcome": "P",
+      "states": 10108382,
+      "winning_move": null
+    },
+    "16,26,54,60,62": {
+      "half_frobenius": 49,
+      "kind": "short-cover",
+      "obligations": [
+        {
+          "destination": "2",
+          "move": 2
+        },
+        {
+          "destination": "3,16,26",
+          "move": 3
+        },
+        {
+          "destination": "4,26",
+          "move": 4
+        },
+        {
+          "destination": "5,16,54",
+          "move": 5
+        },
+        {
+          "destination": "6,16,26",
+          "move": 6
+        },
+        {
+          "destination": "7,16,26",
+          "move": 7
+        },
+        {
+          "destination": "8,26,54",
+          "move": 8
+        },
+        {
+          "destination": "9,16,26",
+          "move": 9
+        },
+        {
+          "destination": "10,16,54",
+          "move": 10
+        },
+        {
+          "destination": "11,16,26,62",
+          "move": 11
+        },
+        {
+          "destination": "12,16,26",
+          "move": 12
+        },
+        {
+          "destination": "14,16,26",
+          "move": 14
+        },
+        {
+          "destination": "15,16,26,54",
+          "move": 15
+        },
+        {
+          "destination": "16,17,26,54,62",
+          "move": 17
+        },
+        {
+          "destination": "16,18,26",
+          "move": 18
+        },
+        {
+          "destination": "16,19,26,60,62",
+          "move": 19
+        },
+        {
+          "destination": "16,20,26,54",
+          "move": 20
+        },
+        {
+          "destination": "16,22,26,62",
+          "move": 22
+        },
+        {
+          "destination": "16,23,26,54,60",
+          "move": 23
+        },
+        {
+          "destination": "16,24,26,54,60,62",
+          "move": 24
+        },
+        {
+          "destination": "16,25,26,54,60,62",
+          "move": 25
+        },
+        {
+          "destination": "16,26,28,62",
+          "move": 28
+        },
+        {
+          "destination": "16,26,30,54",
+          "move": 30
+        },
+        {
+          "destination": "16,26,33,54,60,62",
+          "move": 33
+        },
+        {
+          "destination": "16,26,34,54,62",
+          "move": 34
+        },
+        {
+          "destination": "16,26,36,54,60",
+          "move": 36
+        },
+        {
+          "destination": "16,26,38,60,62",
+          "move": 38
+        },
+        {
+          "destination": "16,26,40,54,60,62",
+          "move": 40
+        },
+        {
+          "destination": "16,26,41,54,60,62",
+          "move": 41
+        },
+        {
+          "destination": "16,26,44,54,62",
+          "move": 44
+        },
+        {
+          "destination": "16,26,46,54,60",
+          "move": 46
+        },
+        {
+          "destination": "16,26,49,54,60,62",
+          "move": 49
+        },
+        {
+          "destination": "16,26,50,54,60,62",
+          "move": 50
+        },
+        {
+          "destination": "16,26,54,56,60,62",
+          "move": 56
+        },
+        {
+          "destination": "16,26,54,60,62,66",
+          "move": 66
+        },
+        {
+          "destination": "16,26,54,60,62,72",
+          "move": 72
+        },
+        {
+          "destination": "16,26,54,60,62,82",
+          "move": 82
+        },
+        {
+          "destination": "16,26,54,60,62,98",
+          "move": 98
+        }
+      ],
+      "outcome": "P",
+      "tail": "quiet-end-theorem"
+    },
+    "16,26,54,60,62,66": {
+      "destination": "16,26,31,54,60,66",
+      "kind": "winning-reply",
+      "move": 31,
+      "outcome": "N"
+    },
+    "16,26,54,60,62,71,82": {
+      "elapsed_seconds": 34.922671,
+      "frobenius": 143,
+      "kind": "finite-exact",
+      "native_words": 4,
+      "outcome": "P",
+      "states": 9040253,
+      "winning_move": null
+    },
+    "16,26,54,60,62,72": {
+      "destination": "13,16,54,60,62,72",
+      "kind": "winning-reply",
+      "move": 13,
+      "outcome": "N"
+    },
+    "16,26,54,60,62,82": {
+      "destination": "16,26,54,60,62,71,82",
+      "kind": "winning-reply",
+      "move": 71,
+      "outcome": "N"
+    },
+    "16,26,54,60,62,98": {
+      "destination": "16,26,27,60,62,98",
+      "kind": "winning-reply",
+      "move": 27,
+      "outcome": "N"
+    },
+    "2": {
+      "destination": "2,3",
+      "kind": "winning-reply",
+      "move": 3,
+      "outcome": "N"
+    },
+    "2,3": {
+      "elapsed_seconds": 0.00372,
+      "frobenius": 1,
+      "kind": "finite-exact",
+      "native_words": 1,
+      "outcome": "P",
+      "states": 1,
+      "winning_move": null
+    },
+    "3,10": {
+      "elapsed_seconds": 0.002921,
+      "frobenius": 17,
+      "kind": "finite-exact",
+      "native_words": 1,
+      "outcome": "N",
+      "states": 2,
+      "winning_move": 2
+    },
+    "3,14,16": {
+      "elapsed_seconds": 0.003101,
+      "frobenius": 13,
+      "kind": "finite-exact",
+      "native_words": 1,
+      "outcome": "N",
+      "states": 2,
+      "winning_move": 2
+    },
+    "3,16,26": {
+      "elapsed_seconds": 0.00298,
+      "frobenius": 23,
+      "kind": "finite-exact",
+      "native_words": 1,
+      "outcome": "N",
+      "states": 2,
+      "winning_move": 2
+    },
+    "3,8": {
+      "elapsed_seconds": 0.003074,
+      "frobenius": 13,
+      "kind": "finite-exact",
+      "native_words": 1,
+      "outcome": "N",
+      "states": 2,
+      "winning_move": 2
+    },
+    "4,10": {
+      "destination": "4,6",
+      "kind": "winning-reply",
+      "move": 6,
+      "outcome": "N"
+    },
+    "4,14": {
+      "destination": "4,6",
+      "kind": "winning-reply",
+      "move": 6,
+      "outcome": "N"
+    },
+    "4,26": {
+      "destination": "4,6",
+      "kind": "winning-reply",
+      "move": 6,
+      "outcome": "N"
+    },
+    "4,6": {
+      "half_frobenius": 1,
+      "kind": "short-cover",
+      "obligations": [
+        {
+          "destination": "2",
+          "move": 2
+        }
+      ],
+      "outcome": "P",
+      "tail": "quiet-end-theorem"
+    },
+    "5,12,14,16": {
+      "elapsed_seconds": 0.003629,
+      "frobenius": 23,
+      "kind": "finite-exact",
+      "native_words": 1,
+      "outcome": "N",
+      "states": 20,
+      "winning_move": 9
+    },
+    "5,16,18": {
+      "elapsed_seconds": 0.003563,
+      "frobenius": 29,
+      "kind": "finite-exact",
+      "native_words": 1,
+      "outcome": "P",
+      "states": 50,
+      "winning_move": null
+    },
+    "5,16,24,28": {
+      "elapsed_seconds": 0.002936,
+      "frobenius": 27,
+      "kind": "finite-exact",
+      "native_words": 1,
+      "outcome": "P",
+      "states": 55,
+      "winning_move": null
+    },
+    "5,16,54": {
+      "elapsed_seconds": 0.003621,
+      "frobenius": 49,
+      "kind": "finite-exact",
+      "native_words": 1,
+      "outcome": "N",
+      "states": 62,
+      "winning_move": 18
+    },
+    "5,8": {
+      "elapsed_seconds": 0.002938,
+      "frobenius": 27,
+      "kind": "finite-exact",
+      "native_words": 1,
+      "outcome": "N",
+      "states": 13,
+      "winning_move": 7
+    },
+    "6,10": {
+      "destination": "4,6",
+      "kind": "winning-reply",
+      "move": 4,
+      "outcome": "N"
+    },
+    "6,14,16": {
+      "destination": "6,7,16",
+      "kind": "winning-reply",
+      "move": 7,
+      "outcome": "N"
+    },
+    "6,16,26": {
+      "destination": "4,6",
+      "kind": "winning-reply",
+      "move": 4,
+      "outcome": "N"
+    },
+    "6,7,16": {
+      "elapsed_seconds": 0.003049,
+      "frobenius": 17,
+      "kind": "finite-exact",
+      "native_words": 1,
+      "outcome": "P",
+      "states": 21,
+      "winning_move": null
+    },
+    "6,8": {
+      "destination": "4,6",
+      "kind": "winning-reply",
+      "move": 4,
+      "outcome": "N"
+    },
+    "7,10,16": {
+      "elapsed_seconds": 0.003799,
+      "frobenius": 29,
+      "kind": "finite-exact",
+      "native_words": 1,
+      "outcome": "N",
+      "states": 66,
+      "winning_move": 19
+    },
+    "7,16,26": {
+      "elapsed_seconds": 0.003296,
+      "frobenius": 57,
+      "kind": "finite-exact",
+      "native_words": 1,
+      "outcome": "N",
+      "states": 31,
+      "winning_move": 6
+    },
+    "7,8,20,26": {
+      "elapsed_seconds": 0.003939,
+      "frobenius": 25,
+      "kind": "finite-exact",
+      "native_words": 1,
+      "outcome": "N",
+      "states": 13,
+      "winning_move": 5
+    },
+    "8,10": {
+      "destination": "8,10,22",
+      "kind": "winning-reply",
+      "move": 22,
+      "outcome": "N"
+    },
+    "8,10,12,14": {
+      "kind": "public-theorem",
+      "outcome": "P",
+      "source": "https://sicherman.net/sylver/ppos.html"
+    },
+    "8,10,22": {
+      "kind": "public-theorem",
+      "outcome": "P",
+      "source": "https://sicherman.net/sylver/ppos.html"
+    },
+    "8,11,18,20": {
+      "elapsed_seconds": 0.003599,
+      "frobenius": 25,
+      "kind": "finite-exact",
+      "native_words": 1,
+      "outcome": "P",
+      "states": 173,
+      "winning_move": null
+    },
+    "8,11,20,26": {
+      "elapsed_seconds": 0.003023,
+      "frobenius": 29,
+      "kind": "finite-exact",
+      "native_words": 1,
+      "outcome": "N",
+      "states": 219,
+      "winning_move": 18
+    },
+    "8,12,14": {
+      "destination": "8,10,12,14",
+      "kind": "winning-reply",
+      "move": 10,
+      "outcome": "N"
+    },
+    "8,12,26": {
+      "destination": "8,12,26,30",
+      "kind": "winning-reply",
+      "move": 30,
+      "outcome": "N"
+    },
+    "8,12,26,30": {
+      "kind": "public-theorem",
+      "outcome": "P",
+      "source": "https://sicherman.net/sylver/ppos.html"
+    },
+    "8,13,20,22": {
+      "elapsed_seconds": 0.002957,
+      "frobenius": 31,
+      "kind": "finite-exact",
+      "native_words": 1,
+      "outcome": "P",
+      "states": 285,
+      "winning_move": null
+    },
+    "8,14,20,26": {
+      "destination": "8,9,14,20",
+      "kind": "winning-reply",
+      "move": 9,
+      "outcome": "N"
+    },
+    "8,15,20,26": {
+      "elapsed_seconds": 0.003433,
+      "frobenius": 37,
+      "kind": "finite-exact",
+      "native_words": 1,
+      "outcome": "N",
+      "states": 314,
+      "winning_move": 17
+    },
+    "8,18,20": {
+      "destination": "8,11,18,20",
+      "kind": "winning-reply",
+      "move": 11,
+      "outcome": "N"
+    },
+    "8,19,20,26": {
+      "elapsed_seconds": 0.003336,
+      "frobenius": 49,
+      "kind": "finite-exact",
+      "native_words": 1,
+      "outcome": "N",
+      "states": 763,
+      "winning_move": 22
+    },
+    "8,20,21,26,38": {
+      "elapsed_seconds": 0.003865,
+      "frobenius": 51,
+      "kind": "finite-exact",
+      "native_words": 1,
+      "outcome": "P",
+      "states": 1057,
+      "winning_move": null
+    },
+    "8,20,22,26": {
+      "destination": "8,13,20,22",
+      "kind": "winning-reply",
+      "move": 13,
+      "outcome": "N"
+    },
+    "8,20,26": {
+      "half_frobenius": 19,
+      "kind": "short-cover",
+      "obligations": [
+        {
+          "destination": "2",
+          "move": 2
+        },
+        {
+          "destination": "3,8",
+          "move": 3
+        },
+        {
+          "destination": "4,26",
+          "move": 4
+        },
+        {
+          "destination": "5,8",
+          "move": 5
+        },
+        {
+          "destination": "6,8",
+          "move": 6
+        },
+        {
+          "destination": "7,8,20,26",
+          "move": 7
+        },
+        {
+          "destination": "8,9,20",
+          "move": 9
+        },
+        {
+          "destination": "8,10",
+          "move": 10
+        },
+        {
+          "destination": "8,11,20,26",
+          "move": 11
+        },
+        {
+          "destination": "8,12,26",
+          "move": 12
+        },
+        {
+          "destination": "8,14,20,26",
+          "move": 14
+        },
+        {
+          "destination": "8,15,20,26",
+          "move": 15
+        },
+        {
+          "destination": "8,18,20",
+          "move": 18
+        },
+        {
+          "destination": "8,19,20,26",
+          "move": 19
+        },
+        {
+          "destination": "8,20,22,26",
+          "move": 22
+        },
+        {
+          "destination": "8,20,26,30",
+          "move": 30
+        },
+        {
+          "destination": "8,20,26,38",
+          "move": 38
+        }
+      ],
+      "outcome": "P",
+      "tail": "quiet-end-theorem"
+    },
+    "8,20,26,30": {
+      "destination": "8,20,26,30,49",
+      "kind": "winning-reply",
+      "move": 49,
+      "outcome": "N"
+    },
+    "8,20,26,30,49": {
+      "elapsed_seconds": 0.006716,
+      "frobenius": 71,
+      "kind": "finite-exact",
+      "native_words": 2,
+      "outcome": "P",
+      "states": 3580,
+      "winning_move": null
+    },
+    "8,20,26,38": {
+      "destination": "8,20,21,26,38",
+      "kind": "winning-reply",
+      "move": 21,
+      "outcome": "N"
+    },
+    "8,26,54": {
+      "destination": "8,20,26",
+      "kind": "winning-reply",
+      "move": 20,
+      "outcome": "N"
+    },
+    "8,9,14,20": {
+      "elapsed_seconds": 0.002944,
+      "frobenius": 21,
+      "kind": "finite-exact",
+      "native_words": 1,
+      "outcome": "P",
+      "states": 70,
+      "winning_move": null
+    },
+    "8,9,20": {
+      "elapsed_seconds": 0.003431,
+      "frobenius": 39,
+      "kind": "finite-exact",
+      "native_words": 1,
+      "outcome": "N",
+      "states": 94,
+      "winning_move": 14
+    },
+    "9,10,16,24": {
+      "elapsed_seconds": 0.003223,
+      "frobenius": 31,
+      "kind": "finite-exact",
+      "native_words": 1,
+      "outcome": "N",
+      "states": 181,
+      "winning_move": 31
+    },
+    "9,12,14,16": {
+      "elapsed_seconds": 0.002875,
+      "frobenius": 31,
+      "kind": "finite-exact",
+      "native_words": 1,
+      "outcome": "N",
+      "states": 23,
+      "winning_move": 5
+    },
+    "9,16,26": {
+      "elapsed_seconds": 0.003183,
+      "frobenius": 65,
+      "kind": "finite-exact",
+      "native_words": 2,
+      "outcome": "N",
+      "states": 340,
+      "winning_move": 10
+    }
+  },
+  "native_source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+  "provenance": "public repository tables and fresh native computations; no imported claims or caches",
+  "root": [
+    16,
+    26,
+    54,
+    60,
+    62
+  ],
+  "schema": 1
+}

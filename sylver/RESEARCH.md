@@ -1,5 +1,12 @@
 # Sylver Coinage after 16: research log
 
+**September 5 correction:** the historical reduction to X alone was
+unsupported. For U={16,26,88}, the remaining obligations are X N **and**
+Q N, where X={16,26,82,88} and Q={16,26,88,98}. See the
+[verification report and counterexample](publication/plan2-2026-09-05/REPORT.md).
+The [public release](publication/plan2-2026-09-05/README.md) also independently
+confirms {16,26,54,60,62} P. Opening 16 remains unresolved.
+
 ## Attempt 1 — 2026-07-20
 
 ### Goal
