@@ -1,0 +1,17 @@
+{
+  "position": [
+    16,
+    26,
+    37,
+    62,
+    87,
+    92,
+    98
+  ],
+  "outcome": "P",
+  "frobenius": 123,
+  "states": 3458311,
+  "elapsed_seconds": 37.349922624998726,
+  "source_sha256": "fe17c5fbb77b036131250af033b0bae7fa200daca4cadb01ceccb12fa6434a3d",
+  "scope": "Independent Python replay of one new finite P destination (reply 37 after W+92+87); empty memo and no campaign cache. This does not close W move 92."
+}

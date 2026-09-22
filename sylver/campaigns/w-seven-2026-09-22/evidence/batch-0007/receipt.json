@@ -1,0 +1,35 @@
+{
+  "command": [
+    "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-seven-2026-09-22/evidence/build/native-aded19fa091b57b6-w4",
+    "--batch-file",
+    "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-seven-2026-09-22/evidence/batch-0007/positions.txt"
+  ],
+  "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+  "binary_sha256": "62b51d342748810778fd454aed03e6e412c179f49eff5d578a8cbba3795ccfb3",
+  "native_words": 4,
+  "requests_sha256": "605aca9d1faea713170538f396dc3c8f89568c956bcec8c64cef51b51da4da16",
+  "stdout_sha256": "cd68e36f4486f5478afdefeaa2a40f3968bf33537213711a8daa977bed9e6a7f",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "seconds_limit": 90.0,
+  "elapsed_seconds": 90.13437625699953,
+  "returncode": -9,
+  "stop_reason": "timeout",
+  "requested": 14,
+  "completed": 1,
+  "rows": [
+    {
+      "position": [
+        16,
+        26,
+        62,
+        69,
+        98,
+        134
+      ],
+      "outcome": "N",
+      "winning_move": 113,
+      "frobenius": 187,
+      "cumulative_states": 22163850
+    }
+  ]
+}

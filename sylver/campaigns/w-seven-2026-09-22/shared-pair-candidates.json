@@ -1,0 +1,147 @@
+{
+  "seed": "sylver/campaigns/targeted-2026-09-22/short56/proof-graph.json",
+  "seed_sha256": "37082131207672e104c69b70161a1a46cc7474be9fdc2b676d810c2d9a478c4b",
+  "candidates": [
+    {
+      "moves": [
+        70,
+        108
+      ],
+      "position": [
+        16,
+        26,
+        62,
+        70,
+        98,
+        108
+      ],
+      "half_frobenius": 46,
+      "quiet": false,
+      "open_even_moves": [
+        50,
+        56,
+        72,
+        76
+      ]
+    },
+    {
+      "moves": [
+        86,
+        92
+      ],
+      "position": [
+        16,
+        26,
+        62,
+        86,
+        92,
+        98
+      ],
+      "half_frobenius": 41,
+      "quiet": false,
+      "open_even_moves": [
+        36,
+        50,
+        56,
+        72,
+        82
+      ]
+    },
+    {
+      "moves": [
+        86,
+        108
+      ],
+      "position": [
+        16,
+        26,
+        62,
+        86,
+        98,
+        108
+      ],
+      "half_frobenius": 46,
+      "quiet": false,
+      "open_even_moves": [
+        50,
+        56,
+        70,
+        72,
+        92
+      ]
+    },
+    {
+      "moves": [
+        92,
+        102
+      ],
+      "position": [
+        16,
+        26,
+        62,
+        92,
+        98,
+        102
+      ],
+      "half_frobenius": 43,
+      "quiet": false,
+      "open_even_moves": [
+        36,
+        56,
+        66,
+        72,
+        82,
+        86
+      ]
+    },
+    {
+      "moves": [
+        102,
+        108
+      ],
+      "position": [
+        16,
+        26,
+        62,
+        98,
+        102,
+        108
+      ],
+      "half_frobenius": 46,
+      "quiet": false,
+      "open_even_moves": [
+        36,
+        56,
+        66,
+        70,
+        72,
+        86,
+        92
+      ]
+    },
+    {
+      "moves": [
+        108,
+        118
+      ],
+      "position": [
+        16,
+        26,
+        62,
+        98,
+        108,
+        118
+      ],
+      "half_frobenius": 51,
+      "quiet": false,
+      "open_even_moves": [
+        70,
+        72,
+        86,
+        92,
+        102
+      ]
+    }
+  ],
+  "scope": "Unresolved candidates, not P claims. Both moves are legal in either order and lead to the same canonical semigroup. Proving a destination P would refute both moves from W. Every listed candidate has an unresolved infinite odd tail."
+}
