@@ -1,0 +1,115 @@
+FRONTIER unknown [34, 35, 38, 43, 51, 59, 66, 70, 76, 86, 92, 102, 108, 118, 134] budget 240.0
+ODD 35 N
+ODD 43 unknown
+ODD 51 unknown
+ODD 59 unknown
+FRONTIER unknown [34, 38, 43, 51, 59, 66, 70, 76, 86, 92, 102, 108, 118, 134] budget 230.55
+CHECK 34 13 N
+CHECK 70 13 N
+CHECK 76 13 N
+CHECK 38 21 N
+CHECK 70 21 N
+FRONTIER unknown [34, 38, 43, 51, 59, 66, 70, 76, 86, 92, 102, 108, 118, 134] budget 230.27
+CHECK 34 29 N
+CHECK 70 29 N
+CHECK 70 31 N
+CHECK 34 33 N
+CHECK 76 33 N
+CHECK 34 35 N
+CHECK 38 35 N
+CHECK 70 37 unknown
+CHECK 76 37 N
+CHECK 102 37 unknown
+CHECK 34 39 P
+FRONTIER unknown [38, 43, 51, 59, 66, 70, 76, 86, 92, 102, 108, 118, 134] budget 215.62
+CHECK 38 39 N
+CHECK 70 39 unknown
+CHECK 76 41 unknown
+CHECK 92 41 unknown
+FRONTIER unknown [38, 43, 51, 59, 66, 70, 76, 86, 92, 102, 108, 118, 134] budget 204.98
+CHECK 38 43 N
+CHECK 76 43 unknown
+CHECK 86 43 unknown
+CHECK 92 43 unknown
+CHECK 102 43 unknown
+CHECK 108 43 N
+CHECK 118 43 unknown
+CHECK 134 43 unknown
+CHECK 38 45 N
+CHECK 38 47 N
+CHECK 38 49 N
+CHECK 38 51 N
+CHECK 70 51 unknown
+CHECK 76 51 unknown
+CHECK 86 51 unknown
+CHECK 92 51 unknown
+CHECK 102 51 unknown
+CHECK 108 51 unknown
+CHECK 118 51 unknown
+CHECK 134 51 unknown
+CHECK 38 53 unknown
+CHECK 38 55 unknown
+CHECK 38 57 N
+CHECK 38 59 unknown
+CHECK 70 59 unknown
+CHECK 86 59 unknown
+CHECK 92 59 unknown
+CHECK 102 59 unknown
+CHECK 108 59 N
+CHECK 118 59 unknown
+CHECK 134 59 unknown
+CHECK 70 61 unknown
+CHECK 76 61 unknown
+CHECK 86 61 unknown
+CHECK 92 61 unknown
+CHECK 102 61 unknown
+CHECK 108 61 unknown
+CHECK 118 61 unknown
+CHECK 134 61 unknown
+FRONTIER unknown [38, 43, 51, 59, 66, 70, 76, 86, 92, 102, 108, 118, 134] budget 127.93
+CHECK 70 63 N
+CHECK 76 63 unknown
+CHECK 86 63 unknown
+CHECK 92 63 unknown
+CHECK 102 63 unknown
+CHECK 108 63 unknown
+CHECK 118 63 unknown
+CHECK 134 63 unknown
+CHECK 38 65 unknown
+CHECK 70 65 unknown
+CHECK 76 65 unknown
+CHECK 92 65 unknown
+CHECK 102 65 unknown
+CHECK 108 65 unknown
+CHECK 118 65 unknown
+CHECK 134 65 unknown
+CHECK 38 67 unknown
+CHECK 70 67 unknown
+CHECK 76 67 unknown
+CHECK 86 67 unknown
+CHECK 92 67 unknown
+CHECK 102 67 unknown
+CHECK 108 67 unknown
+CHECK 118 67 unknown
+CHECK 38 69 unknown
+CHECK 70 69 unknown
+CHECK 76 69 unknown
+CHECK 86 69 unknown
+CHECK 92 69 unknown
+CHECK 102 69 unknown
+CHECK 108 69 unknown
+CHECK 118 69 unknown
+CHECK 134 69 unknown
+CHECK 38 71 unknown
+CHECK 70 71 unknown
+CHECK 76 71 unknown
+CHECK 86 71 unknown
+CHECK 92 71 unknown
+CHECK 102 71 unknown
+CHECK 108 71 unknown
+CHECK 118 71 unknown
+CHECK 134 71 unknown
+CHECK 38 73 unknown
+CHECK 70 73 N
+CHECK 38 75 unknown
+FRONTIER unknown [38, 43, 51, 59, 66, 70, 76, 86, 92, 102, 108, 118, 134] budget -0.01

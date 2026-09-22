@@ -1,0 +1,152 @@
+diff --git a/sylver/periodicity_engine.cpp b/sylver/periodicity_engine.cpp
+index 55c2eec..1c1706a 100644
+--- a/sylver/periodicity_engine.cpp
++++ b/sylver/periodicity_engine.cpp
+@@ -766,6 +766,7 @@ struct Engine {
+     // remains a function of exact outcomes only.  Pending work is transient
+     // and never checkpointed: an interrupt simply re-collects on resume.
+     int exact_threads = 1;
++    bool target_only = false;
+     bool memory_report_enabled = false;
+     bool collect_mode = false;
+     // Solve a batch as soon as this many positions are pending instead of
+@@ -1589,6 +1590,23 @@ struct Engine {
+         return true;
+     }
+ 
++    // A targeted query needs the singleton prefix only up to its reset
++    // cutoff, not through an unrelated global scan frontier. A known P
++    // within that prefix is sufficient; otherwise every prefix value must
++    // be exact. Unknowns never advance history_to.
++    bool ensure_reset_history(int eid, int cutoff) {
++        if (first_p[eid] <= cutoff) return true;
++        int sid = single_sid[eid];
++        if (sid < 0) sid = register_shape(eid, {0});
++        for (int m = history_to[eid] + 2; m <= cutoff; m += 2) {
++            const signed char value = evaluate(sid, m);
++            if (value < 0) return false;
++            history_to[eid] = m;
++            if (value == 1) return true;
++        }
++        return true;
++    }
++
+     // ---- transitions -----------------------------------------------------
+     // Canonical child offsets and translation for the relative odd move r
+     // from a shape with the given offsets.  The single source of truth for
+@@ -1660,8 +1678,10 @@ struct Engine {
+             }
+         } else {
+             const int eid = shapes[sid].eid;
++            const bool reset_complete = !target_only
++                || ensure_reset_history(eid, m - tbar - 2);
+             bool winning = first_p[eid] <= m - tbar - 2;
+-            bool saw_unknown = false;
++            bool saw_unknown = !reset_complete;
+             if (!winning) {
+                 build_transition_specs(sid);
+                 const std::size_t odd_count = shapes[sid].odd_options.size();
+@@ -1706,7 +1726,7 @@ struct Engine {
+                         // current recurrence window.  An incomplete history
+                         // (pending exact dependency) defers this child: it
+                         // is neither materialized nor decided this sweep.
+-                        if (!ensure_single_history(neid)) {
++                        if (!target_only && !ensure_single_history(neid)) {
+                             saw_unknown = true;
+                             continue;
+                         }
+@@ -1810,7 +1830,7 @@ int main(int argc, char** argv) {
+         std::cerr
+             << "usage: periodicity_engine CACHE LIMIT "
+                "[--base-record FILE]... [--checkpoint-file FILE] "
+-               "[--stop-after-evaluations N] GEN...\n";
++               "[--stop-after-evaluations N] [--target-only] GEN...\n";
+         return 1;
+     }
+     Engine eng;
+@@ -1862,6 +1882,8 @@ int main(int argc, char** argv) {
+                 std::cerr << "invalid --batch-pending count\n";
+                 return 1;
+             }
++        } else if (argument == "--target-only") {
++            eng.target_only = true;
+         } else if (argument == "--memory-report") {
+             eng.memory_report_enabled = true;
+         } else if (argument == "--exact-threads") {
+@@ -1887,6 +1909,23 @@ int main(int argc, char** argv) {
+             eng.base.push_back(std::atoi(argv[i]));
+         }
+     }
++    if (eng.target_only) {
++        try {
++            std::size_t parsed = 0;
++            const std::string text = argv[2];
++            limit = std::stol(text, &parsed);
++            if (parsed != text.size() || limit < 3 || limit % 2 == 0
++                || limit > std::numeric_limits<int>::max())
++                throw std::invalid_argument("target");
++        } catch (const std::exception&) {
++            std::cerr << "--target-only requires an odd target >= 3 within int range\n";
++            return 1;
++        }
++    }
++    if (eng.target_only && !eng.row_checkpoint_path.empty()) {
++        std::cerr << "--target-only does not use row checkpoints\n";
++        return 1;
++    }
+     if (eng.row_checkpoint_path.empty())
+         eng.row_checkpoint_path = eng.cache_path + ".rowstate";
+     if (eng.row_checkpoint_path == eng.cache_path
+@@ -1927,6 +1966,52 @@ int main(int argc, char** argv) {
+     eng.register_shape(0, {0});
+     eng.load_cache();
+     for (const std::string& path : base_records) eng.load_base_record(path);
++    if (eng.target_only) {
++        // This path neither loads nor saves an automaton checkpoint. Its
++        // partial histories and sparse rows must never be mistaken for a
++        // complete state by the period detector. Completed exact outcomes
++        // still survive interruptions through the ordinary finite cache.
++        eng.begin_row();
++        try {
++            for (;;) {
++                eng.collect_mode = eng.exact_threads > 1;
++                eng.pending.clear();
++                eng.pending_keys.clear();
++                eng.unknown_memo.clear_reserve(1 << 16);
++                const signed char result = eng.evaluate(eng.single_sid[0],
++                                                        static_cast<int>(limit));
++                if (result >= 0) {
++                    const auto gens = eng.position_generators(0, {static_cast<int>(limit)});
++                    eng.base_cache[Engine::generator_key(gens)] = result == 1;
++                    eng.dirty_cache = true;
++                    eng.save_cache();
++                    std::cout << "TARGET n=" << limit
++                              << " outcome=" << (result == 1 ? "P" : "N")
++                              << " shapes=" << eng.shapes.size()
++                              << " evaluations=" << eng.evaluation_calls
++                              << " exact_completed=" << eng.exact_completed
++                              << " exact_states=" << eng.exact_states << std::endl;
++                    if (eng.memory_report_enabled) eng.memory_report();
++                    return 0;
++                }
++                if (eng.pending.empty())
++                    throw std::runtime_error("unknown target without pending exact work");
++                eng.solve_pending_parallel();
++            }
++        } catch (const CampaignInterrupted&) {
++            eng.save_cache();
++            std::cout << "TARGET n=" << limit << " outcome=unknown"
++                      << " shapes=" << eng.shapes.size()
++                      << " evaluations=" << eng.evaluation_calls
++                      << " exact_completed=" << eng.exact_completed << std::endl;
++            if (eng.memory_report_enabled) eng.memory_report();
++            return interrupt_requested == 0 ? 75 : 128 + interrupt_requested;
++        } catch (const std::exception& error) {
++            eng.save_cache();
++            std::cerr << "targeted engine error: " << error.what() << '\n';
++            return 2;
++        }
++    }
+     int active_n = 0;
+     bool resume_active_row = false;
+     try {

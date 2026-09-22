@@ -1,0 +1,44 @@
+{
+  "base": [
+    16,
+    26,
+    62,
+    66
+  ],
+  "target": 107,
+  "sources": [
+    {
+      "path": "sylver/move26_data/periodicity_x.cache",
+      "sha256": "07b4b858ac7712c265833aabbd81ef5b7d6477d325fcfa873c9cab25e781c331"
+    },
+    {
+      "path": "sylver/campaigns/targeted-2026-09-22/w-derived.cache",
+      "sha256": "55dc6ecbf5b64d37ecd8afe7d580320461e5f6886d46b9c936692666fa2b721d"
+    }
+  ],
+  "engine_sha256": "56b7e8f0abf7eadb22a9d21f38a03552e77cf222682d7372d613635db40716e2",
+  "seconds": 90.0,
+  "memory_gib": 6,
+  "exact_threads": 1,
+  "command": [
+    "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/targeted-2026-09-22/build/engine-56b7e8f0abf7eadb",
+    "/tmp/sylver-target-z1534t3v/exact.cache",
+    "107",
+    "--target-only",
+    "--memory-report",
+    "--exact-threads",
+    "1",
+    "16",
+    "26",
+    "62",
+    "66"
+  ],
+  "returncode": 0,
+  "timed_out": false,
+  "forced_kill": false,
+  "elapsed_seconds": 0.6159931809997943,
+  "added_exact_outcomes": 2,
+  "added_P": 1,
+  "log_sha256": "9ca5cfb3b810ffc550d4e6ecd1ca81dc61f2c8863e4ae4e2bbd268685cc8ac43",
+  "delta_sha256": "05b38ea798fa36d98a0d134472c20d37570d24c6e30d92348a844f8c89e540fe"
+}

@@ -1,0 +1,88 @@
+{
+  "native_words": 5,
+  "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+  "rows": [
+    {
+      "position": [
+        2,
+        259
+      ],
+      "expected": "N",
+      "output": "N winning_move=3 frobenius=257 states=2",
+      "elapsed_seconds": 0.0017495779975433834
+    },
+    {
+      "position": [
+        2,
+        317
+      ],
+      "expected": "N",
+      "output": "N winning_move=3 frobenius=315 states=2",
+      "elapsed_seconds": 0.0012524720004876144
+    },
+    {
+      "position": [
+        3,
+        130,
+        131
+      ],
+      "expected": "N",
+      "output": "N winning_move=2 frobenius=128 states=2",
+      "elapsed_seconds": 0.001969984998140717
+    },
+    {
+      "position": [
+        4,
+        6,
+        129
+      ],
+      "expected": "N",
+      "output": "N winning_move=131 frobenius=131 states=97",
+      "elapsed_seconds": 0.0024445140006719157
+    },
+    {
+      "position": [
+        6,
+        10,
+        14,
+        17
+      ],
+      "expected": "P",
+      "output": "P winning_move=none frobenius=25 states=47",
+      "elapsed_seconds": 0.001515200001449557
+    },
+    {
+      "position": [
+        8,
+        10,
+        22,
+        49
+      ],
+      "expected": "N",
+      "output": "N winning_move=53 frobenius=63 states=658",
+      "elapsed_seconds": 0.003980808000051184
+    },
+    {
+      "position": [
+        8,
+        13
+      ],
+      "expected": "N",
+      "output": "N winning_move=25 frobenius=83 states=752",
+      "elapsed_seconds": 0.004662661998736439
+    },
+    {
+      "position": [
+        16,
+        21,
+        26,
+        62,
+        66,
+        107
+      ],
+      "expected": "P",
+      "output": "P winning_move=none frobenius=102 states=359257",
+      "elapsed_seconds": 0.40208229099880555
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "position": [
+    16,
+    26,
+    56,
+    62,
+    66,
+    76,
+    247
+  ],
+  "returncode": 0,
+  "stdout": "P winning_move=none frobenius=333 states=60797798\n",
+  "stderr": "",
+  "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+  "binary_sha256": "c088d09c8bbbcce9de7fe08831a17a7d88f8aadee0bcf79cc1a9b7e79af1210b",
+  "native_words": 6,
+  "elapsed_seconds": 257.49305472700144,
+  "scope": "Fresh standalone memo, no inherited cache or shared prior roots."
+}

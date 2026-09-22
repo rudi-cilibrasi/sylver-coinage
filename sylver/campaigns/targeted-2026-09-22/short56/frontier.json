@@ -1,0 +1,48 @@
+{
+  "target": [
+    16,
+    26,
+    56,
+    62,
+    66
+  ],
+  "outcome": "P",
+  "open_moves": [],
+  "audit": {
+    "winning-edge": 703,
+    "quiet-ender-theorem": 4,
+    "complete-cover": 3
+  },
+  "last_batch": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/targeted-2026-09-22/short56/batch-0007",
+  "scope": "Inherited facts retain their named dependencies. Batch outcomes are fresh exact computations with a shared memo; state counts are cumulative. Unfinished requests remain unknown.",
+  "covered_obligations": 40,
+  "total_obligations": 40,
+  "winning_reply_to_76": 247,
+  "decisive_P_position": [
+    16,
+    26,
+    56,
+    62,
+    66,
+    76,
+    247
+  ],
+  "w_position": [
+    16,
+    26,
+    62,
+    98
+  ],
+  "w_outcome": "unknown",
+  "w_open_moves": [
+    70,
+    86,
+    92,
+    102,
+    108,
+    118,
+    134
+  ],
+  "compact_certificate": "sylver/campaigns/targeted-2026-09-22/b-certificate.json",
+  "compact_certificate_sha256": "6706a2b0f6fb5c7f3d2f9870318a2a34efccade1a6763a3fa6c5421b5a2ff394"
+}

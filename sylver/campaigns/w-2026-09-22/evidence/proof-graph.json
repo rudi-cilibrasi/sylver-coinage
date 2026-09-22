@@ -1,0 +1,5644 @@
+{
+  "audit": {
+    "winning-edge": 170
+  },
+  "native_budget_remaining": 0.0,
+  "nodes": {
+    "16,26,62,98": {
+      "obligations": [
+        {
+          "destination": "2",
+          "move": 2,
+          "outcome": "N"
+        },
+        {
+          "destination": "3,16,26",
+          "move": 3,
+          "outcome": "N"
+        },
+        {
+          "destination": "4,26",
+          "move": 4,
+          "outcome": "N"
+        },
+        {
+          "destination": "5,16",
+          "move": 5,
+          "outcome": "N"
+        },
+        {
+          "destination": "6,16,26",
+          "move": 6,
+          "outcome": "N"
+        },
+        {
+          "destination": "7,16,26",
+          "move": 7,
+          "outcome": "N"
+        },
+        {
+          "destination": "8,26,62",
+          "move": 8,
+          "outcome": "N"
+        },
+        {
+          "destination": "9,16,26",
+          "move": 9,
+          "outcome": "N"
+        },
+        {
+          "destination": "10,16",
+          "move": 10,
+          "outcome": "N"
+        },
+        {
+          "destination": "11,16,26,62",
+          "move": 11,
+          "outcome": "N"
+        },
+        {
+          "destination": "12,16,26",
+          "move": 12,
+          "outcome": "N"
+        },
+        {
+          "destination": "14,16,26",
+          "move": 14,
+          "outcome": "N"
+        },
+        {
+          "destination": "15,16,26",
+          "move": 15,
+          "outcome": "N"
+        },
+        {
+          "destination": "16,17,26,62",
+          "move": 17,
+          "outcome": "N"
+        },
+        {
+          "destination": "16,18,26",
+          "move": 18,
+          "outcome": "N"
+        },
+        {
+          "destination": "16,19,26,62,98",
+          "move": 19,
+          "outcome": "N"
+        },
+        {
+          "destination": "16,20,26",
+          "move": 20,
+          "outcome": "N"
+        },
+        {
+          "destination": "16,22,26,62",
+          "move": 22,
+          "outcome": "N"
+        },
+        {
+          "destination": "16,23,26",
+          "move": 23,
+          "outcome": "N"
+        },
+        {
+          "destination": "16,24,26,62",
+          "move": 24,
+          "outcome": "N"
+        },
+        {
+          "destination": "16,25,26,62",
+          "move": 25,
+          "outcome": "N"
+        },
+        {
+          "destination": "16,26,27,62,98",
+          "move": 27,
+          "outcome": "N"
+        },
+        {
+          "destination": "16,26,28,62",
+          "move": 28,
+          "outcome": "N"
+        },
+        {
+          "destination": "16,26,30",
+          "move": 30,
+          "outcome": "N"
+        },
+        {
+          "destination": "16,26,33,62",
+          "move": 33,
+          "outcome": "N"
+        },
+        {
+          "destination": "16,26,34,62",
+          "move": 34,
+          "outcome": "N"
+        },
+        {
+          "destination": "16,26,35,62,98",
+          "move": 35,
+          "outcome": "N"
+        },
+        {
+          "destination": "16,26,36",
+          "move": 36,
+          "outcome": "N"
+        },
+        {
+          "destination": "16,26,38,62,98",
+          "move": 38,
+          "outcome": "N"
+        },
+        {
+          "destination": "16,26,40,62",
+          "move": 40,
+          "outcome": "N"
+        },
+        {
+          "destination": "16,26,41,62",
+          "move": 41,
+          "outcome": "N"
+        },
+        {
+          "destination": "16,26,43,62,98",
+          "move": 43,
+          "outcome": "N"
+        },
+        {
+          "destination": "16,26,44,62,98",
+          "move": 44,
+          "outcome": "N"
+        },
+        {
+          "destination": "16,26,46",
+          "move": 46,
+          "outcome": "N"
+        },
+        {
+          "destination": "16,26,50,62",
+          "move": 50,
+          "outcome": "N"
+        },
+        {
+          "destination": "16,26,51,62,98",
+          "move": 51,
+          "outcome": "N"
+        },
+        {
+          "destination": "16,26,54,62,98",
+          "move": 54,
+          "outcome": "N"
+        },
+        {
+          "destination": "16,26,56,62",
+          "move": 56,
+          "outcome": "N"
+        },
+        {
+          "destination": "16,26,59,62,98",
+          "move": 59,
+          "outcome": "N"
+        },
+        {
+          "destination": "16,26,60,62,98",
+          "move": 60,
+          "outcome": "N"
+        },
+        {
+          "destination": "16,26,62,66",
+          "move": 66,
+          "outcome": "unknown"
+        },
+        {
+          "destination": "16,26,62,67,98",
+          "move": 67,
+          "outcome": "N"
+        },
+        {
+          "destination": "16,26,62,70,98",
+          "move": 70,
+          "outcome": "unknown"
+        },
+        {
+          "destination": "16,26,62,72",
+          "move": 72,
+          "outcome": "N"
+        },
+        {
+          "destination": "16,26,62,76,98",
+          "move": 76,
+          "outcome": "N"
+        },
+        {
+          "destination": "16,26,62,82",
+          "move": 82,
+          "outcome": "N"
+        },
+        {
+          "destination": "16,26,62,86,98",
+          "move": 86,
+          "outcome": "unknown"
+        },
+        {
+          "destination": "16,26,62,92,98",
+          "move": 92,
+          "outcome": "unknown"
+        },
+        {
+          "destination": "16,26,62,98,102",
+          "move": 102,
+          "outcome": "unknown"
+        },
+        {
+          "destination": "16,26,62,98,108",
+          "move": 108,
+          "outcome": "unknown"
+        },
+        {
+          "destination": "16,26,62,98,118",
+          "move": 118,
+          "outcome": "unknown"
+        },
+        {
+          "destination": "16,26,62,98,134",
+          "move": 134,
+          "outcome": "unknown"
+        }
+      ],
+      "open_moves": [
+        66,
+        70,
+        86,
+        92,
+        102,
+        108,
+        118,
+        134
+      ],
+      "outcome": "unknown",
+      "position": [
+        16,
+        26,
+        62,
+        98
+      ],
+      "profile": {
+        "complete_moves": true,
+        "even_moves": [
+          2,
+          4,
+          6,
+          8,
+          10,
+          12,
+          14,
+          18,
+          20,
+          22,
+          24,
+          28,
+          30,
+          34,
+          36,
+          38,
+          40,
+          44,
+          46,
+          50,
+          54,
+          56,
+          60,
+          66,
+          70,
+          72,
+          76,
+          82,
+          86,
+          92,
+          102,
+          108,
+          118,
+          134
+        ],
+        "exceptional_odds": [
+          3,
+          5,
+          7,
+          9,
+          11,
+          15,
+          17,
+          19,
+          23,
+          25,
+          27,
+          33,
+          35,
+          41,
+          43,
+          51,
+          59,
+          67
+        ],
+        "gcd": 2,
+        "half_frobenius": 67,
+        "moves": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          14,
+          15,
+          17,
+          18,
+          19,
+          20,
+          22,
+          23,
+          24,
+          25,
+          27,
+          28,
+          30,
+          33,
+          34,
+          35,
+          36,
+          38,
+          40,
+          41,
+          43,
+          44,
+          46,
+          50,
+          51,
+          54,
+          56,
+          59,
+          60,
+          66,
+          67,
+          70,
+          72,
+          76,
+          82,
+          86,
+          92,
+          102,
+          108,
+          118,
+          134
+        ],
+        "quiet": true,
+        "tail": "quiet-end-theorem"
+      }
+    }
+  },
+  "odd_search_limit": 201,
+  "open_moves": [
+    66,
+    70,
+    86,
+    92,
+    102,
+    108,
+    118,
+    134
+  ],
+  "outcome": "unknown",
+  "schema": 1,
+  "scope": "Inherited exact cache, repository certificates, September 5 release, and the explicitly named published P assumption. Only exact-checks.jsonl contains fresh computations.",
+  "sources": {
+    "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache": {
+      "kind": "inherited-exact-cache",
+      "sha256": "07b4b858ac7712c265833aabbd81ef5b7d6477d325fcfa873c9cab25e781c331"
+    }
+  },
+  "support": {
+    "10,12,14,16": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "10,12,16": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "10,14,16": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "10,16": {
+      "evidence": {
+        "destination": "10,16,24",
+        "kind": "winning-edge",
+        "move": 24
+      },
+      "outcome": "N"
+    },
+    "10,16,18,24": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "10,16,21,34": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "P"
+    },
+    "10,16,22,24": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "10,16,24": {
+      "evidence": {
+        "kind": "repository-certificate",
+        "source": "node:K"
+      },
+      "outcome": "P"
+    },
+    "10,16,24,28": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "10,16,24,38": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "10,16,54": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "11,12,16,20,30": {
+      "evidence": {
+        "kind": "repository-certificate-edge",
+        "move": 12,
+        "reply": 11,
+        "source": "node:N"
+      },
+      "outcome": "P"
+    },
+    "11,16,26,40": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "P"
+    },
+    "11,16,26,45,62": {
+      "evidence": {
+        "frobenius": 127,
+        "kind": "native-winning-destination",
+        "native_words": 2,
+        "parent": "16,26,38,45,62,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 10185,
+        "winning_move": 11
+      },
+      "outcome": "P"
+    },
+    "11,16,26,57,62": {
+      "evidence": {
+        "frobenius": 139,
+        "kind": "native-winning-destination",
+        "native_words": 4,
+        "parent": "16,26,38,57,62,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 16513,
+        "winning_move": 11
+      },
+      "outcome": "P"
+    },
+    "11,16,26,62": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "N"
+    },
+    "12,14,16": {
+      "evidence": {
+        "kind": "repository-certificate",
+        "source": "node:F"
+      },
+      "outcome": "P"
+    },
+    "12,14,16,18": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "12,14,16,20": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "12,14,16,22": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "12,14,16,34": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "12,15,16,18,22": {
+      "evidence": {
+        "kind": "repository-certificate-edge",
+        "move": 18,
+        "reply": 15,
+        "source": "node:P0"
+      },
+      "outcome": "P"
+    },
+    "12,15,16,20,38": {
+      "evidence": {
+        "kind": "repository-certificate-edge",
+        "move": 12,
+        "reply": 15,
+        "source": "node:M"
+      },
+      "outcome": "P"
+    },
+    "12,16,20,22,26": {
+      "evidence": {
+        "kind": "repository-certificate",
+        "source": "node:D"
+      },
+      "outcome": "P"
+    },
+    "12,16,20,22,26,30,183": {
+      "evidence": {
+        "kind": "repository-certificate-edge",
+        "move": 30,
+        "reply": 183,
+        "source": "node:D"
+      },
+      "outcome": "P"
+    },
+    "12,16,20,22,39": {
+      "evidence": {
+        "kind": "repository-certificate-edge",
+        "move": 12,
+        "reply": 39,
+        "source": "node:L"
+      },
+      "outcome": "P"
+    },
+    "12,16,20,34,45": {
+      "evidence": {
+        "kind": "repository-certificate-edge",
+        "move": 12,
+        "reply": 45,
+        "source": "node:T"
+      },
+      "outcome": "P"
+    },
+    "12,16,22": {
+      "evidence": {
+        "kind": "repository-certificate",
+        "source": "node:P0"
+      },
+      "outcome": "P"
+    },
+    "12,16,22,25,42": {
+      "evidence": {
+        "kind": "repository-certificate-edge",
+        "move": 42,
+        "reply": 25,
+        "source": "node:P0"
+      },
+      "outcome": "P"
+    },
+    "12,16,22,30,51": {
+      "evidence": {
+        "kind": "repository-certificate-edge",
+        "move": 30,
+        "reply": 51,
+        "source": "node:P0"
+      },
+      "outcome": "P"
+    },
+    "12,16,26": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "13,15,16,38": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "P"
+    },
+    "13,16,34,51,62": {
+      "evidence": {
+        "frobenius": 85,
+        "kind": "native-winning-destination",
+        "native_words": 2,
+        "parent": "13,16,34,62",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 25100,
+        "winning_move": 51
+      },
+      "outcome": "P"
+    },
+    "13,16,34,62": {
+      "evidence": {
+        "frobenius": 85,
+        "kind": "native-exact",
+        "native_words": 2,
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 25100,
+        "winning_move": 51
+      },
+      "outcome": "N"
+    },
+    "13,16,38,62,98": {
+      "evidence": {
+        "destination": "13,15,16,38",
+        "kind": "winning-edge",
+        "move": 15
+      },
+      "outcome": "N"
+    },
+    "13,16,41,62": {
+      "evidence": {
+        "frobenius": 121,
+        "kind": "native-winning-destination",
+        "native_words": 2,
+        "parent": "13,16,62,70,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 54478,
+        "winning_move": 41
+      },
+      "outcome": "P"
+    },
+    "13,16,47,62,98": {
+      "evidence": {
+        "frobenius": 99,
+        "kind": "native-winning-destination",
+        "native_words": 2,
+        "parent": "13,16,62,76,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 74804,
+        "winning_move": 47
+      },
+      "outcome": "P"
+    },
+    "13,16,54,60,62,72": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "finite-exact",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "P"
+    },
+    "13,16,59,62,108": {
+      "evidence": {
+        "frobenius": 161,
+        "kind": "native-winning-destination",
+        "native_words": 4,
+        "parent": "16,26,59,62,98,108",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 131464,
+        "winning_move": 13
+      },
+      "outcome": "P"
+    },
+    "13,16,62,63,70,98": {
+      "evidence": {
+        "frobenius": 171,
+        "kind": "native-winning-destination",
+        "native_words": 4,
+        "parent": "16,26,62,63,70,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 114810,
+        "winning_move": 13
+      },
+      "outcome": "P"
+    },
+    "13,16,62,70,98": {
+      "evidence": {
+        "frobenius": 121,
+        "kind": "native-exact",
+        "native_words": 2,
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 54478,
+        "winning_move": 41
+      },
+      "outcome": "N"
+    },
+    "13,16,62,76,98": {
+      "evidence": {
+        "frobenius": 99,
+        "kind": "native-exact",
+        "native_words": 2,
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 74804,
+        "winning_move": 47
+      },
+      "outcome": "N"
+    },
+    "13,16,62,86,98": {
+      "evidence": {
+        "destination": "13,16,41,62",
+        "kind": "winning-edge",
+        "move": 41
+      },
+      "outcome": "N"
+    },
+    "13,16,62,92,98": {
+      "evidence": {
+        "destination": "13,16,47,62,98",
+        "kind": "winning-edge",
+        "move": 47
+      },
+      "outcome": "N"
+    },
+    "13,16,62,98,102": {
+      "evidence": {
+        "destination": "13,16,41,62",
+        "kind": "winning-edge",
+        "move": 41
+      },
+      "outcome": "N"
+    },
+    "13,16,62,98,108": {
+      "evidence": {
+        "destination": "13,16,41,62",
+        "kind": "winning-edge",
+        "move": 41
+      },
+      "outcome": "N"
+    },
+    "13,16,62,98,118": {
+      "evidence": {
+        "destination": "13,16,41,62",
+        "kind": "winning-edge",
+        "move": 41
+      },
+      "outcome": "N"
+    },
+    "13,16,62,98,134": {
+      "evidence": {
+        "destination": "13,16,41,62",
+        "kind": "winning-edge",
+        "move": 41
+      },
+      "outcome": "N"
+    },
+    "14,16,20,22,41": {
+      "evidence": {
+        "kind": "repository-certificate-edge",
+        "move": 14,
+        "reply": 41,
+        "source": "node:L"
+      },
+      "outcome": "P"
+    },
+    "14,16,20,26": {
+      "evidence": {
+        "kind": "repository-certificate",
+        "source": "node:R"
+      },
+      "outcome": "P"
+    },
+    "14,16,20,31": {
+      "evidence": {
+        "kind": "repository-certificate-edge",
+        "move": 14,
+        "reply": 31,
+        "source": "node:N"
+      },
+      "outcome": "P"
+    },
+    "14,16,20,37,38": {
+      "evidence": {
+        "kind": "repository-certificate-edge",
+        "move": 14,
+        "reply": 37,
+        "source": "node:M"
+      },
+      "outcome": "P"
+    },
+    "14,16,26": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "15,16,20,28,34": {
+      "evidence": {
+        "kind": "repository-certificate-edge",
+        "move": 28,
+        "reply": 15,
+        "source": "node:S"
+      },
+      "outcome": "P"
+    },
+    "15,16,20,28,42,54": {
+      "evidence": {
+        "kind": "repository-certificate-edge",
+        "move": 54,
+        "reply": 15,
+        "source": "node:N"
+      },
+      "outcome": "P"
+    },
+    "15,16,20,34,38": {
+      "evidence": {
+        "kind": "repository-certificate-edge",
+        "move": 38,
+        "reply": 15,
+        "source": "node:T"
+      },
+      "outcome": "P"
+    },
+    "15,16,20,34,42": {
+      "evidence": {
+        "kind": "repository-certificate-edge",
+        "move": 42,
+        "reply": 15,
+        "source": "node:T"
+      },
+      "outcome": "P"
+    },
+    "15,16,26": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "N"
+    },
+    "15,16,26,27,34": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "P"
+    },
+    "16,17,26,45": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "P"
+    },
+    "16,17,26,46": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "P"
+    },
+    "16,17,26,54,62": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "finite-exact",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "16,17,26,62": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "N"
+    },
+    "16,17,26,62,70,73": {
+      "evidence": {
+        "frobenius": 181,
+        "kind": "native-winning-destination",
+        "native_words": 4,
+        "parent": "16,26,62,70,73,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 218485,
+        "winning_move": 17
+      },
+      "outcome": "P"
+    },
+    "16,18,20,22,28,39": {
+      "evidence": {
+        "kind": "repository-certificate-edge",
+        "move": 18,
+        "reply": 39,
+        "source": "node:L"
+      },
+      "outcome": "P"
+    },
+    "16,18,26": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "16,19,20,34,46": {
+      "evidence": {
+        "kind": "repository-certificate-edge",
+        "move": 46,
+        "reply": 19,
+        "source": "node:T"
+      },
+      "outcome": "P"
+    },
+    "16,19,23,26": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "P"
+    },
+    "16,19,26,27": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "P"
+    },
+    "16,19,26,44,62": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "finite-exact",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "P"
+    },
+    "16,19,26,60,62": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "finite-exact",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "16,19,26,62,98": {
+      "evidence": {
+        "destination": "16,19,23,26",
+        "kind": "winning-edge",
+        "move": 23
+      },
+      "outcome": "N"
+    },
+    "16,20,22,23,24,28,34": {
+      "evidence": {
+        "kind": "repository-certificate-edge",
+        "move": 24,
+        "reply": 23,
+        "source": "node:L"
+      },
+      "outcome": "P"
+    },
+    "16,20,22,28,29": {
+      "evidence": {
+        "kind": "repository-certificate-edge",
+        "move": 22,
+        "reply": 29,
+        "source": "node:M"
+      },
+      "outcome": "P"
+    },
+    "16,20,22,28,30,31,34": {
+      "evidence": {
+        "kind": "repository-certificate-edge",
+        "move": 30,
+        "reply": 31,
+        "source": "node:L"
+      },
+      "outcome": "P"
+    },
+    "16,20,22,28,30,91": {
+      "evidence": {
+        "kind": "repository-certificate-edge",
+        "move": 22,
+        "reply": 91,
+        "source": "node:N"
+      },
+      "outcome": "P"
+    },
+    "16,20,22,28,33,34,46": {
+      "evidence": {
+        "kind": "repository-certificate-edge",
+        "move": 46,
+        "reply": 33,
+        "source": "node:L"
+      },
+      "outcome": "P"
+    },
+    "16,20,22,28,34": {
+      "evidence": {
+        "kind": "repository-certificate",
+        "source": "node:L"
+      },
+      "outcome": "P"
+    },
+    "16,20,22,30,34,61": {
+      "evidence": {
+        "kind": "repository-certificate-edge",
+        "move": 22,
+        "reply": 61,
+        "source": "node:S"
+      },
+      "outcome": "P"
+    },
+    "16,20,25,28,38,62": {
+      "evidence": {
+        "kind": "repository-certificate-edge",
+        "move": 62,
+        "reply": 25,
+        "source": "node:M"
+      },
+      "outcome": "P"
+    },
+    "16,20,25,34,62": {
+      "evidence": {
+        "kind": "repository-certificate-edge",
+        "move": 62,
+        "reply": 25,
+        "source": "node:T"
+      },
+      "outcome": "P"
+    },
+    "16,20,26": {
+      "evidence": {
+        "destination": "8,20,26",
+        "kind": "winning-edge",
+        "move": 8
+      },
+      "outcome": "N"
+    },
+    "16,20,26,27,28,30": {
+      "evidence": {
+        "kind": "repository-certificate-edge",
+        "move": 26,
+        "reply": 27,
+        "source": "node:N"
+      },
+      "outcome": "P"
+    },
+    "16,20,26,28,38": {
+      "evidence": {
+        "kind": "repository-certificate",
+        "source": "node:J"
+      },
+      "outcome": "P"
+    },
+    "16,20,26,34,37": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "P"
+    },
+    "16,20,26,54": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "16,20,26,55,70": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "P"
+    },
+    "16,20,26,70,77": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "P"
+    },
+    "16,20,27,28,38,42,50": {
+      "evidence": {
+        "kind": "repository-certificate-edge",
+        "move": 42,
+        "reply": 27,
+        "source": "node:M"
+      },
+      "outcome": "P"
+    },
+    "16,20,27,28,38,46,50": {
+      "evidence": {
+        "kind": "repository-certificate-edge",
+        "move": 46,
+        "reply": 27,
+        "source": "node:M"
+      },
+      "outcome": "P"
+    },
+    "16,20,27,34,78": {
+      "evidence": {
+        "kind": "repository-certificate-edge",
+        "move": 78,
+        "reply": 27,
+        "source": "node:T"
+      },
+      "outcome": "P"
+    },
+    "16,20,28,30,34,42,67": {
+      "evidence": {
+        "kind": "repository-certificate-edge",
+        "move": 34,
+        "reply": 67,
+        "source": "node:N"
+      },
+      "outcome": "P"
+    },
+    "16,20,28,30,38,42,67": {
+      "evidence": {
+        "kind": "repository-certificate-edge",
+        "move": 38,
+        "reply": 67,
+        "source": "node:N"
+      },
+      "outcome": "P"
+    },
+    "16,20,28,30,42": {
+      "evidence": {
+        "kind": "repository-certificate",
+        "source": "node:N"
+      },
+      "outcome": "P"
+    },
+    "16,20,28,38,50": {
+      "evidence": {
+        "kind": "repository-certificate",
+        "source": "node:M"
+      },
+      "outcome": "P"
+    },
+    "16,20,30,34,38,39,44": {
+      "evidence": {
+        "kind": "repository-certificate-edge",
+        "move": 38,
+        "reply": 39,
+        "source": "node:S"
+      },
+      "outcome": "P"
+    },
+    "16,20,30,34,42,44,79": {
+      "evidence": {
+        "kind": "repository-certificate-edge",
+        "move": 42,
+        "reply": 79,
+        "source": "node:S"
+      },
+      "outcome": "P"
+    },
+    "16,20,30,34,44": {
+      "evidence": {
+        "kind": "repository-certificate",
+        "source": "node:S"
+      },
+      "outcome": "P"
+    },
+    "16,20,30,34,44,58,67": {
+      "evidence": {
+        "kind": "repository-certificate-edge",
+        "move": 58,
+        "reply": 67,
+        "source": "node:S"
+      },
+      "outcome": "P"
+    },
+    "16,20,34": {
+      "evidence": {
+        "kind": "repository-certificate",
+        "source": "node:T"
+      },
+      "outcome": "P"
+    },
+    "16,20,34,58,291": {
+      "evidence": {
+        "kind": "repository-certificate",
+        "source": "native-finite"
+      },
+      "outcome": "P"
+    },
+    "16,21,23,26": {
+      "evidence": {
+        "frobenius": 129,
+        "kind": "native-winning-destination",
+        "native_words": 4,
+        "parent": "16,21,26,62,70,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 73728,
+        "winning_move": 23
+      },
+      "outcome": "P"
+    },
+    "16,21,26,34,62": {
+      "evidence": {
+        "destination": "10,16,21,34",
+        "kind": "winning-edge",
+        "move": 10
+      },
+      "outcome": "N"
+    },
+    "16,21,26,38,61,62": {
+      "evidence": {
+        "frobenius": 103,
+        "kind": "native-winning-destination",
+        "native_words": 2,
+        "parent": "16,21,26,38,62,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 167568,
+        "winning_move": 61
+      },
+      "outcome": "P"
+    },
+    "16,21,26,38,62,98": {
+      "evidence": {
+        "frobenius": 103,
+        "kind": "native-exact",
+        "native_words": 2,
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 167568,
+        "winning_move": 61
+      },
+      "outcome": "N"
+    },
+    "16,21,26,62,70,98": {
+      "evidence": {
+        "frobenius": 129,
+        "kind": "native-exact",
+        "native_words": 4,
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 73728,
+        "winning_move": 23
+      },
+      "outcome": "N"
+    },
+    "16,21,26,62,76,98": {
+      "evidence": {
+        "destination": "16,21,23,26",
+        "kind": "winning-edge",
+        "move": 23
+      },
+      "outcome": "N"
+    },
+    "16,21,26,62,86,98": {
+      "evidence": {
+        "destination": "16,21,23,26",
+        "kind": "winning-edge",
+        "move": 23
+      },
+      "outcome": "N"
+    },
+    "16,21,26,62,92,98": {
+      "evidence": {
+        "destination": "16,21,23,26",
+        "kind": "winning-edge",
+        "move": 23
+      },
+      "outcome": "N"
+    },
+    "16,21,26,62,98,102": {
+      "evidence": {
+        "destination": "16,21,23,26",
+        "kind": "winning-edge",
+        "move": 23
+      },
+      "outcome": "N"
+    },
+    "16,21,26,62,98,108": {
+      "evidence": {
+        "destination": "16,21,23,26",
+        "kind": "winning-edge",
+        "move": 23
+      },
+      "outcome": "N"
+    },
+    "16,21,26,62,98,118": {
+      "evidence": {
+        "destination": "16,21,23,26",
+        "kind": "winning-edge",
+        "move": 23
+      },
+      "outcome": "N"
+    },
+    "16,21,26,62,98,134": {
+      "evidence": {
+        "destination": "16,21,23,26",
+        "kind": "winning-edge",
+        "move": 23
+      },
+      "outcome": "N"
+    },
+    "16,22,25,26,34,62": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "P"
+    },
+    "16,22,26,62": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "16,23,26": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "N"
+    },
+    "16,23,26,36,54,60": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "finite-exact",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "P"
+    },
+    "16,23,26,36,56,60": {
+      "evidence": {
+        "kind": "repository-certificate-edge",
+        "move": 60,
+        "reply": 23,
+        "source": "node:V"
+      },
+      "outcome": "P"
+    },
+    "16,23,26,38,63": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "P"
+    },
+    "16,23,26,54,60": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "finite-exact",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "16,23,26,59,76": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "P"
+    },
+    "16,24,26,35,62": {
+      "evidence": {
+        "frobenius": 143,
+        "kind": "native-winning-destination",
+        "native_words": 4,
+        "parent": "16,26,35,62,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 435937,
+        "winning_move": 24
+      },
+      "outcome": "P"
+    },
+    "16,24,26,54,60,62": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "16,24,26,62": {
+      "evidence": {
+        "destination": "10,16,24",
+        "kind": "winning-edge",
+        "move": 10
+      },
+      "outcome": "N"
+    },
+    "16,25,26,34,62": {
+      "evidence": {
+        "destination": "16,22,25,26,34,62",
+        "kind": "winning-edge",
+        "move": 22
+      },
+      "outcome": "N"
+    },
+    "16,25,26,38,62,81": {
+      "evidence": {
+        "cumulative_states": 30598911,
+        "frobenius": 163,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,38,62,81,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 25
+      },
+      "outcome": "P"
+    },
+    "16,25,26,46,54,60": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "finite-exact",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "P"
+    },
+    "16,25,26,54,60,62": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "finite-exact",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "16,25,26,62": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "N"
+    },
+    "16,26,27,34,62": {
+      "evidence": {
+        "destination": "15,16,26,27,34",
+        "kind": "winning-edge",
+        "move": 15
+      },
+      "outcome": "N"
+    },
+    "16,26,27,37,62,76,98": {
+      "evidence": {
+        "frobenius": 123,
+        "kind": "native-winning-destination",
+        "native_words": 2,
+        "parent": "16,26,37,62,76,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 645682,
+        "winning_move": 27
+      },
+      "outcome": "P"
+    },
+    "16,26,27,38,62,98": {
+      "evidence": {
+        "destination": "16,19,26,27",
+        "kind": "winning-edge",
+        "move": 19
+      },
+      "outcome": "N"
+    },
+    "16,26,27,60,62,98": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "finite-exact",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "P"
+    },
+    "16,26,27,62,76,98": {
+      "evidence": {
+        "destination": "16,19,26,27",
+        "kind": "winning-edge",
+        "move": 19
+      },
+      "outcome": "N"
+    },
+    "16,26,27,62,82": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "P"
+    },
+    "16,26,27,62,92,98": {
+      "evidence": {
+        "destination": "16,19,26,27",
+        "kind": "winning-edge",
+        "move": 19
+      },
+      "outcome": "N"
+    },
+    "16,26,27,62,98": {
+      "evidence": {
+        "destination": "16,19,26,27",
+        "kind": "winning-edge",
+        "move": 19
+      },
+      "outcome": "N"
+    },
+    "16,26,28,38,62,95": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "P"
+    },
+    "16,26,28,62": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "16,26,29,34,41,62": {
+      "evidence": {
+        "frobenius": 101,
+        "kind": "native-winning-destination",
+        "native_words": 2,
+        "parent": "16,26,29,34,62",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 312342,
+        "winning_move": 41
+      },
+      "outcome": "P"
+    },
+    "16,26,29,34,62": {
+      "evidence": {
+        "frobenius": 101,
+        "kind": "native-exact",
+        "native_words": 2,
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 312342,
+        "winning_move": 41
+      },
+      "outcome": "N"
+    },
+    "16,26,29,38,62,82": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "P"
+    },
+    "16,26,29,38,62,98": {
+      "evidence": {
+        "destination": "16,26,29,38,62,82",
+        "kind": "winning-edge",
+        "move": 82
+      },
+      "outcome": "N"
+    },
+    "16,26,29,46,86": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "P"
+    },
+    "16,26,29,47,62,70,98": {
+      "evidence": {
+        "frobenius": 137,
+        "kind": "native-winning-destination",
+        "native_words": 4,
+        "parent": "16,26,29,62,70,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 1133024,
+        "winning_move": 47
+      },
+      "outcome": "P"
+    },
+    "16,26,29,50,62": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "P"
+    },
+    "16,26,29,59,62,86,98": {
+      "evidence": {
+        "cumulative_states": 34828408,
+        "frobenius": 167,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,59,62,86,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 29
+      },
+      "outcome": "P"
+    },
+    "16,26,29,62,70,98": {
+      "evidence": {
+        "frobenius": 137,
+        "kind": "native-exact",
+        "native_words": 4,
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 1133024,
+        "winning_move": 47
+      },
+      "outcome": "N"
+    },
+    "16,26,29,62,76,98": {
+      "evidence": {
+        "destination": "16,26,29,50,62",
+        "kind": "winning-edge",
+        "move": 50
+      },
+      "outcome": "N"
+    },
+    "16,26,29,62,86,98": {
+      "evidence": {
+        "destination": "16,26,29,46,86",
+        "kind": "winning-edge",
+        "move": 46
+      },
+      "outcome": "N"
+    },
+    "16,26,29,62,92,98": {
+      "evidence": {
+        "destination": "16,26,29,50,62",
+        "kind": "winning-edge",
+        "move": 50
+      },
+      "outcome": "N"
+    },
+    "16,26,29,62,98,102": {
+      "evidence": {
+        "destination": "16,26,29,50,62",
+        "kind": "winning-edge",
+        "move": 50
+      },
+      "outcome": "N"
+    },
+    "16,26,29,62,98,108": {
+      "evidence": {
+        "destination": "16,26,29,50,62",
+        "kind": "winning-edge",
+        "move": 50
+      },
+      "outcome": "N"
+    },
+    "16,26,29,62,98,118": {
+      "evidence": {
+        "destination": "16,26,29,50,62",
+        "kind": "winning-edge",
+        "move": 50
+      },
+      "outcome": "N"
+    },
+    "16,26,29,62,98,134": {
+      "evidence": {
+        "destination": "16,26,29,50,62",
+        "kind": "winning-edge",
+        "move": 50
+      },
+      "outcome": "N"
+    },
+    "16,26,30": {
+      "evidence": {
+        "destination": "16,26,30,111",
+        "kind": "winning-edge",
+        "move": 111
+      },
+      "outcome": "N"
+    },
+    "16,26,30,111": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "P"
+    },
+    "16,26,30,36,99": {
+      "evidence": {
+        "kind": "repository-certificate",
+        "source": "native-finite"
+      },
+      "outcome": "P"
+    },
+    "16,26,30,54": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "16,26,30,66,119": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "P"
+    },
+    "16,26,30,66,121": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "P"
+    },
+    "16,26,30,70,87": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "P"
+    },
+    "16,26,30,73": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "P"
+    },
+    "16,26,30,75": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "P"
+    },
+    "16,26,31,34,35": {
+      "evidence": {
+        "frobenius": 107,
+        "kind": "native-winning-destination",
+        "native_words": 2,
+        "parent": "16,26,34,35,62",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 293825,
+        "winning_move": 31
+      },
+      "outcome": "P"
+    },
+    "16,26,31,38,41": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "P"
+    },
+    "16,26,31,38,98": {
+      "evidence": {
+        "destination": "16,26,31,38,41",
+        "kind": "winning-edge",
+        "move": 41
+      },
+      "outcome": "N"
+    },
+    "16,26,31,43,70,98": {
+      "evidence": {
+        "frobenius": 139,
+        "kind": "native-winning-destination",
+        "native_words": 4,
+        "parent": "16,26,31,70,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 1045849,
+        "winning_move": 43
+      },
+      "outcome": "P"
+    },
+    "16,26,31,43,98,108": {
+      "evidence": {
+        "frobenius": 135,
+        "kind": "native-winning-destination",
+        "native_words": 4,
+        "parent": "16,26,43,62,98,108",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 1269841,
+        "winning_move": 31
+      },
+      "outcome": "P"
+    },
+    "16,26,31,50": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "P"
+    },
+    "16,26,31,54,60,66": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "finite-exact",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "P"
+    },
+    "16,26,31,66,86": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "P"
+    },
+    "16,26,31,67": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "P"
+    },
+    "16,26,31,70,98": {
+      "evidence": {
+        "frobenius": 139,
+        "kind": "native-exact",
+        "native_words": 4,
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 1045849,
+        "winning_move": 43
+      },
+      "outcome": "N"
+    },
+    "16,26,31,76,98": {
+      "evidence": {
+        "destination": "16,26,31,50",
+        "kind": "winning-edge",
+        "move": 50
+      },
+      "outcome": "N"
+    },
+    "16,26,31,86,98": {
+      "evidence": {
+        "destination": "16,26,31,66,86",
+        "kind": "winning-edge",
+        "move": 66
+      },
+      "outcome": "N"
+    },
+    "16,26,31,92,98": {
+      "evidence": {
+        "destination": "16,26,31,50",
+        "kind": "winning-edge",
+        "move": 50
+      },
+      "outcome": "N"
+    },
+    "16,26,31,98,102": {
+      "evidence": {
+        "destination": "16,26,31,50",
+        "kind": "winning-edge",
+        "move": 50
+      },
+      "outcome": "N"
+    },
+    "16,26,31,98,108": {
+      "evidence": {
+        "destination": "16,26,31,50",
+        "kind": "winning-edge",
+        "move": 50
+      },
+      "outcome": "N"
+    },
+    "16,26,31,98,118": {
+      "evidence": {
+        "destination": "16,26,31,50",
+        "kind": "winning-edge",
+        "move": 50
+      },
+      "outcome": "N"
+    },
+    "16,26,31,98,134": {
+      "evidence": {
+        "destination": "16,26,31,50",
+        "kind": "winning-edge",
+        "move": 50
+      },
+      "outcome": "N"
+    },
+    "16,26,33,34,62": {
+      "evidence": {
+        "frobenius": 105,
+        "kind": "native-exact",
+        "native_words": 2,
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 480193,
+        "winning_move": 70
+      },
+      "outcome": "N"
+    },
+    "16,26,33,34,62,70": {
+      "evidence": {
+        "frobenius": 105,
+        "kind": "native-winning-destination",
+        "native_words": 2,
+        "parent": "16,26,33,34,62",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 480193,
+        "winning_move": 70
+      },
+      "outcome": "P"
+    },
+    "16,26,33,38,51,62": {
+      "evidence": {
+        "frobenius": 133,
+        "kind": "native-winning-destination",
+        "native_words": 4,
+        "parent": "16,26,38,51,62,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 1354651,
+        "winning_move": 33
+      },
+      "outcome": "P"
+    },
+    "16,26,33,54,60,62": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "finite-exact",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "16,26,33,54,62": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "P"
+    },
+    "16,26,33,61,62,86": {
+      "evidence": {
+        "cumulative_states": 11544635,
+        "frobenius": 169,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,61,62,86,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 33
+      },
+      "outcome": "P"
+    },
+    "16,26,33,62": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "N"
+    },
+    "16,26,33,62,102": {
+      "evidence": {
+        "destination": "16,26,33,54,62",
+        "kind": "winning-edge",
+        "move": 54
+      },
+      "outcome": "N"
+    },
+    "16,26,33,62,67,102": {
+      "evidence": {
+        "cumulative_states": 32724019,
+        "frobenius": 175,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,62,67,98,102",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 33
+      },
+      "outcome": "P"
+    },
+    "16,26,33,62,76": {
+      "evidence": {
+        "frobenius": 119,
+        "kind": "native-exact",
+        "native_words": 2,
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 1696985,
+        "winning_move": 105
+      },
+      "outcome": "N"
+    },
+    "16,26,33,62,76,105": {
+      "evidence": {
+        "frobenius": 119,
+        "kind": "native-winning-destination",
+        "native_words": 2,
+        "parent": "16,26,33,62,76",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 1696985,
+        "winning_move": 105
+      },
+      "outcome": "P"
+    },
+    "16,26,34,35,62": {
+      "evidence": {
+        "frobenius": 107,
+        "kind": "native-exact",
+        "native_words": 2,
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 293825,
+        "winning_move": 31
+      },
+      "outcome": "N"
+    },
+    "16,26,34,37,38,62": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "P"
+    },
+    "16,26,34,37,62": {
+      "evidence": {
+        "destination": "16,20,26,34,37",
+        "kind": "winning-edge",
+        "move": 20
+      },
+      "outcome": "N"
+    },
+    "16,26,34,39,62": {
+      "evidence": {
+        "frobenius": 111,
+        "kind": "native-exact",
+        "native_words": 2,
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 800890,
+        "winning_move": null
+      },
+      "outcome": "P"
+    },
+    "16,26,34,54,62": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "16,26,34,54,62,167": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "finite-exact",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "P"
+    },
+    "16,26,34,62": {
+      "evidence": {
+        "destination": "16,26,34,39,62",
+        "kind": "winning-edge",
+        "move": 39
+      },
+      "outcome": "N"
+    },
+    "16,26,35,37,38,62": {
+      "evidence": {
+        "frobenius": 117,
+        "kind": "native-winning-destination",
+        "native_words": 2,
+        "parent": "16,26,35,38,62,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 700028,
+        "winning_move": 37
+      },
+      "outcome": "P"
+    },
+    "16,26,35,38,62,98": {
+      "evidence": {
+        "frobenius": 117,
+        "kind": "native-exact",
+        "native_words": 2,
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 700028,
+        "winning_move": 37
+      },
+      "outcome": "N"
+    },
+    "16,26,35,62,71,92,98": {
+      "evidence": {
+        "cumulative_states": 32619281,
+        "frobenius": 173,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,62,71,92,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 35
+      },
+      "outcome": "P"
+    },
+    "16,26,35,62,76,98": {
+      "evidence": {
+        "destination": "16,24,26,35,62",
+        "kind": "winning-edge",
+        "move": 24
+      },
+      "outcome": "N"
+    },
+    "16,26,35,62,92,98": {
+      "evidence": {
+        "destination": "16,24,26,35,62",
+        "kind": "winning-edge",
+        "move": 24
+      },
+      "outcome": "N"
+    },
+    "16,26,35,62,98": {
+      "evidence": {
+        "frobenius": 143,
+        "kind": "native-exact",
+        "native_words": 4,
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 435937,
+        "winning_move": 24
+      },
+      "outcome": "N"
+    },
+    "16,26,35,62,98,108": {
+      "evidence": {
+        "destination": "16,24,26,35,62",
+        "kind": "winning-edge",
+        "move": 24
+      },
+      "outcome": "N"
+    },
+    "16,26,36": {
+      "evidence": {
+        "destination": "16,26,36,56",
+        "kind": "winning-edge",
+        "move": 56
+      },
+      "outcome": "N"
+    },
+    "16,26,36,118,121": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "P"
+    },
+    "16,26,36,37,56,70": {
+      "evidence": {
+        "kind": "repository-certificate",
+        "source": "native-finite"
+      },
+      "outcome": "P"
+    },
+    "16,26,36,37,86": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "P"
+    },
+    "16,26,36,44,56,57": {
+      "evidence": {
+        "kind": "repository-certificate",
+        "source": "native-finite"
+      },
+      "outcome": "P"
+    },
+    "16,26,36,46,56,153": {
+      "evidence": {
+        "kind": "repository-certificate",
+        "source": "native-finite"
+      },
+      "outcome": "P"
+    },
+    "16,26,36,50,56,109": {
+      "evidence": {
+        "kind": "repository-certificate",
+        "source": "native-finite"
+      },
+      "outcome": "P"
+    },
+    "16,26,36,53,56,66": {
+      "evidence": {
+        "kind": "repository-certificate",
+        "source": "native-finite"
+      },
+      "outcome": "P"
+    },
+    "16,26,36,54,56,83": {
+      "evidence": {
+        "kind": "repository-certificate",
+        "source": "native-finite"
+      },
+      "outcome": "P"
+    },
+    "16,26,36,54,60": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "16,26,36,55,56,86": {
+      "evidence": {
+        "kind": "repository-certificate",
+        "source": "native-finite"
+      },
+      "outcome": "P"
+    },
+    "16,26,36,56": {
+      "evidence": {
+        "kind": "repository-certificate",
+        "source": "node:V"
+      },
+      "outcome": "P"
+    },
+    "16,26,36,56,102,201": {
+      "evidence": {
+        "kind": "repository-certificate",
+        "source": "native-finite"
+      },
+      "outcome": "P"
+    },
+    "16,26,36,56,76,131": {
+      "evidence": {
+        "kind": "repository-certificate",
+        "source": "native-finite"
+      },
+      "outcome": "P"
+    },
+    "16,26,36,65,86": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "P"
+    },
+    "16,26,36,70,113": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "P"
+    },
+    "16,26,36,70,127": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "P"
+    },
+    "16,26,36,76,89": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "P"
+    },
+    "16,26,36,92,127": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "P"
+    },
+    "16,26,37,38,49,62": {
+      "evidence": {
+        "frobenius": 131,
+        "kind": "native-winning-destination",
+        "native_words": 4,
+        "parent": "16,26,38,49,62",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 1325596,
+        "winning_move": 37
+      },
+      "outcome": "P"
+    },
+    "16,26,37,38,62,98": {
+      "evidence": {
+        "destination": "16,26,34,37,38,62",
+        "kind": "winning-edge",
+        "move": 34
+      },
+      "outcome": "N"
+    },
+    "16,26,37,46": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "P"
+    },
+    "16,26,37,47,62,98,102": {
+      "evidence": {
+        "cumulative_states": 14558233,
+        "frobenius": 145,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,37,62,98,102",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 47
+      },
+      "outcome": "P"
+    },
+    "16,26,37,51,62,86,98": {
+      "evidence": {
+        "cumulative_states": 29416184,
+        "frobenius": 159,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,51,62,86,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 37
+      },
+      "outcome": "P"
+    },
+    "16,26,37,62,66,70": {
+      "evidence": {
+        "cumulative_states": 14415294,
+        "frobenius": 145,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,37,62,70,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 66
+      },
+      "outcome": "P"
+    },
+    "16,26,37,62,70,98": {
+      "evidence": {
+        "cumulative_states": 14415294,
+        "frobenius": 145,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 66
+      },
+      "outcome": "N"
+    },
+    "16,26,37,62,76,98": {
+      "evidence": {
+        "frobenius": 123,
+        "kind": "native-exact",
+        "native_words": 2,
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 645682,
+        "winning_move": 27
+      },
+      "outcome": "N"
+    },
+    "16,26,37,62,77,98,118": {
+      "evidence": {
+        "cumulative_states": 42657015,
+        "frobenius": 185,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,62,77,98,118",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 37
+      },
+      "outcome": "P"
+    },
+    "16,26,37,62,86,98": {
+      "evidence": {
+        "destination": "16,26,36,37,86",
+        "kind": "winning-edge",
+        "move": 36
+      },
+      "outcome": "N"
+    },
+    "16,26,37,62,92,98": {
+      "evidence": {
+        "destination": "16,26,37,46",
+        "kind": "winning-edge",
+        "move": 46
+      },
+      "outcome": "N"
+    },
+    "16,26,37,62,98,102": {
+      "evidence": {
+        "cumulative_states": 14558233,
+        "frobenius": 145,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 47
+      },
+      "outcome": "N"
+    },
+    "16,26,37,62,98,108": {
+      "evidence": {
+        "destination": "16,26,37,46",
+        "kind": "winning-edge",
+        "move": 46
+      },
+      "outcome": "N"
+    },
+    "16,26,37,62,98,118": {
+      "evidence": {
+        "destination": "16,26,37,46",
+        "kind": "winning-edge",
+        "move": 46
+      },
+      "outcome": "N"
+    },
+    "16,26,37,62,98,134": {
+      "evidence": {
+        "destination": "16,26,37,46",
+        "kind": "winning-edge",
+        "move": 46
+      },
+      "outcome": "N"
+    },
+    "16,26,38,39,56,62": {
+      "evidence": {
+        "frobenius": 121,
+        "kind": "native-winning-destination",
+        "native_words": 2,
+        "parent": "16,26,38,39,62,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 1207972,
+        "winning_move": 56
+      },
+      "outcome": "P"
+    },
+    "16,26,38,39,62,98": {
+      "evidence": {
+        "frobenius": 121,
+        "kind": "native-exact",
+        "native_words": 2,
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 1207972,
+        "winning_move": 56
+      },
+      "outcome": "N"
+    },
+    "16,26,38,43,62,83,98": {
+      "evidence": {
+        "frobenius": 125,
+        "kind": "native-winning-destination",
+        "native_words": 2,
+        "parent": "16,26,38,43,62,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 1555950,
+        "winning_move": 83
+      },
+      "outcome": "P"
+    },
+    "16,26,38,43,62,98": {
+      "evidence": {
+        "frobenius": 125,
+        "kind": "native-exact",
+        "native_words": 2,
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 1555950,
+        "winning_move": 83
+      },
+      "outcome": "N"
+    },
+    "16,26,38,44,47,62": {
+      "evidence": {
+        "frobenius": 129,
+        "kind": "native-winning-destination",
+        "native_words": 4,
+        "parent": "16,26,38,47,62,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 1689215,
+        "winning_move": 44
+      },
+      "outcome": "P"
+    },
+    "16,26,38,44,53,62": {
+      "evidence": {
+        "cumulative_states": 7933698,
+        "frobenius": 135,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,38,53,62,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 44
+      },
+      "outcome": "P"
+    },
+    "16,26,38,45,62,98": {
+      "evidence": {
+        "frobenius": 127,
+        "kind": "native-exact",
+        "native_words": 2,
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 10185,
+        "winning_move": 11
+      },
+      "outcome": "N"
+    },
+    "16,26,38,47,62,98": {
+      "evidence": {
+        "frobenius": 129,
+        "kind": "native-exact",
+        "native_words": 4,
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 1689215,
+        "winning_move": 44
+      },
+      "outcome": "N"
+    },
+    "16,26,38,49,62": {
+      "evidence": {
+        "frobenius": 131,
+        "kind": "native-exact",
+        "native_words": 4,
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 1325596,
+        "winning_move": 37
+      },
+      "outcome": "N"
+    },
+    "16,26,38,49,62,67": {
+      "evidence": {
+        "cumulative_states": 20044287,
+        "frobenius": 149,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,38,62,67,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 49
+      },
+      "outcome": "P"
+    },
+    "16,26,38,49,62,73": {
+      "evidence": {
+        "cumulative_states": 27162756,
+        "frobenius": 155,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,38,62,73,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 49
+      },
+      "outcome": "P"
+    },
+    "16,26,38,51,62,98": {
+      "evidence": {
+        "frobenius": 133,
+        "kind": "native-exact",
+        "native_words": 4,
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 1354651,
+        "winning_move": 33
+      },
+      "outcome": "N"
+    },
+    "16,26,38,53,62,75,98": {
+      "evidence": {
+        "cumulative_states": 27401808,
+        "frobenius": 157,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,38,62,75,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 53
+      },
+      "outcome": "P"
+    },
+    "16,26,38,53,62,98": {
+      "evidence": {
+        "cumulative_states": 7933698,
+        "frobenius": 135,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 44
+      },
+      "outcome": "N"
+    },
+    "16,26,38,55,62,98": {
+      "evidence": {
+        "cumulative_states": 9040131,
+        "frobenius": 137,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": null
+      },
+      "outcome": "P"
+    },
+    "16,26,38,57,62,98": {
+      "evidence": {
+        "frobenius": 139,
+        "kind": "native-exact",
+        "native_words": 4,
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 16513,
+        "winning_move": 11
+      },
+      "outcome": "N"
+    },
+    "16,26,38,59,62,66": {
+      "evidence": {
+        "cumulative_states": 13097177,
+        "frobenius": 141,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,38,59,62,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 66
+      },
+      "outcome": "P"
+    },
+    "16,26,38,59,62,98": {
+      "evidence": {
+        "cumulative_states": 13097177,
+        "frobenius": 141,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 66
+      },
+      "outcome": "N"
+    },
+    "16,26,38,60,62": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "16,26,38,60,62,77": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "finite-exact",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "P"
+    },
+    "16,26,38,61,62,98": {
+      "evidence": {
+        "destination": "16,21,26,38,61,62",
+        "kind": "winning-edge",
+        "move": 21
+      },
+      "outcome": "N"
+    },
+    "16,26,38,62,63,98": {
+      "evidence": {
+        "destination": "16,23,26,38,63",
+        "kind": "winning-edge",
+        "move": 23
+      },
+      "outcome": "N"
+    },
+    "16,26,38,62,65,87,98": {
+      "evidence": {
+        "cumulative_states": 15288671,
+        "frobenius": 147,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,38,62,65,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 87
+      },
+      "outcome": "P"
+    },
+    "16,26,38,62,65,98": {
+      "evidence": {
+        "cumulative_states": 15288671,
+        "frobenius": 147,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 87
+      },
+      "outcome": "N"
+    },
+    "16,26,38,62,67,98": {
+      "evidence": {
+        "cumulative_states": 20044287,
+        "frobenius": 149,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 49
+      },
+      "outcome": "N"
+    },
+    "16,26,38,62,69,72": {
+      "evidence": {
+        "cumulative_states": 23685427,
+        "frobenius": 151,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,38,62,69,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 72
+      },
+      "outcome": "P"
+    },
+    "16,26,38,62,69,98": {
+      "evidence": {
+        "cumulative_states": 23685427,
+        "frobenius": 151,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 72
+      },
+      "outcome": "N"
+    },
+    "16,26,38,62,71,98": {
+      "evidence": {
+        "cumulative_states": 25287794,
+        "frobenius": 153,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 55
+      },
+      "outcome": "N"
+    },
+    "16,26,38,62,73,98": {
+      "evidence": {
+        "cumulative_states": 27162756,
+        "frobenius": 155,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 49
+      },
+      "outcome": "N"
+    },
+    "16,26,38,62,75,98": {
+      "evidence": {
+        "cumulative_states": 27401808,
+        "frobenius": 157,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 53
+      },
+      "outcome": "N"
+    },
+    "16,26,38,62,77,98": {
+      "evidence": {
+        "destination": "16,26,38,60,62,77",
+        "kind": "winning-edge",
+        "move": 60
+      },
+      "outcome": "N"
+    },
+    "16,26,38,62,79,87,98": {
+      "evidence": {
+        "cumulative_states": 30001614,
+        "frobenius": 161,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,38,62,79,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 87
+      },
+      "outcome": "P"
+    },
+    "16,26,38,62,79,98": {
+      "evidence": {
+        "cumulative_states": 30001614,
+        "frobenius": 161,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 87
+      },
+      "outcome": "N"
+    },
+    "16,26,38,62,81,98": {
+      "evidence": {
+        "cumulative_states": 30598911,
+        "frobenius": 163,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 25
+      },
+      "outcome": "N"
+    },
+    "16,26,38,62,83,98": {
+      "evidence": {
+        "destination": "8,26,38,83",
+        "kind": "winning-edge",
+        "move": 8
+      },
+      "outcome": "N"
+    },
+    "16,26,38,62,85,98": {
+      "evidence": {
+        "cumulative_states": 34452960,
+        "frobenius": 167,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 125
+      },
+      "outcome": "N"
+    },
+    "16,26,38,62,85,98,125": {
+      "evidence": {
+        "cumulative_states": 34452960,
+        "frobenius": 167,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,38,62,85,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 125
+      },
+      "outcome": "P"
+    },
+    "16,26,38,62,95,98": {
+      "evidence": {
+        "destination": "16,26,28,38,62,95",
+        "kind": "winning-edge",
+        "move": 28
+      },
+      "outcome": "N"
+    },
+    "16,26,38,62,98": {
+      "evidence": {
+        "destination": "16,26,38,55,62,98",
+        "kind": "winning-edge",
+        "move": 55
+      },
+      "outcome": "N"
+    },
+    "16,26,39,53,62,70,98": {
+      "evidence": {
+        "cumulative_states": 15721014,
+        "frobenius": 147,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,39,62,70,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 53
+      },
+      "outcome": "P"
+    },
+    "16,26,39,62,69,86,98": {
+      "evidence": {
+        "cumulative_states": 34539401,
+        "frobenius": 177,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,62,69,86,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 39
+      },
+      "outcome": "P"
+    },
+    "16,26,39,62,70,98": {
+      "evidence": {
+        "cumulative_states": 15721014,
+        "frobenius": 147,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 53
+      },
+      "outcome": "N"
+    },
+    "16,26,39,62,76,98": {
+      "evidence": {
+        "destination": "16,26,34,39,62",
+        "kind": "winning-edge",
+        "move": 34
+      },
+      "outcome": "N"
+    },
+    "16,26,39,62,86,98": {
+      "evidence": {
+        "destination": "16,26,34,39,62",
+        "kind": "winning-edge",
+        "move": 34
+      },
+      "outcome": "N"
+    },
+    "16,26,39,62,92,98": {
+      "evidence": {
+        "destination": "16,26,34,39,62",
+        "kind": "winning-edge",
+        "move": 34
+      },
+      "outcome": "N"
+    },
+    "16,26,39,62,98,102": {
+      "evidence": {
+        "destination": "16,26,34,39,62",
+        "kind": "winning-edge",
+        "move": 34
+      },
+      "outcome": "N"
+    },
+    "16,26,39,62,98,108": {
+      "evidence": {
+        "destination": "16,26,34,39,62",
+        "kind": "winning-edge",
+        "move": 34
+      },
+      "outcome": "N"
+    },
+    "16,26,39,62,98,118": {
+      "evidence": {
+        "destination": "16,26,34,39,62",
+        "kind": "winning-edge",
+        "move": 34
+      },
+      "outcome": "N"
+    },
+    "16,26,39,62,98,134": {
+      "evidence": {
+        "destination": "16,26,34,39,62",
+        "kind": "winning-edge",
+        "move": 34
+      },
+      "outcome": "N"
+    },
+    "16,26,40,54,60,62": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "16,26,40,62": {
+      "evidence": {
+        "destination": "11,16,26,40",
+        "kind": "winning-edge",
+        "move": 11
+      },
+      "outcome": "N"
+    },
+    "16,26,41,54,60,62": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "finite-exact",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "16,26,41,62": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "N"
+    },
+    "16,26,41,62,102": {
+      "evidence": {
+        "destination": "13,16,41,62",
+        "kind": "winning-edge",
+        "move": 13
+      },
+      "outcome": "N"
+    },
+    "16,26,41,62,118": {
+      "evidence": {
+        "destination": "13,16,41,62",
+        "kind": "winning-edge",
+        "move": 13
+      },
+      "outcome": "N"
+    },
+    "16,26,41,62,66,76": {
+      "evidence": {
+        "cumulative_states": 7151486,
+        "frobenius": 127,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,41,62,76",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 66
+      },
+      "outcome": "P"
+    },
+    "16,26,41,62,69,102": {
+      "evidence": {
+        "cumulative_states": 34829555,
+        "frobenius": 177,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,62,69,98,102",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 41
+      },
+      "outcome": "P"
+    },
+    "16,26,41,62,69,92": {
+      "evidence": {
+        "cumulative_states": 13283908,
+        "frobenius": 143,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,41,62,92",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 69
+      },
+      "outcome": "P"
+    },
+    "16,26,41,62,76": {
+      "evidence": {
+        "cumulative_states": 7151486,
+        "frobenius": 127,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 66
+      },
+      "outcome": "N"
+    },
+    "16,26,41,62,76,77": {
+      "evidence": {
+        "cumulative_states": 32094694,
+        "frobenius": 163,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,62,76,77,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 41
+      },
+      "outcome": "P"
+    },
+    "16,26,41,62,92": {
+      "evidence": {
+        "cumulative_states": 13283908,
+        "frobenius": 143,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 69
+      },
+      "outcome": "N"
+    },
+    "16,26,43,62,70,98": {
+      "evidence": {
+        "destination": "16,26,31,43,70,98",
+        "kind": "winning-edge",
+        "move": 31
+      },
+      "outcome": "N"
+    },
+    "16,26,43,62,76,98": {
+      "evidence": {
+        "cumulative_states": 4294839,
+        "frobenius": 125,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": null
+      },
+      "outcome": "P"
+    },
+    "16,26,43,62,81,92,98": {
+      "evidence": {
+        "cumulative_states": 42305557,
+        "frobenius": 183,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,62,81,92,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 43
+      },
+      "outcome": "P"
+    },
+    "16,26,43,62,92,98": {
+      "evidence": {
+        "cumulative_states": 4533598,
+        "frobenius": 125,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 76
+      },
+      "outcome": "N"
+    },
+    "16,26,43,62,98": {
+      "evidence": {
+        "cumulative_states": 23718812,
+        "frobenius": 151,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 76
+      },
+      "outcome": "N"
+    },
+    "16,26,43,62,98,108": {
+      "evidence": {
+        "frobenius": 135,
+        "kind": "native-exact",
+        "native_words": 4,
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 1269841,
+        "winning_move": 31
+      },
+      "outcome": "N"
+    },
+    "16,26,44,54,62": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "16,26,44,62,98": {
+      "evidence": {
+        "destination": "16,19,26,44,62",
+        "kind": "winning-edge",
+        "move": 19
+      },
+      "outcome": "N"
+    },
+    "16,26,45,62,70,98": {
+      "evidence": {
+        "destination": "11,16,26,45,62",
+        "kind": "winning-edge",
+        "move": 11
+      },
+      "outcome": "N"
+    },
+    "16,26,45,62,76,98": {
+      "evidence": {
+        "destination": "16,17,26,45",
+        "kind": "winning-edge",
+        "move": 17
+      },
+      "outcome": "N"
+    },
+    "16,26,45,62,86,98": {
+      "evidence": {
+        "destination": "16,17,26,45",
+        "kind": "winning-edge",
+        "move": 17
+      },
+      "outcome": "N"
+    },
+    "16,26,45,62,92,98": {
+      "evidence": {
+        "destination": "16,17,26,45",
+        "kind": "winning-edge",
+        "move": 17
+      },
+      "outcome": "N"
+    },
+    "16,26,45,62,98,102": {
+      "evidence": {
+        "destination": "16,17,26,45",
+        "kind": "winning-edge",
+        "move": 17
+      },
+      "outcome": "N"
+    },
+    "16,26,45,62,98,108": {
+      "evidence": {
+        "destination": "16,17,26,45",
+        "kind": "winning-edge",
+        "move": 17
+      },
+      "outcome": "N"
+    },
+    "16,26,45,62,98,118": {
+      "evidence": {
+        "destination": "16,17,26,45",
+        "kind": "winning-edge",
+        "move": 17
+      },
+      "outcome": "N"
+    },
+    "16,26,45,62,98,134": {
+      "evidence": {
+        "destination": "16,17,26,45",
+        "kind": "winning-edge",
+        "move": 17
+      },
+      "outcome": "N"
+    },
+    "16,26,46": {
+      "evidence": {
+        "destination": "16,17,26,46",
+        "kind": "winning-edge",
+        "move": 17
+      },
+      "outcome": "N"
+    },
+    "16,26,46,54,60": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "16,26,47,59,62,98": {
+      "evidence": {
+        "cumulative_states": 34886902,
+        "frobenius": 167,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,59,62,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 47
+      },
+      "outcome": "P"
+    },
+    "16,26,47,62,70,98": {
+      "evidence": {
+        "destination": "16,26,29,47,62,70,98",
+        "kind": "winning-edge",
+        "move": 29
+      },
+      "outcome": "N"
+    },
+    "16,26,47,62,76,98": {
+      "evidence": {
+        "destination": "13,16,47,62,98",
+        "kind": "winning-edge",
+        "move": 13
+      },
+      "outcome": "N"
+    },
+    "16,26,47,62,86,98": {
+      "evidence": {
+        "destination": "13,16,47,62,98",
+        "kind": "winning-edge",
+        "move": 13
+      },
+      "outcome": "N"
+    },
+    "16,26,47,62,92,98": {
+      "evidence": {
+        "destination": "13,16,47,62,98",
+        "kind": "winning-edge",
+        "move": 13
+      },
+      "outcome": "N"
+    },
+    "16,26,47,62,98,102": {
+      "evidence": {
+        "destination": "13,16,47,62,98",
+        "kind": "winning-edge",
+        "move": 13
+      },
+      "outcome": "N"
+    },
+    "16,26,47,62,98,108": {
+      "evidence": {
+        "destination": "13,16,47,62,98",
+        "kind": "winning-edge",
+        "move": 13
+      },
+      "outcome": "N"
+    },
+    "16,26,47,62,98,118": {
+      "evidence": {
+        "destination": "13,16,47,62,98",
+        "kind": "winning-edge",
+        "move": 13
+      },
+      "outcome": "N"
+    },
+    "16,26,47,62,98,134": {
+      "evidence": {
+        "destination": "13,16,47,62,98",
+        "kind": "winning-edge",
+        "move": 13
+      },
+      "outcome": "N"
+    },
+    "16,26,49,54,60,62": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "finite-exact",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "16,26,49,61,62,118": {
+      "evidence": {
+        "cumulative_states": 15834729,
+        "frobenius": 169,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,61,62,98,118",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 49
+      },
+      "outcome": "P"
+    },
+    "16,26,49,62,102": {
+      "evidence": {
+        "destination": "8,26,49,62",
+        "kind": "winning-edge",
+        "move": 8
+      },
+      "outcome": "N"
+    },
+    "16,26,49,62,108": {
+      "evidence": {
+        "destination": "8,26,49,62",
+        "kind": "winning-edge",
+        "move": 8
+      },
+      "outcome": "N"
+    },
+    "16,26,49,62,118": {
+      "evidence": {
+        "destination": "8,26,49,62",
+        "kind": "winning-edge",
+        "move": 8
+      },
+      "outcome": "N"
+    },
+    "16,26,49,62,134": {
+      "evidence": {
+        "destination": "8,26,49,62",
+        "kind": "winning-edge",
+        "move": 8
+      },
+      "outcome": "N"
+    },
+    "16,26,49,62,70": {
+      "evidence": {
+        "destination": "8,26,49,62",
+        "kind": "winning-edge",
+        "move": 8
+      },
+      "outcome": "N"
+    },
+    "16,26,49,62,76": {
+      "evidence": {
+        "destination": "8,26,49,62",
+        "kind": "winning-edge",
+        "move": 8
+      },
+      "outcome": "N"
+    },
+    "16,26,49,62,86": {
+      "evidence": {
+        "destination": "8,26,49,62",
+        "kind": "winning-edge",
+        "move": 8
+      },
+      "outcome": "N"
+    },
+    "16,26,49,62,92": {
+      "evidence": {
+        "destination": "8,26,49,62",
+        "kind": "winning-edge",
+        "move": 8
+      },
+      "outcome": "N"
+    },
+    "16,26,50,54,57,60,62": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "finite-exact",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "P"
+    },
+    "16,26,50,54,60,62": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "16,26,50,62": {
+      "evidence": {
+        "destination": "16,26,29,50,62",
+        "kind": "winning-edge",
+        "move": 29
+      },
+      "outcome": "N"
+    },
+    "16,26,51,59,62,92,98": {
+      "evidence": {
+        "cumulative_states": 12502628,
+        "frobenius": 137,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,51,62,92,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 59
+      },
+      "outcome": "P"
+    },
+    "16,26,51,62,66,76": {
+      "evidence": {
+        "cumulative_states": 12003396,
+        "frobenius": 137,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,51,62,76,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 66
+      },
+      "outcome": "P"
+    },
+    "16,26,51,62,70,98": {
+      "evidence": {
+        "cumulative_states": 29410761,
+        "frobenius": 159,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 101
+      },
+      "outcome": "N"
+    },
+    "16,26,51,62,70,98,101": {
+      "evidence": {
+        "cumulative_states": 29410761,
+        "frobenius": 159,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,51,62,70,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 101
+      },
+      "outcome": "P"
+    },
+    "16,26,51,62,73,98,108": {
+      "evidence": {
+        "cumulative_states": 13899188,
+        "frobenius": 143,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,51,62,98,108",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 73
+      },
+      "outcome": "P"
+    },
+    "16,26,51,62,76,79,98": {
+      "evidence": {
+        "cumulative_states": 33847976,
+        "frobenius": 165,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,62,76,79,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 51
+      },
+      "outcome": "P"
+    },
+    "16,26,51,62,76,98": {
+      "evidence": {
+        "cumulative_states": 12003396,
+        "frobenius": 137,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 66
+      },
+      "outcome": "N"
+    },
+    "16,26,51,62,86,98": {
+      "evidence": {
+        "cumulative_states": 29416184,
+        "frobenius": 159,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 37
+      },
+      "outcome": "N"
+    },
+    "16,26,51,62,92,98": {
+      "evidence": {
+        "cumulative_states": 12502628,
+        "frobenius": 137,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 59
+      },
+      "outcome": "N"
+    },
+    "16,26,51,62,98": {
+      "evidence": {
+        "cumulative_states": 29621455,
+        "frobenius": 159,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 121
+      },
+      "outcome": "N"
+    },
+    "16,26,51,62,98,108": {
+      "evidence": {
+        "cumulative_states": 13899188,
+        "frobenius": 143,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 73
+      },
+      "outcome": "N"
+    },
+    "16,26,51,62,98,121": {
+      "evidence": {
+        "cumulative_states": 29621455,
+        "frobenius": 159,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,51,62,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 121
+      },
+      "outcome": "P"
+    },
+    "16,26,53,62,70,98": {
+      "evidence": {
+        "destination": "8,26,53,62",
+        "kind": "winning-edge",
+        "move": 8
+      },
+      "outcome": "N"
+    },
+    "16,26,53,62,76,98": {
+      "evidence": {
+        "destination": "8,26,53,62",
+        "kind": "winning-edge",
+        "move": 8
+      },
+      "outcome": "N"
+    },
+    "16,26,53,62,86,98": {
+      "evidence": {
+        "destination": "8,26,53,62",
+        "kind": "winning-edge",
+        "move": 8
+      },
+      "outcome": "N"
+    },
+    "16,26,53,62,92,98": {
+      "evidence": {
+        "destination": "8,26,53,62",
+        "kind": "winning-edge",
+        "move": 8
+      },
+      "outcome": "N"
+    },
+    "16,26,53,62,98,102": {
+      "evidence": {
+        "destination": "8,26,53,62",
+        "kind": "winning-edge",
+        "move": 8
+      },
+      "outcome": "N"
+    },
+    "16,26,53,62,98,108": {
+      "evidence": {
+        "destination": "8,26,53,62",
+        "kind": "winning-edge",
+        "move": 8
+      },
+      "outcome": "N"
+    },
+    "16,26,53,62,98,118": {
+      "evidence": {
+        "destination": "8,26,53,62",
+        "kind": "winning-edge",
+        "move": 8
+      },
+      "outcome": "N"
+    },
+    "16,26,53,62,98,134": {
+      "evidence": {
+        "destination": "8,26,53,62",
+        "kind": "winning-edge",
+        "move": 8
+      },
+      "outcome": "N"
+    },
+    "16,26,54,56,60,62": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "16,26,54,56,60,62,91": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "finite-exact",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "P"
+    },
+    "16,26,54,60,62": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "short-cover",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "P"
+    },
+    "16,26,54,60,62,66": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "16,26,54,60,62,71,82": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "finite-exact",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "P"
+    },
+    "16,26,54,60,62,72": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "16,26,54,60,62,82": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "16,26,54,60,62,98": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "16,26,54,62,71,98": {
+      "evidence": {
+        "cumulative_states": 37393473,
+        "frobenius": 179,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,62,70,71,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 54
+      },
+      "outcome": "P"
+    },
+    "16,26,54,62,98": {
+      "evidence": {
+        "destination": "16,26,33,54,62",
+        "kind": "winning-edge",
+        "move": 33
+      },
+      "outcome": "N"
+    },
+    "16,26,55,62,65,76,98": {
+      "evidence": {
+        "cumulative_states": 25126060,
+        "frobenius": 151,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,62,65,76,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 55
+      },
+      "outcome": "P"
+    },
+    "16,26,55,62,67,86,98": {
+      "evidence": {
+        "cumulative_states": 32724018,
+        "frobenius": 175,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,62,67,86,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 55
+      },
+      "outcome": "P"
+    },
+    "16,26,55,62,70,98": {
+      "evidence": {
+        "destination": "16,20,26,55,70",
+        "kind": "winning-edge",
+        "move": 20
+      },
+      "outcome": "N"
+    },
+    "16,26,55,62,76,98": {
+      "evidence": {
+        "destination": "8,26,55,62",
+        "kind": "winning-edge",
+        "move": 8
+      },
+      "outcome": "N"
+    },
+    "16,26,55,62,86,98": {
+      "evidence": {
+        "destination": "8,26,55,62",
+        "kind": "winning-edge",
+        "move": 8
+      },
+      "outcome": "N"
+    },
+    "16,26,55,62,92,98": {
+      "evidence": {
+        "destination": "8,26,55,62",
+        "kind": "winning-edge",
+        "move": 8
+      },
+      "outcome": "N"
+    },
+    "16,26,55,62,98,102": {
+      "evidence": {
+        "destination": "8,26,55,62",
+        "kind": "winning-edge",
+        "move": 8
+      },
+      "outcome": "N"
+    },
+    "16,26,55,62,98,108": {
+      "evidence": {
+        "destination": "8,26,55,62",
+        "kind": "winning-edge",
+        "move": 8
+      },
+      "outcome": "N"
+    },
+    "16,26,55,62,98,118": {
+      "evidence": {
+        "destination": "8,26,55,62",
+        "kind": "winning-edge",
+        "move": 8
+      },
+      "outcome": "N"
+    },
+    "16,26,55,62,98,134": {
+      "evidence": {
+        "destination": "8,26,55,62",
+        "kind": "winning-edge",
+        "move": 8
+      },
+      "outcome": "N"
+    },
+    "16,26,56,62": {
+      "evidence": {
+        "destination": "16,26,36,56",
+        "kind": "winning-edge",
+        "move": 36
+      },
+      "outcome": "N"
+    },
+    "16,26,57,62,70,98": {
+      "evidence": {
+        "destination": "11,16,26,57,62",
+        "kind": "winning-edge",
+        "move": 11
+      },
+      "outcome": "N"
+    },
+    "16,26,57,62,76,98": {
+      "evidence": {
+        "destination": "11,16,26,57,62",
+        "kind": "winning-edge",
+        "move": 11
+      },
+      "outcome": "N"
+    },
+    "16,26,57,62,86,98": {
+      "evidence": {
+        "destination": "11,16,26,57,62",
+        "kind": "winning-edge",
+        "move": 11
+      },
+      "outcome": "N"
+    },
+    "16,26,57,62,92,98": {
+      "evidence": {
+        "destination": "11,16,26,57,62",
+        "kind": "winning-edge",
+        "move": 11
+      },
+      "outcome": "N"
+    },
+    "16,26,57,62,98,102": {
+      "evidence": {
+        "destination": "11,16,26,57,62",
+        "kind": "winning-edge",
+        "move": 11
+      },
+      "outcome": "N"
+    },
+    "16,26,57,62,98,108": {
+      "evidence": {
+        "destination": "11,16,26,57,62",
+        "kind": "winning-edge",
+        "move": 11
+      },
+      "outcome": "N"
+    },
+    "16,26,57,62,98,118": {
+      "evidence": {
+        "destination": "11,16,26,57,62",
+        "kind": "winning-edge",
+        "move": 11
+      },
+      "outcome": "N"
+    },
+    "16,26,57,62,98,134": {
+      "evidence": {
+        "destination": "11,16,26,57,62",
+        "kind": "winning-edge",
+        "move": 11
+      },
+      "outcome": "N"
+    },
+    "16,26,59,62,65,98,102": {
+      "evidence": {
+        "cumulative_states": 35050123,
+        "frobenius": 167,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,59,62,98,102",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 65
+      },
+      "outcome": "P"
+    },
+    "16,26,59,62,70,92,98": {
+      "evidence": {
+        "cumulative_states": 34826493,
+        "frobenius": 167,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,59,62,70,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 92
+      },
+      "outcome": "P"
+    },
+    "16,26,59,62,70,98": {
+      "evidence": {
+        "cumulative_states": 34826493,
+        "frobenius": 167,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 92
+      },
+      "outcome": "N"
+    },
+    "16,26,59,62,76,98": {
+      "evidence": {
+        "destination": "16,23,26,59,76",
+        "kind": "winning-edge",
+        "move": 23
+      },
+      "outcome": "N"
+    },
+    "16,26,59,62,86,98": {
+      "evidence": {
+        "cumulative_states": 34828408,
+        "frobenius": 167,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 29
+      },
+      "outcome": "N"
+    },
+    "16,26,59,62,92,98": {
+      "evidence": {
+        "cumulative_states": 30591574,
+        "frobenius": 161,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 51
+      },
+      "outcome": "N"
+    },
+    "16,26,59,62,98": {
+      "evidence": {
+        "cumulative_states": 34886902,
+        "frobenius": 167,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 47
+      },
+      "outcome": "N"
+    },
+    "16,26,59,62,98,102": {
+      "evidence": {
+        "cumulative_states": 35050123,
+        "frobenius": 167,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 65
+      },
+      "outcome": "N"
+    },
+    "16,26,59,62,98,108": {
+      "evidence": {
+        "frobenius": 161,
+        "kind": "native-exact",
+        "native_words": 4,
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 131464,
+        "winning_move": 13
+      },
+      "outcome": "N"
+    },
+    "16,26,60,62,98": {
+      "evidence": {
+        "destination": "16,26,27,60,62,98",
+        "kind": "winning-edge",
+        "move": 27
+      },
+      "outcome": "N"
+    },
+    "16,26,61,62,65,70,98": {
+      "evidence": {
+        "cumulative_states": 11411565,
+        "frobenius": 169,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,61,62,70,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 65
+      },
+      "outcome": "P"
+    },
+    "16,26,61,62,69,70,98": {
+      "evidence": {
+        "cumulative_states": 34538804,
+        "frobenius": 177,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,62,69,70,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 61
+      },
+      "outcome": "P"
+    },
+    "16,26,61,62,70,75,98": {
+      "evidence": {
+        "cumulative_states": 42136370,
+        "frobenius": 183,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,62,70,75,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 61
+      },
+      "outcome": "P"
+    },
+    "16,26,61,62,70,98": {
+      "evidence": {
+        "cumulative_states": 11411565,
+        "frobenius": 169,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 65
+      },
+      "outcome": "N"
+    },
+    "16,26,61,62,76,98": {
+      "evidence": {
+        "cumulative_states": 19900386,
+        "frobenius": 147,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 111
+      },
+      "outcome": "N"
+    },
+    "16,26,61,62,76,98,111": {
+      "evidence": {
+        "cumulative_states": 19900386,
+        "frobenius": 147,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,61,62,76,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 111
+      },
+      "outcome": "P"
+    },
+    "16,26,61,62,86,98": {
+      "evidence": {
+        "cumulative_states": 11544635,
+        "frobenius": 169,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 33
+      },
+      "outcome": "N"
+    },
+    "16,26,61,62,92,98": {
+      "evidence": {
+        "cumulative_states": 31635910,
+        "frobenius": 163,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 137
+      },
+      "outcome": "N"
+    },
+    "16,26,61,62,92,98,137": {
+      "evidence": {
+        "cumulative_states": 31635910,
+        "frobenius": 163,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,61,62,92,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 137
+      },
+      "outcome": "P"
+    },
+    "16,26,61,62,98,102": {
+      "evidence": {
+        "cumulative_states": 15810855,
+        "frobenius": 169,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 121
+      },
+      "outcome": "N"
+    },
+    "16,26,61,62,98,102,121": {
+      "evidence": {
+        "cumulative_states": 15810855,
+        "frobenius": 169,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,61,62,98,102",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 121
+      },
+      "outcome": "P"
+    },
+    "16,26,61,62,98,108": {
+      "evidence": {
+        "cumulative_states": 36328045,
+        "frobenius": 179,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 133
+      },
+      "outcome": "N"
+    },
+    "16,26,61,62,98,108,133": {
+      "evidence": {
+        "cumulative_states": 36328045,
+        "frobenius": 179,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,61,62,98,108",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 133
+      },
+      "outcome": "P"
+    },
+    "16,26,61,62,98,117,134": {
+      "evidence": {
+        "cumulative_states": 36361265,
+        "frobenius": 179,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,61,62,98,134",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 117
+      },
+      "outcome": "P"
+    },
+    "16,26,61,62,98,118": {
+      "evidence": {
+        "cumulative_states": 15834729,
+        "frobenius": 169,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 49
+      },
+      "outcome": "N"
+    },
+    "16,26,61,62,98,134": {
+      "evidence": {
+        "cumulative_states": 36361265,
+        "frobenius": 179,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 117
+      },
+      "outcome": "N"
+    },
+    "16,26,62,63,67,98,102": {
+      "evidence": {
+        "cumulative_states": 28012673,
+        "frobenius": 171,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,62,63,98,102",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 67
+      },
+      "outcome": "P"
+    },
+    "16,26,62,63,70,98": {
+      "evidence": {
+        "frobenius": 171,
+        "kind": "native-exact",
+        "native_words": 4,
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 114810,
+        "winning_move": 13
+      },
+      "outcome": "N"
+    },
+    "16,26,62,63,73,98,118": {
+      "evidence": {
+        "cumulative_states": 28482396,
+        "frobenius": 171,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,62,63,98,118",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 73
+      },
+      "outcome": "P"
+    },
+    "16,26,62,63,75,76,98": {
+      "evidence": {
+        "cumulative_states": 23338000,
+        "frobenius": 149,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,62,63,76,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 75
+      },
+      "outcome": "P"
+    },
+    "16,26,62,63,76,98": {
+      "evidence": {
+        "cumulative_states": 23338000,
+        "frobenius": 149,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 75
+      },
+      "outcome": "N"
+    },
+    "16,26,62,63,86,98": {
+      "evidence": {
+        "cumulative_states": 27862092,
+        "frobenius": 171,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 171
+      },
+      "outcome": "N"
+    },
+    "16,26,62,63,86,98,171": {
+      "evidence": {
+        "cumulative_states": 27862092,
+        "frobenius": 171,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,62,63,86,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 171
+      },
+      "outcome": "P"
+    },
+    "16,26,62,63,92,98": {
+      "evidence": {
+        "cumulative_states": 33401509,
+        "frobenius": 165,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 117
+      },
+      "outcome": "N"
+    },
+    "16,26,62,63,92,98,117": {
+      "evidence": {
+        "cumulative_states": 33401509,
+        "frobenius": 165,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,62,63,92,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 117
+      },
+      "outcome": "P"
+    },
+    "16,26,62,63,98,102": {
+      "evidence": {
+        "cumulative_states": 28012673,
+        "frobenius": 171,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 67
+      },
+      "outcome": "N"
+    },
+    "16,26,62,63,98,107,108": {
+      "evidence": {
+        "cumulative_states": 41200370,
+        "frobenius": 181,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,62,63,98,108",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 107
+      },
+      "outcome": "P"
+    },
+    "16,26,62,63,98,108": {
+      "evidence": {
+        "cumulative_states": 41200370,
+        "frobenius": 181,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 107
+      },
+      "outcome": "N"
+    },
+    "16,26,62,63,98,118": {
+      "evidence": {
+        "cumulative_states": 28482396,
+        "frobenius": 171,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 73
+      },
+      "outcome": "N"
+    },
+    "16,26,62,63,98,123,134": {
+      "evidence": {
+        "cumulative_states": 41258788,
+        "frobenius": 181,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,62,63,98,134",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 123
+      },
+      "outcome": "P"
+    },
+    "16,26,62,63,98,134": {
+      "evidence": {
+        "cumulative_states": 41258788,
+        "frobenius": 181,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 123
+      },
+      "outcome": "N"
+    },
+    "16,26,62,65,67,98,108": {
+      "evidence": {
+        "cumulative_states": 41260927,
+        "frobenius": 183,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,62,65,98,108",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 67
+      },
+      "outcome": "P"
+    },
+    "16,26,62,65,70,98": {
+      "evidence": {
+        "cumulative_states": 30094001,
+        "frobenius": 173,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 61
+      },
+      "outcome": "N"
+    },
+    "16,26,62,65,76,98": {
+      "evidence": {
+        "cumulative_states": 25126060,
+        "frobenius": 151,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 55
+      },
+      "outcome": "N"
+    },
+    "16,26,62,65,79,92,98": {
+      "evidence": {
+        "cumulative_states": 36084362,
+        "frobenius": 167,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,62,65,92,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 79
+      },
+      "outcome": "P"
+    },
+    "16,26,62,65,86,98": {
+      "evidence": {
+        "destination": "16,26,36,65,86",
+        "kind": "winning-edge",
+        "move": 36
+      },
+      "outcome": "N"
+    },
+    "16,26,62,65,92,98": {
+      "evidence": {
+        "cumulative_states": 36084362,
+        "frobenius": 167,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 79
+      },
+      "outcome": "N"
+    },
+    "16,26,62,65,98,102": {
+      "evidence": {
+        "destination": "16,26,59,62,65,98,102",
+        "kind": "winning-edge",
+        "move": 59
+      },
+      "outcome": "N"
+    },
+    "16,26,62,65,98,108": {
+      "evidence": {
+        "cumulative_states": 41260927,
+        "frobenius": 183,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 67
+      },
+      "outcome": "N"
+    },
+    "16,26,62,65,98,118": {
+      "evidence": {
+        "cumulative_states": 32505938,
+        "frobenius": 173,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 131
+      },
+      "outcome": "N"
+    },
+    "16,26,62,65,98,118,131": {
+      "evidence": {
+        "cumulative_states": 32505938,
+        "frobenius": 173,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,62,65,98,118",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 131
+      },
+      "outcome": "P"
+    },
+    "16,26,62,65,98,134": {
+      "evidence": {
+        "cumulative_states": 41342637,
+        "frobenius": 183,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 137
+      },
+      "outcome": "N"
+    },
+    "16,26,62,65,98,134,137": {
+      "evidence": {
+        "cumulative_states": 41342637,
+        "frobenius": 183,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,62,65,98,134",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 137
+      },
+      "outcome": "P"
+    },
+    "16,26,62,66,119": {
+      "evidence": {
+        "destination": "16,26,30,66,119",
+        "kind": "winning-edge",
+        "move": 30
+      },
+      "outcome": "N"
+    },
+    "16,26,62,66,121": {
+      "evidence": {
+        "destination": "16,26,30,66,121",
+        "kind": "winning-edge",
+        "move": 30
+      },
+      "outcome": "N"
+    },
+    "16,26,62,67,70,75,98": {
+      "evidence": {
+        "cumulative_states": 32696088,
+        "frobenius": 175,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,62,67,70,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 75
+      },
+      "outcome": "P"
+    },
+    "16,26,62,67,70,92,98": {
+      "evidence": {
+        "cumulative_states": 23680106,
+        "frobenius": 169,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,62,67,92,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 70
+      },
+      "outcome": "P"
+    },
+    "16,26,62,67,70,98": {
+      "evidence": {
+        "cumulative_states": 32696088,
+        "frobenius": 175,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 75
+      },
+      "outcome": "N"
+    },
+    "16,26,62,67,76,85,98": {
+      "evidence": {
+        "cumulative_states": 27016360,
+        "frobenius": 153,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,62,67,76,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 85
+      },
+      "outcome": "P"
+    },
+    "16,26,62,67,76,98": {
+      "evidence": {
+        "cumulative_states": 27016360,
+        "frobenius": 153,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 85
+      },
+      "outcome": "N"
+    },
+    "16,26,62,67,86,98": {
+      "evidence": {
+        "cumulative_states": 32724018,
+        "frobenius": 175,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 55
+      },
+      "outcome": "N"
+    },
+    "16,26,62,67,87,98,118": {
+      "evidence": {
+        "cumulative_states": 33239934,
+        "frobenius": 175,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,62,67,98,118",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 87
+      },
+      "outcome": "P"
+    },
+    "16,26,62,67,92,98": {
+      "evidence": {
+        "cumulative_states": 23680106,
+        "frobenius": 169,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 70
+      },
+      "outcome": "N"
+    },
+    "16,26,62,67,98": {
+      "evidence": {
+        "destination": "16,26,31,67",
+        "kind": "winning-edge",
+        "move": 31
+      },
+      "outcome": "N"
+    },
+    "16,26,62,67,98,102": {
+      "evidence": {
+        "cumulative_states": 32724019,
+        "frobenius": 175,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 33
+      },
+      "outcome": "N"
+    },
+    "16,26,62,67,98,108": {
+      "evidence": {
+        "cumulative_states": 42305636,
+        "frobenius": 185,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 65
+      },
+      "outcome": "N"
+    },
+    "16,26,62,67,98,118": {
+      "evidence": {
+        "cumulative_states": 33239934,
+        "frobenius": 175,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 87
+      },
+      "outcome": "N"
+    },
+    "16,26,62,69,70,98": {
+      "evidence": {
+        "cumulative_states": 34538804,
+        "frobenius": 177,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 61
+      },
+      "outcome": "N"
+    },
+    "16,26,62,69,76,98": {
+      "evidence": {
+        "cumulative_states": 27188206,
+        "frobenius": 155,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 43
+      },
+      "outcome": "N"
+    },
+    "16,26,62,69,86,98": {
+      "evidence": {
+        "cumulative_states": 34539401,
+        "frobenius": 177,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 39
+      },
+      "outcome": "N"
+    },
+    "16,26,62,69,92,98": {
+      "evidence": {
+        "destination": "16,26,41,62,69,92",
+        "kind": "winning-edge",
+        "move": 41
+      },
+      "outcome": "N"
+    },
+    "16,26,62,69,98,102": {
+      "evidence": {
+        "cumulative_states": 34829555,
+        "frobenius": 177,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 41
+      },
+      "outcome": "N"
+    },
+    "16,26,62,69,98,107,118": {
+      "evidence": {
+        "cumulative_states": 36194003,
+        "frobenius": 177,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,62,69,98,118",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 107
+      },
+      "outcome": "P"
+    },
+    "16,26,62,69,98,118": {
+      "evidence": {
+        "cumulative_states": 36194003,
+        "frobenius": 177,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 107
+      },
+      "outcome": "N"
+    },
+    "16,26,62,70,71,98": {
+      "evidence": {
+        "cumulative_states": 37393473,
+        "frobenius": 179,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 54
+      },
+      "outcome": "N"
+    },
+    "16,26,62,70,73,98": {
+      "evidence": {
+        "frobenius": 181,
+        "kind": "native-exact",
+        "native_words": 4,
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/exact-checks.jsonl",
+        "source_sha256": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+        "states": 218485,
+        "winning_move": 17
+      },
+      "outcome": "N"
+    },
+    "16,26,62,70,75,98": {
+      "evidence": {
+        "cumulative_states": 42136370,
+        "frobenius": 183,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 61
+      },
+      "outcome": "N"
+    },
+    "16,26,62,70,77,98": {
+      "evidence": {
+        "destination": "16,20,26,70,77",
+        "kind": "winning-edge",
+        "move": 20
+      },
+      "outcome": "N"
+    },
+    "16,26,62,70,87,98": {
+      "evidence": {
+        "destination": "16,26,30,70,87",
+        "kind": "winning-edge",
+        "move": 30
+      },
+      "outcome": "N"
+    },
+    "16,26,62,70,98,101": {
+      "evidence": {
+        "destination": "16,26,51,62,70,98,101",
+        "kind": "winning-edge",
+        "move": 51
+      },
+      "outcome": "N"
+    },
+    "16,26,62,70,98,113": {
+      "evidence": {
+        "destination": "16,26,36,70,113",
+        "kind": "winning-edge",
+        "move": 36
+      },
+      "outcome": "N"
+    },
+    "16,26,62,70,98,127": {
+      "evidence": {
+        "destination": "16,26,36,70,127",
+        "kind": "winning-edge",
+        "move": 36
+      },
+      "outcome": "N"
+    },
+    "16,26,62,71,76,77,98": {
+      "evidence": {
+        "cumulative_states": 29392782,
+        "frobenius": 157,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,62,71,76,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 77
+      },
+      "outcome": "P"
+    },
+    "16,26,62,71,76,98": {
+      "evidence": {
+        "cumulative_states": 29392782,
+        "frobenius": 157,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 77
+      },
+      "outcome": "N"
+    },
+    "16,26,62,71,86,98": {
+      "evidence": {
+        "cumulative_states": 37772420,
+        "frobenius": 179,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 54
+      },
+      "outcome": "N"
+    },
+    "16,26,62,71,92,98": {
+      "evidence": {
+        "cumulative_states": 32619281,
+        "frobenius": 173,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 35
+      },
+      "outcome": "N"
+    },
+    "16,26,62,71,98,102": {
+      "evidence": {
+        "cumulative_states": 37936833,
+        "frobenius": 179,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 54
+      },
+      "outcome": "N"
+    },
+    "16,26,62,71,98,118": {
+      "evidence": {
+        "cumulative_states": 37968828,
+        "frobenius": 179,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 54
+      },
+      "outcome": "N"
+    },
+    "16,26,62,72": {
+      "evidence": {
+        "destination": "16,26,62,72,82",
+        "kind": "winning-edge",
+        "move": 82
+      },
+      "outcome": "N"
+    },
+    "16,26,62,72,82": {
+      "evidence": {
+        "kind": "published-assumption",
+        "url": "https://sicherman.net/sylver/ppos.html"
+      },
+      "outcome": "P"
+    },
+    "16,26,62,73,76,98": {
+      "evidence": {
+        "destination": "16,26,30,73",
+        "kind": "winning-edge",
+        "move": 30
+      },
+      "outcome": "N"
+    },
+    "16,26,62,73,86,98": {
+      "evidence": {
+        "destination": "16,26,30,73",
+        "kind": "winning-edge",
+        "move": 30
+      },
+      "outcome": "N"
+    },
+    "16,26,62,73,92,98": {
+      "evidence": {
+        "destination": "16,26,30,73",
+        "kind": "winning-edge",
+        "move": 30
+      },
+      "outcome": "N"
+    },
+    "16,26,62,73,98,102": {
+      "evidence": {
+        "destination": "16,26,30,73",
+        "kind": "winning-edge",
+        "move": 30
+      },
+      "outcome": "N"
+    },
+    "16,26,62,73,98,108": {
+      "evidence": {
+        "destination": "16,26,30,73",
+        "kind": "winning-edge",
+        "move": 30
+      },
+      "outcome": "N"
+    },
+    "16,26,62,73,98,118": {
+      "evidence": {
+        "destination": "16,26,30,73",
+        "kind": "winning-edge",
+        "move": 30
+      },
+      "outcome": "N"
+    },
+    "16,26,62,73,98,134": {
+      "evidence": {
+        "destination": "16,26,30,73",
+        "kind": "winning-edge",
+        "move": 30
+      },
+      "outcome": "N"
+    },
+    "16,26,62,75,76,98": {
+      "evidence": {
+        "destination": "16,26,30,75",
+        "kind": "winning-edge",
+        "move": 30
+      },
+      "outcome": "N"
+    },
+    "16,26,62,75,86,98": {
+      "evidence": {
+        "destination": "16,26,30,75",
+        "kind": "winning-edge",
+        "move": 30
+      },
+      "outcome": "N"
+    },
+    "16,26,62,75,92,98": {
+      "evidence": {
+        "destination": "16,26,30,75",
+        "kind": "winning-edge",
+        "move": 30
+      },
+      "outcome": "N"
+    },
+    "16,26,62,75,98,102": {
+      "evidence": {
+        "destination": "16,26,30,75",
+        "kind": "winning-edge",
+        "move": 30
+      },
+      "outcome": "N"
+    },
+    "16,26,62,75,98,108": {
+      "evidence": {
+        "destination": "16,26,30,75",
+        "kind": "winning-edge",
+        "move": 30
+      },
+      "outcome": "N"
+    },
+    "16,26,62,75,98,118": {
+      "evidence": {
+        "destination": "16,26,30,75",
+        "kind": "winning-edge",
+        "move": 30
+      },
+      "outcome": "N"
+    },
+    "16,26,62,75,98,134": {
+      "evidence": {
+        "destination": "16,26,30,75",
+        "kind": "winning-edge",
+        "move": 30
+      },
+      "outcome": "N"
+    },
+    "16,26,62,76,77,98": {
+      "evidence": {
+        "cumulative_states": 32094694,
+        "frobenius": 163,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 41
+      },
+      "outcome": "N"
+    },
+    "16,26,62,76,79,98": {
+      "evidence": {
+        "cumulative_states": 33847976,
+        "frobenius": 165,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0001/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 51
+      },
+      "outcome": "N"
+    },
+    "16,26,62,76,89,98": {
+      "evidence": {
+        "destination": "16,26,36,76,89",
+        "kind": "winning-edge",
+        "move": 36
+      },
+      "outcome": "N"
+    },
+    "16,26,62,76,98": {
+      "evidence": {
+        "destination": "16,26,43,62,76,98",
+        "kind": "winning-edge",
+        "move": 43
+      },
+      "outcome": "N"
+    },
+    "16,26,62,77,86,98": {
+      "evidence": {
+        "cumulative_states": 42585494,
+        "frobenius": 185,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 159
+      },
+      "outcome": "N"
+    },
+    "16,26,62,77,86,98,159": {
+      "evidence": {
+        "cumulative_states": 42585494,
+        "frobenius": 185,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,62,77,86,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 159
+      },
+      "outcome": "P"
+    },
+    "16,26,62,77,87,98,102": {
+      "evidence": {
+        "cumulative_states": 42656520,
+        "frobenius": 185,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,62,77,98,102",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 87
+      },
+      "outcome": "P"
+    },
+    "16,26,62,77,92,98": {
+      "evidence": {
+        "cumulative_states": 41087434,
+        "frobenius": 179,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 113
+      },
+      "outcome": "N"
+    },
+    "16,26,62,77,92,98,113": {
+      "evidence": {
+        "cumulative_states": 41087434,
+        "frobenius": 179,
+        "kind": "native-batch-winning-destination",
+        "parent": "16,26,62,77,92,98",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 113
+      },
+      "outcome": "P"
+    },
+    "16,26,62,77,98,102": {
+      "evidence": {
+        "cumulative_states": 42656520,
+        "frobenius": 185,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 87
+      },
+      "outcome": "N"
+    },
+    "16,26,62,77,98,118": {
+      "evidence": {
+        "cumulative_states": 42657015,
+        "frobenius": 185,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 37
+      },
+      "outcome": "N"
+    },
+    "16,26,62,79,92,98": {
+      "evidence": {
+        "destination": "16,26,62,65,79,92,98",
+        "kind": "winning-edge",
+        "move": 65
+      },
+      "outcome": "N"
+    },
+    "16,26,62,81,92,98": {
+      "evidence": {
+        "cumulative_states": 42305557,
+        "frobenius": 183,
+        "kind": "native-batch",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-2026-09-22/evidence/batch-0002/stdout.txt",
+        "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+        "winning_move": 43
+      },
+      "outcome": "N"
+    },
+    "16,26,62,82": {
+      "evidence": {
+        "destination": "16,26,27,62,82",
+        "kind": "winning-edge",
+        "move": 27
+      },
+      "outcome": "N"
+    },
+    "16,26,62,86,98,111": {
+      "evidence": {
+        "destination": "16,26,30,111",
+        "kind": "winning-edge",
+        "move": 30
+      },
+      "outcome": "N"
+    },
+    "16,26,62,92,98,111": {
+      "evidence": {
+        "destination": "16,26,30,111",
+        "kind": "winning-edge",
+        "move": 30
+      },
+      "outcome": "N"
+    },
+    "16,26,62,92,98,117": {
+      "evidence": {
+        "destination": "16,26,62,63,92,98,117",
+        "kind": "winning-edge",
+        "move": 63
+      },
+      "outcome": "N"
+    },
+    "16,26,62,92,98,127": {
+      "evidence": {
+        "destination": "16,26,36,92,127",
+        "kind": "winning-edge",
+        "move": 36
+      },
+      "outcome": "N"
+    },
+    "16,26,62,92,98,137": {
+      "evidence": {
+        "destination": "16,26,61,62,92,98,137",
+        "kind": "winning-edge",
+        "move": 61
+      },
+      "outcome": "N"
+    },
+    "16,26,62,98,102,111": {
+      "evidence": {
+        "destination": "16,26,30,111",
+        "kind": "winning-edge",
+        "move": 30
+      },
+      "outcome": "N"
+    },
+    "16,26,62,98,102,121": {
+      "evidence": {
+        "destination": "16,26,51,62,98,121",
+        "kind": "winning-edge",
+        "move": 51
+      },
+      "outcome": "N"
+    },
+    "16,26,62,98,108,111": {
+      "evidence": {
+        "destination": "16,26,30,111",
+        "kind": "winning-edge",
+        "move": 30
+      },
+      "outcome": "N"
+    },
+    "16,26,62,98,111,118": {
+      "evidence": {
+        "destination": "16,26,30,111",
+        "kind": "winning-edge",
+        "move": 30
+      },
+      "outcome": "N"
+    },
+    "16,26,62,98,111,134": {
+      "evidence": {
+        "destination": "16,26,30,111",
+        "kind": "winning-edge",
+        "move": 30
+      },
+      "outcome": "N"
+    },
+    "16,26,62,98,118,121": {
+      "evidence": {
+        "destination": "16,26,36,118,121",
+        "kind": "winning-edge",
+        "move": 36
+      },
+      "outcome": "N"
+    },
+    "16,26,62,98,121,134": {
+      "evidence": {
+        "destination": "16,26,51,62,98,121",
+        "kind": "winning-edge",
+        "move": 51
+      },
+      "outcome": "N"
+    },
+    "2": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "3,16,26": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "N"
+    },
+    "4,10": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "4,14": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "4,26": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "4,6": {
+      "evidence": {
+        "kind": "repository-certificate",
+        "source": "node:C"
+      },
+      "outcome": "P"
+    },
+    "5,16": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "N"
+    },
+    "6,10": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "6,14,16": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "6,16,26": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "6,8": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "7,16,26": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "N"
+    },
+    "8,10": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "8,10,12,14": {
+      "evidence": {
+        "kind": "repository-certificate",
+        "source": "pairing:A1"
+      },
+      "outcome": "P"
+    },
+    "8,10,22": {
+      "evidence": {
+        "kind": "repository-certificate",
+        "source": "published:H"
+      },
+      "outcome": "P"
+    },
+    "8,12": {
+      "evidence": {
+        "kind": "pairing-theorem",
+        "source": "sylver/eight_twelve.py"
+      },
+      "outcome": "P"
+    },
+    "8,12,14": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "8,12,18,22": {
+      "evidence": {
+        "kind": "repository-certificate",
+        "source": "pairing:A"
+      },
+      "outcome": "P"
+    },
+    "8,12,26": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "8,12,26,30": {
+      "evidence": {
+        "kind": "repository-certificate",
+        "source": "pairing:A3"
+      },
+      "outcome": "P"
+    },
+    "8,14": {
+      "evidence": {
+        "kind": "repository-certificate",
+        "source": "node:E"
+      },
+      "outcome": "P"
+    },
+    "8,14,20,26": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "8,14,27,34": {
+      "evidence": {
+        "kind": "repository-certificate-edge",
+        "move": 34,
+        "reply": 27,
+        "source": "node:E"
+      },
+      "outcome": "P"
+    },
+    "8,18,20": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "8,19,20,30,34": {
+      "evidence": {
+        "kind": "repository-certificate-edge",
+        "move": 34,
+        "reply": 19,
+        "source": "node:O"
+      },
+      "outcome": "P"
+    },
+    "8,20,22,26": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "8,20,23,30,42": {
+      "evidence": {
+        "kind": "repository-certificate-edge",
+        "move": 8,
+        "reply": 23,
+        "source": "node:N"
+      },
+      "outcome": "P"
+    },
+    "8,20,26": {
+      "evidence": {
+        "kind": "repository-certificate",
+        "source": "node:G"
+      },
+      "outcome": "P"
+    },
+    "8,20,26,30": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "8,20,26,38": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "8,20,30": {
+      "evidence": {
+        "kind": "repository-certificate",
+        "source": "node:O"
+      },
+      "outcome": "P"
+    },
+    "8,26,38,83": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "P"
+    },
+    "8,26,49,62": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "P"
+    },
+    "8,26,53,62": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "P"
+    },
+    "8,26,54": {
+      "evidence": {
+        "kind": "inherited-release-certificate",
+        "original_kind": "winning-reply",
+        "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+      },
+      "outcome": "N"
+    },
+    "8,26,55,62": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "P"
+    },
+    "8,26,62": {
+      "evidence": {
+        "destination": "8,20,26",
+        "kind": "winning-edge",
+        "move": 20
+      },
+      "outcome": "N"
+    },
+    "9,16,26": {
+      "evidence": {
+        "kind": "exact-cache",
+        "source": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache"
+      },
+      "outcome": "N"
+    }
+  },
+  "target": [
+    16,
+    26,
+    62,
+    98
+  ]
+}

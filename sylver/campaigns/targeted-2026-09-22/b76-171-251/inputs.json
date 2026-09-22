@@ -1,0 +1,45 @@
+{
+  "base": [
+    16,
+    26,
+    56,
+    62,
+    66,
+    76
+  ],
+  "target": 251,
+  "sources": [
+    {
+      "path": "sylver/move26_data/periodicity_x.cache",
+      "sha256": "07b4b858ac7712c265833aabbd81ef5b7d6477d325fcfa873c9cab25e781c331"
+    },
+    {
+      "path": "sylver/campaigns/targeted-2026-09-22/short56-current-derived.cache",
+      "sha256": "d949d5b0d287a38d9c49997c3dd4b18b42284026363643ce17b82624ba83a045"
+    }
+  ],
+  "engine_sha256": "798ac2b84a3ca3e948c73153c00f1e3459ef1d22d2cf1caa90f65b34553fd9fe",
+  "seconds": 120.0,
+  "memory_gib": 6,
+  "exact_threads": 1,
+  "command": [
+    "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/targeted-2026-09-22/build/engine-798ac2b84a3ca3e9",
+    "/tmp/sylver-target-t2fn47ig/exact.cache",
+    "251",
+    "--target-only",
+    "--memory-report",
+    "--exact-threads",
+    "1",
+    "16",
+    "26",
+    "56",
+    "62",
+    "66",
+    "76",
+    "--target-start",
+    "171",
+    "--stop-on-p"
+  ],
+  "target_start": 171,
+  "stop_on_p": true
+}

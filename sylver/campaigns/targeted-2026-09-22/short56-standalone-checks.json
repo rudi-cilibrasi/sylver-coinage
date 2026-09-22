@@ -1,0 +1,81 @@
+{
+  "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+  "mode": "standalone fresh memos",
+  "native_words": 4,
+  "rows": [
+    {
+      "position": [
+        16,
+        21,
+        26,
+        44,
+        56,
+        62,
+        66
+      ],
+      "returncode": 0,
+      "stdout": "P winning_move=none frobenius=75 states=178737\n",
+      "stderr": "",
+      "elapsed_seconds": 0.15707631799887167
+    },
+    {
+      "position": [
+        16,
+        26,
+        33,
+        56,
+        60,
+        62
+      ],
+      "returncode": 0,
+      "stdout": "P winning_move=none frobenius=103 states=1099705\n",
+      "stderr": "",
+      "elapsed_seconds": 1.7699328220005555
+    },
+    {
+      "position": [
+        16,
+        26,
+        54,
+        56,
+        62,
+        66,
+        91
+      ],
+      "returncode": 0,
+      "stdout": "P winning_move=none frobenius=167 states=11006036\n",
+      "stderr": "",
+      "elapsed_seconds": 32.41469622099976
+    },
+    {
+      "position": [
+        16,
+        26,
+        56,
+        62,
+        66,
+        70,
+        89
+      ],
+      "returncode": 0,
+      "stdout": "P winning_move=none frobenius=165 states=14873828\n",
+      "stderr": "",
+      "elapsed_seconds": 44.232655489002354
+    },
+    {
+      "position": [
+        16,
+        26,
+        56,
+        62,
+        66,
+        67,
+        102
+      ],
+      "returncode": 0,
+      "stdout": "P winning_move=none frobenius=153 states=9770672\n",
+      "stderr": "",
+      "elapsed_seconds": 28.764174939999066
+    }
+  ]
+}

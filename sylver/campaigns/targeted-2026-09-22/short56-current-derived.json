@@ -1,0 +1,8 @@
+{
+  "source_graph": "sylver/campaigns/targeted-2026-09-22/short56/proof-graph.json",
+  "source_sha256": "c581d023c46916cc54450c72d5e60ce29a809826bc545e5ab4a83ce8e56e8b0c",
+  "cache_sha256": "d949d5b0d287a38d9c49997c3dd4b18b42284026363643ce17b82624ba83a045",
+  "rows": 2152,
+  "b76_odd_prefix_through": 169,
+  "prefix_exceptions": []
+}

@@ -1,5 +1,30 @@
 # Sylver Coinage after 16: research log
 
+**September 22 continuation:** the new targeted translated evaluator
+classifies individual odd children without completing a periodicity row.
+It independently excludes odd 107 after W's move 66 (the Python reference
+confirms its P destination), but bounded trials leave X+409 and the next
+move-66 odd child 109 unresolved. The more productive finite alternative is
+`B={16,26,56,62,66}` now has a complete 40-obligation certificate. The last
+move, **76**, is refuted by **247**, reaching the finite P-position
+`{16,26,56,62,66,76,247}` (Frobenius number 333). Thus B is P and W's
+move 66 is answered by 56, leaving W's seven even obligations
+**70,86,92,102,108,118,134**. Two subsidiary certificates,
+`{16,26,30,34}` P and `{16,26,46,50,56}` P, cover moves 46 and 50;
+move 86 is answered by 143. The compact B certificate has 69 finite leaves,
+a cache-free replay script, and six explicit named repository dependencies.
+The first subsidiary P-position also appears in Sicherman's published
+table, so its certificate is an independent confirmation. See the
+[targeted and short-branch record](campaigns/targeted-2026-09-22/README.md).
+
+**September 22 progress:** a published-position identity refutes W's move
+72; a fresh public reconstruction recovers W's remaining supporting facts
+and leaves eight even obligations. A new mixed-position native batch mode
+reduces evaluated states by 55.1% on eight W controls. The bounded campaign
+adds 104 exact evaluations without settling W. See the
+[campaign record](campaigns/w-2026-09-22/README.md), including provenance,
+standalone checks, the unresolved frontier, and a rejected optimization.
+
 **September 5 correction:** the historical reduction to X alone was
 unsupported. For U={16,26,88}, the remaining obligations are X N **and**
 Q N, where X={16,26,82,88} and Q={16,26,88,98}. See the

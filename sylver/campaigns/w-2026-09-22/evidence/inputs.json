@@ -1,0 +1,30 @@
+{
+  "cache": {
+    "path": "sylver/move26_data/periodicity_x.cache",
+    "sha256": "07b4b858ac7712c265833aabbd81ef5b7d6477d325fcfa873c9cab25e781c331"
+  },
+  "certificate": {
+    "path": "sylver/publication/plan2-2026-09-05/evidence/certificate.json",
+    "sha256": "4be92cad04eb97006911dcf2db321847e26340e5339fd51afdf85c8504098749"
+  },
+  "published_assumption": {
+    "consulted": "2026-09-22",
+    "outcome": "P",
+    "position": [
+      16,
+      26,
+      62,
+      72,
+      82
+    ],
+    "url": "https://sicherman.net/sylver/ppos.html"
+  },
+  "tools": {
+    "native_solver.cpp": "3937d10e04049be6c6cde07f27ec13385a216ea4e8a1c3f520d8a357293cb4e8",
+    "parallel_solve.py": "634222aef29d6f585f5c6f40037508b7b85fca601fe3f9cfb5debfc23bc02484",
+    "proof_graph.py": "5f2633ed055ddc8c60879317f906378b43c72c422da75bd15a6a1c5789e133c0",
+    "reconcile_campaign.py": "fc0a63c15404eab059c9fb6f8bc349b7c2dc7b7a5d9fabf4b60102a5ab80c68b",
+    "short_certificates.py": "7675fe927be6704ca7c60389061c61e82e5c3761b7086a1e5691b3bd9a5c5fd9",
+    "solver.py": "fe17c5fbb77b036131250af033b0bae7fa200daca4cadb01ceccb12fa6434a3d"
+  }
+}

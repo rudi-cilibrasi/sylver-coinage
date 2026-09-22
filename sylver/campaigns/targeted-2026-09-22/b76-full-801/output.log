@@ -1,0 +1,19 @@
+engine base=16,26,56,62,66,76, f=43 tbar=86
+progress n=3 shapes=1 eparts=1
+EPARTS count=100 shapes=2041 scanned_to=233
+EPARTS count=200 shapes=5649 scanned_to=233
+SHAPES count=10000 eparts=232 scanned_to=233
+SHAPES count=20000 eparts=264 scanned_to=233
+SHAPES count=30000 eparts=264 scanned_to=233
+SHAPES count=40000 eparts=266 scanned_to=233
+SHAPES count=50000 eparts=266 scanned_to=233
+EPARTS count=300 shapes=58750 scanned_to=233
+SHAPES count=60000 eparts=312 scanned_to=233
+SHAPES count=70000 eparts=312 scanned_to=233
+EVALUATIONS count=10000000 sid=65487 m=77 shapes=75396 eparts=312
+SHAPES count=80000 eparts=327 scanned_to=233
+EVALUATIONS count=20000000 sid=1598 m=13 shapes=86609 eparts=335
+SHAPES count=90000 eparts=338 scanned_to=233
+EVALUATIONS count=30000000 sid=2 m=47 shapes=96737 eparts=338
+MEMORY total=170478466 shapes=11534336 transitions=62871764 index=4479048 ring=6684672 stamps=26738688 memo=28311552 basecache=29812438 eparts=45968 nshapes=96737
+ROW-CHECKPOINT saved path=/home/rudi/src/fun/sylver-coinage/sylver/campaigns/targeted-2026-09-22/b76-full-801/build/rowstate active_n=235 scanned_to=233 shapes=96737 eparts=338 evaluations=36538222

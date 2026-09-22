@@ -1,0 +1,326 @@
+{
+  "seed_sha256": "3cfc6c6c290f89bf6f4021a0368374485beef8130b91bfbbe60261ddadd4222a",
+  "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+  "native_words": 6,
+  "hints": [
+    157,
+    167,
+    183,
+    191,
+    233,
+    241,
+    253,
+    173,
+    299,
+    181,
+    215,
+    165,
+    203,
+    179,
+    221,
+    239,
+    205
+  ],
+  "command": [
+    "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/targeted-2026-09-22/short56/build/batch-aded19fa091b57b6-w6",
+    "--hints",
+    "157,167,183,191,233,241,253,173,299,181,215,165,203,179,221,239,205",
+    "--batch-file",
+    "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/targeted-2026-09-22/short56/batch-0007/positions.txt"
+  ],
+  "requests_sha256": "cbfec4ad2a1cb3e025b7e68f334577712bca1b88ffc443f64a5df78a636b45a6",
+  "stdout_sha256": "f1554b163318fa9928ea9b84450d03a8ec9837136e8d40e7a943c4bbfcfe716b",
+  "elapsed_seconds": 300.1508130639995,
+  "returncode": -9,
+  "timed_out": true,
+  "memory_gib": 10,
+  "requested": 29,
+  "completed": 15,
+  "rows": [
+    {
+      "position": [
+        16,
+        26,
+        56,
+        62,
+        66,
+        76,
+        235
+      ],
+      "outcome": "N",
+      "kind": "native-batch",
+      "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/targeted-2026-09-22/short56/batch-0007/stdout.txt",
+      "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+      "native_words": 6,
+      "frobenius": 321,
+      "cumulative_states": 57104253,
+      "winning_move": 275
+    },
+    {
+      "position": [
+        16,
+        26,
+        56,
+        62,
+        66,
+        76,
+        237
+      ],
+      "outcome": "N",
+      "kind": "native-batch",
+      "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/targeted-2026-09-22/short56/batch-0007/stdout.txt",
+      "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+      "native_words": 6,
+      "frobenius": 323,
+      "cumulative_states": 57104254,
+      "winning_move": 183
+    },
+    {
+      "position": [
+        16,
+        26,
+        56,
+        62,
+        66,
+        76,
+        243
+      ],
+      "outcome": "N",
+      "kind": "native-batch",
+      "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/targeted-2026-09-22/short56/batch-0007/stdout.txt",
+      "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+      "native_words": 6,
+      "frobenius": 329,
+      "cumulative_states": 59743343,
+      "winning_move": 205
+    },
+    {
+      "position": [
+        16,
+        26,
+        56,
+        62,
+        66,
+        76,
+        245
+      ],
+      "outcome": "N",
+      "kind": "native-batch",
+      "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/targeted-2026-09-22/short56/batch-0007/stdout.txt",
+      "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+      "native_words": 6,
+      "frobenius": 331,
+      "cumulative_states": 59989724,
+      "winning_move": 233
+    },
+    {
+      "position": [
+        16,
+        26,
+        56,
+        62,
+        66,
+        76,
+        247
+      ],
+      "outcome": "P",
+      "kind": "native-batch",
+      "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/targeted-2026-09-22/short56/batch-0007/stdout.txt",
+      "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+      "native_words": 6,
+      "frobenius": 333,
+      "cumulative_states": 62421629,
+      "winning_move": null
+    },
+    {
+      "position": [
+        16,
+        26,
+        56,
+        62,
+        66,
+        76,
+        249
+      ],
+      "outcome": "N",
+      "kind": "native-batch",
+      "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/targeted-2026-09-22/short56/batch-0007/stdout.txt",
+      "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+      "native_words": 6,
+      "frobenius": 335,
+      "cumulative_states": 63812748,
+      "winning_move": 269
+    },
+    {
+      "position": [
+        16,
+        26,
+        56,
+        62,
+        66,
+        76,
+        251
+      ],
+      "outcome": "N",
+      "kind": "native-batch",
+      "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/targeted-2026-09-22/short56/batch-0007/stdout.txt",
+      "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+      "native_words": 6,
+      "frobenius": 337,
+      "cumulative_states": 64811242,
+      "winning_move": 337
+    },
+    {
+      "position": [
+        16,
+        26,
+        56,
+        62,
+        66,
+        76,
+        255
+      ],
+      "outcome": "N",
+      "kind": "native-batch",
+      "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/targeted-2026-09-22/short56/batch-0007/stdout.txt",
+      "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+      "native_words": 6,
+      "frobenius": 341,
+      "cumulative_states": 65495121,
+      "winning_move": 225
+    },
+    {
+      "position": [
+        16,
+        26,
+        56,
+        62,
+        66,
+        76,
+        257
+      ],
+      "outcome": "N",
+      "kind": "native-batch",
+      "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/targeted-2026-09-22/short56/batch-0007/stdout.txt",
+      "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+      "native_words": 6,
+      "frobenius": 343,
+      "cumulative_states": 66108146,
+      "winning_move": 271
+    },
+    {
+      "position": [
+        16,
+        26,
+        56,
+        62,
+        66,
+        76,
+        259
+      ],
+      "outcome": "N",
+      "kind": "native-batch",
+      "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/targeted-2026-09-22/short56/batch-0007/stdout.txt",
+      "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+      "native_words": 6,
+      "frobenius": 345,
+      "cumulative_states": 66840102,
+      "winning_move": 313
+    },
+    {
+      "position": [
+        16,
+        26,
+        56,
+        62,
+        66,
+        76,
+        261
+      ],
+      "outcome": "N",
+      "kind": "native-batch",
+      "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/targeted-2026-09-22/short56/batch-0007/stdout.txt",
+      "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+      "native_words": 6,
+      "frobenius": 347,
+      "cumulative_states": 67151518,
+      "winning_move": 269
+    },
+    {
+      "position": [
+        16,
+        26,
+        56,
+        62,
+        66,
+        76,
+        263
+      ],
+      "outcome": "N",
+      "kind": "native-batch",
+      "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/targeted-2026-09-22/short56/batch-0007/stdout.txt",
+      "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+      "native_words": 6,
+      "frobenius": 349,
+      "cumulative_states": 67339748,
+      "winning_move": 229
+    },
+    {
+      "position": [
+        16,
+        26,
+        56,
+        62,
+        66,
+        76,
+        265
+      ],
+      "outcome": "N",
+      "kind": "native-batch",
+      "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/targeted-2026-09-22/short56/batch-0007/stdout.txt",
+      "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+      "native_words": 6,
+      "frobenius": 351,
+      "cumulative_states": 68277695,
+      "winning_move": 351
+    },
+    {
+      "position": [
+        16,
+        26,
+        56,
+        62,
+        66,
+        76,
+        267
+      ],
+      "outcome": "N",
+      "kind": "native-batch",
+      "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/targeted-2026-09-22/short56/batch-0007/stdout.txt",
+      "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+      "native_words": 6,
+      "frobenius": 353,
+      "cumulative_states": 68284565,
+      "winning_move": 239
+    },
+    {
+      "position": [
+        16,
+        26,
+        56,
+        62,
+        66,
+        76,
+        269
+      ],
+      "outcome": "N",
+      "kind": "native-batch",
+      "source": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/targeted-2026-09-22/short56/batch-0007/stdout.txt",
+      "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+      "native_words": 6,
+      "frobenius": 355,
+      "cumulative_states": 68843054,
+      "winning_move": 249
+    }
+  ]
+}

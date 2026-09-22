@@ -15,6 +15,12 @@ exceeds 10^12 states.
 
 ## Headline results
 
+- **September 22 certificate:** `{16,26,56,62,66}` is P, with all 40
+  obligations covered. The last move, 76, is answered by 247. A fresh
+  replay checks all 69 finite leaves without the campaign cache; six
+  established infinite certificates remain explicit dependencies. This
+  answers move 66 from `W={16,26,62,98}` with 56 and leaves seven W moves
+  unresolved. See the [result, response table, and reproduction command](sylver/campaigns/targeted-2026-09-22/RESULT.md).
 - **September 5 verification release:** independent confirmation of the
   published P-position `{16,26,54,60,62}`, with all 38 root obligations
   covered. The [report and reproducibility bundle](sylver/publication/plan2-2026-09-05/README.md)
@@ -81,6 +87,7 @@ counts are deterministic and must match the run records exactly.
 | `sylver/periodicity_engine.cpp` | g=2 ultimate-periodicity engine: checkpointed, parallel exact fallbacks, compact v2 representation |
 | `sylver/short_certificates.py` | the certified P-node graph and opening-16 table |
 | `sylver/publication/plan2-2026-09-05/` | verification report, public certificate, source snapshot, and reproduction instructions |
+| `sylver/campaigns/` | September 22 certificates, bounded experiments, verification receipts, and remaining obligations |
 | `sylver/RESEARCH.md` | the full research log (Attempts 1–23) |
 | `sylver/RUN_*.txt` | fingerprinted run records for every campaign |
 | `sylver/move26_data/` | exact outcome cache (267,847 rows) and scan artifacts |

@@ -1,0 +1,48 @@
+{
+  "base": [
+    16,
+    26,
+    56,
+    62,
+    66,
+    76
+  ],
+  "target": 801,
+  "sources": [
+    {
+      "path": "sylver/move26_data/periodicity_x.cache",
+      "sha256": "07b4b858ac7712c265833aabbd81ef5b7d6477d325fcfa873c9cab25e781c331"
+    },
+    {
+      "path": "sylver/campaigns/targeted-2026-09-22/b76-233-derived.cache",
+      "sha256": "f733dd7866398d5af0e09c4ba345479f91f24a0358398f918be9c6f8dd7a9049"
+    }
+  ],
+  "engine_sha256": "798ac2b84a3ca3e948c73153c00f1e3459ef1d22d2cf1caa90f65b34553fd9fe",
+  "seconds": 240.0,
+  "memory_gib": 8,
+  "exact_threads": 2,
+  "command": [
+    "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/targeted-2026-09-22/build/engine-798ac2b84a3ca3e9",
+    "/tmp/sylver-target-z4cti4ax/exact.cache",
+    "801",
+    "--memory-report",
+    "--exact-threads",
+    "2",
+    "16",
+    "26",
+    "56",
+    "62",
+    "66",
+    "76",
+    "--checkpoint-file",
+    "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/targeted-2026-09-22/b76-full-resume/build/rowstate"
+  ],
+  "target_start": null,
+  "stop_on_p": false,
+  "target_only": false,
+  "resume_checkpoint": {
+    "path": "sylver/campaigns/targeted-2026-09-22/b76-full-801/build/rowstate",
+    "sha256": "0a3dfcd455906b3674668eeab9f5cb6223286b5fcf25b0f6229cf400d8e62cc2"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "returncode": 0,
+  "stdout": "position=16,26,35,46,50,56 N winning_move=59 frobenius=95 cumulative_states=785098\nposition=16,26,43,46,50,56 N winning_move=39 frobenius=113 cumulative_states=1452437\n",
+  "stderr": "",
+  "status": "complete",
+  "elapsed_seconds": 2.211640556997736,
+  "positions": [
+    [
+      16,
+      26,
+      35,
+      46,
+      50,
+      56
+    ],
+    [
+      16,
+      26,
+      43,
+      46,
+      50,
+      56
+    ]
+  ],
+  "native_words": 4,
+  "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66"
+}

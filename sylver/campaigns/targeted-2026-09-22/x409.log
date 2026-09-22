@@ -1,0 +1,2 @@
+TARGET n=409 outcome=unknown shapes=481 evaluations=1571 exact_completed=16
+MEMORY total=35755605 shapes=43008 transitions=50352 index=19720 ring=34304 stamps=137216 memo=5898240 basecache=29566717 eparts=6048 nshapes=481

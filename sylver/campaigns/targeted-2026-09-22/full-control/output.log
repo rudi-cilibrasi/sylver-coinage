@@ -1,0 +1,6 @@
+engine base=6,10,14, f=4 tbar=8
+progress n=3 shapes=1 eparts=1
+P-HIT n=17
+P-HIT n=25
+PERIOD start=497 length=4 shapes=1
+MEMORY total=35463843 shapes=80 transitions=0 index=136 ring=12 stamps=48 memo=5898240 basecache=29565269 eparts=58 nshapes=1

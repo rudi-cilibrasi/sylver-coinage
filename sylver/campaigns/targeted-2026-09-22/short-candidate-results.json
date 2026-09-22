@@ -1,0 +1,48 @@
+{
+  "returncode": 0,
+  "stdout": "position=16,17,26,56,62 N winning_move=40 frobenius=87 cumulative_states=48018\nposition=16,26,27,56,62,66 N winning_move=65 frobenius=103 cumulative_states=558604\nposition=16,26,43,56,62,66 N winning_move=39 frobenius=119 cumulative_states=1922773\nposition=16,26,51,56,62,66 N winning_move=38 frobenius=137 cumulative_states=3560732\n",
+  "stderr": "",
+  "status": "complete",
+  "elapsed_seconds": 6.708587839999382,
+  "base": [
+    16,
+    26,
+    56,
+    62,
+    66
+  ],
+  "positions": [
+    [
+      16,
+      17,
+      26,
+      56,
+      62
+    ],
+    [
+      16,
+      26,
+      27,
+      56,
+      62,
+      66
+    ],
+    [
+      16,
+      26,
+      43,
+      56,
+      62,
+      66
+    ],
+    [
+      16,
+      26,
+      51,
+      56,
+      62,
+      66
+    ]
+  ],
+  "native_words": 4
+}
