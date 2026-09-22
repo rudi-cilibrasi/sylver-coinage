@@ -1,0 +1,2 @@
+TARGET n=107 outcome=N shapes=3 evaluations=11 exact_completed=1 exact_states=359257
+MEMORY total=35501432 shapes=320 transitions=1060 index=200 ring=236 stamps=944 memo=5898240 basecache=29600280 eparts=152 nshapes=3

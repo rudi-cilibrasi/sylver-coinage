@@ -1,0 +1,41 @@
+{
+  "position": [
+    16,
+    26,
+    62,
+    98
+  ],
+  "outcome": "unknown",
+  "open_moves": [
+    70,
+    86,
+    92,
+    102,
+    108,
+    118,
+    134
+  ],
+  "covered_obligations": 45,
+  "total_obligations": 52,
+  "new_reply": {
+    "opponent_move": 66,
+    "reply": 56,
+    "P_destination": [
+      16,
+      26,
+      56,
+      62,
+      66
+    ]
+  },
+  "certificate_sha256": "6706a2b0f6fb5c7f3d2f9870318a2a34efccade1a6763a3fa6c5421b5a2ff394",
+  "verification_receipt": "b-verification/receipt.json",
+  "verification_sha256": "128f06a7ef9c93e3a13d22ad8bbef8aa2d3b696fcd0e1d2d7efd17be8f373735",
+  "source_graph_sha256": "37082131207672e104c69b70161a1a46cc7474be9fdc2b676d810c2d9a478c4b",
+  "audit": {
+    "winning-edge": 703,
+    "quiet-ender-theorem": 4,
+    "complete-cover": 3
+  },
+  "scope": "W remains unresolved. Move 66 is closed using the complete B certificate, whose finite leaves were replayed without the campaign cache."
+}

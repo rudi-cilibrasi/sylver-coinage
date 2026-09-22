@@ -1,0 +1,16 @@
+{
+  "position": [
+    16,
+    21,
+    26,
+    62,
+    66,
+    107
+  ],
+  "outcome": "P",
+  "frobenius": 102,
+  "states": 359257,
+  "elapsed_seconds": 2.867055963000894,
+  "implementation": "Python reference",
+  "source_sha256": "fe17c5fbb77b036131250af033b0bae7fa200daca4cadb01ceccb12fa6434a3d"
+}

@@ -1,0 +1,22 @@
+{
+  "target": [
+    16,
+    26,
+    36,
+    46,
+    56,
+    66,
+    76
+  ],
+  "outcome": "unknown",
+  "open_moves": [
+    60
+  ],
+  "audit": {
+    "winning-edge": 636,
+    "quiet-ender-theorem": 3,
+    "complete-cover": 2
+  },
+  "last_batch": "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/targeted-2026-09-22/b76-reply36-46/batch-0002",
+  "scope": "Inherited facts retain their named dependencies. Batch outcomes are fresh exact computations with a shared memo; state counts are cumulative. Unfinished requests remain unknown."
+}

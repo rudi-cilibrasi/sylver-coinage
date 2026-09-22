@@ -1,0 +1,211 @@
+[
+  {
+    "position": [
+      16,
+      26,
+      38,
+      47,
+      62,
+      98
+    ],
+    "baseline": {
+      "elapsed": 3.3557088659981673,
+      "stdout": "N winning_move=44 frobenius=129 states=1689215",
+      "returncode": 0
+    },
+    "ender": {
+      "elapsed": 3.407132284999534,
+      "stdout": "N winning_move=44 frobenius=129 states=1689259",
+      "returncode": 0
+    }
+  },
+  {
+    "position": [
+      16,
+      26,
+      33,
+      62,
+      76
+    ],
+    "baseline": {
+      "elapsed": 3.382261175000167,
+      "stdout": "N winning_move=105 frobenius=119 states=1696985",
+      "returncode": 0
+    },
+    "ender": {
+      "elapsed": 3.4326980080004432,
+      "stdout": "N winning_move=105 frobenius=119 states=1697008",
+      "returncode": 0
+    }
+  },
+  {
+    "position": [
+      16,
+      26,
+      38,
+      43,
+      62,
+      98
+    ],
+    "baseline": {
+      "elapsed": 3.1962105550010165,
+      "stdout": "N winning_move=83 frobenius=125 states=1555950",
+      "returncode": 0
+    },
+    "ender": {
+      "elapsed": 3.252478840000549,
+      "stdout": "N winning_move=83 frobenius=125 states=1555980",
+      "returncode": 0
+    }
+  },
+  {
+    "position": [
+      16,
+      26,
+      38,
+      51,
+      62,
+      98
+    ],
+    "baseline": {
+      "elapsed": 3.187300135999976,
+      "stdout": "N winning_move=33 frobenius=133 states=1354651",
+      "returncode": 0
+    },
+    "ender": {
+      "elapsed": 2.6490351499996905,
+      "stdout": "N winning_move=33 frobenius=133 states=1354706",
+      "returncode": 0
+    }
+  },
+  {
+    "position": [
+      16,
+      26,
+      38,
+      49,
+      62
+    ],
+    "baseline": {
+      "elapsed": 2.775815387001785,
+      "stdout": "N winning_move=37 frobenius=131 states=1325596",
+      "returncode": 0
+    },
+    "ender": {
+      "elapsed": 2.727769453998917,
+      "stdout": "N winning_move=37 frobenius=131 states=1325646",
+      "returncode": 0
+    }
+  },
+  {
+    "position": [
+      16,
+      26,
+      43,
+      62,
+      98,
+      108
+    ],
+    "baseline": {
+      "elapsed": 2.651457202002348,
+      "stdout": "N winning_move=31 frobenius=135 states=1269841",
+      "returncode": 0
+    },
+    "ender": {
+      "elapsed": 2.591911280000204,
+      "stdout": "N winning_move=31 frobenius=135 states=1269900",
+      "returncode": 0
+    }
+  },
+  {
+    "position": [
+      16,
+      26,
+      29,
+      62,
+      70,
+      98
+    ],
+    "baseline": {
+      "elapsed": 2.3451899249994312,
+      "stdout": "N winning_move=47 frobenius=137 states=1133024",
+      "returncode": 0
+    },
+    "ender": {
+      "elapsed": 2.325688683999033,
+      "stdout": "N winning_move=47 frobenius=137 states=1133052",
+      "returncode": 0
+    }
+  },
+  {
+    "position": [
+      16,
+      26,
+      38,
+      39,
+      62,
+      98
+    ],
+    "baseline": {
+      "elapsed": 2.4686849969984905,
+      "stdout": "N winning_move=56 frobenius=121 states=1207972",
+      "returncode": 0
+    },
+    "ender": {
+      "elapsed": 2.440629437998723,
+      "stdout": "N winning_move=56 frobenius=121 states=1207993",
+      "returncode": 0
+    }
+  },
+  {
+    "position": [
+      16,
+      26,
+      43,
+      62,
+      98
+    ],
+    "baseline": {
+      "elapsed": 8.017737198999384,
+      "status": "timeout"
+    },
+    "ender": {
+      "elapsed": 8.01675151499876,
+      "status": "timeout"
+    }
+  },
+  {
+    "position": [
+      16,
+      26,
+      51,
+      62,
+      98
+    ],
+    "baseline": {
+      "elapsed": 8.016763894000178,
+      "status": "timeout"
+    },
+    "ender": {
+      "elapsed": 8.021153512003366,
+      "status": "timeout"
+    }
+  },
+  {
+    "position": [
+      16,
+      26,
+      59,
+      62,
+      98
+    ],
+    "baseline": {
+      "elapsed": 8.017590538998775,
+      "status": "timeout"
+    },
+    "ender": {
+      "elapsed": 8.012437978002708,
+      "status": "timeout"
+    }
+  }
+]

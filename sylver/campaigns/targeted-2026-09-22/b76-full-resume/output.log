@@ -1,0 +1,9 @@
+CHECKPOINT-VALIDATE shapes=50000/96737
+ROW-CHECKPOINT loaded path=/home/rudi/src/fun/sylver-coinage/sylver/campaigns/targeted-2026-09-22/b76-full-resume/build/rowstate active_n=235 scanned_to=233 shapes=96737 eparts=338 evaluations=36538222
+engine base=16,26,56,62,66,76, f=43 tbar=86
+EVALUATIONS count=40000000 sid=49818 m=95 shapes=96737 eparts=338
+EVALUATIONS count=50000000 sid=58760 m=13 shapes=96737 eparts=338
+EVALUATIONS count=60000000 sid=92277 m=95 shapes=96737 eparts=338
+EXACT-BATCH n=235 pending=80000 threads=2 truncated=1
+MEMORY total=159212747 shapes=8787536 transitions=62871764 index=4714856 ring=4933587 stamps=19734348 memo=28311552 basecache=29813136 eparts=45968 nshapes=96737
+ROW-CHECKPOINT saved path=/home/rudi/src/fun/sylver-coinage/sylver/campaigns/targeted-2026-09-22/b76-full-resume/build/rowstate active_n=235 scanned_to=233 shapes=96737 eparts=338 evaluations=67751093

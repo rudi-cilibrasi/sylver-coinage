@@ -1,0 +1,660 @@
+{
+  "status": "verified",
+  "roots": {
+    "16,26,30,34": "P",
+    "16,26,46,50,56": "P",
+    "16,26,46,56,66": "N",
+    "16,26,50,56,62": "N"
+  },
+  "checked_nodes": 94,
+  "certificate_sha256": "4e3077f8e8a4bfe98ec6031ae69bd8ff7dc1ae5e6bf5eb98a5abf5f9ea13e41f",
+  "python_solver_sha256": "fe17c5fbb77b036131250af033b0bae7fa200daca4cadb01ceccb12fa6434a3d",
+  "verifier_sha256": "a3e6746a260fa71fcbccdbb593292527567eda5f8081336f1fa5daa408a0c39b",
+  "elapsed_seconds": 286.9304086910015,
+  "finite_replays": [
+    {
+      "position": [
+        2,
+        3
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 1,
+      "states": 1,
+      "seconds": 1.765400156727992e-05
+    },
+    {
+      "position": [
+        3,
+        16,
+        26
+      ],
+      "outcome": "N",
+      "winning_move": 2,
+      "frobenius": 23,
+      "states": 2,
+      "seconds": 2.519000190659426e-05
+    },
+    {
+      "position": [
+        5,
+        16,
+        34
+      ],
+      "outcome": "N",
+      "winning_move": 18,
+      "frobenius": 43,
+      "states": 62,
+      "seconds": 0.00018672299847821705
+    },
+    {
+      "position": [
+        6,
+        7,
+        16
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 17,
+      "states": 21,
+      "seconds": 4.774399712914601e-05
+    },
+    {
+      "position": [
+        7,
+        16,
+        26,
+        34
+      ],
+      "outcome": "N",
+      "winning_move": 6,
+      "frobenius": 45,
+      "states": 31,
+      "seconds": 7.225700028357096e-05
+    },
+    {
+      "position": [
+        9,
+        16,
+        26,
+        30
+      ],
+      "outcome": "N",
+      "winning_move": 10,
+      "frobenius": 49,
+      "states": 340,
+      "seconds": 0.0009190019991365261
+    },
+    {
+      "position": [
+        10,
+        16,
+        21,
+        34
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 59,
+      "states": 1250,
+      "seconds": 0.004389852001622785
+    },
+    {
+      "position": [
+        11,
+        16,
+        26,
+        30,
+        34
+      ],
+      "outcome": "N",
+      "winning_move": 23,
+      "frobenius": 51,
+      "states": 2246,
+      "seconds": 0.007491045002097962
+    },
+    {
+      "position": [
+        12,
+        13,
+        16,
+        30,
+        34
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 35,
+      "states": 904,
+      "seconds": 0.0026768059979076497
+    },
+    {
+      "position": [
+        5,
+        16,
+        18
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 29,
+      "states": 50,
+      "seconds": 0.0001160970023192931
+    },
+    {
+      "position": [
+        16,
+        19,
+        26,
+        30,
+        34
+      ],
+      "outcome": "N",
+      "winning_move": 25,
+      "frobenius": 63,
+      "states": 19906,
+      "seconds": 0.08401751699784654
+    },
+    {
+      "position": [
+        16,
+        22,
+        26,
+        30,
+        34,
+        49
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 89,
+      "states": 84450,
+      "seconds": 0.4825904490026005
+    },
+    {
+      "position": [
+        16,
+        26,
+        27,
+        30,
+        34
+      ],
+      "outcome": "N",
+      "winning_move": 13,
+      "frobenius": 71,
+      "states": 11640,
+      "seconds": 0.04804274500202155
+    },
+    {
+      "position": [
+        16,
+        26,
+        28,
+        30,
+        34,
+        71
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 111,
+      "states": 273467,
+      "seconds": 1.975595300002169
+    },
+    {
+      "position": [
+        16,
+        26,
+        30,
+        34,
+        35
+      ],
+      "outcome": "N",
+      "winning_move": 21,
+      "frobenius": 89,
+      "states": 59076,
+      "seconds": 0.2841697080002632
+    },
+    {
+      "position": [
+        16,
+        26,
+        30,
+        34,
+        36,
+        47
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 101,
+      "states": 223626,
+      "seconds": 1.4668869249981071
+    },
+    {
+      "position": [
+        16,
+        21,
+        26,
+        30,
+        34,
+        38
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 65,
+      "states": 30978,
+      "seconds": 0.14053413099827594
+    },
+    {
+      "position": [
+        16,
+        19,
+        26,
+        30,
+        34,
+        40
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 63,
+      "states": 26654,
+      "seconds": 0.1145394600025611
+    },
+    {
+      "position": [
+        16,
+        26,
+        30,
+        34,
+        43,
+        44
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 97,
+      "states": 243145,
+      "seconds": 1.737654943997768
+    },
+    {
+      "position": [
+        16,
+        26,
+        30,
+        31,
+        34,
+        54
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 75,
+      "states": 133484,
+      "seconds": 0.7964237550004327
+    },
+    {
+      "position": [
+        16,
+        26,
+        30,
+        34,
+        57,
+        70
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 111,
+      "states": 562594,
+      "seconds": 4.447344999000052
+    },
+    {
+      "position": [
+        5,
+        16
+      ],
+      "outcome": "N",
+      "winning_move": 18,
+      "frobenius": 59,
+      "states": 62,
+      "seconds": 0.00017483199917478487
+    },
+    {
+      "position": [
+        7,
+        16,
+        26,
+        50
+      ],
+      "outcome": "N",
+      "winning_move": 6,
+      "frobenius": 45,
+      "states": 31,
+      "seconds": 7.371200263150968e-05
+    },
+    {
+      "position": [
+        8,
+        26,
+        46,
+        63
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 107,
+      "states": 21172,
+      "seconds": 0.1431917119989521
+    },
+    {
+      "position": [
+        9,
+        10,
+        16
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 33,
+      "states": 213,
+      "seconds": 0.0005442690016934648
+    },
+    {
+      "position": [
+        11,
+        16,
+        26,
+        46,
+        50,
+        56
+      ],
+      "outcome": "N",
+      "winning_move": 18,
+      "frobenius": 51,
+      "states": 1980,
+      "seconds": 0.006554583000252023
+    },
+    {
+      "position": [
+        12,
+        16,
+        19,
+        26,
+        46
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 53,
+      "states": 2593,
+      "seconds": 0.008816893001494464
+    },
+    {
+      "position": [
+        15,
+        16,
+        26,
+        50
+      ],
+      "outcome": "N",
+      "winning_move": 24,
+      "frobenius": 85,
+      "states": 12649,
+      "seconds": 0.06216164400029811
+    },
+    {
+      "position": [
+        16,
+        17,
+        26,
+        46,
+        56
+      ],
+      "outcome": "N",
+      "winning_move": 19,
+      "frobenius": 87,
+      "states": 12425,
+      "seconds": 0.056161316999350674
+    },
+    {
+      "position": [
+        11,
+        16,
+        18,
+        26,
+        46
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 41,
+      "states": 1067,
+      "seconds": 0.003116667998256162
+    },
+    {
+      "position": [
+        11,
+        16,
+        20,
+        26,
+        50
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 45,
+      "states": 1475,
+      "seconds": 0.004620419997081626
+    },
+    {
+      "position": [
+        16,
+        21,
+        22,
+        26,
+        46,
+        50,
+        56
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 61,
+      "states": 29154,
+      "seconds": 0.14301982600227348
+    },
+    {
+      "position": [
+        15,
+        16,
+        24,
+        26
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 59,
+      "states": 7377,
+      "seconds": 0.030386446000193246
+    },
+    {
+      "position": [
+        12,
+        16,
+        26,
+        27,
+        46
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 61,
+      "states": 5252,
+      "seconds": 0.020526977998088114
+    },
+    {
+      "position": [
+        16,
+        26,
+        28,
+        41,
+        46,
+        50
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 81,
+      "states": 328837,
+      "seconds": 2.1739422230020864
+    },
+    {
+      "position": [
+        16,
+        26,
+        35,
+        46,
+        50,
+        56
+      ],
+      "outcome": "N",
+      "winning_move": 59,
+      "frobenius": 95,
+      "states": 785098,
+      "seconds": 6.065462085000036
+    },
+    {
+      "position": [
+        16,
+        26,
+        36,
+        46,
+        50,
+        56,
+        85
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 155,
+      "states": 3047415,
+      "seconds": 34.19358098500015
+    },
+    {
+      "position": [
+        16,
+        26,
+        38,
+        46,
+        50,
+        56,
+        97
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 157,
+      "states": 2908675,
+      "seconds": 34.46853841199845
+    },
+    {
+      "position": [
+        16,
+        26,
+        40,
+        46,
+        50,
+        69
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 139,
+      "states": 2475656,
+      "seconds": 26.858584516998235
+    },
+    {
+      "position": [
+        16,
+        26,
+        43,
+        46,
+        50,
+        56
+      ],
+      "outcome": "N",
+      "winning_move": 39,
+      "frobenius": 113,
+      "states": 1112868,
+      "seconds": 9.92643598900031
+    },
+    {
+      "position": [
+        16,
+        17,
+        26,
+        44,
+        46,
+        56
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 71,
+      "states": 34379,
+      "seconds": 0.1935842610000691
+    },
+    {
+      "position": [
+        16,
+        26,
+        46,
+        50,
+        54,
+        56,
+        115
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 175,
+      "states": 6729398,
+      "seconds": 94.94737911099946
+    },
+    {
+      "position": [
+        16,
+        26,
+        29,
+        46,
+        50,
+        56,
+        60
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 99,
+      "states": 473143,
+      "seconds": 3.9177293960019597
+    },
+    {
+      "position": [
+        16,
+        26,
+        33,
+        46,
+        50,
+        56,
+        70
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 93,
+      "states": 631811,
+      "seconds": 5.005526855999051
+    },
+    {
+      "position": [
+        16,
+        26,
+        46,
+        50,
+        56,
+        75,
+        86
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 145,
+      "states": 4934472,
+      "seconds": 56.855025533001026
+    }
+  ],
+  "named_repository_dependencies": {
+    "4,6": "node:C",
+    "8,12,26,30": "pairing:A3",
+    "14,16,20,26": "node:R",
+    "10,16,24": "node:K",
+    "12,14,16": "node:F"
+  },
+  "theorem": "Quiet End Theorem for the short complete covers",
+  "scope": "All finite leaves independently recomputed with fresh Python memos; named infinite certificates remain dependencies."
+}

@@ -1,0 +1,40 @@
+[
+  {
+    "position": [
+      16,
+      26,
+      34,
+      39,
+      62
+    ],
+    "stdout": "P winning_move=none frobenius=111 states=800890",
+    "elapsed_seconds": 1.4587370259978343,
+    "method": "standalone native evaluator compiled before batch modification"
+  },
+  {
+    "position": [
+      16,
+      26,
+      43,
+      62,
+      76,
+      98
+    ],
+    "stdout": "P winning_move=none frobenius=125 states=4294839",
+    "elapsed_seconds": 10.833924237998872,
+    "method": "standalone native evaluator compiled before batch modification"
+  },
+  {
+    "position": [
+      16,
+      26,
+      38,
+      55,
+      62,
+      98
+    ],
+    "stdout": "P winning_move=none frobenius=137 states=3240895",
+    "elapsed_seconds": 8.433191284999339,
+    "method": "standalone native evaluator compiled before batch modification"
+  }
+]

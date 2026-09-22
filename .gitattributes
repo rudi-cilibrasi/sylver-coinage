@@ -1,0 +1,6 @@
+# Collapse generated exploratory graphs in code review; compact certificates
+# and verification scripts remain visible for review.
+sylver/campaigns/**/proof-graph.json linguist-generated=true
+# Unified diffs encode a blank context line as a single space. Preserve
+# archived patch bytes so their recorded hashes remain reproducible.
+sylver/campaigns/**/*.patch whitespace=-blank-at-eol

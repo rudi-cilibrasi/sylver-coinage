@@ -1,0 +1,16 @@
+{
+  "position": [
+    16,
+    26,
+    36,
+    56,
+    59,
+    66,
+    76
+  ],
+  "outcome": "P",
+  "frobenius": 145,
+  "states": 3278048,
+  "elapsed_seconds": 35.02714594600184,
+  "source_sha256": "fe17c5fbb77b036131250af033b0bae7fa200daca4cadb01ceccb12fa6434a3d"
+}

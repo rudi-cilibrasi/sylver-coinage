@@ -1,0 +1,7 @@
+{
+  "source_graph": "sylver/campaigns/w-2026-09-22/evidence/proof-graph.json",
+  "source_sha256": "31d3db205abdfa213aa58cab622035c85db27d8a57af92f0904ba0d3159fadad",
+  "routing": "exact one-move identities into P positions; quiet-ender theorem for finite N",
+  "rows": 428,
+  "cache_sha256": "55dc6ecbf5b64d37ecd8afe7d580320461e5f6886d46b9c936692666fa2b721d"
+}

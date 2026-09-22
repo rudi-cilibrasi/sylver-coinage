@@ -1,0 +1,25 @@
+{
+  "target": [
+    16,
+    26,
+    62,
+    98
+  ],
+  "outcome": "unknown",
+  "open_moves": [
+    66,
+    70,
+    86,
+    92,
+    102,
+    108,
+    118,
+    134
+  ],
+  "native_budget_remaining": 0.0,
+  "odd_search_limit": 201,
+  "audit": {
+    "winning-edge": 170
+  },
+  "scope": "Inherited exact cache, repository certificates, September 5 release, and the explicitly named published P assumption. Only exact-checks.jsonl contains fresh computations."
+}

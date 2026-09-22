@@ -1,0 +1,36 @@
+{
+  "base": [
+    16,
+    26,
+    82,
+    88
+  ],
+  "target": 409,
+  "seed_cache": "sylver/move26_data/periodicity_x.cache",
+  "seed_sha256": "07b4b858ac7712c265833aabbd81ef5b7d6477d325fcfa873c9cab25e781c331",
+  "engine_sha256": "b0f4de5197662dc4a6ada9b400402748450c7d035a9743bccd86d9f80f5e61f5",
+  "working_cache": "/tmp/sylver-targeted-x409.cache",
+  "seconds": 90,
+  "memory_gib": 6,
+  "exact_threads": 1,
+  "mode": "target-only",
+  "command": [
+    "/tmp/sylver-target-engine",
+    "/tmp/sylver-targeted-x409.cache",
+    "409",
+    "--target-only",
+    "--memory-report",
+    "16",
+    "26",
+    "82",
+    "88"
+  ],
+  "elapsed_seconds": 90.16459795999981,
+  "returncode": 130,
+  "timed_out": true,
+  "forced_kill": false,
+  "added_exact_outcomes": 16,
+  "added_P": 0,
+  "target_cache_value": null,
+  "log_sha256": "e4711ebb2f2ee667f8ff0b953ae64e23c32eefdac1358f26793ef581c0b2c731"
+}

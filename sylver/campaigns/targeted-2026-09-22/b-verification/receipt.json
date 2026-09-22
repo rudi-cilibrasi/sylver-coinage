@@ -1,0 +1,955 @@
+{
+  "status": "verified",
+  "roots": {
+    "16,26,56,62,66": "P",
+    "16,26,62,66": "N"
+  },
+  "structural_audit": {
+    "winning-edge": 66,
+    "complete-cover": 3
+  },
+  "checked_nodes": 144,
+  "finite_requested": 69,
+  "finite_completed": 69,
+  "native_words": 6,
+  "finite_replays": [
+    {
+      "position": [
+        2,
+        3
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 1,
+      "cumulative_states": 1
+    },
+    {
+      "position": [
+        6,
+        7,
+        16
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 17,
+      "cumulative_states": 21
+    },
+    {
+      "position": [
+        3,
+        16,
+        26
+      ],
+      "outcome": "N",
+      "winning_move": 2,
+      "frobenius": 23,
+      "cumulative_states": 22
+    },
+    {
+      "position": [
+        5,
+        16,
+        18
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 29,
+      "cumulative_states": 69
+    },
+    {
+      "position": [
+        9,
+        10,
+        16
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 33,
+      "cumulative_states": 257
+    },
+    {
+      "position": [
+        12,
+        13,
+        16,
+        30,
+        34
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 35,
+      "cumulative_states": 1096
+    },
+    {
+      "position": [
+        11,
+        16,
+        18,
+        26,
+        46
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 41,
+      "cumulative_states": 1961
+    },
+    {
+      "position": [
+        5,
+        16,
+        34
+      ],
+      "outcome": "N",
+      "winning_move": 18,
+      "frobenius": 43,
+      "cumulative_states": 1973
+    },
+    {
+      "position": [
+        11,
+        16,
+        20,
+        26,
+        50
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 45,
+      "cumulative_states": 2715
+    },
+    {
+      "position": [
+        7,
+        16,
+        26,
+        34
+      ],
+      "outcome": "N",
+      "winning_move": 6,
+      "frobenius": 45,
+      "cumulative_states": 2716
+    },
+    {
+      "position": [
+        7,
+        16,
+        26,
+        50
+      ],
+      "outcome": "N",
+      "winning_move": 6,
+      "frobenius": 45,
+      "cumulative_states": 2717
+    },
+    {
+      "position": [
+        9,
+        16,
+        26,
+        30
+      ],
+      "outcome": "N",
+      "winning_move": 10,
+      "frobenius": 49,
+      "cumulative_states": 2791
+    },
+    {
+      "position": [
+        11,
+        16,
+        26,
+        30,
+        34
+      ],
+      "outcome": "N",
+      "winning_move": 23,
+      "frobenius": 51,
+      "cumulative_states": 3582
+    },
+    {
+      "position": [
+        11,
+        16,
+        26,
+        46,
+        50,
+        56
+      ],
+      "outcome": "N",
+      "winning_move": 18,
+      "frobenius": 51,
+      "cumulative_states": 3694
+    },
+    {
+      "position": [
+        12,
+        16,
+        19,
+        26,
+        46
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 53,
+      "cumulative_states": 5742
+    },
+    {
+      "position": [
+        9,
+        16,
+        26,
+        56
+      ],
+      "outcome": "N",
+      "winning_move": 10,
+      "frobenius": 55,
+      "cumulative_states": 5745
+    },
+    {
+      "position": [
+        7,
+        16,
+        26
+      ],
+      "outcome": "N",
+      "winning_move": 6,
+      "frobenius": 57,
+      "cumulative_states": 5746
+    },
+    {
+      "position": [
+        10,
+        16,
+        21,
+        34
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 59,
+      "cumulative_states": 6353
+    },
+    {
+      "position": [
+        15,
+        16,
+        24,
+        26
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 59,
+      "cumulative_states": 11911
+    },
+    {
+      "position": [
+        5,
+        16
+      ],
+      "outcome": "N",
+      "winning_move": 18,
+      "frobenius": 59,
+      "cumulative_states": 11912
+    },
+    {
+      "position": [
+        11,
+        16,
+        26,
+        40
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 61,
+      "cumulative_states": 12962
+    },
+    {
+      "position": [
+        11,
+        16,
+        26,
+        56,
+        62
+      ],
+      "outcome": "N",
+      "winning_move": 35,
+      "frobenius": 61,
+      "cumulative_states": 13209
+    },
+    {
+      "position": [
+        12,
+        16,
+        26,
+        27,
+        46
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 61,
+      "cumulative_states": 15388
+    },
+    {
+      "position": [
+        16,
+        21,
+        22,
+        26,
+        46,
+        50,
+        56
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 61,
+      "cumulative_states": 39943
+    },
+    {
+      "position": [
+        16,
+        19,
+        26,
+        30,
+        34
+      ],
+      "outcome": "N",
+      "winning_move": 25,
+      "frobenius": 63,
+      "cumulative_states": 52145
+    },
+    {
+      "position": [
+        16,
+        19,
+        26,
+        30,
+        34,
+        40
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 63,
+      "cumulative_states": 59167
+    },
+    {
+      "position": [
+        15,
+        16,
+        22,
+        26
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 65,
+      "cumulative_states": 59938
+    },
+    {
+      "position": [
+        16,
+        19,
+        26,
+        34,
+        56,
+        62
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 65,
+      "cumulative_states": 90194
+    },
+    {
+      "position": [
+        16,
+        21,
+        26,
+        30,
+        34,
+        38
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 65,
+      "cumulative_states": 101488
+    },
+    {
+      "position": [
+        16,
+        17,
+        26,
+        44,
+        46,
+        56
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 71,
+      "cumulative_states": 119308
+    },
+    {
+      "position": [
+        16,
+        25,
+        26,
+        28,
+        62
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 71,
+      "cumulative_states": 196495
+    },
+    {
+      "position": [
+        16,
+        26,
+        27,
+        30,
+        34
+      ],
+      "outcome": "N",
+      "winning_move": 13,
+      "frobenius": 71,
+      "cumulative_states": 197984
+    },
+    {
+      "position": [
+        16,
+        21,
+        26,
+        44,
+        56,
+        62,
+        66
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 75,
+      "cumulative_states": 317634
+    },
+    {
+      "position": [
+        16,
+        26,
+        30,
+        31,
+        34,
+        54
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 75,
+      "cumulative_states": 395854
+    },
+    {
+      "position": [
+        16,
+        26,
+        28,
+        41,
+        46,
+        50
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 81,
+      "cumulative_states": 579368
+    },
+    {
+      "position": [
+        15,
+        16,
+        26,
+        50
+      ],
+      "outcome": "N",
+      "winning_move": 24,
+      "frobenius": 85,
+      "cumulative_states": 579521
+    },
+    {
+      "position": [
+        15,
+        16,
+        26,
+        66
+      ],
+      "outcome": "N",
+      "winning_move": 22,
+      "frobenius": 85,
+      "cumulative_states": 579544
+    },
+    {
+      "position": [
+        16,
+        17,
+        26,
+        46,
+        56
+      ],
+      "outcome": "N",
+      "winning_move": 19,
+      "frobenius": 87,
+      "cumulative_states": 579547
+    },
+    {
+      "position": [
+        16,
+        17,
+        26,
+        56,
+        62
+      ],
+      "outcome": "N",
+      "winning_move": 40,
+      "frobenius": 87,
+      "cumulative_states": 590296
+    },
+    {
+      "position": [
+        16,
+        22,
+        26,
+        30,
+        34,
+        49
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 89,
+      "cumulative_states": 618094
+    },
+    {
+      "position": [
+        16,
+        26,
+        30,
+        34,
+        35
+      ],
+      "outcome": "N",
+      "winning_move": 21,
+      "frobenius": 89,
+      "cumulative_states": 621249
+    },
+    {
+      "position": [
+        16,
+        26,
+        33,
+        46,
+        50,
+        56,
+        70
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 93,
+      "cumulative_states": 1023158
+    },
+    {
+      "position": [
+        16,
+        24,
+        26,
+        35,
+        62
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 95,
+      "cumulative_states": 1116667
+    },
+    {
+      "position": [
+        16,
+        26,
+        35,
+        46,
+        50,
+        56
+      ],
+      "outcome": "N",
+      "winning_move": 59,
+      "frobenius": 95,
+      "cumulative_states": 1434320
+    },
+    {
+      "position": [
+        16,
+        26,
+        30,
+        34,
+        43,
+        44
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 97,
+      "cumulative_states": 1484674
+    },
+    {
+      "position": [
+        16,
+        26,
+        29,
+        46,
+        50,
+        56,
+        60
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 99,
+      "cumulative_states": 1627229
+    },
+    {
+      "position": [
+        16,
+        26,
+        30,
+        34,
+        36,
+        47
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 101,
+      "cumulative_states": 1656300
+    },
+    {
+      "position": [
+        16,
+        26,
+        27,
+        56,
+        62,
+        66
+      ],
+      "outcome": "N",
+      "winning_move": 65,
+      "frobenius": 103,
+      "cumulative_states": 1876448
+    },
+    {
+      "position": [
+        16,
+        26,
+        33,
+        56,
+        60,
+        62
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 103,
+      "cumulative_states": 2312079
+    },
+    {
+      "position": [
+        8,
+        26,
+        46,
+        63
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 107,
+      "cumulative_states": 2317533
+    },
+    {
+      "position": [
+        16,
+        23,
+        26,
+        56,
+        66
+      ],
+      "outcome": "N",
+      "winning_move": 14,
+      "frobenius": 109,
+      "cumulative_states": 2317595
+    },
+    {
+      "position": [
+        16,
+        26,
+        28,
+        30,
+        34,
+        71
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 111,
+      "cumulative_states": 2410598
+    },
+    {
+      "position": [
+        16,
+        26,
+        30,
+        34,
+        57,
+        70
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 111,
+      "cumulative_states": 2542345
+    },
+    {
+      "position": [
+        16,
+        26,
+        38,
+        51,
+        56,
+        62,
+        66
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 111,
+      "cumulative_states": 3450920
+    },
+    {
+      "position": [
+        16,
+        26,
+        43,
+        46,
+        50,
+        56
+      ],
+      "outcome": "N",
+      "winning_move": 39,
+      "frobenius": 113,
+      "cumulative_states": 3599996
+    },
+    {
+      "position": [
+        16,
+        26,
+        43,
+        56,
+        62,
+        66
+      ],
+      "outcome": "N",
+      "winning_move": 39,
+      "frobenius": 119,
+      "cumulative_states": 3942546
+    },
+    {
+      "position": [
+        16,
+        26,
+        51,
+        56,
+        62,
+        66
+      ],
+      "outcome": "N",
+      "winning_move": 38,
+      "frobenius": 137,
+      "cumulative_states": 4260659
+    },
+    {
+      "position": [
+        16,
+        26,
+        36,
+        53,
+        56,
+        66
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 139,
+      "cumulative_states": 5353992
+    },
+    {
+      "position": [
+        16,
+        26,
+        40,
+        46,
+        50,
+        69
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 139,
+      "cumulative_states": 6168590
+    },
+    {
+      "position": [
+        16,
+        26,
+        46,
+        50,
+        56,
+        75,
+        86
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 145,
+      "cumulative_states": 7821173
+    },
+    {
+      "position": [
+        16,
+        26,
+        56,
+        62,
+        66,
+        67,
+        102
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 153,
+      "cumulative_states": 11800617
+    },
+    {
+      "position": [
+        16,
+        26,
+        36,
+        46,
+        50,
+        56,
+        85
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 155,
+      "cumulative_states": 12234067
+    },
+    {
+      "position": [
+        16,
+        26,
+        38,
+        46,
+        50,
+        56,
+        97
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 157,
+      "cumulative_states": 12715118
+    },
+    {
+      "position": [
+        16,
+        26,
+        56,
+        62,
+        66,
+        70,
+        89
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 165,
+      "cumulative_states": 17287161
+    },
+    {
+      "position": [
+        16,
+        26,
+        54,
+        56,
+        62,
+        66,
+        91
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 167,
+      "cumulative_states": 18433833
+    },
+    {
+      "position": [
+        16,
+        26,
+        46,
+        50,
+        54,
+        56,
+        115
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 175,
+      "cumulative_states": 19503639
+    },
+    {
+      "position": [
+        16,
+        26,
+        30,
+        66,
+        119
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 189,
+      "cumulative_states": 20310268
+    },
+    {
+      "position": [
+        16,
+        26,
+        56,
+        62,
+        66,
+        86,
+        143
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 219,
+      "cumulative_states": 34726736
+    },
+    {
+      "position": [
+        16,
+        26,
+        56,
+        62,
+        66,
+        76,
+        247
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 333,
+      "cumulative_states": 63503395
+    }
+  ],
+  "named_repository_dependencies": {
+    "4,6": "node:C",
+    "8,20,26": "node:G",
+    "10,16,24": "node:K",
+    "12,14,16": "node:F",
+    "8,12,26,30": "pairing:A3",
+    "14,16,20,26": "node:R"
+  },
+  "certificate_sha256": "6706a2b0f6fb5c7f3d2f9870318a2a34efccade1a6763a3fa6c5421b5a2ff394",
+  "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+  "verifier_sha256": "4ad8a5b23c017efa618c73d514b11b1332045191b8a97e24f999b5c3043eeb51",
+  "command": [
+    "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/targeted-2026-09-22/b-verification/build/native",
+    "--batch-file",
+    "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/targeted-2026-09-22/b-verification/positions.txt"
+  ],
+  "requests_sha256": "9d532bb8302e5304686dff20fe1cb361d4cf6a13bcf0842145622b231260c6c5",
+  "stdout_sha256": "d0ef1a54562cec15ed3417303447e5a96787424d71293b8a8a77ecd33250337e",
+  "elapsed_seconds": 267.1972414829979,
+  "returncode": 0,
+  "timed_out": false,
+  "scope": "All finite leaves replayed from an empty shared memo; no inherited outcome cache. Infinite certificates and Quiet End Theorem remain explicit dependencies."
+}

@@ -1,0 +1,34 @@
+{
+  "base": [
+    6,
+    10,
+    14
+  ],
+  "target": 701,
+  "sources": [
+    {
+      "path": "sylver/move26_data/periodicity_x.cache",
+      "sha256": "07b4b858ac7712c265833aabbd81ef5b7d6477d325fcfa873c9cab25e781c331"
+    }
+  ],
+  "engine_sha256": "798ac2b84a3ca3e948c73153c00f1e3459ef1d22d2cf1caa90f65b34553fd9fe",
+  "seconds": 10.0,
+  "memory_gib": 1,
+  "exact_threads": 1,
+  "command": [
+    "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/targeted-2026-09-22/build/engine-798ac2b84a3ca3e9",
+    "/tmp/sylver-target-7jruvhjp/exact.cache",
+    "701",
+    "--memory-report",
+    "--exact-threads",
+    "1",
+    "6",
+    "10",
+    "14",
+    "--checkpoint-file",
+    "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/targeted-2026-09-22/full-control/build/rowstate"
+  ],
+  "target_start": null,
+  "stop_on_p": false,
+  "target_only": false
+}

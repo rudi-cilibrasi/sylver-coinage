@@ -1,0 +1,42 @@
+diff --git a/sylver/native_solver.cpp b/sylver/native_solver.cpp
+index 748b493..d6e916d 100644
+--- a/sylver/native_solver.cpp
++++ b/sylver/native_solver.cpp
+@@ -7,6 +7,7 @@
+ 
+ #include <algorithm>
+ #include <array>
++#include <bit>
+ #include <cstdint>
+ #include <cstdlib>
+ #include <functional>
+@@ -170,6 +171,29 @@ class Solver {
+         if (const auto found = memo_.find(state); found != memo_.end()) {
+             return found->second;
+         }
++#ifdef SYLVER_ENDER_SHORTCUT
++        // For any gap t, at least one of t's complementary summands is
++        // a gap. At the minimum possible genus this forces weak
++        // antisymmetry, hence an ender (symmetric or pseudosymmetric).
++        // In an ender every other move eliminates its largest gap t.
++        // If t loses to u, playing u directly reaches the same P state.
++        // Keep the terminal {2,3} (whose only gap is 1) out of this rule.
++        int genus = 0;
++        int top = 0;
++        for (int word = 0; word < kWords; ++word) {
++            const std::uint64_t gaps = mask_.words[word] & ~state.words[word];
++            genus += std::popcount(gaps);
++            if (gaps != 0) top = word * 64 + 63 - std::countl_zero(gaps);
++        }
++        if (top > 1 && genus == (top + 2) / 2) {
++            State child = state;
++            child.set(top);  // A largest gap is an end; no other bit changes.
++            const int response = winning_move(child);
++            const int winner = response == 0 ? top : response;
++            memo_.emplace(state, static_cast<std::uint16_t>(winner));
++            return winner;
++        }
++#endif
+         State paired_losers;
+         for (int move = 2; move <= frobenius_; ++move) {
+             if (state.test(move) || paired_losers.test(move)) {

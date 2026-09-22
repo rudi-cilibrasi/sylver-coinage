@@ -1,0 +1,115 @@
+{
+  "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+  "positions": [
+    [
+      16,
+      26,
+      38,
+      47,
+      62,
+      98
+    ],
+    [
+      16,
+      26,
+      33,
+      62,
+      76
+    ],
+    [
+      16,
+      26,
+      38,
+      43,
+      62,
+      98
+    ],
+    [
+      16,
+      26,
+      38,
+      51,
+      62,
+      98
+    ],
+    [
+      16,
+      26,
+      38,
+      49,
+      62
+    ],
+    [
+      16,
+      26,
+      43,
+      62,
+      98,
+      108
+    ],
+    [
+      16,
+      26,
+      29,
+      62,
+      70,
+      98
+    ],
+    [
+      16,
+      26,
+      38,
+      39,
+      62,
+      98
+    ]
+  ],
+  "individual_states": 11233234,
+  "batch_states": 5045386,
+  "state_reduction_fraction": 0.5508518740017345,
+  "batch_elapsed_seconds": 13.4078804210003,
+  "batch_stdout": "position=16,26,38,47,62,98 N winning_move=44 frobenius=129 cumulative_states=1689215\nposition=16,26,33,62,76 N winning_move=105 frobenius=119 cumulative_states=2953458\nposition=16,26,38,43,62,98 N winning_move=83 frobenius=125 cumulative_states=3498705\nposition=16,26,38,51,62,98 N winning_move=33 frobenius=133 cumulative_states=3756033\nposition=16,26,38,49,62 N winning_move=37 frobenius=131 cumulative_states=3918137\nposition=16,26,43,62,98,108 N winning_move=31 frobenius=135 cumulative_states=4343943\nposition=16,26,29,62,70,98 N winning_move=47 frobenius=137 cumulative_states=4844550\nposition=16,26,38,39,62,98 N winning_move=56 frobenius=121 cumulative_states=5045386\n",
+  "individual_results": [
+    {
+      "elapsed": 3.3557088659981673,
+      "stdout": "N winning_move=44 frobenius=129 states=1689215",
+      "returncode": 0
+    },
+    {
+      "elapsed": 3.382261175000167,
+      "stdout": "N winning_move=105 frobenius=119 states=1696985",
+      "returncode": 0
+    },
+    {
+      "elapsed": 3.1962105550010165,
+      "stdout": "N winning_move=83 frobenius=125 states=1555950",
+      "returncode": 0
+    },
+    {
+      "elapsed": 3.187300135999976,
+      "stdout": "N winning_move=33 frobenius=133 states=1354651",
+      "returncode": 0
+    },
+    {
+      "elapsed": 2.775815387001785,
+      "stdout": "N winning_move=37 frobenius=131 states=1325596",
+      "returncode": 0
+    },
+    {
+      "elapsed": 2.651457202002348,
+      "stdout": "N winning_move=31 frobenius=135 states=1269841",
+      "returncode": 0
+    },
+    {
+      "elapsed": 2.3451899249994312,
+      "stdout": "N winning_move=47 frobenius=137 states=1133024",
+      "returncode": 0
+    },
+    {
+      "elapsed": 2.4686849969984905,
+      "stdout": "N winning_move=56 frobenius=121 states=1207972",
+      "returncode": 0
+    }
+  ],
+  "note": "State counts are deterministic; timings are observational and may include concurrent workload."
+}

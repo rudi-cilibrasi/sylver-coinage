@@ -1,0 +1,36 @@
+{
+  "sources": [
+    {
+      "path": "/home/rudi/src/fun/sylver-coinage/sylver/move26_data/periodicity_x.cache",
+      "sha256": "07b4b858ac7712c265833aabbd81ef5b7d6477d325fcfa873c9cab25e781c331"
+    },
+    {
+      "path": "sylver/campaigns/targeted-2026-09-22/short56-current-derived.cache",
+      "sha256": "d949d5b0d287a38d9c49997c3dd4b18b42284026363643ce17b82624ba83a045"
+    }
+  ],
+  "base_source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+  "patch_sha256": "7ceb3b67e589f62ae9e418887e9e6cae27f99896a6ad54a947cad62094ef4908",
+  "source_sha256": "a42762e660fbb59fa098126364bb62a7eaef7f9bf0a7f32e4bfcaf1a81aea0d8",
+  "native_words": 5,
+  "seed_sha256": "de583f659b2c22e089e4fa4930034ef73565333f0042ac9dffdb2fc05646b861",
+  "excluded_seed_roots": [
+    "16,26,56,62,66,76,171"
+  ],
+  "positions_sha256": "7a5f97ed231ee48fd19776a8a8a87b62e11d9bff82195ccc22d61f3f627f0d44",
+  "command": [
+    "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/targeted-2026-09-22/pseed-b76-171/build/seeded",
+    "--p-cache",
+    "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/targeted-2026-09-22/pseed-b76-171/build/p.cache",
+    "--batch-file",
+    "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/targeted-2026-09-22/pseed-b76-171/positions.txt"
+  ],
+  "seconds": 150.0,
+  "memory_gib": 6,
+  "scope": "Memo seeded with inherited P facts; outcomes retain those dependencies.",
+  "returncode": 0,
+  "timed_out": false,
+  "elapsed_seconds": 137.90751714200087,
+  "stdout_sha256": "d27557711ffb7855291ebf2ec70c2014c56d341bce85670e157d1635ba45e94d",
+  "stderr_sha256": "e1686f49b1237e3ac4ff569bc804a05a9fb1572a131698fc785541b4a9b888dd"
+}
