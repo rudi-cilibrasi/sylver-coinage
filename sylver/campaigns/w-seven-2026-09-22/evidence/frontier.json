@@ -1,0 +1,40 @@
+{
+  "target": [
+    16,
+    26,
+    62,
+    98
+  ],
+  "outcome": "unknown",
+  "open_moves": [
+    70,
+    86,
+    92,
+    102,
+    108,
+    118,
+    134
+  ],
+  "native_elapsed_seconds": 901.4347732969945,
+  "batches": 10,
+  "completed_queries": 8,
+  "failed_attempts": {
+    "16,26,62,83,92,98": 1,
+    "16,26,62,81,86,98": 1,
+    "16,26,62,79,98,102": 1,
+    "16,26,62,81,98,102": 1,
+    "16,26,62,79,98,118": 1,
+    "16,26,62,81,98,118": 1,
+    "16,26,62,70,81,98": 1,
+    "16,26,62,83,98,102": 1,
+    "16,26,62,85,86,98": 1,
+    "16,26,62,89,92,98": 1
+  },
+  "P_candidates": [],
+  "audit": {
+    "winning-edge": 738,
+    "quiet-ender-theorem": 4,
+    "complete-cover": 3
+  },
+  "scope": "Discovery ledger. Complete rows are exact native results; new P witnesses require fresh replay. Inherited facts keep their dependencies. Timeouts and finite prefixes are unknown."
+}

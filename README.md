@@ -15,12 +15,19 @@ exceeds 10^12 states.
 
 ## Headline results
 
+- **W frontier reduced to six moves:** after move 134 from
+  `W={16,26,62,98}`, reply **85** reaches the finite P-position
+  `{16,26,62,85,98,134}`. Independent native and Python replays agree on
+  the P outcome and exact count of 37,192,385 states, without inherited
+  outcome assumptions. The remaining
+  W moves are **70,86,92,102,108,118**. See the
+  [September 22 continuation and reproducible certificate](sylver/campaigns/w-seven-2026-09-22/RESULT.md).
 - **September 22 certificate:** `{16,26,56,62,66}` is P, with all 40
   obligations covered. The last move, 76, is answered by 247. A fresh
   replay checks all 69 finite leaves without the campaign cache; six
   established infinite certificates remain explicit dependencies. This
-  answers move 66 from `W={16,26,62,98}` with 56 and leaves seven W moves
-  unresolved. See the [result, response table, and reproduction command](sylver/campaigns/targeted-2026-09-22/RESULT.md).
+  answers move 66 from `W={16,26,62,98}` with 56 and left seven W moves
+  unresolved before the continuation above. See the [result, response table, and reproduction command](sylver/campaigns/targeted-2026-09-22/RESULT.md).
 - **September 5 verification release:** independent confirmation of the
   published P-position `{16,26,54,60,62}`, with all 38 root obligations
   covered. The [report and reproducibility bundle](sylver/publication/plan2-2026-09-05/README.md)

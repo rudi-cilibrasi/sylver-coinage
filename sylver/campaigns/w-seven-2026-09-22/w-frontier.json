@@ -1,0 +1,45 @@
+{
+  "position": [
+    16,
+    26,
+    62,
+    98
+  ],
+  "outcome": "unknown",
+  "open_moves": [
+    70,
+    86,
+    92,
+    102,
+    108,
+    118
+  ],
+  "covered_obligations": 46,
+  "total_obligations": 52,
+  "new_reply": {
+    "opponent_move": 134,
+    "reply": 85,
+    "P_destination": [
+      16,
+      26,
+      62,
+      85,
+      98,
+      134
+    ]
+  },
+  "certificate_sha256": "2149ea4fb1f7d88fbf26cf5f18a62632bf3d1aadcd05ca50a0a2ac27068ec425",
+  "verification_receipt": "verification/receipt.json",
+  "verification_sha256": "613fce7cf7642c8325c27296e6d4ae609c21fa3c80f3979bb30d49223b51cce2",
+  "source_graph_sha256": "244bf229ae6a04a769b47ed85beb7bd13570cf53e9eaff289b6accb7a568903e",
+  "finite_replay": {
+    "implementations": [
+      "native",
+      "python"
+    ],
+    "outcome": "P",
+    "frobenius": 203,
+    "states_each": 37192385
+  },
+  "scope": "W remains unresolved. Move 134 is refuted by reply 85. This new finite witness was independently replayed with native and Python solvers using empty memos and no inherited outcome cache. Other W obligations retain their existing dependencies."
+}

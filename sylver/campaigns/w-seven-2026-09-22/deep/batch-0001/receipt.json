@@ -1,0 +1,217 @@
+{
+  "command": [
+    "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-seven-2026-09-22/deep/build/native-aded19fa091b57b6-w4",
+    "--batch-file",
+    "/home/rudi/src/fun/sylver-coinage/sylver/campaigns/w-seven-2026-09-22/deep/batch-0001/positions.txt"
+  ],
+  "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+  "binary_sha256": "62b51d342748810778fd454aed03e6e412c179f49eff5d578a8cbba3795ccfb3",
+  "native_words": 4,
+  "requests_sha256": "77dabaf2034adbffddc6ad8d16ee5f70d14c531f040e5d4612ff9eb9d99b5383",
+  "stdout_sha256": "da56cc36f2378907f5ef9643e73cc1aa314f00a7e8c0a42a91dc10d868e6e718",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "seconds_limit": 300.0,
+  "elapsed_seconds": 217.98196200299935,
+  "returncode": 0,
+  "stop_reason": "completed",
+  "requested": 14,
+  "completed": 14,
+  "rows": [
+    {
+      "position": [
+        16,
+        26,
+        62,
+        70,
+        81,
+        98
+      ],
+      "outcome": "N",
+      "winning_move": 119,
+      "frobenius": 189,
+      "cumulative_states": 24734045
+    },
+    {
+      "position": [
+        16,
+        26,
+        62,
+        81,
+        86,
+        98
+      ],
+      "outcome": "N",
+      "winning_move": 85,
+      "frobenius": 189,
+      "cumulative_states": 29399259
+    },
+    {
+      "position": [
+        16,
+        26,
+        62,
+        83,
+        92,
+        98
+      ],
+      "outcome": "N",
+      "winning_move": 185,
+      "frobenius": 185,
+      "cumulative_states": 40753134
+    },
+    {
+      "position": [
+        16,
+        26,
+        62,
+        79,
+        98,
+        102
+      ],
+      "outcome": "N",
+      "winning_move": 135,
+      "frobenius": 187,
+      "cumulative_states": 45422552
+    },
+    {
+      "position": [
+        16,
+        26,
+        62,
+        77,
+        98,
+        108
+      ],
+      "outcome": "N",
+      "winning_move": 99,
+      "frobenius": 195,
+      "cumulative_states": 48170543
+    },
+    {
+      "position": [
+        16,
+        26,
+        62,
+        79,
+        98,
+        118
+      ],
+      "outcome": "N",
+      "winning_move": 125,
+      "frobenius": 187,
+      "cumulative_states": 48596175
+    },
+    {
+      "position": [
+        16,
+        26,
+        62,
+        77,
+        98,
+        134
+      ],
+      "outcome": "N",
+      "winning_move": 81,
+      "frobenius": 195,
+      "cumulative_states": 48701842
+    },
+    {
+      "position": [
+        16,
+        26,
+        62,
+        70,
+        85,
+        98
+      ],
+      "outcome": "N",
+      "winning_move": 109,
+      "frobenius": 193,
+      "cumulative_states": 50871313
+    },
+    {
+      "position": [
+        16,
+        26,
+        62,
+        85,
+        86,
+        98
+      ],
+      "outcome": "N",
+      "winning_move": 81,
+      "frobenius": 193,
+      "cumulative_states": 51166231
+    },
+    {
+      "position": [
+        16,
+        26,
+        62,
+        89,
+        92,
+        98
+      ],
+      "outcome": "N",
+      "winning_move": 67,
+      "frobenius": 191,
+      "cumulative_states": 52756733
+    },
+    {
+      "position": [
+        16,
+        26,
+        62,
+        81,
+        98,
+        102
+      ],
+      "outcome": "N",
+      "winning_move": 91,
+      "frobenius": 189,
+      "cumulative_states": 53368682
+    },
+    {
+      "position": [
+        16,
+        26,
+        62,
+        79,
+        98,
+        108
+      ],
+      "outcome": "N",
+      "winning_move": 81,
+      "frobenius": 197,
+      "cumulative_states": 53421969
+    },
+    {
+      "position": [
+        16,
+        26,
+        62,
+        81,
+        98,
+        118
+      ],
+      "outcome": "N",
+      "winning_move": 89,
+      "frobenius": 189,
+      "cumulative_states": 53574024
+    },
+    {
+      "position": [
+        16,
+        26,
+        62,
+        79,
+        98,
+        134
+      ],
+      "outcome": "N",
+      "winning_move": 145,
+      "frobenius": 197,
+      "cumulative_states": 53699121
+    }
+  ]
+}

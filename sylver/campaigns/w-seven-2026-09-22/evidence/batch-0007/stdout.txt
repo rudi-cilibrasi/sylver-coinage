@@ -1,0 +1,1 @@
+position=16,26,62,69,98,134 N winning_move=113 frobenius=187 cumulative_states=22163850
