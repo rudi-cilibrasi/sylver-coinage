@@ -10,6 +10,7 @@
 #include <cstdint>
 #include <cstdlib>
 #include <functional>
+#include <fstream>
 #include <iostream>
 #include <limits>
 #include <numeric>
@@ -118,6 +119,16 @@ class Solver {
     }
     [[nodiscard]] int solve_after_adjoining(int move, const std::vector<int>& hints = {}) {
         return winning_move_hinted(adjoin(initial_, move), hints);
+    }
+    [[nodiscard]] int solve_generators(
+        const std::vector<int>& generators, const std::vector<int>& hints = {}
+    ) {
+        // Used with an empty initial generator set and a common Frobenius
+        // bound. All positions have gcd one and conductor <= bound+1, so
+        // these bitsets are exact semigroups, including above their own F.
+        State root = initial_;
+        for (const int generator : generators) root = adjoin(root, generator);
+        return winning_move_hinted(root, hints);
     }
     [[nodiscard]] std::size_t states_evaluated() const { return memo_.size(); }
 
@@ -292,6 +303,48 @@ void run_move_scan(
     }
 }
 
+void run_position_batch(const std::string& path, const std::vector<int>& hints) {
+    std::ifstream input(path);
+    if (!input) throw std::invalid_argument("cannot open position batch " + path);
+    std::vector<std::vector<int>> positions;
+    std::vector<int> frobenius;
+    int bound = 0;
+    std::string line;
+    while (std::getline(input, line)) {
+        if (line.empty()) continue;
+        if (line.find_first_not_of("0123456789,") != std::string::npos)
+            throw std::invalid_argument("batch rows must be comma-separated integers");
+        auto gs = parse_move_list(line);
+        std::sort(gs.begin(), gs.end());
+        gs.erase(std::unique(gs.begin(), gs.end()), gs.end());
+        if (std::accumulate(gs.begin(), gs.end(), 0,
+                [](int a, int b) { return std::gcd(a, b); }) != 1)
+            throw std::invalid_argument("every batch position must have gcd one");
+        const int f = frobenius_number(gs);
+        if (f > kMaximumFrobenius)
+            throw std::invalid_argument("batch Frobenius bound exceeds native limit " +
+                                        std::to_string(kMaximumFrobenius));
+        positions.push_back(std::move(gs));
+        frobenius.push_back(f);
+        bound = std::max(bound, f);
+    }
+    if (positions.empty()) throw std::invalid_argument("empty position batch");
+    Solver solver({}, bound);
+    for (std::size_t i = 0; i < positions.size(); ++i) {
+        const int response = solver.solve_generators(positions[i], hints);
+        std::cout << "position=";
+        for (std::size_t j = 0; j < positions[i].size(); ++j) {
+            if (j != 0) std::cout << ',';
+            std::cout << positions[i][j];
+        }
+        std::cout << ' ' << (response == 0 ? "P" : "N") << " winning_move=";
+        if (response == 0) std::cout << "none";
+        else std::cout << response;
+        std::cout << " frobenius=" << frobenius[i]
+                  << " cumulative_states=" << solver.states_evaluated() << std::endl;
+    }
+}
+
 }  // namespace
 
 int main(int argc, char** argv) {
@@ -301,6 +354,12 @@ int main(int argc, char** argv) {
             hints = parse_move_list(argv[2]);
             argv += 2;
             argc -= 2;
+        }
+        if (argc >= 2 && std::string(argv[1]) == "--batch-file") {
+            if (argc != 3)
+                throw std::invalid_argument("batch-file mode requires one file path");
+            run_position_batch(argv[2], hints);
+            return EXIT_SUCCESS;
         }
         if (argc >= 2 && std::string(argv[1]) == "--odd-list") {
             if (argc < 4) {
