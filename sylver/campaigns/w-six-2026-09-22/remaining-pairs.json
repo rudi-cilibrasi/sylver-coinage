@@ -1,0 +1,103 @@
+{
+  "seed": "sylver/campaigns/w-six-2026-09-22/evidence/proof-graph.json",
+  "seed_sha256": "f8bc54214335bbec3b0a36265cd15d0c2b47f912bbf80857d995541be62ccece",
+  "open_W_moves": [
+    70,
+    86,
+    92,
+    108,
+    118
+  ],
+  "candidates": [
+    {
+      "moves": [
+        70,
+        108
+      ],
+      "position": [
+        16,
+        26,
+        62,
+        70,
+        98,
+        108
+      ],
+      "half_frobenius": 46,
+      "quiet": false,
+      "open_even_moves": [
+        50,
+        72,
+        76
+      ]
+    },
+    {
+      "moves": [
+        86,
+        92
+      ],
+      "position": [
+        16,
+        26,
+        62,
+        86,
+        92,
+        98
+      ],
+      "half_frobenius": 41,
+      "quiet": false,
+      "open_even_moves": [
+        36,
+        50,
+        56,
+        72,
+        82
+      ]
+    },
+    {
+      "moves": [
+        86,
+        108
+      ],
+      "position": [
+        16,
+        26,
+        62,
+        86,
+        98,
+        108
+      ],
+      "half_frobenius": 46,
+      "quiet": false,
+      "open_even_moves": [
+        50,
+        56,
+        70,
+        72,
+        92
+      ]
+    },
+    {
+      "moves": [
+        108,
+        118
+      ],
+      "position": [
+        16,
+        26,
+        62,
+        98,
+        108,
+        118
+      ],
+      "half_frobenius": 51,
+      "quiet": false,
+      "open_even_moves": [
+        70,
+        72,
+        86,
+        92
+      ]
+    }
+  ],
+  "scope": "Unresolved candidates, not P claims. Both moves are legal in either order and lead to the same canonical semigroup. A P proof would refute both W moves. Any unresolved infinite odd tail still requires proof."
+}

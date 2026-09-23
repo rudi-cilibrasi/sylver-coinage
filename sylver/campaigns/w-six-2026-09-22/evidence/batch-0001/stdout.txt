@@ -1,0 +1,12 @@
+position=16,26,62,70,91,98 N winning_move=93 frobenius=199 cumulative_states=30365347
+position=16,26,62,86,91,98 N winning_move=151 frobenius=199 cumulative_states=37336254
+position=16,26,62,92,95,98 N winning_move=131 frobenius=197 cumulative_states=50313533
+position=16,26,62,89,98,102 N winning_move=33 frobenius=197 cumulative_states=50416988
+position=16,26,62,87,98,108 N winning_move=31 frobenius=205 cumulative_states=50504496
+position=16,26,62,91,98,118 N winning_move=161 frobenius=199 cumulative_states=52614970
+position=16,26,62,70,93,98 N winning_move=56 frobenius=201 cumulative_states=54617499
+position=16,26,62,86,93,98 N winning_move=79 frobenius=201 cumulative_states=55926462
+position=16,26,62,92,97,98 N winning_move=37 frobenius=199 cumulative_states=57049695
+position=16,26,62,93,98,102 N winning_move=108 frobenius=201 cumulative_states=58742981
+position=16,26,62,89,98,108 N winning_move=119 frobenius=207 cumulative_states=60806498
+position=16,26,62,93,98,118 N winning_move=75 frobenius=201 cumulative_states=60892535

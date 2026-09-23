@@ -1,0 +1,29 @@
+{
+  "seed": "sylver/campaigns/w-seven-2026-09-22/deep/proof-graph.json",
+  "seed_sha256": "244bf229ae6a04a769b47ed85beb7bd13570cf53e9eaff289b6accb7a568903e",
+  "extra_graphs": [
+    {
+      "path": "sylver/campaigns/targeted-2026-09-22/b76-even/proof-graph.json",
+      "sha256": "da3b172586244545b244ea26bc8057480649997e206ef8c1b1f0a3b2cc6d8ccf"
+    },
+    {
+      "path": "sylver/campaigns/targeted-2026-09-22/b76-reply36-46/proof-graph.json",
+      "sha256": "993979967c34a5d1d7ae0ad892b71b65b1a2ca712371ce66c44e9b550ad7ef03"
+    }
+  ],
+  "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+  "runner_sha256": "3e4f4d06a374759199dd07d892e7902dd415f800399631dd5acaf6129f3356f2",
+  "budget_seconds": 1800.0,
+  "slice_seconds": 300.0,
+  "odd_limit": 301,
+  "memory_gib": 8,
+  "moves": [
+    70,
+    86,
+    92,
+    102,
+    108,
+    118
+  ],
+  "schedule": "Two rounds of one candidate per branch, rotating the first branch. Within each branch: unsuccessful attempts, Frobenius, position. Only the first unfinished row is deferred after interruption."
+}

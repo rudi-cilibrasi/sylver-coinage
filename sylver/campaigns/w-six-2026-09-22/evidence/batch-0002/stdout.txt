@@ -1,0 +1,3 @@
+position=16,26,62,86,95,98 N winning_move=123 frobenius=203 cumulative_states=41149268
+position=16,26,62,92,98,101 N winning_move=29 frobenius=203 cumulative_states=41263179
+position=16,26,62,95,98,102 P winning_move=none frobenius=203 cumulative_states=45063267

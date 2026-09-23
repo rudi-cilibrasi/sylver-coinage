@@ -1,0 +1,44 @@
+{
+  "position": [
+    16,
+    26,
+    62,
+    98
+  ],
+  "outcome": "unknown",
+  "open_moves": [
+    70,
+    86,
+    92,
+    108,
+    118
+  ],
+  "covered_obligations": 47,
+  "total_obligations": 52,
+  "new_reply": {
+    "opponent_move": 102,
+    "reply": 95,
+    "P_destination": [
+      16,
+      26,
+      62,
+      95,
+      98,
+      102
+    ]
+  },
+  "certificate_sha256": "a8d5e9ed89303a01807f3b0d2deb99179e12c5db8472e2f75893e848f301b6ea",
+  "verification_receipt": "verification/receipt.json",
+  "verification_sha256": "f372114617b04d4c2f096c6e4cede31ae1b12b56dc07f489984132756a474c86",
+  "source_graph_sha256": "f8bc54214335bbec3b0a36265cd15d0c2b47f912bbf80857d995541be62ccece",
+  "finite_replay": {
+    "implementations": [
+      "native",
+      "python"
+    ],
+    "outcome": "P",
+    "frobenius": 203,
+    "states_each": 44985582
+  },
+  "scope": "W remains unresolved. Move 102 is refuted by reply 95. This finite witness was independently replayed with native and Python solvers using empty memos and no inherited outcome cache. Other W obligations retain their existing dependencies."
+}

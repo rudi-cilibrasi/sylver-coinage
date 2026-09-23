@@ -1,0 +1,46 @@
+--- a/sylver/native_solver.cpp
++++ b/sylver/native_solver.cpp
+@@ -7,6 +7,7 @@
+ 
+ #include <algorithm>
+ #include <array>
++#include <bit>
+ #include <cstdint>
+ #include <cstdlib>
+ #include <functional>
+@@ -182,18 +183,23 @@
+             return found->second;
+         }
+         State paired_losers;
+-        for (int move = 2; move <= frobenius_; ++move) {
+-            if (state.test(move) || paired_losers.test(move)) {
+-                continue;
+-            }
+-            const State child = adjoin(state, move);
+-            const int response = winning_move(child);
+-            if (response == 0) {
+-                memo_.emplace(state, static_cast<std::uint16_t>(move));
+-                return move;
+-            }
+-            if (response > move) {
+-                paired_losers.set(response);
++        for (int word = 0; word < kWords; ++word) {
++            std::uint64_t moves = mask_.words[word] & ~state.words[word]
++                                  & ~paired_losers.words[word];
++            if (word == 0) moves &= ~std::uint64_t{3};
++            while (moves != 0) {
++                const int move = word * 64 + std::countr_zero(moves);
++                moves &= moves - 1;
++                const State child = adjoin(state, move);
++                const int response = winning_move(child);
++                if (response == 0) {
++                    memo_.emplace(state, static_cast<std::uint16_t>(move));
++                    return move;
++                }
++                if (response > move) {
++                    paired_losers.set(response);
++                    moves &= ~paired_losers.words[word];
++                }
+             }
+         }
+         memo_.emplace(state, std::uint16_t{0});

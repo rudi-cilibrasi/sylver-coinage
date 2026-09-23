@@ -15,12 +15,18 @@ exceeds 10^12 states.
 
 ## Headline results
 
-- **W frontier reduced to six moves:** after move 134 from
+- **W frontier reduced to five moves:** after move 102 from
+  `W={16,26,62,98}`, reply **95** reaches the finite P-position
+  `{16,26,62,95,98,102}`. Fresh native and Python replays agree on P,
+  Frobenius number 203, and exactly **44,985,582 states**. W now has
+  **47 of 52 obligations covered**, with **70,86,92,108,118** remaining.
+  See the [result and reproducible certificate](sylver/campaigns/w-six-2026-09-22/RESULT.md).
+- **Earlier W continuation (September 22):** after move 134 from
   `W={16,26,62,98}`, reply **85** reaches the finite P-position
   `{16,26,62,85,98,134}`. Independent native and Python replays agree on
   the P outcome and exact count of 37,192,385 states, without inherited
-  outcome assumptions. The remaining
-  W moves are **70,86,92,102,108,118**. See the
+  outcome assumptions. This left six
+  W moves unresolved before the move-102 result above. See the
   [September 22 continuation and reproducible certificate](sylver/campaigns/w-seven-2026-09-22/RESULT.md).
 - **September 22 certificate:** `{16,26,56,62,66}` is P, with all 40
   obligations covered. The last move, 76, is answered by 247. A fresh

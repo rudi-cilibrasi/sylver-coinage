@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "parent": [
+    16,
+    26,
+    62,
+    98,
+    102
+  ],
+  "opponent_move": 89,
+  "reply": 33,
+  "destination": [
+    16,
+    26,
+    33,
+    62,
+    89,
+    102
+  ],
+  "destination_outcome": "P",
+  "frobenius": 119,
+  "scope": "Cross-check of a discovery N row. Refutes odd 89 from W+102; does not classify W+102 or W."
+}
