@@ -1,0 +1,52 @@
+{
+  "baseline_commit": "1d94c24",
+  "source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+  "candidate_sha256": "43137f3153135d9843a44c5232a592422c862c4a7876e36bc0aea027316d5a64",
+  "patch_sha256": "673cd26c0142127561ea147f23d7d9dbdcf9c93c437d296fdb7ae270551728a9",
+  "position": [
+    16,
+    26,
+    37,
+    62,
+    87,
+    92,
+    98
+  ],
+  "native_words": 2,
+  "compiler_flags": [
+    "-std=c++20",
+    "-O3",
+    "-Wall",
+    "-Wextra",
+    "-pedantic",
+    "-DSYLVER_NATIVE_WORDS=2"
+  ],
+  "runs": [
+    {
+      "variant": "baseline",
+      "seconds": 6.157945123995887,
+      "stdout": "P winning_move=none frobenius=123 states=3458311\n"
+    },
+    {
+      "variant": "candidate",
+      "seconds": 6.019437217000814,
+      "stdout": "P winning_move=none frobenius=123 states=3458311\n"
+    },
+    {
+      "variant": "candidate",
+      "seconds": 6.036405017999641,
+      "stdout": "P winning_move=none frobenius=123 states=3458311\n"
+    },
+    {
+      "variant": "baseline",
+      "seconds": 6.115173443002277,
+      "stdout": "P winning_move=none frobenius=123 states=3458311\n"
+    }
+  ],
+  "scope": "Exploratory timing while the separate discovery batch was running. One control, two runs per variant, equal outcomes and counts. Not adopted; no general speedup claim.",
+  "compiler": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "binary_sha256": {
+    "baseline": "f90d22b920f8ce3b2ba6e76ee1d120ad2584ad9b4090a8c0cec06cf930db3e98",
+    "candidate": "ad731fbbc233475a6af7b84425c7a4d2e20aa231c801c26d90cb0a37943ac7a3"
+  }
+}

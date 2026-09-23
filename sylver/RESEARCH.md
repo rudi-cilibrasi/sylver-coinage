@@ -1237,6 +1237,30 @@ of your work, I withdraw my belief!" — the field's most experienced
 practitioner revising his assessment of the move-26 program's
 feasibility.  The correspondence continues.
 
+### Attempt 26 — W's move 102 is answered by 95 (2026-09-22)
+
+Following the move-66 certificate and the move-134 reply 85, a bounded
+continuation of W={16,26,62,98}'s six remaining branches found
+**{16,26,62,95,98,102} P**. Thus move **102** is refuted by reply **95**.
+Fresh standalone native and independent Python replays agree on P,
+Frobenius number **203**, and exactly **44,985,582 evaluated states**.
+This finite witness uses no inherited outcome cache, infinite-position
+certificate, or Quiet End Theorem. No priority claim is made.
+
+W has **47 of 52 obligations covered**; **70,86,92,108,118** remain open.
+W, Q, X, move 26, and opening 16 are still unresolved. The discovery pass
+completed 15 finite queries (14 N, one P) in 400.99 seconds of native runtime,
+stopping at the first P witness. A subsidiary finite P destination has a
+separate matching Python/native replay of 1,721,485 states. The repository's
+305,011-row cache and both solver implementations are unchanged.
+
+The reusable `sylver.verify_finite_reply` command now checks legal two-move
+certificates and independently replays their finite P destinations. Nine
+relevant tests passed, including rejection of a legal path to an N-position,
+interrupted replays, and existing native batch/reference controls. The
+[campaign result](campaigns/w-six-2026-09-22/RESULT.md) links the compact
+certificate, raw receipts, audit, remaining frontier, and reproduction command.
+
 ### Sources
 
 - <https://math.colgate.edu/~integers/yg2/yg2.pdf>

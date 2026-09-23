@@ -1,0 +1,42 @@
+{
+  "target": [
+    16,
+    26,
+    62,
+    98
+  ],
+  "outcome": "unknown",
+  "open_moves": [
+    70,
+    86,
+    92,
+    108,
+    118
+  ],
+  "native_elapsed_seconds": 400.9928169039995,
+  "batches": 2,
+  "completed_queries": 15,
+  "failed_attempts": {},
+  "P_candidates": [
+    {
+      "position": [
+        16,
+        26,
+        62,
+        95,
+        98,
+        102
+      ],
+      "outcome": "P",
+      "winning_move": null,
+      "frobenius": 203,
+      "cumulative_states": 45063267
+    }
+  ],
+  "audit": {
+    "winning-edge": 763,
+    "quiet-ender-theorem": 4,
+    "complete-cover": 3
+  },
+  "scope": "Discovery ledger. Complete rows are exact native results; new P witnesses require fresh replay. Inherited facts keep their dependencies. Timeouts and finite prefixes are unknown."
+}
