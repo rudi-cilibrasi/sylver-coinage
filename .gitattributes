@@ -4,3 +4,6 @@ sylver/campaigns/**/proof-graph.json linguist-generated=true
 # Unified diffs encode a blank context line as a single space. Preserve
 # archived patch bytes so their recorded hashes remain reproducible.
 sylver/campaigns/**/*.patch whitespace=-blank-at-eol
+# Frozen arena evidence is generated; source, tests, and reports remain visible.
+sylver/arena/data/**/*.json linguist-generated=true
+sylver/arena/data/**/*.gz linguist-generated=true
