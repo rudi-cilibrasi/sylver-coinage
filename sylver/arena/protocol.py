@@ -20,9 +20,12 @@ def membership(p,bound):
 
 
 class Session:
-    def __init__(self,bundle,binary,output,limits,proof_style='compact',resume_nodes=None):
+    def __init__(self,bundle,binary,output,limits,proof_style='compact',resume_nodes=None,hints=None):
         validate_bundle(bundle)
         self.bundle=json.loads(canonical(bundle));self.binary=binary;self.output=Path(output)
+        # Untrusted hints load on first use, charged like all discovery work.
+        # They answer `hint` only and never become proof nodes.
+        self.hints_path=hints;self._hints=None
         self.output.mkdir(exist_ok=True)
         self.limits=limits;self.started=time.monotonic();self.queries=0;self.calls=0
         self.proof_style=proof_style;self.submitted=False
@@ -112,6 +115,16 @@ class Session:
             if op=='proof':return self.proof(p)
             n=self.nodes.get(k) if op=='lookup' else self.route(p) if op=='route' else self.close(p)
             return {'position':list(p),'outcome':n['outcome'] if n else 'unknown','node':n}
+        if op=='hint':
+            fields(args,('positions',))
+            if not isinstance(args['positions'],list) or not 1<=len(args['positions'])<=4096:raise ValueError('invalid hint batch size')
+            ps=[position(p) for p in args['positions']]
+            digest=self.bundle['manifest'].get('hints')
+            if digest and self.hints_path and self._hints is None:
+                from .hints import Hints
+                self._hints=Hints(self.hints_path,digest)
+            return {'trust':'untrusted-hint','rows':[{'position':list(p),'outcome':self._hints.get(p) if self._hints else 'unknown'}
+                                                     for p in ps]}
         if op=='exact':
             fields(args,('positions','seconds'))
             seconds=args['seconds']
@@ -119,9 +132,10 @@ class Session:
             if not isinstance(args['positions'],list) or not 1<=len(args['positions'])<=128:raise ValueError('invalid batch size')
             ps=[position(p) for p in args['positions']]
             eligible=[p for p in ps if profile(p).get('frobenius',1024)<=1023]
-            self.queries+=1
+            self.queries+=1;started=time.monotonic()
             rows=batch(self.binary,eligible,self.output/f'query-{self.queries:04d}',
                        min(seconds,self.limits['query_wall_seconds'])) if eligible else []
+            elapsed=time.monotonic()-started
             for row in rows:
                 p=tuple(row['position']);k=key(p)
                 n={'rule':'finite','outcome':row['outcome']}
@@ -133,7 +147,8 @@ class Session:
                 if old and old['outcome']!=n['outcome']:raise ValueError('contradictory exact result')
                 self.nodes.setdefault(k,n)
             completed={key(r['position']):r for r in rows}
-            return {'rows':[completed.get(key(p),{'position':list(p),'outcome':'unknown'}) for p in ps]}
+            return {'rows':[completed.get(key(p),{'position':list(p),'outcome':'unknown'}) for p in ps],
+                    'wall_seconds':elapsed}
         if op=='submit':
             fields(args,('proof',))
             encoded=canonical_proof(args['proof'],self.bundle['snapshot'],self.bundle['manifest']['target'])

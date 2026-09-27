@@ -19,7 +19,7 @@ def main():
     try:
         if cfg['phase']=='discovery':
             session=Session(bundle,cfg['binary'],out,cfg['limits'],cfg.get('policy',{}).get('proof_style','compact'),
-                            read(cfg['resume_nodes']) if cfg.get('resume_nodes') else None)
+                            read(cfg['resume_nodes']) if cfg.get('resume_nodes') else None,cfg.get('hints'))
             if 'agent' in cfg:run_agent(Client(session),cfg['agent'],out,cfg['seed'])
             elif 'script' in cfg:
                 for request in cfg['script']:

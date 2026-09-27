@@ -38,7 +38,7 @@ def execution_profile(limits=None):
             'accounting':'linux-subreaper-wait4-aggregate-v1','sandbox':sandbox.describe(),
             'limits':limits or DEFAULT_LIMITS,
             'sources':{name:sha((Path(__file__).parent/name).read_bytes()) for name in
-                       ('episode.py','supervisor.py','exact.py','worker.py','protocol.py','policies.py','agent.py','sandbox.py')}}
+                       ('episode.py','supervisor.py','exact.py','worker.py','protocol.py','policies.py','agent.py','sandbox.py','hints.py')}}
 
 
 def _phase(config,run):
@@ -56,8 +56,22 @@ def _phase(config,run):
     return read(usage) if code==0 and usage.exists() else {'reason':'accounting-incomplete','cpu_seconds':None}
 
 
-def run_episode(bundle,policy,output,tools,seed=0,script=None,agent=None):
+def _check_hints(bundle,hints):
+    """A golf manifest pins its hint file; nothing else may supply hints."""
+    digest=bundle['manifest'].get('hints')
+    if digest is None:
+        if hints is not None:raise ValueError('hints supplied for a challenge that pins none')
+        return None
+    if hints is None:raise ValueError('this golf challenge needs its pinned hint file')
+    import gzip
+    path=Path(hints).resolve()
+    if sha(gzip.decompress(path.read_bytes()))!=digest:raise ValueError('hint file does not match the pinned digest')
+    return str(path)
+
+
+def run_episode(bundle,policy,output,tools,seed=0,script=None,agent=None,hints=None):
     validate_bundle(bundle)
+    hints=_check_hints(bundle,hints)
     if bundle['manifest']['verifier']!=verifier_profile():raise ValueError('verifier profile changed')
     limits=bundle['manifest']['execution']['limits']
     if bundle['manifest']['execution']!=execution_profile(limits):raise ValueError('execution profile mismatch')
@@ -80,6 +94,7 @@ def run_episode(bundle,policy,output,tools,seed=0,script=None,agent=None):
              'verifier':bundle['manifest']['verifier'],'execution':bundle['manifest']['execution'],
              'limits':limits,'discovery_cpu':None,'verification_cpu':None,'T':None,'C':None,
              'S':None,'log_score':None,'model_usage':None,'phases':{}}
+    if hints:receipt['hints_file']=hints
     write(output/'receipt.json',receipt)
     config={'bundle':str(output/'bundle.json'),'binary':str(binary),'seed':seed}
     if agent is not None:config['agent']=agent
@@ -107,6 +122,7 @@ def _execute_locked(output,bundle,binary,competitor,receipt,resuming=False):
     attempt_root=output if attempt==0 else output/f'attempt-{attempt:04d}'
     if attempt:attempt_root.mkdir()
     config={'bundle':str(output/'bundle.json'),'binary':str(binary),'seed':receipt['seed']}
+    if receipt.get('hints_file'):config['hints']=receipt['hints_file']
     for name in ('agent','script','policy'):
         if competitor[name] is not None:config[name]=competitor[name];break
     if resuming and receipt.get('checkpoint'):

@@ -73,22 +73,29 @@ def validate_snapshot(data):
     return sha(data)
 
 
-def manifest(target, baseline, verifier, execution, kind='training', context=''):
+def manifest(target, baseline, verifier, execution, kind='training', context='', hints=None):
+    """``hints`` pins an untrusted hint file (golf only); it is never a proof source."""
     validate_snapshot(baseline)
     p = list(position(target))
     if any(f['position'] == p for f in baseline['facts'].values()):
         raise ValueError('target already labeled in visible snapshot')
-    if kind not in ('training', 'held-out', 'live', 'public-regression'):
+    if kind not in ('training', 'held-out', 'live', 'public-regression', 'golf'):
         raise ValueError('invalid challenge kind')
-    return {'schema': SCHEMA, 'target': p, 'baseline': sha(baseline),
-            'verifier': verifier, 'execution': execution, 'kind': kind, 'context': context}
+    result = {'schema': SCHEMA, 'target': p, 'baseline': sha(baseline),
+              'verifier': verifier, 'execution': execution, 'kind': kind, 'context': context}
+    if hints is not None:
+        if kind != 'golf' or not isinstance(hints, str) or len(hints) != 64 or any(c not in '0123456789abcdef' for c in hints):
+            raise ValueError('only golf challenges may pin a hint digest')
+        result['hints'] = hints
+    return result
 
 
 def validate_bundle(bundle):
     fields(bundle, ('manifest', 'snapshot'))
     m = bundle['manifest']
-    fields(m, ('schema', 'target', 'baseline', 'verifier', 'execution', 'kind', 'context'))
-    expected = manifest(m['target'], bundle['snapshot'], m['verifier'], m['execution'], m['kind'], m['context'])
+    fields(m, ('schema', 'target', 'baseline', 'verifier', 'execution', 'kind', 'context'), ('hints',))
+    expected = manifest(m['target'], bundle['snapshot'], m['verifier'], m['execution'], m['kind'], m['context'],
+                        m.get('hints'))
     if m != expected or type(m['schema']) is not int:
         raise ValueError('challenge manifest mismatch')
     # All visible fields are closed schemas. No arbitrary paths, URLs, labels,

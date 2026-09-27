@@ -1,11 +1,17 @@
 """Bounded declarative policy programs; no competitor eval/import/file access."""
 import random
-from .common import fields, key, position, profile
+from .common import canonical, fields, key, position, profile
 
 BASELINES={
     'increasing':{'strategy':'increasing','batch_size':1,'odd_limit':65,'slice_seconds':.3,'rounds':12,'subsidiary_depth':0,'proof_style':'compact'},
     'interleaved':{'strategy':'interleaved','batch_size':8,'odd_limit':65,'slice_seconds':.6,'rounds':12,'subsidiary_depth':0,'proof_style':'compact'},
     'routes-short':{'strategy':'routes-short','batch_size':8,'odd_limit':65,'slice_seconds':.6,'rounds':12,'subsidiary_depth':2,'proof_style':'compact'},
+}
+# Certificate golf (public database targets): certify cheaply using hints.
+GOLF={
+    'golf-root':{'strategy':'golf-root','batch_size':1,'odd_limit':301,'slice_seconds':60,'rounds':1,'subsidiary_depth':0,'proof_style':'compact'},
+    'golf-witness':{'strategy':'golf-witness','batch_size':1,'odd_limit':301,'slice_seconds':60,'rounds':1,'subsidiary_depth':0,'proof_style':'compact'},
+    'golf-probe':{'strategy':'golf-probe','batch_size':3,'odd_limit':301,'slice_seconds':120,'rounds':1,'subsidiary_depth':0,'proof_style':'compact'},
 }
 PROMPTS={
     'default':'Use exact routing first. Submit only supported proofs. Unknown is not P.',
@@ -16,7 +22,8 @@ PROMPTS={
 
 def validate_policy(policy):
     fields(policy,('strategy','batch_size','odd_limit','slice_seconds','rounds','subsidiary_depth','proof_style'))
-    if policy['strategy'] not in ('increasing','interleaved','routes-short'):raise ValueError('unsupported policy program')
+    if policy['strategy'] not in ('increasing','interleaved','routes-short','golf-root','golf-witness','golf-probe'):
+        raise ValueError('unsupported policy program')
     for name,lo,hi in (('batch_size',1,128),('odd_limit',3,1023),('rounds',1,1000),('subsidiary_depth',0,3)):
         if type(policy[name]) is not int or not lo<=policy[name]<=hi:raise ValueError('policy limit outside profile')
     if type(policy['slice_seconds']) not in (int,float) or not 0<policy['slice_seconds']<=300:raise ValueError('invalid slice')
@@ -24,9 +31,64 @@ def validate_policy(policy):
     return policy
 
 
+def _genus(p):
+    """Number of gaps: the size of the finite game's move set, a cost proxy."""
+    from sylver.solver import FiniteSolver
+    return len(FiniteSolver(p).gaps())
+
+
+def run_golf(client,policy):
+    """Certify a golf target cheaply; hints steer, the fixed verifier decides.
+
+    golf-root submits one finite leaf. golf-witness answers an N target with
+    the hinted finite P child of fewest gaps. golf-probe races bounded exact
+    queries over up to batch_size such children and the root, each capped by
+    the time that could still beat the best estimate (C+100)*(seconds+1), and
+    submits the cheapest; probing is charged discovery work. P targets get a
+    root leaf: a cover multiplies C far more than it can cut checking time.
+    A gcd-two N target has no finite root, so every strategy answers it with a
+    witness, scanning odd replies up to odd_limit as well as its listed moves.
+    """
+    target=tuple(client.call('inspect')['manifest']['target']);root=key(target)
+    info=client.call('profile',position=target);finite=info['gcd']==1
+    outcome=client.call('hint',positions=[target])['rows'][0]['outcome']
+    if outcome=='unknown' and finite:
+        outcome=client.call('exact',positions=[target],seconds=policy['slice_seconds'])['rows'][0]['outcome']
+    if outcome=='unknown' or outcome=='P' and not finite:return
+    leaf={'schema':1,'root':root,'nodes':{root:{'rule':'finite','outcome':outcome}}}
+    if finite and (policy['strategy']=='golf-root' or outcome=='P'):
+        client.call('submit',proof=leaf);return
+    moves=list(info['moves'])
+    if info['gcd']==2:moves+=[m for m in range(3,policy['odd_limit']+1,2) if m not in moves]
+    candidates=[(m,position((*target,m))) for m in moves]
+    candidates=[(m,c) for m,c in candidates if profile(c).get('frobenius',1024)<=1023]
+    rows=client.call('hint',positions=[c for _,c in candidates])['rows'] if candidates else []
+    witnesses=sorted((_genus(c),profile(c)['frobenius'],m,c) for (m,c),r in zip(candidates,rows) if r['outcome']=='P')
+    def edge(m,c):
+        return {'schema':1,'root':root,'nodes':{root:{'rule':'edge','outcome':'N','move':m,'child':key(c)},
+                                               key(c):{'rule':'finite','outcome':'P'}}}
+    if not witnesses:
+        if finite:client.call('submit',proof=leaf)
+        return
+    if policy['strategy']!='golf-probe':
+        client.call('submit',proof=edge(*witnesses[0][2:]));return
+    best=None  # (estimate, proof)
+    options=[(edge(m,c),c,'P') for _,_,m,c in witnesses[:policy['batch_size']]]+([(leaf,target,'N')] if finite else [])
+    for proof,measured,expected in options:
+        size=len(canonical(proof))+100
+        cap=policy['slice_seconds'] if best is None else min(policy['slice_seconds'],best[0]/size-1)
+        if cap<=0:continue
+        result=client.call('exact',positions=[measured],seconds=cap)
+        if result['rows'][0]['outcome']==expected:
+            estimate=size*(result['wall_seconds']+1)
+            if best is None or estimate<best[0]:best=(estimate,proof)
+    client.call('submit',proof=best[1] if best else options[0][0])
+
+
 def run_policy(client,policy,seed=0):
     validate_policy(policy)
     random.Random(seed)  # Pin seed even for these deterministic baselines.
+    if policy['strategy'].startswith('golf-'):return run_golf(client,policy)
     target=tuple(client.call('inspect')['manifest']['target'])
     subsidiary={target};frontier=[target]
     if policy['strategy']=='routes-short':
