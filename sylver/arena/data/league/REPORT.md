@@ -1,23 +1,37 @@
 # Game arena league
 
-**Game results are not proofs.** A win, a rating, or a win rate here is evidence about these programs under these clocks, never about the outcome of a position. Openings that are *capped* (gcd above one, or Frobenius number above the move cap 1000) follow a house rule: moves are limited to 2..1000, which never ends a game early but removes larger moves, so their games say nothing about real Sylver Coinage. Only openings with gcd one and Frobenius number at most the cap are exact, and only those are adjudicated.
+**Game results are not proofs.** A win, a rating, or a win rate here is evidence about these programs under these clocks, never about the outcome of a position. Openings are *capped* unless they have gcd one and a Frobenius number at most the move cap 1000; the empty position is capped. Capped games follow a house rule: moves are limited to 2..1000, which never ends a game early but removes larger moves, so their games say nothing about real Sylver Coinage. Only uncapped openings are exact, and only those are adjudicated.
+
+**Players are not isolated.** They run as this user without a sandbox, so a player can write into its opponent's pipes through /proc (making it appear to name 1), signal or trace it, or change files. Results are meaningful only when every player is a trusted program.
 
 - Players: book, exact, smallest, random (commands and digests in `plan.json`).
 - Openings: 15 (14 with a known outcome, 1 capped).
 - Rules: name an integer in 2..1000 outside the semigroup; the player who must name 1 loses.
 - Clock: 2.0 s CPU plus 0.1 s per legal move; setup up to 10.0 s CPU and 60.0 s wall, not charged; per-move wall limit 3 x remaining CPU + 5 s.
+- CPU accounting: all 360 player seats in their own cgroup (cumulative cpu.stat usage of every descendant; cgroup.kill at game end).
 - Games: 180 (180 decided, 0 void); seed 0; 4 parallel games.
 
 ## Standings
 
-| Player | Games | W | L | Score | Elo | 95% interval |
+| Player | Group | Games | W | L | Score | Elo |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| book | 90 | 77 | 13 | 85.6% | +458 | [+397, +543] |
-| exact | 90 | 73 | 17 | 81.1% | +413 | [+345, +486] |
-| smallest | 90 | 20 | 70 | 22.2% | -377 | [-447, -316] |
-| random | 90 | 10 | 80 | 11.1% | -493 | [-584, -415] |
+| book | 1 | 90 | 77 | 13 | 85.6% | +458 |
+| exact | 1 | 90 | 73 | 17 | 81.1% | +413 |
+| smallest | 2 | 90 | 20 | 70 | 22.2% | -377 |
+| random | 2 | 90 | 10 | 80 | 11.1% | -493 |
 
-Elo is a Bradley–Terry rating (MM, 0.5 virtual wins and losses against a fixed anchor) with mean zero; the interval holds the 2.5–97.5 percentiles of 200 bootstrap resamples of the decided games.
+Elo is a Bradley–Terry rating (0.5 virtual wins and losses per player against a fixed anchor) with mean zero. **Rating gaps between groups are set by the prior, not by the games.** The win graph is not strongly connected (Ford's condition fails): every game between two groups was won by the higher group, so without the prior the gap between groups would be infinite, and it widens without bound as the prior shrinks. Only the order of the groups is data. A gap below is the lowest rating in the higher group minus the highest in the lower group.
+
+| Groups | Gap at prior 0.5 | Gap at prior 0.05 |
+| --- | ---: | ---: |
+| 1 over 2 | +790 | +1170 |
+
+Within a group the games determine the differences; intervals hold the 2.5–97.5 percentiles of 200 bootstrap resamples of the decided games.
+
+| Pair in one group | Score | Elo difference | 95% interval |
+| --- | ---: | ---: | ---: |
+| book − exact | 17–13 | +45 | [-84, +199] |
+| smallest − random | 20–10 | +116 | [-26, +252] |
 
 ## Head to head
 
@@ -79,23 +93,21 @@ Capped or of unknown outcome: these results measure the programs, not the positi
 
 | Player | Moves | Mean CPU (s) | Max CPU (s) | Mean setup CPU (s) |
 | --- | ---: | ---: | ---: | ---: |
-| book | 677 | 0.067 | 1.930 | 0.537 |
-| exact | 692 | 0.073 | 2.030 | 0.070 |
-| smallest | 110 | 0.000 | 0.010 | 0.071 |
-| random | 286 | 0.000 | 0.010 | 0.070 |
-
-CPU is sampled from /proc at clock-tick resolution (typically 10 ms), so very fast moves read as 0.
+| book | 677 | 0.069 | 1.879 | 0.554 |
+| exact | 692 | 0.074 | 2.031 | 0.082 |
+| smallest | 110 | 0.000 | 0.001 | 0.082 |
+| random | 286 | 0.000 | 0.001 | 0.082 |
 
 ## Blunders (exact analysis, Frobenius number at most 150)
 
-A blunder is a move from an N-position to an N-position. Positions were solved by the native solver, 60 s each: 597 positions, 4 unknown after the limit. Analysis CPU was 1412.7 s; it never affects results.
+A blunder is a move from an N-position to an N-position. Positions were solved by the native solver, 60 s each: 597 positions, 7 unknown after the limit. Analysis CPU was 1442.3 s; it never affects results.
 
 | Player | Analysed moves | From N | Blunders | Blunder rate | Unknown |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| book | 438 | 326 | 27 | 8.3% | 2 |
-| exact | 433 | 274 | 36 | 13.1% | 3 |
-| smallest | 102 | 73 | 55 | 75.3% | 0 |
-| random | 246 | 95 | 77 | 81.1% | 3 |
+| book | 438 | 322 | 24 | 7.5% | 6 |
+| exact | 433 | 270 | 34 | 12.6% | 5 |
+| smallest | 102 | 70 | 52 | 74.3% | 3 |
+| random | 246 | 91 | 75 | 82.4% | 6 |
 
 ## Void games
 
@@ -103,8 +115,8 @@ None.
 
 ## Limitations
 
-- A player is charged the CPU of the live processes in its session, including children it has reaped. A process that leaves its session (daemonizes with setsid) is neither charged nor killed at game end.
-- External players run with resource limits but no filesystem sandbox, so leagues should include only trusted programs.
+- A same-user process can move itself out of its cgroup and so escape both the clock and the kill at game end.
+- Players run as the same user without a sandbox; see the warning at the top.
 - CPU timings depend on the machine and its load, and the exact players stop searching when their budget ends, so a rerun need not reproduce every game.
 
 ## Reproduce
