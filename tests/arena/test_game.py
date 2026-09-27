@@ -1,3 +1,5 @@
+from functools import reduce
+from collections import Counter
 import itertools
 import json
 import math
@@ -78,6 +80,38 @@ class RulesTests(unittest.TestCase):
             p = Position(gens)
             s = FiniteSolver(gens)
             self.assertEqual(p.legal_moves(), list(s.legal_moves(s.initial_state)))
+
+    def test_rules_match_brute_force(self):
+        # An independent oracle (after the reviewer's brute_rules.py): membership
+        # by dynamic programming over the numbers named so far.
+        def members(named, limit):
+            inn = [True] + [False] * limit
+            for n in range(1, limit + 1):
+                inn[n] = any(g <= n and inn[n - g] for g in named)
+            return inn
+        rng = random.Random(12345)
+        for _ in range(200):
+            m = rng.randint(3, 40)
+            start = rng.sample(range(2, m + 1), rng.randint(0, min(4, m - 1)))
+            p, named = Position(start, max_move=m), list(start)
+            while True:
+                inn = members(named, m)
+                gaps = [n for n in range(2, m + 1) if not inn[n]]
+                self.assertEqual(p.members, sum(1 << n for n in range(m + 1) if inn[n]))
+                self.assertEqual((p.legal_moves(), p.over(), p.over()), (gaps, not gaps, inn[2] and inn[3]))
+                self.assertEqual([n for n in range(-2, m + 4) if p.is_legal(n)], [1] + gaps)
+                self.assertEqual(p.generators, tuple(v for v in sorted(set(named))
+                                                     if not members([w for w in named if w != v], v)[v]))
+                self.assertEqual(p.gcd(), reduce(math.gcd, named, 0))
+                if p.gcd() == 1 and max(named) <= 25:
+                    big = members(named, max(named) ** 2)
+                    self.assertEqual((p.frobenius(), p.capped()), (max(n for n, x in enumerate(big) if not x),
+                                                                   max(n for n, x in enumerate(big) if not x) > m))
+                if not gaps:
+                    break
+                move = rng.choice(gaps)
+                p, named = p.play(move), named + [move]
+                self.assertEqual(Position(start, p.history, max_move=m).members, p.members)
 
     def test_iterables_are_read_once(self):
         # Validation used to consume a one-shot iterator, leaving an empty start.
@@ -437,6 +471,10 @@ class LeagueTests(unittest.TestCase):
         self.assertEqual(len(db), 8)
         self.assertEqual(db, suite('database', seed=0, per_band=1))
         self.assertEqual({o['outcome'] for o in db}, {'P', 'N'})
+        binary = build_tools('/tmp/sylver-arena-tools')
+        for o in db:                   # the cache's outcomes, rechecked where the native solve is quick
+            if Position(o['start']).frobenius() < 100:
+                self.assertEqual(_native(binary, ','.join(map(str, o['start']))), o['outcome'], o['name'])
 
     def test_league_writes_incrementally(self):
         with tempfile.TemporaryDirectory() as d:
@@ -450,6 +488,21 @@ class LeagueTests(unittest.TestCase):
             report = (out / 'REPORT.md').read_text()
             self.assertIn('Game results are not proofs', report)
             self.assertIn('not isolated', report)
+            # Every record replays: seats alternate, moves are legal, and the
+            # result names the player who had to name 1 (reviewer's recompute.py).
+            plan, records = read(out / 'plan.json'), sorted(map(json.loads, lines), key=lambda r: r['game'])
+            games, openings = {g['id']: g for g in plan['schedule']}, {o['name']: o for o in plan['openings']}
+            for r in records:
+                g, seat = games[r['game']], 'first'
+                p = Position(openings[g['opening']]['start'], max_move=1000)
+                self.assertEqual((r['start'], r['players']['first']['name']), (list(p.start), g['first']))
+                for m in r['moves']:
+                    self.assertEqual(m['seat'], seat)
+                    p, seat = p.play(m['move']), OTHER[seat]
+                self.assertEqual((r['final']['generators'], r['final']['over']), (list(p.generators), p.over()))
+                if r['result']['reason'] == 'opponent-must-name-1':
+                    self.assertEqual(r['result']['loser'], seat)
+            self.assertEqual(render(plan, records, read(out / 'standings.json')), report)
             self.assertEqual(sum(v['games'] for v in standings['players'].values()), 8)
             with self.assertRaises(FileExistsError):
                 run_league(players, suite('enders')[:1], out)
@@ -488,6 +541,27 @@ class LeagueTests(unittest.TestCase):
             self.assertEqual(sorted(r['game'] for r in logged), ['0000-ender-4-5-r1-vs-r2', '0002-ender-4-5-r2-vs-r1'])
             left = subprocess.run(['pgrep', '-f', str(d / 'slow.py')], capture_output=True, text=True).stdout.split()
             self.assertEqual(left, [])
+
+    def test_analysis_matches_a_python_recount(self):
+        # After the reviewer's blunder_check.py: native analysis against the
+        # Python reference solver on random games from the enders.
+        binary, rng = build_tools('/tmp/sylver-arena-tools'), random.Random(5)
+        plan, records = fake_league([('a', 'b', 'a'), ('b', 'a', 'a')] * 6)
+        for r, start in zip(records, itertools.cycle(ENDERS)):
+            p, seat, r['start'], r['moves'] = Position(start), 'first', list(start), []
+            while not p.over():
+                r['moves'].append({'seat': seat, 'move': rng.choice(p.legal_moves())})
+                p, seat = p.play(r['moves'][-1]['move']), OTHER[seat]
+        want = {n: Counter(analysed=0, from_n=0, blunders=0, unknown=0) for n in 'ab'}
+        for r, g in zip(records, plan['schedule']):
+            p = Position(r['start'])
+            for m in r['moves']:
+                q, c = p.play(m['move']), want[g[m['seat']]]
+                c['analysed'] += 1
+                if solve_position(p.generators).is_winning:
+                    c['from_n'] += 1; c['blunders'] += solve_position(q.generators).is_winning
+                p = q
+        self.assertEqual(analyze(records, plan, binary, 41)['players'], {n: dict(c) for n, c in want.items()})
 
     def test_analysis_skips_void_games_and_caps_memory(self):
         binary = build_tools('/tmp/sylver-arena-tools')
