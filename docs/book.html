@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Book of Sylver Coinage Proofs</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='13' font-size='13'%3E%E2%9A%92%3C/text%3E%3C/svg%3E">
+<style>
+  /* The campaign tables' print-like typography: black on white in every
+     color scheme, one table, one footnote. */
+  body {
+    margin: 0 auto; max-width: 56rem; padding: 2.2rem 1.4rem 4rem;
+    background: #ffffff; color: #000000;
+    font-family: "Latin Modern Roman", "CMU Serif", "Computer Modern",
+                 Georgia, "Times New Roman", serif;
+    font-size: 17px; line-height: 1.45;
+  }
+  h1 { font-size: 1.9rem; font-weight: normal; margin: 0 0 1rem; text-wrap: balance; }
+  p { margin: .5rem 0; max-width: 40rem; }
+  a { color: #000; }
+  .tablewrap { overflow-x: auto; margin: 1.4rem 0; }
+  table { border-collapse: collapse; margin: 0 auto; font-variant-numeric: tabular-nums; border: 1.5px solid #000; }
+  td, th { border: 1px solid #000; padding: .28rem .55rem; font-size: .9rem; white-space: nowrap; }
+  th { font-weight: bold; text-align: center; }
+  td.num { text-align: right; }
+  td.pos { font-family: "Latin Modern Mono", "CMU Typewriter Text", Menlo, monospace; font-size: .82rem; }
+  button {
+    font: inherit; font-size: .85rem; padding: .1rem .6rem; border: 1px solid #000;
+    border-radius: 0; background: #fff; color: #000; cursor: pointer;
+  }
+  button:hover, button:focus-visible { background: #000; color: #fff; }
+  button:disabled { cursor: default; background: #fff; color: #000; opacity: .5; }
+  .ok { font-weight: bold; }
+  .bad { font-weight: bold; text-decoration: underline; }
+  .muted { font-style: italic; }
+  #status { font-style: italic; }
+  .footnote { font-size: .85rem; margin-top: 2.2rem; border-top: 1px solid #000; padding-top: .6rem; }
+  code { font-size: .9em; }
+</style>
+</head>
+<body>
+<h1>The Book</h1>
+<p>
+  For each public result of the Sylver Coinage campaign, the cheapest-to-check
+  certificate anyone has found. Every entry was replayed by the arena's fixed
+  verifier with a fresh memo; its <i>states</i> is that verifier's
+  deterministic count of evaluated positions, and its <i>checking cost</i> is
+  (C+100)&middot;(states/100,000+1), the agreed score's shape with the checker's
+  own work in place of time. These are independent certificates of public
+  results, not new mathematics.
+</p>
+<p>
+  <b>Check it yourself.</b> The <i>Check</i> buttons replay a certificate in this
+  page with an independent JavaScript implementation of the referee's rules
+  (finite leaves, winning edges, and complete covers with the Quiet End tail)
+  and the in-browser exact solver. Certificates whose finite leaves are too
+  large for a browser say so.
+</p>
+<p id="status">Loading the Book from the repository&hellip;</p>
+<div class="tablewrap">
+  <table id="book" hidden>
+    <thead><tr><th>Target</th><th>Outcome</th><th>Proof</th><th>C</th><th>States</th>
+      <th>Checking cost</th><th>Check</th></tr></thead>
+    <tbody></tbody>
+  </table>
+</div>
+<p class="footnote">
+  Source: <a href="https://github.com/rudi-cilibrasi/sylver-coinage/tree/main/sylver/arena/book">sylver/arena/book</a>
+  (<code>index.json</code> and canonical certificates named by their SHA-256), filled by the
+  <a href="https://github.com/rudi-cilibrasi/sylver-coinage/blob/main/sylver/arena/data/golf/REPORT.md">certificate golf pilot</a>
+  and <code>python -m sylver.arena book add</code>. Replay every entry with
+  <code>python -m sylver.arena book verify</code>. Back to the
+  <a href="index.html">solver demo</a> or the <a href="tables.html">campaign tables</a>.
+</p>
+<script src="solver.js"></script>
+<script src="book.js"></script>
+<script>
+"use strict";
+const RAW = "https://raw.githubusercontent.com/rudi-cilibrasi/sylver-coinage/main/sylver/arena/book/";
+const BROWSER_LIMIT = 140;   // largest leaf Frobenius number the page will replay
+
+function describe(proof) {
+  const node = proof.nodes[proof.root];
+  if (node.rule === "edge") {
+    const child = proof.nodes[node.child];
+    return "reply " + node.move + (child && child.rule === "cover" ? " (Quiet End cover)" : "");
+  }
+  return node.rule === "finite" ? "finite leaf" : node.rule;
+}
+
+function solveInBrowser(gens) {
+  return new SylverSolver(gens, 6000000).solve().winningMove === null ? "P" : "N";
+}
+
+async function main() {
+  const status = document.getElementById("status");
+  try {
+    const index = await (await fetch(RAW + "index.json")).json();
+    const rows = Object.entries(index.targets).sort((a, b) => a[0].length - b[0].length || (a[0] < b[0] ? -1 : 1));
+    const body = document.querySelector("#book tbody");
+    for (const [target, t] of rows) {
+      const e = t.entries.find((x) => x.certificate === t.record);
+      const proof = await (await fetch(RAW + "certificates/" + e.certificate + ".json")).json();
+      const tr = document.createElement("tr");
+      const cells = [["pos", "{" + target + "}"], ["", t.outcome], ["", describe(proof)], ["num", e.C],
+                     ["num", e.states.toLocaleString("en-US")],
+                     ["num", Math.round((e.C + 100) * (e.states / (index.rate || 100000) + 1)).toLocaleString("en-US")]];
+      for (const [cls, text] of cells) {
+        const td = document.createElement("td"); td.className = cls; td.textContent = text; tr.appendChild(td);
+      }
+      const check = document.createElement("td");
+      const leaf = largestLeaf(proof);
+      if (leaf > BROWSER_LIMIT) {
+        check.className = "muted"; check.textContent = "leaf too large (F=" + leaf + ")";
+      } else {
+        const button = document.createElement("button");
+        button.textContent = "Check";
+        button.addEventListener("click", () => {
+          button.disabled = true; button.textContent = "checking…";
+          setTimeout(() => {
+            const r = checkCertificate(proof, solveInBrowser);
+            check.textContent = "";
+            const span = document.createElement("span");
+            span.className = r.valid && r.outcome === t.outcome ? "ok" : "bad";
+            span.textContent = r.valid && r.outcome === t.outcome
+              ? "valid: " + r.outcome + " (" + r.leaves.length + (r.leaves.length === 1 ? " leaf)" : " leaves)")
+              : "rejected: " + (r.error || "outcome differs");
+            check.appendChild(span);
+          }, 20);
+        });
+        check.appendChild(button);
+      }
+      tr.appendChild(check);
+      body.appendChild(tr);
+    }
+    document.getElementById("book").hidden = false;
+    status.textContent = rows.length + " targets, " +
+      rows.reduce((n, [, t]) => n + t.entries.length, 0) + " certificates, replay rate " +
+      (index.rate || 100000).toLocaleString("en-US") + " states per checking second.";
+  } catch (e) {
+    status.textContent = "Could not load the Book: " + e.message +
+      ". The page reads sylver/arena/book/index.json from GitHub; try again later.";
+  }
+}
+main();
+</script>
+</body>
+</html>
