@@ -1,3 +1,4 @@
+import itertools
 import json
 import math
 from pathlib import Path
@@ -9,13 +10,14 @@ import tempfile
 import textwrap
 import time
 import unittest
+from unittest import mock
 
 from sylver.arena.common import read
 from sylver.arena.exact import build_tools
 from sylver.arena.game import IllegalMove, Position, minimal_generators
 from sylver.arena.league import ENDERS, bradley_terry, render, run_league, suite
 from sylver.arena.players import PLAYERS, builtin_command, load_book
-from sylver.arena.referee import clean, play_game, text
+from sylver.arena.referee import Seat, clean, play_game, text
 from sylver.solver import FiniteSolver, solve_position
 
 
@@ -241,6 +243,15 @@ class RefereeTests(unittest.TestCase):
         self.assertEqual(saved, r)
         self.assertEqual(saved['setup']['first']['ready'], {'name': '?', 'version': '?'})
         self.assertEqual((saved['moves'][0]['note'], saved['moves'][0]['claim']), ('a?b', None))
+
+    def test_setup_ends_with_ready(self):
+        # CPU seen above the setup cap must fail setup even if a later reading is
+        # lower (session accounting loses exited processes) and no ready came.
+        readings = itertools.chain([99.0], itertools.repeat(0.0))
+        silent = {'name': 'silent', 'command': [sys.executable, '-c', 'import time; time.sleep(30)']}
+        with mock.patch.object(Seat, 'cpu', lambda seat: next(readings)):
+            r = self.game(silent, self.smallest(), name='nr')
+        self.assertEqual((r['result']['loser'], r['result']['reason'], r['setup']['first']['ready']), ('first', 'setup-cpu', None))
 
     def test_text_and_clean(self):
         self.assertEqual(text('a\ud800b' * 3, 5), 'a?ba?')

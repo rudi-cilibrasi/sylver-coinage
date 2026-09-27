@@ -157,7 +157,7 @@ class Seat:
             else:
                 self.setup['ready'] = {k: text(ready[k], 100) for k in ('name', 'version') if k in ready}
         except OutOfTime:
-            pass
+            failure = Lost('setup-cpu', f"over {clock['setup_cpu']} s of setup CPU before ready")
         except TimeoutError:
             failure = Lost('setup-failed', f"no ready message within {clock['setup_wall']} s")
         except (EOFError, OSError, ValueError, RecursionError) as error:
