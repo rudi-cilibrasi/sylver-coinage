@@ -1,5 +1,11 @@
 # Sylver Coinage after 16: research log
 
+**September 27, later still:** W's move 118 falls to **167**:
+{16,26,62,98,118,167} is P, confirmed by fresh native and Python replays
+with a matching exact state count (115,933,058). W now has 51 of 52
+obligations covered; only **108** is open. See
+[the campaign result](campaigns/w-one-2026-09-27/RESULT.md).
+
 **September 27, later:** the same scan refutes W's move 70 by **169**:
 {16,26,62,70,98,169} is P, confirmed by fresh native and Python replays
 with a matching exact state count (79,594,540). W now has 50 of 52
@@ -1330,6 +1336,21 @@ theorem-routed child each of `{12,14,16}`, G, K, and V, so moves 12, 36, 56,
 succeed. The three new large leaves (moves
 70, 86, 92; 69-80M states each) await their Book replay, and moves 108 and
 118 are open. W, Q, X, move 26, and opening 16 remain unresolved.
+
+### Attempt 30 — W's move 118 falls to 167; one move left (2026-09-27)
+
+The independent replay of the scan's move-118 destination finished:
+**{16,26,62,98,118,167}** is P (Frobenius number 275), with fresh native
+and Python replays agreeing on exactly **115,933,058** states, the count of
+the discovery run. W has **51 of 52** obligations covered; only **108**
+remains. The scan then moved to the new parallel engine
+(`sylver/parallel_solver.cpp`): several threads share one memo, first with a
+fresh memo per candidate (about 2 minutes per move-108 candidate instead of
+15) and then in a shared-memo sweep over a batch of candidates. The
+ledger's last row, a P destination for move 108 found by that sweep, was
+under independent replay when the record was made and is not claimed
+there. W, Q, X, move 26, and opening 16 are still unresolved. See the
+[campaign result](campaigns/w-one-2026-09-27/RESULT.md).
 
 ### Sources
 
