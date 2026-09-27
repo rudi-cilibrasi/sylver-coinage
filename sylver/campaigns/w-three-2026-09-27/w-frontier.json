@@ -1,0 +1,53 @@
+{
+  "position": [
+    16,
+    26,
+    62,
+    98
+  ],
+  "outcome": "unknown",
+  "open_moves": [
+    70,
+    108,
+    118
+  ],
+  "covered_obligations": 49,
+  "total_obligations": 52,
+  "new_replies": [
+    {
+      "opponent_move": 86,
+      "reply": 129,
+      "P_destination": [
+        16,
+        26,
+        62,
+        86,
+        98,
+        129
+      ],
+      "certificate_sha256": "b4425af3dc749d6d817e23692c379fd12e3051e0ac11f8cec9a6b0e780bc879b",
+      "verification_receipt": "verification/w86/receipt.json",
+      "verification_sha256": "3a665505fe991acca8f1dd55d06496c6c73e89a5768f2e0af1f27a7e3b7994b6",
+      "states": 68758240
+    },
+    {
+      "opponent_move": 92,
+      "reply": 139,
+      "P_destination": [
+        16,
+        26,
+        62,
+        92,
+        98,
+        139
+      ],
+      "certificate_sha256": "f956b98cddffa69f6ba7d77bce1cadd61b105be02bc1f48aa23149aecbf3f389",
+      "verification_receipt": "verification/w92/receipt.json",
+      "verification_sha256": "cd7b9399bd8e0462960188bcf26aa90831ff1b4a17f2557b34f216414f33651c",
+      "states": 80500948
+    }
+  ],
+  "previous_frontier": "sylver/campaigns/w-six-2026-09-22/w-frontier.json",
+  "pending": "The scan also found {16,26,62,70,98,169} P (79,594,540 states, one discovery run); its independent replay was in progress when this record was made, so move 70 stays open here.",
+  "scope": "W remains unresolved. Moves 86 and 92 are refuted by replies 129 and 139. Each finite witness was independently replayed with native and Python solvers using empty memos and no inherited outcome cache. Other W obligations retain their existing dependencies."
+}

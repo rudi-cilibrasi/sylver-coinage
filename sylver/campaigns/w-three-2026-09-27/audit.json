@@ -1,0 +1,63 @@
+{
+  "rows": 149,
+  "branches": {
+    "70": {
+      "scan_N": 31,
+      "scan_P": [
+        169
+      ],
+      "verified_P": [],
+      "pending_replay_P": [
+        169
+      ],
+      "prior_classified": 52,
+      "first_unclassified_odd_reply": 171,
+      "scan_max_reply": 169
+    },
+    "86": {
+      "scan_N": 15,
+      "scan_P": [
+        129
+      ],
+      "verified_P": [
+        129
+      ],
+      "pending_replay_P": [],
+      "prior_classified": 52,
+      "first_unclassified_odd_reply": null,
+      "scan_max_reply": 131
+    },
+    "92": {
+      "scan_N": 13,
+      "scan_P": [
+        139
+      ],
+      "verified_P": [
+        139
+      ],
+      "pending_replay_P": [],
+      "prior_classified": 57,
+      "first_unclassified_odd_reply": null,
+      "scan_max_reply": 141
+    },
+    "108": {
+      "scan_N": 27,
+      "scan_P": [],
+      "verified_P": [],
+      "pending_replay_P": [],
+      "prior_classified": 52,
+      "first_unclassified_odd_reply": 157,
+      "scan_max_reply": 155
+    },
+    "118": {
+      "scan_N": 27,
+      "scan_P": [],
+      "verified_P": [],
+      "pending_replay_P": [],
+      "prior_classified": 52,
+      "first_unclassified_odd_reply": 157,
+      "scan_max_reply": 159
+    }
+  },
+  "failures": []
+}

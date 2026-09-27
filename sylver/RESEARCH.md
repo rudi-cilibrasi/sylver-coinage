@@ -1,5 +1,12 @@
 # Sylver Coinage after 16: research log
 
+**September 27 continuation:** a parallel odd-reply scan refutes W's move
+86 by **129** and move 92 by **139**: {16,26,62,86,98,129} and
+{16,26,62,92,98,139} are P, each confirmed by fresh native and Python
+replays with matching exact state counts (68,758,240 and 80,500,948). W
+now has 49 of 52 obligations covered, with **70, 108, 118** open. See
+[the campaign result](campaigns/w-three-2026-09-27/RESULT.md).
+
 **September 22 continuation:** the new targeted translated evaluator
 classifies individual odd children without completing a periodicity row.
 It independently excludes odd 107 after W's move 66 (the Python reference
@@ -1260,6 +1267,29 @@ relevant tests passed, including rejection of a legal path to an N-position,
 interrupted replays, and existing native batch/reference controls. The
 [campaign result](campaigns/w-six-2026-09-22/RESULT.md) links the compact
 certificate, raw receipts, audit, remaining frontier, and reproduction command.
+
+### Attempt 27 — W's moves 86 and 92 fall to 129 and 139 (2026-09-27)
+
+A parallel odd-reply scan of W={16,26,62,98}'s five open moves found two
+finite P destinations: **{16,26,62,86,98,129}** (Frobenius number 237) and
+**{16,26,62,92,98,139}** (Frobenius number 241). Move 86 is refuted by
+**129** and move 92 by **139**. Fresh native and Python replays agree on P
+and on exact evaluated-state counts: **68,758,240** and **80,500,948**.
+Neither refutation depends on the outcome cache, an infinite certificate,
+or the Quiet End Theorem. No priority claim is made.
+
+W has **49 of 52 obligations covered**; **70, 108, 118** remain. W, Q, X,
+move 26, and opening 16 are still unresolved.
+
+The scan ran up to five fresh-memo native queries at once, in increasing
+Frobenius order, skipping every odd reply already classified. It stopped
+each branch at its first P. Two attempts to speed it up made it slower:
+killer-move ordering evaluated 7–25% more states, and root hints up to 4.4
+times more, because both work against the pairing prune that ascending
+order makes effective. A flat-memo build of the same recurrence (PR #18,
+byte-identical output) was 1.7–1.9 times faster and replaced it mid-scan.
+The [campaign result](campaigns/w-three-2026-09-27/RESULT.md) links the
+certificates, replay receipts, ledger, audit, and remaining frontier.
 
 ### Sources
 
