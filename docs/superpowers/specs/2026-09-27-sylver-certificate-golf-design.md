@@ -32,8 +32,8 @@ structure matters, and the database is what makes good choices cheap.
 A **hint file** is a gzip of sorted canonical lines `KEY OUTCOME`
 (`16,26,38,...  P`), content-addressed by the SHA-256 of its uncompressed
 bytes and stored as `hints/SHA.txt.gz` beside the bundles. The frozen hint
-set is the historical 305,011-row cache plus every P/N fact of the post-PR5
-campaign graph (the same 308,280 facts as the live snapshot).
+set is the historical 305,011-row cache plus every P/N fact of the post-PR13
+campaign evidence graph: 308,322 facts.
 
 A hint is **never** a proof dependency. It does not enter the trusted
 snapshot, cannot be cited by a `baseline` node, and never enters the
@@ -65,8 +65,9 @@ New `strategy` values, sharing the existing policy fields:
 | Strategy | Certificate |
 | --- | --- |
 | `golf-root` | A single `finite` leaf for a gcd-one target (the outcome is taken from hints, else one exact query). Minimal `C`; the verifier searches from the root. |
-| `golf-witness` | N target: `edge` to the smallest-Frobenius hinted P child, whose `finite` leaf is replayed. P target: a root leaf. |
-| `golf-probe` | N target: races bounded exact queries (charged) over up to `batch_size` hinted P children in increasing Frobenius order and then the root, each capped at the fastest time so far, and certifies the cheapest measured option. P target: a root leaf. |
+| `golf-witness` | N target: `edge` to the hinted finite P child with the fewest gaps (then smallest Frobenius), whose `finite` leaf is replayed. P target: a root leaf. |
+| `golf-probe` | N target with a choice: races bounded exact queries (charged) over up to `batch_size` hinted witnesses and then the root, each capped by the time that could still beat the best estimate, and certifies the cheapest measured option, never a witness its probe refuted. P target: a root leaf. |
+| `golf-blind` | Hint-free control: computes a finite target's outcome exactly; searches up to `rounds` odd replies for a gcd-two target's witness. |
 
 P targets always get a root leaf. A one-level cover multiplies `C` by
 roughly 50–100 (one row, edge, and leaf per legal move), so under the
@@ -123,12 +124,18 @@ tournament score and states for each entry the profile it was measured on.
 
 ### 7. Golf tournament report
 
-`python -m sylver.arena golf-pilot` builds the panel, runs every golf
-strategy plus `increasing`/`interleaved`/`routes-short` on tiers A and B with
-three repetitions (tier C once), renders per-target leaderboards with the
-existing renderer, adds each target's best certificate to a fresh Book, and
-writes a decision section: which strategy wins where, by how much, with the
-distribution across repeats and every failure.
+`python -m sylver.arena golf-pilot` builds the panel, runs the four golf
+strategies and the pre-existing `interleaved` baseline on tiers A and B with
+three repetitions (tier C once), admits every distinct valid certificate to
+a fresh Book, and renders per-target leaderboards. Winner tallies count only
+targets that received more than one distinct certificate. The recorded
+report adds a curator's findings and decision section, marked as such.
+
+**Book rule (revised after review).** Timing noise between runs of the same
+certificate reached tens of percent, so the entry of record minimizes the
+deterministic checking cost `(C+100)*(states/RATE+1)` with a fixed
+`RATE = 100,000` verifier states per second; measured CPU is informational,
+and entries are compared only under one verifier version.
 
 ## Error handling
 
@@ -148,7 +155,7 @@ non-golf episodes and any certificate whose replay disagrees.
 - Manifests: only `golf` may carry hints; the target must not be in the
   trusted snapshot; old manifests still validate.
 - Policies: each golf strategy produces a valid certificate for small
-  golf targets; `golf-witness` picks the smallest-Frobenius P child;
+  golf targets; `golf-witness` picks the hinted P child with the fewest gaps;
   `golf-probe` certifies a cheaper witness than the root on a database
   target where the root search is measurably costlier.
 - Book: add/verify/render round trip; refusal of invalid episodes;

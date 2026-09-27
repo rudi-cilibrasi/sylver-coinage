@@ -1,0 +1,34 @@
+{"draw": "random", "tier": "A", "outcome": "N", "target": "16,26,36,38,44,56,66,111,133,139,141,151,161", "F": 145, "states": 2311350, "accepted": false}
+{"draw": "random", "tier": "A", "outcome": "N", "target": "16,26,38,56,60,101,129,135,141,147", "F": 137, "states": 6782434, "accepted": false}
+{"draw": "random", "tier": "A", "outcome": "N", "target": "16,26,34,38,40,113,123,125,135", "F": 143, "states": 1214833, "accepted": true}
+{"draw": "random", "tier": "A", "outcome": "N", "target": "16,26,36,38,40,44,46,115,133,135,139,145", "F": 143, "states": 1000046, "accepted": true}
+{"draw": "random", "tier": "A", "outcome": "N", "target": "16,26,28,36,38,46,111,121,131,133,135", "F": 145, "states": 764240, "accepted": true}
+{"draw": "random", "tier": "A", "outcome": "P", "target": "16,26,38,82,88,113,123,125,133,147,153", "F": 143, "states": 12979353, "accepted": false}
+{"draw": "random", "tier": "A", "outcome": "P", "target": "16,26,38,44,56,113,121,125,135,143,149", "F": 133, "states": 5327343, "accepted": false}
+{"draw": "random", "tier": "A", "outcome": "P", "target": "16,26,30,38,109,123,127,137", "F": 145, "states": 1876804, "accepted": true}
+{"draw": "random", "tier": "A", "outcome": "P", "target": "16,26,28,30,38,79", "F": 129, "states": 448489, "accepted": true}
+{"draw": "random", "tier": "A", "outcome": "P", "target": "16,26,28,85,121,123,125", "F": 135, "states": 2334549, "accepted": false}
+{"draw": "random", "tier": "A", "outcome": "P", "target": "16,26,38,44,46,50,119,127,129,137,141", "F": 149, "states": 2815456, "accepted": false}
+{"draw": "random", "tier": "A", "outcome": "P", "target": "16,20,26,28,38,111,121,129,135", "F": 133, "states": 169082, "accepted": true}
+{"draw": "random", "tier": "B", "outcome": "N", "target": "16,26,38,44,50,119,129,137,139,147,149", "F": 159, "states": 4577786, "accepted": true}
+{"draw": "random", "tier": "B", "outcome": "N", "target": "16,26,38,60,66,88,109,131,145,153,165", "F": 159, "states": 8644206, "accepted": false}
+{"draw": "random", "tier": "B", "outcome": "N", "target": "16,26,28,38,50,113,147,149", "F": 159, "states": 1419193, "accepted": true}
+{"draw": "random", "tier": "B", "outcome": "N", "target": "16,26,38,44,50,117,127,129,137,139", "F": 157, "states": 783, "accepted": false}
+{"draw": "random", "tier": "B", "outcome": "N", "target": "16,26,28,36,38,46,117,137", "F": 167, "states": 828475, "accepted": true}
+{"draw": "random", "tier": "B", "outcome": "P", "target": "16,26,38,44,46,56,111,129,131,133", "F": 151, "states": 3330318, "accepted": true}
+{"draw": "random", "tier": "B", "outcome": "P", "target": "16,26,34,38,40,115,151,159", "F": 161, "states": 1390816, "accepted": true}
+{"draw": "random", "tier": "B", "outcome": "P", "target": "16,26,38,44,50,113,141,147,149,159", "F": 169, "states": 4797858, "accepted": true}
+{"draw": "witnessed", "tier": "A", "outcome": "N", "target": "16,26,34,38,40,117,123,125,127,131", "F": 145, "states": 688662, "witnesses": [28], "accepted": true}
+{"draw": "witnessed", "tier": "A", "outcome": "N", "target": "16,26,38,44,62,66,119,127,131,155", "F": 149, "states": 2250199, "witnesses": [28, 141], "accepted": false}
+{"draw": "witnessed", "tier": "A", "outcome": "N", "target": "16,26,30,36,38,40,44,113,121,123,127,131", "F": 141, "states": 370334, "witnesses": [28], "accepted": true}
+{"draw": "witnessed", "tier": "A", "outcome": "N", "target": "16,26,38,44,50,115,127,137,151,155,161", "F": 149, "states": 4668052, "witnesses": [129], "accepted": false}
+{"draw": "witnessed", "tier": "A", "outcome": "N", "target": "16,26,30,36,38,50,115,125,139,159", "F": 149, "states": 759, "witnesses": [4], "accepted": true}
+{"draw": "witnessed", "tier": "B", "outcome": "N", "target": "16,26,36,38,44,56,66,119,137,139,141,147", "F": 159, "states": 2358078, "witnesses": [125], "accepted": true}
+{"draw": "witnessed", "tier": "B", "outcome": "N", "target": "16,26,34,36,38,40,113", "F": 159, "states": 39623, "witnesses": [13], "accepted": false}
+{"draw": "witnessed", "tier": "B", "outcome": "N", "target": "16,26,38,44,50,113,131,135", "F": 159, "states": 762, "witnesses": [4], "accepted": false}
+{"draw": "witnessed", "tier": "B", "outcome": "N", "target": "16,26,70,82,88,115,125,153,159,161,171,181", "F": 165, "states": 759, "witnesses": [4], "accepted": false}
+{"draw": "witnessed", "tier": "B", "outcome": "N", "target": "16,26,70,82,88,113,153,159,189", "F": 173, "states": 30873742, "witnesses": [47], "accepted": false}
+{"draw": "witnessed", "tier": "B", "outcome": "N", "target": "16,26,70,82,88,115,121,125,143,161,165", "F": 171, "states": 19664296, "witnesses": [135, 149], "accepted": false}
+{"draw": "witnessed", "tier": "B", "outcome": "N", "target": "16,26,38,44,62,66,101,123,129,137,141,147", "F": 151, "states": 51801, "witnesses": [12], "accepted": false}
+{"draw": "witnessed", "tier": "B", "outcome": "N", "target": "16,26,70,82,83,88,133,137", "F": 155, "states": 1381848, "witnesses": [27], "accepted": true}
+{"draw": "witnessed", "tier": "B", "outcome": "N", "target": "16,26,82,86,88,93,129,149,163,169", "F": 159, "states": 3747484, "witnesses": [28], "accepted": true}

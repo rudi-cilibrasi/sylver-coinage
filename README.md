@@ -109,10 +109,12 @@ experiment; no new live discovery or real-LLM performance advantage is claimed.
 **Certificate golf and The Book.** Programs also compete to *certify* results
 the database already knows with the shortest, cheapest-to-check proofs. The
 frozen 308,322-fact database is an untrusted, hash-pinned hint oracle; every
-certificate is replayed by the fixed verifier. The
-[golf pilot](sylver/arena/data/golf/REPORT.md) certified all 16 panel targets
-(search baselines without hints certified none) and found witness choices up
-to 2.9 times cheaper to check than the verifier's own root search.
+certificate is replayed by the fixed verifier. In the
+[golf pilot](sylver/arena/data/golf/REPORT.md) every hinted strategy certified
+all 16 panel targets; the hint-free control needed 1.5–2.6 times the CPU on
+finite targets and certified neither gcd-two W target. Where the database
+offered a much cheaper witness, the witness certificate scored up to 2.8
+times better than the verifier's own root search.
 [The Book](sylver/arena/book/BOOK.md) keeps the cheapest-to-check certificate
 for each target, re-verified three times with deterministic state counts.
 

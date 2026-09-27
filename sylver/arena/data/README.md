@@ -43,6 +43,12 @@ described above, passing the extracted episode directory to
 
 ## Replay an archived pilot episode
 
+Replays need the verifier version that produced the episode. Certificate
+golf (#16) changed verifier sources, so replay the first pilot and the
+historical checks from a checkout of commit `589066c`, for example
+`git worktree add /tmp/pilot-checkout 589066c`, and run these commands
+there. Golf episodes replay from the golf commit onward.
+
 From the repository root, extract into a new directory:
 
 ```sh
