@@ -52,14 +52,14 @@ GOLF_RESEARCH = (
     ('C', '16,26,62,89,98,102', 'N', 6382154),
     ('C', '16,26,33,62,89,102', 'P', 1721485),
 )
-# W={16,26,62,98} has 52 obligations; 49 are covered. Each covered move m
-# is refuted by a recorded reply. For these 37 the refutation is a finite
+# W={16,26,62,98} has 52 obligations; 50 are covered. Each covered move m
+# is refuted by a recorded reply. For these 38 the refutation is a finite
 # certificate: even moves (gcd two) by an odd witness reaching a finite P
 # position, odd moves by a finite N position itself (the verifier finds its
 # winning move). Witnesses: campaign graph and the plan2 release certificate.
 W = (16, 26, 62, 98)
 W_WITNESSED = {2: 3, 18: 5, 19: 23, 22: 15, 27: 19, 28: 25, 30: 111, 34: 39, 38: 55, 40: 11, 44: 19, 46: 17,
-               50: 29, 54: 33, 60: 27, 67: 31, 76: 43, 82: 27, 86: 129, 92: 139, 102: 95, 134: 85}
+               50: 29, 54: 33, 60: 27, 67: 31, 70: 169, 76: 43, 82: 27, 86: 129, 92: 139, 102: 95, 134: 85}
 W_FINITE = (3, 5, 7, 9, 11, 15, 17, 23, 25, 33, 35, 41, 43, 51, 59)
 # The other 12 covered moves reach infinite P positions, whose own
 # certificates are campaign or published results outside this proof set.
@@ -67,7 +67,7 @@ W_INFINITE = {4: (6, '{4,6}'), 6: (4, '{4,6}'), 8: (20, 'G={8,20,26}'), 10: (24,
               12: (14, '{12,14,16}'), 14: (12, '{12,14,16}'), 20: (8, 'G={8,20,26}'),
               24: (10, 'K={10,16,24}'), 36: (56, 'V={16,26,36,56}'), 56: (36, 'V={16,26,36,56}'),
               66: (56, 'B={16,26,56,62,66}'), 72: (82, '{16,26,62,72,82} (Sicherman, published)')}
-W_OPEN = (70, 108, 118)  # 86 and 92: replies 129 and 139 (campaigns/w-three-2026-09-27)
+W_OPEN = (108, 118)  # 70, 86, 92: replies 169, 129, 139 (campaigns/w-two-, w-three-2026-09-27)
 W_LIMITS = dict(DEFAULT_LIMITS, cpu_seconds=3600., wall_seconds=7200., memory_mb=16384, query_wall_seconds=3600.)
 
 
@@ -218,7 +218,7 @@ def golf_pilot(output, tiers=('A', 'B'), repeats=3, seed=0, workers=1, research_
     return out / 'REPORT.md'
 
 
-def w_book(output, book, workers=1, seed=0, strategies=('golf-witness', 'golf-root'), certificates=None):
+def w_book(output, book, workers=1, seed=0, strategies=('golf-witness', 'golf-root'), certificates=None, exclude=()):
     """Certify W's finitely certifiable obligations into ``book``.
 
     Targets already recorded in the Book (for example by the golf pilot's
@@ -231,8 +231,18 @@ def w_book(output, book, workers=1, seed=0, strategies=('golf-witness', 'golf-ro
     from .policies import GOLF
     from .tournament import run_tournament
     out = Path(output); out.mkdir()
+    from .book import admit, measure
+    from .exact import build_tools
+    build_tools(out / 'tools')
+    for path in sorted(Path(certificates).glob('*.json')) if certificates else ():
+        proof = read(path)
+        entry = measure(proof, out / 'tools', repeats=2)
+        entry['source'] = {'competitor': 'curator certificate', 'file': path.name}
+        admit(book, proof, entry)
     index = read(Path(book) / 'index.json') if (Path(book) / 'index.json').exists() else {'targets': {}}
-    rows = [r for r in w_targets() if r[1] not in index['targets']]
+    from .common import position
+    skip = {key(position((*W, m))) for m in exclude}  # e.g. leaves too large to replay alongside other work
+    rows = [r for r in w_targets() if r[1] not in index['targets'] and r[1] not in skip]
     if rows:
         fixture = build_golf(out / 'fixtures', ('W',), targets=rows)
         visible = out / 'fixtures' / 'visible'
@@ -247,7 +257,7 @@ def w_book(output, book, workers=1, seed=0, strategies=('golf-witness', 'golf-ro
             if r['status'] != 'valid' or r['verification']['certificate_sha256'] in seen:
                 continue
             seen.add(r['verification']['certificate_sha256'])
-            add_certificate(book, out / 'tournament' / run['directory'], out / 'tools', competitor=name)
+            add_certificate(book, out / 'tournament' / run['directory'], out / 'tools', competitor=name, repeats=2)
     # Obligations the campaign routed through infinite P positions: try a
     # bounded short-cover proof; admission re-verifies whatever is found.
     from .book import admit, measure
@@ -258,11 +268,6 @@ def w_book(output, book, workers=1, seed=0, strategies=('golf-witness', 'golf-ro
                          seconds=10., depth=2, max_queries=60)
     index = read(Path(book) / 'index.json') if (Path(book) / 'index.json').exists() else {'targets': {}}
     from .common import position
-    for path in sorted(Path(certificates).glob('*.json')) if certificates else ():
-        proof = read(path)
-        entry = measure(proof, out / 'tools')
-        entry['source'] = {'competitor': 'short-cover prover (curator search)', 'file': path.name}
-        admit(book, proof, entry)
     index = read(Path(book) / 'index.json') if (Path(book) / 'index.json').exists() else {'targets': {}}
     for m in sorted(W_INFINITE):
         k = key(position((*W, m)))
@@ -271,7 +276,7 @@ def w_book(output, book, workers=1, seed=0, strategies=('golf-witness', 'golf-ro
         nodes = prover.prove_n(position((*W, m)), 2)
         if nodes:
             proof = {'schema': 1, 'root': k, 'nodes': nodes}
-            entry = measure(proof, out / 'tools')
+            entry = measure(proof, out / 'tools', repeats=2)
             entry['source'] = {'competitor': 'short-cover prover (curator tool)'}
             admit(book, proof, entry)
     (Path(book) / 'BOOK.md').write_text(render_book(book))

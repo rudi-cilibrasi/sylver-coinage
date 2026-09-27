@@ -251,7 +251,7 @@ class BookOfWTests(unittest.TestCase):
         groups = [set(W_WITNESSED), set(W_FINITE), set(W_INFINITE), set(W_OPEN)]
         self.assertEqual(sorted(set().union(*groups)), moves)
         self.assertEqual(sum(map(len, groups)), len(moves))
-        self.assertEqual(len(w_targets()), 37)
+        self.assertEqual(len(w_targets()), 38)
         for m, reply in W_WITNESSED.items():
             child = position((*position((*W, m)), reply))
             self.assertEqual(profile(child)['gcd'], 1, m)   # a finite destination
