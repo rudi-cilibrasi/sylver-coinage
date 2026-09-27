@@ -15,7 +15,8 @@
 //
 // The memo is split into shards, each an open-addressing table with its own
 // lock, so a table grows one shard at a time instead of briefly holding two
-// copies of the whole memo. Every reachable state contains the root's
+// copies of the whole memo; shards fill to 7/8 and grow by half, with hash
+// fingerprints keeping the long probes of a full table cheap. Every reachable state contains the root's
 // semigroup, so a memo key keeps only the state's bits at the root's gaps:
 // about half the Frobenius number in bits instead of 64 * SYLVER_NATIVE_WORDS.
 // --odd-range and --odd-list evaluate base+m for each listed odd m with one
@@ -195,13 +196,20 @@ class SpinLock {
 };
 
 // Open-addressing memo split into independently locked shards chosen by the
-// top bits of the hash. Each slot holds a packed key of ``stride`` words and
-// a value (0 for P, else the winning move); kEmpty marks a free slot. A key
-// is never stored twice and a stored value is never overwritten.
+// top bits of the hash. Each slot holds a packed key of ``stride`` words and a
+// 16-bit tag: the low 10 bits are the value (0 for P, else the winning move)
+// and the high 6 bits a fingerprint of the hash, so a probe compares keys only
+// when the fingerprint matches; kEmpty marks a free slot. A shard is filled to
+// at most 7/8 of its capacity and then grows by half, so it holds between
+// 7/12 and 7/8 as many entries as slots. A key is never stored twice and a
+// stored value is never overwritten.
 class ShardedMemo {
   public:
     static constexpr int kShardBits = 12;
-    static constexpr std::uint16_t kEmpty = 0xFFFF;  // no move exceeds 64 * kWords - 1
+    static constexpr std::uint16_t kEmpty = 0xFFFF;  // fingerprints stop at 62, so no tag equals it
+    static constexpr int kValueBits = 10;
+    static constexpr std::uint16_t kValueMask = (1U << kValueBits) - 1;
+    static_assert(kMaximumFrobenius <= kValueMask, "memo tags hold moves in 10 bits: at most 16 words");
 
     explicit ShardedMemo(int stride)
         : stride_(std::min(static_cast<std::size_t>(stride), static_cast<std::size_t>(kWords))) {
@@ -210,31 +218,29 @@ class ShardedMemo {
 
     [[nodiscard]] int lookup(const Key& key, std::size_t hash) {
         Shard& shard = shard_for(hash);
+        const std::uint16_t print = fingerprint(hash);
         std::lock_guard guard(shard.lock);
-        for (std::size_t slot = hash & shard.mask;; slot = (slot + 1) & shard.mask) {
-            const std::uint16_t value = shard.values[slot];
-            if (value == kEmpty) return -1;
-            if (std::equal(key.begin(), key.begin() + static_cast<std::ptrdiff_t>(stride_),
-                           shard.keys.begin() + static_cast<std::ptrdiff_t>(slot * stride_))) {
-                return value;
-            }
+        const std::size_t capacity = shard.tags.size();
+        for (std::size_t slot = home(hash, capacity);; slot = next(slot, capacity)) {
+            const std::uint16_t tag = shard.tags[slot];
+            if (tag == kEmpty) return -1;
+            if ((tag >> kValueBits) == print && shard.holds(slot, key, stride_)) return tag & kValueMask;
         }
     }
 
     void insert(const Key& key, std::size_t hash, std::uint16_t value) {
         Shard& shard = shard_for(hash);
+        const std::uint16_t print = fingerprint(hash);
         std::lock_guard guard(shard.lock);
-        if ((shard.count + 1) * 4 > shard.values.size() * 3) shard.grow(stride_);
-        std::size_t slot = hash & shard.mask;
-        for (; shard.values[slot] != kEmpty; slot = (slot + 1) & shard.mask) {
-            if (std::equal(key.begin(), key.begin() + static_cast<std::ptrdiff_t>(stride_),
-                           shard.keys.begin() + static_cast<std::ptrdiff_t>(slot * stride_))) {
-                return;
-            }
+        if ((shard.count + 1) * 8 > shard.tags.size() * 7) shard.grow(stride_);
+        const std::size_t capacity = shard.tags.size();
+        std::size_t slot = home(hash, capacity);
+        for (; shard.tags[slot] != kEmpty; slot = next(slot, capacity)) {
+            if ((shard.tags[slot] >> kValueBits) == print && shard.holds(slot, key, stride_)) return;
         }
         std::copy(key.begin(), key.begin() + static_cast<std::ptrdiff_t>(stride_),
                   shard.keys.begin() + static_cast<std::ptrdiff_t>(slot * stride_));
-        shard.values[slot] = value;
+        shard.tags[slot] = static_cast<std::uint16_t>((print << kValueBits) | value);
         ++shard.count;
     }
 
@@ -244,10 +250,10 @@ class ShardedMemo {
     void overwrite(const Key& key, std::size_t hash, std::uint16_t value) {
         insert(key, hash, value);
         Shard& shard = shard_for(hash);
-        for (std::size_t slot = hash & shard.mask;; slot = (slot + 1) & shard.mask) {
-            if (std::equal(key.begin(), key.begin() + static_cast<std::ptrdiff_t>(stride_),
-                           shard.keys.begin() + static_cast<std::ptrdiff_t>(slot * stride_))) {
-                shard.values[slot] = value;
+        const std::size_t capacity = shard.tags.size();
+        for (std::size_t slot = home(hash, capacity);; slot = next(slot, capacity)) {
+            if (shard.tags[slot] != kEmpty && shard.holds(slot, key, stride_)) {
+                shard.tags[slot] = static_cast<std::uint16_t>((fingerprint(hash) << kValueBits) | value);
                 return;
             }
         }
@@ -259,12 +265,12 @@ class ShardedMemo {
     template <class F>
     void for_each_in_shard(std::size_t index, F&& f) const {
         const Shard& shard = shards_[index];
-        for (std::size_t slot = 0; slot < shard.values.size(); ++slot) {
-            if (shard.values[slot] == kEmpty) continue;
+        for (std::size_t slot = 0; slot < shard.tags.size(); ++slot) {
+            if (shard.tags[slot] == kEmpty) continue;
             Key key{};
             std::copy_n(shard.keys.begin() + static_cast<std::ptrdiff_t>(slot * stride_),
                         std::min(stride_, key.size()), key.begin());
-            f(key, shard.values[slot]);
+            f(key, static_cast<std::uint16_t>(shard.tags[slot] & kValueMask));
         }
     }
 
@@ -278,34 +284,48 @@ class ShardedMemo {
     }
 
   private:
+    // Bits 32 and up of the hash (the shard uses the top 12, the slot the low 32).
+    static std::uint16_t fingerprint(std::size_t hash) {
+        return static_cast<std::uint16_t>(((hash >> 32) & 0xFFFFF) % 63);
+    }
+    // A slot in [0, capacity) from the low 32 bits of the hash (multiply-shift).
+    static std::size_t home(std::size_t hash, std::size_t capacity) {
+        return static_cast<std::size_t>((static_cast<std::uint64_t>(static_cast<std::uint32_t>(hash)) * capacity) >> 32);
+    }
+    static std::size_t next(std::size_t slot, std::size_t capacity) { return slot + 1 == capacity ? 0 : slot + 1; }
+
     struct alignas(64) Shard {
         SpinLock lock;
         std::vector<std::uint64_t> keys;
-        std::vector<std::uint16_t> values;
-        std::size_t mask = 0;
+        std::vector<std::uint16_t> tags;
         std::size_t count = 0;
 
         void resize(std::size_t capacity, std::size_t stride) {
             keys.assign(capacity * stride, 0);
-            values.assign(capacity, kEmpty);
-            mask = capacity - 1;
+            tags.assign(capacity, kEmpty);
+        }
+
+        [[nodiscard]] bool holds(std::size_t slot, const Key& key, std::size_t stride) const {
+            return std::equal(key.begin(), key.begin() + static_cast<std::ptrdiff_t>(stride),
+                              keys.begin() + static_cast<std::ptrdiff_t>(slot * stride));
         }
 
         void grow(std::size_t stride) {
             Shard old;
             old.keys.swap(keys);
-            old.values.swap(values);
-            resize(old.values.size() * 2, stride);
-            for (std::size_t i = 0; i < old.values.size(); ++i) {
-                if (old.values[i] == kEmpty) continue;
+            old.tags.swap(tags);
+            const std::size_t capacity = old.tags.size() + old.tags.size() / 2;
+            resize(capacity, stride);
+            for (std::size_t i = 0; i < old.tags.size(); ++i) {
+                if (old.tags[i] == kEmpty) continue;
                 Key key{};
                 std::copy_n(old.keys.begin() + static_cast<std::ptrdiff_t>(i * stride), std::min(stride, key.size()),
                             key.begin());
-                std::size_t slot = hash_key(key) & mask;
-                while (values[slot] != kEmpty) slot = (slot + 1) & mask;
+                std::size_t slot = home(hash_key(key), capacity);
+                while (tags[slot] != kEmpty) slot = next(slot, capacity);
                 std::copy_n(key.begin(), std::min(stride, key.size()),
                             keys.begin() + static_cast<std::ptrdiff_t>(slot * stride));
-                values[slot] = old.values[i];
+                tags[slot] = old.tags[i];   // the fingerprint depends only on the key's hash
             }
         }
     };
