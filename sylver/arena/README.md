@@ -504,7 +504,7 @@ except that the exact players stop searching when their budget ends.
 | `random` | Uniform legal move. |
 | `smallest` | Smallest legal move (a weak control). |
 | `exact` | For a gcd-one position with Frobenius number at most `exact_bound` (180 with the native solver, 60 in Python) and the cap: an exact solve using up to a quarter of its remaining clock; plays a winning move, or, when lost, *complicates*. Otherwise it solves the finite children with small Frobenius numbers in increasing order and plays the first P child found, else complicates: of 16 seeded samples and the largest legal move, the one whose child is infinite, else has the largest Frobenius number. |
-| `book` | `exact`, preceded by an outcome book: the 305,011-row exact cache plus cited P-positions (Hutchings primes, `{4,6}`, Blok, Sicherman, published and certified campaign positions). It plays the smallest legal move to a known P child at once; from the empty position it names 5. |
+| `book` | `exact`, preceded by an outcome book: the 305,011-row exact cache plus cited P-positions (Hutchings primes, `{4,6}`, Blok, Sicherman, published and certified campaign positions, including W={16,26,62,98} and its finite witnesses). It plays the smallest legal move to a known P child at once; from the empty position it names 5, and from Q={16,26,88,98} it names 62. |
 
 Book facts and claims describe the uncapped game; in capped games they are
 heuristics only. The native solver is built once, like the proof arena's
