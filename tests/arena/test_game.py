@@ -174,6 +174,11 @@ class PlayerTests(unittest.TestCase):
         self.assertEqual(book.choose(p, request(p)), 95)   # {16,26,62,95,98,102} is P
         p = Position([16, 26, 34])
         self.assertEqual(book.choose(p, request(p)), 151)  # {16,26,34,151} is P in the exact cache
+        # W={16,26,62,98} is P (PR #28): from Q={16,26,88,98}, naming 62 reaches W.
+        for gens, move in (([16, 26, 88, 98], 62), ([16, 26, 62, 98, 108], 213), ([16, 26, 62, 72], 107)):
+            p = Position(gens)
+            self.assertEqual(book.choose(p, request(p)), move, gens)
+            self.assertEqual(book.last_claim, 'win', gens)
 
     def test_host_protocol_round_trip(self):
         p = Position([4, 5])
