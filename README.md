@@ -161,6 +161,7 @@ and the [recorded pilot league](sylver/arena/data/league/REPORT.md).
 | `sylver/solver.py` | exact finite evaluator (Python reference) |
 | `sylver/native_solver.cpp` | the same recurrence in C++ (differentially tested) |
 | `sylver/fast_solver.cpp` | discovery engine: the native recurrence with a flat memo, 1.7–1.9x faster, byte-identical output (differentially tested) |
+| `sylver/parallel_solver.cpp` | parallel discovery engine: the same recurrence searched by `--threads` threads sharing one sharded memo keyed by the root's gap bits; exact outcomes (any winning move; state counts vary), about 5x faster at 6 threads and 30–45% smaller; `--odd-range`/`--odd-list` sweeps share one memo across candidates; `--verify-memo` checks the finished memo as a certificate; sequential output with `--threads 1` (differentially tested; build with `-march=native` for BMI2) |
 | `sylver/periodicity_engine.cpp` | g=2 ultimate-periodicity engine: checkpointed, parallel exact fallbacks, compact v2 representation |
 | `sylver/short_certificates.py` | the certified P-node graph and opening-16 table |
 | `sylver/publication/plan2-2026-09-05/` | verification report, public certificate, source snapshot, and reproduction instructions |
