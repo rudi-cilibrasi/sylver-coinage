@@ -77,19 +77,27 @@ competitors through the protocol.
 
 ### 5. Golf panel
 
-All golf targets are finite (gcd one). The panel is predeclared in code,
-chosen once by a seeded draw from the cache and recorded with each
-target's **deterministic** root-search state count (not a timing), so the
-selection is reproducible on any machine:
+The panel is predeclared in code, chosen once by a seeded draw from the
+database and recorded with each target's **deterministic** root-search state
+count (not a timing), so the selection is reproducible on any machine:
 
 - **Tier A** — Frobenius 100–150, 3 P + 3 N, root search at most 2M states.
 - **Tier B** — Frobenius 150–200, 3 P + 3 N, root search 0.5M–8M states, so
   that structure, not process start-up, dominates the score.
-- **Tier C (research)** — the campaign's own finite results: the W-branch P
-  destinations `{16,26,62,85,98,134}` (move 134, PR #5) and
-  `{16,26,62,95,98,102}` (move 102, PR #13), the cross-check destination
-  `{16,26,33,62,89,102}`, and the two N branch positions they answer. Tier C
-  episodes need a 16 GiB memory profile and minutes of CPU each.
+- **Tier C (research)** — the campaign's own refutations around W: moves 134
+  and 102 (gcd two, so only a witness can certify them; replies 85 and 95),
+  the finite pair after 102 and 89 (root search 6,382,154 states against
+  1,721,485 for the hinted witness 33), and that witness's P destination.
+  Tier C needs a 16 GiB memory profile and minutes of CPU per episode.
+
+**Revision after measurement.** The first draw took N targets at random and
+found that only 3 of 8 had *any* hinted P child: the campaign database
+records outcomes, not winning moves, so for most positions it offers no
+witness choice at all. N targets are therefore drawn among database N
+positions with at least one hinted P child (the same seed), because only
+there does the database create a certification choice; P targets remain
+root-leaf controls. Recording witnesses, not just outcomes, is a
+recommendation for future campaigns.
 
 Every golf target is public: the database is a public artifact, so prior
 exposure is total and golf measures certification efficiency, not

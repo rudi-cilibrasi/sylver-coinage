@@ -19,21 +19,27 @@ from .snapshot import export_graph, manifest, snapshot
 # facts). Frozen: the hint digest in every golf manifest pins these bytes.
 HINT_GRAPH = 'sylver/campaigns/w-six-2026-09-22/evidence/proof-graph.json'
 
-# Predeclared panel: a seeded draw (random.Random(20260927)) from the cache by
-# Frobenius band, accepted by the deterministic native root-search state
-# count (tier A at most 2M states; tier B 0.5M-8M) so that proof structure,
-# not process start-up, dominates. (tier, target, public outcome, states)
+# Predeclared panel: seeded draws (random.Random(20260927)) from the hint
+# database by Frobenius band, accepted by the deterministic native
+# root-search state count (tier A at most 2M states; tier B 0.5M-8M) so that
+# proof structure, not process start-up, dominates. N targets are drawn among
+# N positions with at least one hinted P child: the database records
+# outcomes, not winning moves, and a first random draw found hinted P
+# children for only 3 of 8 N targets. P targets are root-leaf controls.
+# (tier, target, public outcome, root-search states)
 GOLF_PANEL = (
-    ('A', '16,26,34,38,40,113,123,125,135', 'N', 1214833),
-    ('A', '16,26,36,38,40,44,46,115,133,135,139,145', 'N', 1000046),
-    ('A', '16,26,28,36,38,46,111,121,131,133,135', 'N', 764240),
+    ('A', '16,26,34,38,40,117,123,125,127,131', 'N', 688662),
+    ('A', '16,26,30,36,38,40,44,113,121,123,127,131', 'N', 370334),
+    ('A', '16,26,30,36,38,50,115,125,139,159', 'N', 759),
     ('A', '16,26,30,38,109,123,127,137', 'P', 1876804),
     ('A', '16,26,28,30,38,79', 'P', 448489),
     ('A', '16,20,26,28,38,111,121,129,135', 'P', 169082),
-    ('B', '16,26,38,44,50,119,129,137,139,147,149', 'N', 4577786),
-    ('B', '16,26,28,38,50,113,147,149', 'N', 1419193),
-    ('B', '16,26,28,36,38,46,117,137', 'N', 828475),
+    ('B', '16,26,36,38,44,56,66,119,137,139,141,147', 'N', 2358078),
+    ('B', '16,26,70,82,83,88,133,137', 'N', 1381848),
+    ('B', '16,26,82,86,88,93,129,149,163,169', 'N', 3747484),
     ('B', '16,26,38,44,46,56,111,129,131,133', 'P', 3330318),
+    ('B', '16,26,34,38,40,115,151,159', 'P', 1390816),
+    ('B', '16,26,38,44,50,113,141,147,149,159', 'P', 4797858),
 )
 # The campaign's own branch refutations around W={16,26,62,98}: moves 134
 # (PR #5) and 102 (PR #13) have gcd two, so only a witness can certify them;
