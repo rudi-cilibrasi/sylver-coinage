@@ -42,6 +42,16 @@ CGROUPS = Path('/sys/fs/cgroup')
 ENTER = 'echo $$ > "$0/cgroup.procs" 2>/dev/null; exec "$@"'
 
 
+def game_clock(clock=None):
+    """CLOCK updated by ``clock``: known keys only, finite non-negative
+    numbers (not booleans), and a positive cpu_base."""
+    clock = dict(CLOCK, **(clock or {}))
+    if (set(clock) != set(CLOCK) or any(type(v) not in (int, float) or not math.isfinite(v) or v < 0
+                                        for v in clock.values()) or not clock['cpu_base'] > 0):
+        raise ValueError(f'invalid clock {clock}: keys {sorted(CLOCK)}, finite non-negative numbers, cpu_base > 0')
+    return clock
+
+
 def own_cgroup():
     """This process's cgroup v2 directory, if this user may create children
     in it and move processes between them; else None."""
@@ -360,10 +370,7 @@ def play_game(first, second, output, start=(), max_move=1000, clock=None, game_i
     ``accounting`` is 'cgroup', 'session', or None for cgroup where possible;
     the record says which each seat used.
     """
-    output = Path(output)
-    clock = dict(CLOCK, **(clock or {}))
-    if any(type(v) not in (int, float) or not math.isfinite(v) or v < 0 for v in clock.values()) or not clock['cpu_base'] > 0:
-        raise ValueError('clock values must be finite, non-negative numbers with cpu_base > 0')
+    output, clock = Path(output), game_clock(clock)
     initial = position = Position(start, max_move=max_move)
     players = dict(zip(SEATS, (first, second)))
     digests = {s: sha([str(c) for c in p['command']]) for s, p in players.items()}   # commands must be UTF-8

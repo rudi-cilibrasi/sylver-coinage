@@ -124,9 +124,9 @@ def main():
     elif args.command=='play':
         # Game 0: FIRST moves first; seats alternate. Names containing / are external absolute executables.
         from .league import resolve
-        from .referee import CLOCK, play_game
-        args.output.mkdir();start=[int(v) for v in args.start.split(',') if v]
-        clock=dict(CLOCK,cpu_base=args.cpu,cpu_increment=args.increment)
+        from .referee import game_clock, play_game
+        clock=game_clock({'cpu_base':args.cpu,'cpu_increment':args.increment})
+        start=[int(v) for v in args.start.split(',') if v];args.output.mkdir()
         seat=lambda spec,seed:resolve(Path(spec).name if '/' in spec else spec,args.output.parent/'arena-tools',spec if '/' in spec else None,seed)
         for i in range(args.games):
             first,second=(args.first,args.second)[::1 if i%2==0 else -1]
@@ -137,14 +137,14 @@ def main():
     elif args.command=='league':
         import shlex
         from .league import resolve, run_league, suite
-        from .referee import CLOCK
+        from .referee import game_clock
         tools=args.output.parent/'arena-tools';players={n:resolve(n,tools) for n in args.players.split(',') if n}
         for item in args.external:
             name,_,path=item.partition('=')
             if name in players:raise SystemExit(f'duplicate player {name}')
             players[name]=resolve(name,tools,path)
         openings=[o for s in args.suites.split(',') if s for o in suite(s,args.seed,args.per_band)]
-        run_league(players,openings,args.output,args.max_move,dict(CLOCK,cpu_base=args.cpu,cpu_increment=args.increment),
+        run_league(players,openings,args.output,args.max_move,game_clock({'cpu_base':args.cpu,'cpu_increment':args.increment}),
                    args.workers,args.seed,args.analyze_bound,command='python -m sylver.arena '+shlex.join(sys.argv[1:]))
         print(args.output/'REPORT.md')
     elif args.command=='_serve_worker':

@@ -462,6 +462,14 @@ class LeagueTests(unittest.TestCase):
             self.assertEqual((st['decided'], st['void']), (2, []))
             self.assertEqual((st['players']['poison']['wins'], st['players']['poison']['losses']), (0, 2))
 
+    def test_bad_clock_is_rejected_before_any_game(self):
+        players = {n: {'name': n, 'command': builtin_command(n)} for n in ('smallest', 'random')}
+        with tempfile.TemporaryDirectory() as d:
+            for clock in ({'cpu_base': 0}, {'cpu_increment': -1}, {'setup_wall': float('nan')}, {'cpu_base': True}):
+                with self.assertRaises(ValueError, msg=clock):
+                    run_league(players, suite('enders')[:1], Path(d) / 'league', clock=clock)
+                self.assertFalse((Path(d) / 'league').exists())
+
     def test_interrupted_league_keeps_finished_games(self):
         with tempfile.TemporaryDirectory() as d:
             out = Path(d) / 'league'

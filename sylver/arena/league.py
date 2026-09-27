@@ -26,7 +26,7 @@ from .common import ROOT, canonical, sha, write
 from .exact import build_tools
 from .game import Position
 from .players import CACHE, NATIVE, PLAYERS, builtin_command
-from .referee import CLOCK, SEATS, own_cgroup, play_game
+from .referee import SEATS, game_clock, own_cgroup, play_game
 
 ENDERS = ((4, 5), (4, 7), (5, 6), (5, 7), (6, 7), (7, 8))
 BANDS = ((0, 60), (60, 100), (100, 140), (140, 180))
@@ -204,7 +204,7 @@ def run_league(players, openings, output, max_move=1000, clock=None, workers=4, 
     return the standings. plan.json is written before the first game;
     built-in players (``builtin`` key) are reseeded with seed+i for game i.
     ``command``, if given, is recorded as the way to reproduce the league."""
-    output, clock = Path(output), dict(CLOCK, **(clock or {}))
+    output, clock = Path(output), game_clock(clock)
     if len(players) < 2 or len({o['name'] for o in openings}) != len(openings) or type(workers) is not int or workers < 1:
         raise ValueError('a league needs two or more players, uniquely named openings, and a positive worker count')
     for o in openings:
