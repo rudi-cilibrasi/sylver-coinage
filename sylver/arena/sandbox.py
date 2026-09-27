@@ -28,7 +28,7 @@ import subprocess
 import sys
 
 SYSTEM_DIRS = ('/usr', '/lib', '/lib64', '/bin')
-SYSTEM_FILES = ('/etc/ld.so.cache', '/etc/localtime')
+SYSTEM_FILES = ('/etc/ld.so.cache', '/etc/localtime', '/dev/urandom')
 NETWORK_FILES = ('/etc/ssl', '/etc/resolv.conf', '/etc/hosts')
 _CREATE_RULESET, _ADD_RULE, _RESTRICT_SELF = 444, 445, 446
 _IO_URING_SETUP, _PIDFD_GETFD = 425, 438

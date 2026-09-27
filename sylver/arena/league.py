@@ -19,6 +19,7 @@ import re
 import resource
 import statistics
 import subprocess
+import sys
 import time
 
 from sylver.solver import frobenius_number, solve_position
@@ -36,6 +37,10 @@ SUITES = ('empty', 'enders', 'database', 'research')
 ISOLATION = ('**Players are not isolated.** They run as this user without a sandbox, so a player can write '
              "into its opponent's pipes through /proc (making it appear to name 1), signal or trace it, or change "
              'files. Results are meaningful only when every player is a trusted program.')
+SANDBOXED = ('**Players are sandboxed** ({backend}): each can read only its own files (built-ins: the '
+             'checkout, the interpreter, and the solver) and write only a scratch directory, and cannot read '
+             "other processes' /proc entries, signal or trace them, or leave its cgroup. Path existence and "
+             'metadata remain visible; see sylver/arena/README.md for the backend guarantees.')
 METHODS = {'cgroup': 'in their own cgroup (cumulative cpu.stat usage of every descendant; cgroup.kill at game end)',
            'session': 'by /proc sums over their session (the fallback without cgroup delegation)'}
 BOOTSTRAP = 200
@@ -173,19 +178,34 @@ def win_groups(results, players):
     return sorted(groups, key=lambda g: -len(reach[g[0]]))
 
 
-def resolve(name, tools, executable=None, seed=0):
+def resolve(name, tools, executable=None, seed=0, sandboxed=True):
     """A player: a built-in by name (exact and book get the native solver
-    built in ``tools``) or an external program at an absolute path."""
+    built in ``tools``) or an external program at an absolute path.
+
+    Sandboxed players (the default) run under sylver.arena.sandbox with a
+    minimal environment: an external program may read only its executable,
+    and built-ins the checkout, the interpreter, and the solver. /proc,
+    signals, and ptrace of other processes are closed to them, so a player
+    cannot reach its opponent or the referee.
+    """
     if not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_.+-]*', name):
         raise ValueError(f'player name {name!r} must be letters, digits, and _.+-')
+    env = {'PATH': '/usr/bin:/bin', 'LANG': 'C.UTF-8'}
     if executable is not None:
         if not Path(executable).is_absolute():
             raise ValueError(f'external player {name} needs an absolute executable path')
-        return {'name': name, 'command': [str(executable)]}
+        player = {'name': name, 'command': [str(executable)]}
+        if sandboxed:
+            player.update(sandbox={'read': [str(executable)]}, env=env)
+        return player
     if name not in PLAYERS:
         raise ValueError(f'unknown built-in player {name!r}')
     options = {'binary': str(build_tools(tools))} if name in ('exact', 'book') else {}
-    return {'name': name, 'builtin': name, 'options': options, 'command': builtin_command(name, seed, options), 'cwd': str(ROOT)}
+    player = {'name': name, 'builtin': name, 'options': options, 'command': builtin_command(name, seed, options), 'cwd': str(ROOT)}
+    if sandboxed:
+        read = [str(ROOT), *sorted({sys.prefix, sys.base_prefix, sys.exec_prefix}), *options.values()]
+        player.update(sandbox={'read': read}, env=dict(env, PYTHONPATH=str(ROOT)))
+    return player
 
 
 def _code():
@@ -238,9 +258,14 @@ def run_league(players, openings, output, max_move=1000, clock=None, workers=4, 
         argv = [str(c) for c in p['command']]
         binary = p.get('options', {}).get('binary')
         described[n] = {'command': argv, 'command_sha256': sha(argv), 'builtin': p.get('builtin'),
+                        'sandbox': p.get('sandbox'),
                         'options_sha256': sha(p.get('options', {})) if 'builtin' in p else None,
                         'binary_sha256': sha(Path(binary).read_bytes()) if binary else None}
+    from . import sandbox
+    if any(p.get('sandbox') for p in players.values()) and sandbox.backend() == 'none':
+        raise ValueError('players are to be sandboxed but no sandbox backend works here; use --no-sandbox only for trusted players')
     plan = {'schema': 1, 'players': described, 'openings': openings, 'rules': {'max_move': max_move, 'loser': 'names-1'},
+            'sandbox_backend': sandbox.backend() if any(p.get('sandbox') for p in players.values()) else None,
             'clock': clock, 'seed': seed, 'workers': workers, 'analyze_bound': analyze_bound, 'schedule': schedule,
             'command': command, 'accounting': 'cgroup' if cgroups else 'session', 'code': _code(),
             'host': {'python': platform.python_version(), 'platform': platform.platform(), 'cpus': os.cpu_count()}}
@@ -432,7 +457,9 @@ def render(plan, games, standings):
              f'they have gcd one and a Frobenius number at most the move cap {cap}; the empty position is capped. '
              f'Capped games follow a house rule: moves are limited to 2..{cap}, which never ends a game early but '
              'removes larger moves, so their games say nothing about real Sylver Coinage. Only uncapped openings '
-             'are exact, and only those are adjudicated.', '', ISOLATION, '',
+             'are exact, and only those are adjudicated.', '',
+             SANDBOXED.format(backend=plan.get('sandbox_backend')) if plan['players'] and all(
+                 p.get('sandbox') for p in plan['players'].values()) else ISOLATION, '',
              f"- Players: {', '.join(names)} (commands and digests in `plan.json`).",
              f"- Openings: {len(openings)} ({len(known)} with a known outcome, "
              f"{sum(o['capped'] for o in openings.values())} capped).",

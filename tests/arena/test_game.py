@@ -638,3 +638,70 @@ class CliTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+INJECT = r'''import json, os, sys
+def siblings():
+    me, parent = os.getpid(), os.getppid()
+    try:
+        names = os.listdir('/proc')
+    except OSError:
+        return
+    for name in names:
+        if name.isdigit() and int(name) != me:
+            try:
+                stat = open(f'/proc/{name}/stat').read()
+                if int(stat[stat.rindex(')') + 2:].split()[1]) == parent:
+                    yield int(name)
+            except OSError:
+                pass
+for line in sys.stdin:
+    msg = json.loads(line)
+    if msg['type'] == 'hello':
+        print(json.dumps({'type': 'ready'}), flush=True)
+    elif msg['type'] == 'move':
+        injected = 0
+        for pid in siblings():
+            try:
+                with open(f'/proc/{pid}/fd/1', 'w') as f:   # the opponent's stdout pipe
+                    f.write(json.dumps({'move': 1}) + '\n'); injected += 1
+            except OSError:
+                pass
+        member = {0}
+        for n in range(1, 200):
+            if any(n - g in member for g in msg['generators'] if g <= n):
+                member.add(n)
+        move = next(n for n in range(2, 200) if n not in member)
+        print(json.dumps({'move': move, 'note': f'injected {injected}'}), flush=True)
+    else:
+        break
+'''
+
+
+class PlayerSandboxTests(unittest.TestCase):
+    def test_sandboxed_player_cannot_inject_moves_into_its_opponent(self):
+        from sylver.arena import sandbox
+        from sylver.arena.league import resolve
+        if sandbox.backend() == 'none':
+            self.skipTest('no sandbox backend on this host')
+        with tempfile.TemporaryDirectory() as d:
+            script = Path(d) / 'inject.py'; script.write_text(INJECT)
+            attacker = {'name': 'attacker', 'command': ['/usr/bin/python3', str(script)],
+                        'sandbox': {'read': [str(script)]}, 'env': {'PATH': '/usr/bin:/bin'}}
+            victim = resolve('smallest', Path(d) / 'tools')
+            r = play_game(attacker, victim, Path(d) / 'game', start=(40, 41),
+                          clock={'cpu_base': 5.0, 'cpu_increment': 0.1, 'setup_cpu': 10.0, 'setup_wall': 30.0})
+            notes = [m.get('note') for m in r['moves'] if m['seat'] == 'first']
+            self.assertTrue(notes and all(n == 'injected 0' for n in notes), notes)
+            self.assertNotEqual(r['result']['reason'], 'named-1')
+            self.assertEqual(r['setup']['first'].get('sandbox'), sandbox.backend())
+
+    def test_resolve_sandboxes_by_default_with_a_minimal_environment(self):
+        from sylver.arena.league import resolve
+        with tempfile.TemporaryDirectory() as d:
+            ext = resolve('ext', Path(d), executable='/usr/bin/true')
+            self.assertEqual(ext['sandbox'], {'read': ['/usr/bin/true']})
+            self.assertEqual(set(ext['env']), {'PATH', 'LANG'})
+            self.assertNotIn('sandbox', resolve('ext', Path(d), executable='/usr/bin/true', sandboxed=False))
+            built = resolve('smallest', Path(d))
+            self.assertIn('PYTHONPATH', built['env'])
