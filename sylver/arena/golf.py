@@ -75,8 +75,11 @@ def build_golf(output, tiers=('A', 'B'), limits=None, targets=None):
     index = {'schema': 1, 'hints': digest, 'golf': []}
     for tier, target, outcome, states in rows:
         p = tuple(map(int, target.split(',')))
+        from math import gcd
+        from functools import reduce
+        work = 'Root search' if reduce(gcd, p) == 1 else 'Recorded witness leaf'
         context = (f'Golf tier {tier}: the public database says {outcome}. Certify it independently; '
-                   f'hints are untrusted and never cited. Root search: {states} native states.')
+                   f'hints are untrusted and never cited. {work}: {states} native states.')
         m = manifest(p, base, verifier_profile(), execution_profile((limits or TIER_LIMITS)[tier]),
                      'golf', context, digest)
         ident = f'golf-{tier}-' + key(p).replace(',', '-')
@@ -92,24 +95,27 @@ def bundle_hints(bundle_path, bundle):
 
 
 def competitors():
+    """The golf strategies, the hint-free golf-blind control, and the
+    pre-existing interleaved search baseline for reference."""
     from .policies import BASELINES, GOLF
     chosen = {name: {'policy': p} for name, p in GOLF.items()}
-    for name in ('interleaved', 'increasing'):
-        chosen[name] = {'policy': BASELINES[name]}
+    chosen['interleaved'] = {'policy': BASELINES['interleaved']}
     return chosen
 
 
 def summarize(entries):
-    """Per target: each competitor's median S and the lowest-S valid run."""
-    table = defaultdict(lambda: defaultdict(list)); best = {}
+    """Per target: each competitor's median S, the lowest-S valid run, and
+    the distinct valid certificates (by digest) with who produced them."""
+    table = defaultdict(lambda: defaultdict(list)); best = {}; certificates = defaultdict(dict)
     for name, r in entries:
         k = key(r['position'])
         if r['status'] == 'valid':
             table[k][name].append(r['S'])
+            certificates[k].setdefault(r['verification']['certificate_sha256'], name)
             if k not in best or r['S'] < best[k][1]['S']:
                 best[k] = (name, r)
     medians = {k: {n: median(v) for n, v in rows.items()} for k, rows in table.items()}
-    return medians, best
+    return medians, best, certificates
 
 
 def golf_pilot(output, tiers=('A', 'B'), repeats=3, seed=0, workers=1, research_repeats=1):
@@ -133,35 +139,51 @@ def golf_pilot(output, tiers=('A', 'B'), repeats=3, seed=0, workers=1, research_
         hints = {sha(b['manifest']): bundle_hints(p, b) for p, b in zip(paths, bundles)}
         entries += run_tournament(bundles, competitors(), out / f'tournament-{group}', out / 'tools',
                                   count, seed, hints=hints, workers=workers)
-    medians, best = summarize(entries)
+    medians, best, certificates = summarize(entries)
     book = out / 'book'
-    for k, (name, r) in sorted(best.items()):
-        directory = next(p for p in out.glob('tournament-*/*') if p.is_dir() and (p / 'receipt.json').exists()
-                         and sha(read(p / 'receipt.json')) == sha(r))
-        add_certificate(book, directory, out / 'tools', competitor=name)
+    directories = {}
+    for group in ('AB', 'C'):
+        tournament = out / f'tournament-{group}'
+        if (tournament / 'runs.json').exists():
+            for run in read(tournament / 'runs.json'):
+                r = read(tournament / run['directory'] / 'receipt.json')
+                if r['status'] == 'valid':
+                    directories.setdefault(r['verification']['certificate_sha256'], (run['competitor'], tournament / run['directory']))
+    # Every distinct valid certificate enters the Book; its deterministic
+    # checking cost, not tournament S, picks each target's entry of record.
+    for k in sorted(certificates):
+        for digest in sorted(certificates[k]):
+            name, directory = directories[digest]
+            add_certificate(book, directory, out / 'tools', competitor=name, repeats=2)
     (book / 'BOOK.md').write_text(render_book(book))
+    names = sorted(competitors())
     report = ['# Certificate golf pilot', '',
               'Every target is a public database result, so golf measures how cheaply a program can',
               '*certify* a known outcome, not discovery. Hints are untrusted: every certificate here was',
               'replayed by the fixed verifier with a fresh memo. S=(C+100)*(T+1), lower is better;',
-              'T is discovery plus verification CPU seconds. No new mathematics is claimed.', '',
+              'T is discovery plus verification CPU seconds. golf-blind is the hint-free control; the',
+              'interleaved search baseline is the pre-existing arena policy, whose fixed 0.6 s query',
+              'slices are far below these targets\' root searches. No new mathematics is claimed.', '',
               '## Median S per target', '',
-              '| Target | Tier | Outcome | ' + ' | '.join(sorted(competitors())) + ' |',
-              '| --- | --- | --- | ' + ' | '.join('---:' for _ in competitors()) + ' |']
+              '| Target | Tier | Outcome | Distinct certificates | ' + ' | '.join(names) + ' |',
+              '| --- | --- | --- | ---: | ' + ' | '.join('---:' for _ in names) + ' |']
     panel = {t: (tier, o) for tier, t, o, _ in GOLF_PANEL + GOLF_RESEARCH}
     for k in sorted(medians, key=lambda k: (panel.get(k, ('?', ''))[0], k)):
         tier, o = panel.get(k, ('?', '?'))
-        cells = [f'{medians[k][n]:.0f}' if n in medians[k] else '—' for n in sorted(competitors())]
-        report.append(f'| `{{{k}}}` | {tier} | {o} | ' + ' | '.join(cells) + ' |')
-    wins = defaultdict(int)
-    for k, rows in medians.items():
-        wins[min(rows, key=rows.get)] += 1
-    report += ['', '## Lowest median S by target', '']
-    report += [f'- {n}: {wins[n]} of {len(medians)} targets' for n in sorted(competitors())]
+        cells = [f'{medians[k][n]:.0f}' if n in medians[k] else '—' for n in names]
+        report.append(f'| `{{{k}}}` | {tier} | {o} | {len(certificates[k])} | ' + ' | '.join(cells) + ' |')
+    wins = defaultdict(int); choice = [k for k in medians if len(certificates[k]) > 1]
+    for k in choice:
+        wins[min(medians[k], key=medians[k].get)] += 1
+    report += ['', '## Lowest median S where the certificates differ', '',
+               f'{len(choice)} of {len(medians)} targets received more than one distinct certificate; on the',
+               'others every competitor submitted the same proof, so their ordering is timing noise.', '']
+    report += [f'- {n}: {wins[n]} of {len(choice)} targets' for n in names]
     report += ['', 'The Book for this pilot is in `book/BOOK.md`; per-run leaderboards follow.', '',
                render(entries, 'Golf leaderboards')]
     (out / 'REPORT.md').write_text('\n'.join(report) + '\n')
-    write(out / 'summary.json', {'schema': 1, 'medians': medians, 'wins': wins,
+    write(out / 'summary.json', {'schema': 1, 'medians': medians, 'wins_where_certificates_differ': wins,
+                                 'distinct_certificates': {k: len(v) for k, v in certificates.items()},
                                  'best': {k: {'competitor': n, 'S': r['S'], 'C': r['C'], 'T': r['T']}
                                           for k, (n, r) in best.items()}})
     return out / 'REPORT.md'

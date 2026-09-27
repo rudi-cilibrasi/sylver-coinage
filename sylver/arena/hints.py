@@ -47,7 +47,10 @@ def save(directory, data):
 class Hints:
     """Read-only lookup; the file must match ``digest`` and be strictly sorted."""
     def __init__(self, path, digest):
-        data = gzip.decompress(Path(path).read_bytes())
+        try:
+            data = gzip.decompress(Path(path).read_bytes())
+        except (OSError, EOFError) as error:  # missing, truncated, or not gzip
+            raise ValueError(f'unreadable hint file: {error}') from error
         if sha(data) != digest:
             raise ValueError('hint content mismatch')
         keys, outcomes, previous = [], [], None

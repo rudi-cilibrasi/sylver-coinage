@@ -138,7 +138,8 @@ def _execute_locked(output,bundle,binary,competitor,receipt,resuming=False):
             if min(remaining['cpu_seconds'],remaining['wall_seconds'])<=0:
                 receipt['status']='over-budget';break
             cfg=dict(config,phase=phase,output=str(work),limits=remaining)
-            if phase=='verification':cfg['submission']=str(output/'submission.json')
+            if phase=='verification':
+                cfg['submission']=str(output/'submission.json');cfg.pop('hints',None)  # proofs never see hints
             usage=_phase(cfg,run)
             phase_key=str(run.relative_to(output));receipt['phases'][phase_key]=usage
             receipt[phase+'_cpu']=sum(x['cpu_seconds'] for k,x in receipt['phases'].items()

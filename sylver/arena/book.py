@@ -1,13 +1,14 @@
-"""The Book: the best known certificate for each public result.
+"""The Book: the cheapest-to-check known certificate for each public result.
 
 Every entry is re-verified here in fresh verification runs, never trusting an
-episode's own receipt. An entry records canonical bytes C, the verifier's
-deterministic evaluated-state count, and the CPU of each run. The entry of
-record minimizes the verification-only product (C+100)*(V+1), V the median
-run: it prices a proof by what it costs to check, excluding the discovery
-cost that tournament scores include; products within 2% are ordered by
-fewer states, then fewer bytes. A Book certificate for a public result is an
-independent, cheaper-to-check proof of that result, not new mathematics.
+episode's own receipt, and records canonical bytes C, the verifier's
+evaluated-state count (which must agree across runs), and each run's CPU.
+The entry of record minimizes the deterministic checking cost
+(C+100)*(states/RATE+1): the agreed score's shape with verification time
+replaced by the verifier's own work at a fixed RATE, so timing noise never
+changes the record. Measured CPU is kept for information. Entries are
+compared only under one verifier version. A Book certificate for a public
+result is an independent, cheaper-to-check proof of it, not new mathematics.
 """
 from pathlib import Path
 from statistics import median
@@ -19,6 +20,10 @@ from .proof import canonical_proof, verifier_profile
 from .snapshot import manifest, snapshot
 
 BOOK = ROOT / 'sylver/arena/book'
+# Verifier states per CPU second: the order of the recording machine's
+# measured median (7.6e4-1.2e5 for this Book's first entries). Fixed per Book
+# version so the record depends only on C and the deterministic state count.
+RATE = 100_000
 LIMITS = dict(DEFAULT_LIMITS, cpu_seconds=7200., wall_seconds=14400., memory_mb=16384,
               query_wall_seconds=7200.)
 
@@ -41,31 +46,39 @@ def measure(proof, tools, repeats=3):
             if not r['valid']:
                 raise ValueError(f"certificate failed re-verification: {r['result'].get('error')}")
             runs.append(r)
-    states = {r['result']['finite_replays'][-1]['cumulative_states'] for r in runs}
+    states = {r['result']['finite_replays'][-1]['cumulative_states'] if r['result']['finite_replays'] else 0
+              for r in runs}
     if len(states) != 1:
         raise ValueError('verifier state count differs between runs')
-    first = runs[0]['result']; cpu = [r['verification_cpu'] for r in runs]; V = median(cpu)
-    return {'certificate': first['certificate_sha256'], 'outcome': first['outcome'], 'C': first['C'],
-            'states': states.pop(), 'verification_cpu': cpu, 'V': V, 'product': (first['C'] + 100) * (V + 1),
-            'verifier': sha(bundle['manifest']['verifier']), 'execution': sha(bundle['manifest']['execution'])}
+    first = runs[0]['result']; cpu = [r['verification_cpu'] for r in runs]
+    entry = {'certificate': first['certificate_sha256'], 'outcome': first['outcome'], 'C': first['C'],
+             'states': states.pop(), 'verification_cpu': cpu, 'V': median(cpu),
+             'verifier': sha(bundle['manifest']['verifier']), 'execution': sha(bundle['manifest']['execution'])}
+    entry['cost'] = cost(entry)
+    return entry
+
+
+def cost(entry):
+    return (entry['C'] + 100) * (entry['states'] / RATE + 1)
 
 
 def record(entries):
-    best = min(e['product'] for e in entries)
-    close = [e for e in entries if e['product'] <= best * 1.02]
-    return min(close, key=lambda e: (e['states'], e['C'], e['certificate']))['certificate']
+    return min(entries, key=lambda e: (cost(e), e['states'], e['C'], e['certificate']))['certificate']
 
 
 def admit(book, proof, entry):
-    book = Path(book); (book / 'certificates').mkdir(parents=True, exist_ok=True)
+    book = Path(book)
     encoded = canonical_proof(proof, snapshot())
     if sha(encoded) != entry['certificate']:
         raise ValueError('certificate bytes differ from the measured certificate')
-    (book / 'certificates' / (entry['certificate'] + '.json')).write_bytes(encoded + b'\n')
-    index = read(book / 'index.json') if (book / 'index.json').exists() else {'schema': 1, 'targets': {}}
+    index = read(book / 'index.json') if (book / 'index.json').exists() else {'schema': 1, 'rate': RATE, 'targets': {}}
     target = index['targets'].setdefault(proof['root'], {'outcome': entry['outcome'], 'entries': []})
     if target['outcome'] != entry['outcome']:
         raise ValueError('outcome conflicts with the Book')
+    if any(e['verifier'] != entry['verifier'] for e in target['entries']):
+        raise ValueError('re-verify this target under the current verifier before adding to it')
+    (book / 'certificates').mkdir(parents=True, exist_ok=True)
+    (book / 'certificates' / (entry['certificate'] + '.json')).write_bytes(encoded + b'\n')
     target['entries'] = [e for e in target['entries'] if e['certificate'] != entry['certificate']] + [entry]
     target['record'] = record(target['entries'])
     write(book / 'index.json', index)
@@ -93,7 +106,8 @@ def verify_book(book, tools, repeats=1):
         for e in target['entries']:
             proof = read(book / 'certificates' / (e['certificate'] + '.json'))
             fresh = measure(proof, tools, repeats)
-            ok = (fresh['C'], fresh['states'], fresh['outcome']) == (e['C'], e['states'], target['outcome'])
+            ok = (proof['root'] == root and fresh['certificate'] == e['certificate'] and
+                  (fresh['C'], fresh['states'], fresh['outcome']) == (e['C'], e['states'], target['outcome']))
             report.append({'target': root, 'certificate': e['certificate'], 'ok': ok,
                            'C': fresh['C'], 'states': fresh['states'], 'V': fresh['V']})
     return report
@@ -106,19 +120,23 @@ def _rule(proof):
 
 def render_book(book):
     book = Path(book); index = read(book / 'index.json')
+    rate = index.get('rate', RATE)
     lines = ['# The Book', '',
              'The cheapest-to-check known certificate for each public result. Every entry was re-verified',
-             'by the fixed verifier with a fresh memo, three times; *states* is its deterministic',
-             'evaluated-state count and *V* the median verification CPU seconds on the recording machine.',
-             'The entry of record minimizes (C+100)*(V+1), which prices checking, not discovery.',
-             'These are independent certificates of public results, not new mathematics.', '',
-             '| Target | Outcome | Proof | C | States | V (s) | (C+100)(V+1) | Entries | Found by |',
+             'by the fixed verifier with a fresh memo; *states* is the verifier\'s deterministic',
+             'evaluated-state count, identical in every run, and *V* the median verification CPU seconds',
+             'on the recording machine (for information). The entry of record minimizes the checking cost',
+             f'(C+100)*(states/{rate:,}+1): the agreed score\'s shape with verification time replaced by the',
+             'verifier\'s own work, so timing noise never changes the record. These are independent',
+             'certificates of public results, not new mathematics.', '',
+             '| Target | Outcome | Proof | C | States | V (s) | Checking cost | Entries | Found by |',
              '| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | --- |']
     for root, target in sorted(index['targets'].items(), key=lambda kv: (len(kv[0]), kv[0])):
         e = next(x for x in target['entries'] if x['certificate'] == target['record'])
         proof = read(book / 'certificates' / (e['certificate'] + '.json'))
         found = (e.get('source') or {}).get('competitor') or '—'
         lines.append(f"| `{{{root}}}` | {target['outcome']} | {_rule(proof)} | {e['C']} | {e['states']:,} | "
-                     f"{e['V']:.3f} | {e['product']:.0f} | {len(target['entries'])} | {found} |")
-    lines += ['', 'Certificates are in `certificates/SHA256.json`; `python -m sylver.arena book verify` replays them.']
+                     f"{e['V']:.3f} | {cost(e):,.0f} | {len(target['entries'])} | {found} |")
+    lines += ['', 'Certificates are in `certificates/SHA256.json`; `python -m sylver.arena book verify` replays them.',
+              'How entries are admitted and priced: [sylver/arena/README.md](../README.md#certificate-golf-and-the-book-16).']
     return '\n'.join(lines) + '\n'

@@ -175,9 +175,69 @@ class GolfEpisodeTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             add_certificate(book, self.root / 'book-bad', self.tools)
 
-    def test_record_prefers_fewer_states_within_two_percent(self):
-        a = {'certificate': 'a', 'product': 100.0, 'states': 900, 'C': 50}
-        b = {'certificate': 'b', 'product': 101.5, 'states': 500, 'C': 90}
-        c = {'certificate': 'c', 'product': 150.0, 'states': 1, 'C': 1}
+    def test_record_is_deterministic_checking_cost(self):
+        from sylver.arena.book import RATE, cost
+        a = {'certificate': 'a', 'C': 133, 'states': 3_747_484}   # a root leaf
+        b = {'certificate': 'b', 'C': 217, 'states': 2_657_828}   # a witness edge
+        self.assertLess(cost(b), cost(a))
+        self.assertEqual(record([a, b]), 'b')
+        c = {'certificate': 'c', 'C': 400, 'states': 2_600_000}  # fewer states, too many bytes
         self.assertEqual(record([a, b, c]), 'b')
-        self.assertEqual(record([a, c]), 'a')
+        self.assertEqual(cost({'C': 0, 'states': RATE}), 200)
+
+    def test_book_refuses_mixed_verifiers_and_handles_leafless_proofs(self):
+        book = self.root / 'book-mixed'
+        leafless = {'schema': 1, 'root': '2,3', 'nodes': {'2,3': {'rule': 'cover', 'outcome': 'P', 'tail': 'finite', 'children': []}}}
+        entry = measure(leafless, self.tools, repeats=1)
+        self.assertEqual(entry['states'], 0)
+        admit(book, leafless, entry)
+        other = dict(entry, verifier='0' * 64)
+        with self.assertRaises(ValueError):
+            admit(book, leafless, other)
+
+    def transcript_ops(self, directory):
+        lines = (directory / 'discovery/work/transcript.jsonl').read_text().splitlines()
+        import json
+        return [json.loads(x)['request']['op'] for x in lines]
+
+    def test_probe_skips_a_lone_option_and_blind_uses_no_hints(self):
+        target = (10, 16)
+        rows = [(target, 'N')] + [(minimal_generators(target + (m,)), outcome(minimal_generators(target + (m,))))
+                                  for m in range(3, 40, 2)]
+        bundle, path = golf_bundle(self.root / 'lone', target, rows)
+        r = run_episode(bundle, GOLF['golf-probe'], self.root / 'lone-probe', self.tools, hints=path)
+        self.assertEqual(r['status'], 'valid')
+        self.assertNotIn('exact', self.transcript_ops(self.root / 'lone-probe'))
+        r = run_episode(self.bundle, GOLF['golf-blind'], self.root / 'blind', self.tools, hints=self.hints)
+        self.assertEqual((r['status'], r['outcome']), ('valid', 'N'))
+        ops = self.transcript_ops(self.root / 'blind')
+        self.assertNotIn('hint', ops); self.assertIn('exact', ops)
+
+    def test_probe_never_submits_a_refuted_witness(self):
+        # Mislabel one N child of the target as P: the probe refutes it and
+        # must certify the root leaf instead.
+        wrong = next(p for p, o in self.rows[1:] if o == 'N')
+        rows = [(p, 'P' if p == wrong else o) for p, o in self.rows if o == 'N'] + [(self.target, 'N')]
+        rows = list(dict(rows).items())
+        bundle, path = golf_bundle(self.root / 'refuted', self.target, rows)
+        r = run_episode(bundle, GOLF['golf-probe'], self.root / 'refuted-probe', self.tools, hints=path)
+        self.assertEqual((r['status'], r['outcome']), ('valid', 'N'))
+        proof = read(self.root / 'refuted-probe/certificate.json')
+        self.assertEqual(proof['nodes'][key(self.target)]['rule'], 'finite')
+
+    def test_parallel_tournament_keeps_order_and_stops_on_failure(self):
+        from sylver.arena.tournament import run_tournament
+        chosen = {'a': {'policy': GOLF['golf-root']}, 'b': {'policy': GOLF['golf-witness']}}
+        out = self.root / 'parallel'
+        entries = run_tournament([self.bundle], chosen, out, self.tools, 2, 0,
+                                 hints={sha(self.bundle['manifest']): self.hints}, workers=2)
+        self.assertEqual([n for n, _ in entries], ['a', 'b', 'b', 'a'])  # rotated per repeat
+        runs = read(out / 'runs.json')
+        self.assertEqual([r['competitor'] for r in runs], ['a', 'b', 'b', 'a'])
+        # A task whose pinned hint file is missing fails at once; the queue stops.
+        bad, _ = golf_bundle(self.root / 'bad', self.target, self.rows[:5])  # its hint file is not supplied
+        with self.assertRaises(ValueError):
+            run_tournament([bad, self.bundle], chosen, self.root / 'stopped', self.tools, 3, 0,
+                           hints={sha(self.bundle['manifest']): self.hints}, workers=2)
+        started = [d for d in (self.root / 'stopped').iterdir() if d.is_dir()]
+        self.assertLess(len(started), 6)

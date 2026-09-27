@@ -93,7 +93,15 @@ def run_tournament(bundles,competitors,output,tools,repeats=3,seed=0,hints=None,
         for item in schedule:play(item)
     else:
         with ThreadPoolExecutor(workers) as pool:
-            for future in [pool.submit(play,item) for item in schedule]:future.result()
+            futures=[pool.submit(play,item) for item in schedule]
+            try:
+                for future in futures:future.result()
+            except BaseException:
+                # Ctrl-C or a failed episode stops the queue: pending episodes
+                # never start; running ones finish (their supervisors see the
+                # same interrupt) and stay recorded.
+                pool.shutdown(wait=True,cancel_futures=True)
+                raise
     return [(done[i][0],done[i][1]) for i in schedule]
 
 
