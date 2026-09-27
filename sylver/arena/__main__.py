@@ -45,6 +45,19 @@ def main():
     p=commands.add_parser('admit');p.add_argument('episode',type=Path);p.add_argument('--output',type=Path,required=True)
     p=commands.add_parser('serve');p.add_argument('bundle',type=Path);p.add_argument('--output',type=Path,required=True)
     p=commands.add_parser('_serve_worker',help=argparse.SUPPRESS);p.add_argument('bundle',type=Path);p.add_argument('output',type=Path);p.add_argument('binary',type=Path)
+    trusted=('Players run as this user without a sandbox and can interfere with each other (for example, '
+             "write into the opponent's pipes through /proc); run only trusted programs. Game results are not proofs.")
+    for name in ('play','league'):
+        p=commands.add_parser(name,description=trusted,help=f'{name} Sylver Coinage games between trusted programs')
+        if name=='play':
+            p.add_argument('first');p.add_argument('second');p.add_argument('--start',default='');p.add_argument('--games',type=int,default=2)
+        else:
+            p.add_argument('--players',default='random,smallest,exact,book');p.add_argument('--suites',default='empty,enders,database')
+            p.add_argument('--external',action='append',default=[],metavar='NAME=/abs/executable')
+            p.add_argument('--per-band',type=int,default=1);p.add_argument('--workers',type=int,default=4)
+            p.add_argument('--analyze-bound',type=int,default=0)
+        p.add_argument('--output',type=Path,required=True);p.add_argument('--max-move',type=int,default=1000)
+        p.add_argument('--cpu',type=float,default=2.);p.add_argument('--increment',type=float,default=.1);p.add_argument('--seed',type=int,default=0)
     args=parser.parse_args()
     if args.command=='fixtures':print(json.dumps(build_fixtures(args.output,dict(DEFAULT_LIMITS,cpu_seconds=args.cpu_seconds,wall_seconds=args.wall_seconds,memory_mb=args.memory_mb,model_id=args.model_id,model_requests=args.model_requests,model_tokens=args.model_tokens,model_cost=args.model_cost),historical=args.historical,live=args.live),indent=2))
     elif args.command=='inspect':
@@ -108,6 +121,32 @@ def main():
             if process.poll() is None:process.terminate();process.wait()
         # Interactive exploration has accountable CPU, but no discovery+proof
         # score. Rated programs use run --agent and independent verification.
+    elif args.command=='play':
+        # Game 0: FIRST moves first; seats alternate. Names containing / are external absolute executables.
+        from .league import resolve
+        from .referee import game_clock, play_game
+        clock=game_clock({'cpu_base':args.cpu,'cpu_increment':args.increment})
+        start=[int(v) for v in args.start.split(',') if v];args.output.mkdir()
+        seat=lambda spec,seed:resolve(Path(spec).name if '/' in spec else spec,args.output.parent/'arena-tools',spec if '/' in spec else None,seed)
+        for i in range(args.games):
+            first,second=(args.first,args.second)[::1 if i%2==0 else -1]
+            r=play_game(seat(first,args.seed+i),seat(second,args.seed+i),args.output/f'game-{i:02d}',start,args.max_move,clock,f'game-{i:02d}')
+            names={'first':r['players']['first']['name'],'second':r['players']['second']['name']}
+            print(json.dumps({'game':r['game'],**names,'winner':names.get(r['result']['winner']),
+                              'reason':r['result']['reason'],'plies':len(r['moves'])}),flush=True)
+    elif args.command=='league':
+        import shlex
+        from .league import resolve, run_league, suite
+        from .referee import game_clock
+        tools=args.output.parent/'arena-tools';players={n:resolve(n,tools) for n in args.players.split(',') if n}
+        for item in args.external:
+            name,_,path=item.partition('=')
+            if name in players:raise SystemExit(f'duplicate player {name}')
+            players[name]=resolve(name,tools,path)
+        openings=[o for s in args.suites.split(',') if s for o in suite(s,args.seed,args.per_band)]
+        run_league(players,openings,args.output,args.max_move,game_clock({'cpu_base':args.cpu,'cpu_increment':args.increment}),
+                   args.workers,args.seed,args.analyze_bound,command='python -m sylver.arena '+shlex.join(sys.argv[1:]))
+        print(args.output/'REPORT.md')
     elif args.command=='_serve_worker':
         from .common import decode
         bundle=load_bundle(args.bundle)

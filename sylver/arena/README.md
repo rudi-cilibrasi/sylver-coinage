@@ -288,6 +288,167 @@ the episode's fixed verification profile and score.
 Resolving W would establish Q N. U P still also requires X N; neither local
 leaderboard improvements nor the current W results solve opening 16.
 
+## Game arena
+
+Programs also play Sylver Coinage against each other under CPU clocks.
+**A game result is never a proof:** no win, rating, or win rate establishes
+the outcome of any position. Nothing here changes the proof referee, the
+episode accountant, or any file pinned by a recorded profile.
+
+> **Only run trusted players.** Players are not isolated from each other or
+> from the referee: each runs as this user without a sandbox, so a hostile
+> player can write into its opponent's stdout pipe through
+> `/proc/PID/fd/1` (the referee then records the opponent as naming 1),
+> signal or trace it, move itself out of its cgroup, or read and change
+> files, including other games' records. Running players under the arena's
+> sandbox launcher (`sandbox.py`) is the planned fix.
+
+```sh
+python -m sylver.arena play exact book --start 5,7 --games 2 --output /tmp/game
+python -m sylver.arena league --output /tmp/league-pilot \
+  --players random,smallest,exact,book --suites empty,enders,database \
+  --per-band 1 --workers 4 --seed 0
+```
+
+`play FIRST SECOND` alternates seats (game 0: FIRST moves first) and prints
+one JSON result line per game; names containing `/` are external absolute
+executables. `league` also takes `--external NAME=/abs/executable` (repeatable),
+`--max-move`, `--cpu`, `--increment`, and `--analyze-bound`. Output paths
+must be new.
+
+### Rules and the move cap
+
+Players alternately name positive integers that are not sums of numbers
+already named; whoever names 1 loses. A game may start from any position.
+Every game records a cap `max_move = M >= 3` (default 1000): moves must lie in
+`1..M`. For a gcd-one position whose Frobenius number is at most M, capped
+play is exactly Sylver Coinage; otherwise the cap is a house rule and reports
+call the game *capped*. The cap never ends a game early: a semigroup holding
+every integer in `[2, M]` holds 2 and 3, hence every integer above 1. So the
+game is over, and the player to move must name 1, **exactly when 2 and 3 are
+both in the semigroup**, and the referee's state is one `(M+1)`-bit
+membership set (`game.py`).
+
+### Protocol (schema 1)
+
+JSON Lines over stdin/stdout, one fresh process per player per game:
+
+```text
+-> {"type":"hello","schema":1,"rules":{"max_move":M},"seat":"first"|"second","clock":{...}}
+<- {"type":"ready","name":"...","version":"..."}
+-> {"type":"move","schema":1,"game":ID,"start":[...],"history":[...],"generators":[...],
+    "gcd":d,"seat":"first","ply":k,"rules":{"max_move":M},
+    "clock":{"cpu_remaining":x,"cpu_increment":y,"opponent_cpu_remaining":z}}
+<- {"move":n,"claim":"win"|"loss"|"unknown","note":"<=200 chars"}    (claim, note optional)
+-> {"type":"end","winner":"first"|"second","reason":"..."}
+```
+
+`generators` are the canonical minimal generators of the current semigroup;
+`history` is every number named since `start`. Stdout carries protocol lines
+only; players log to stderr, whose last 64 KiB the referee keeps. Claims are
+recorded, never trusted. Player text (ready name and version, notes) is
+stored as valid UTF-8, with unencodable characters such as lone surrogates
+replaced by `?`, and truncated.
+
+### Clocks, accounting, and losses
+
+Each player has `cpu_base` seconds of CPU (default 2.0) plus a Fischer
+increment (0.1 s) credited after each legal move. Where cgroup v2 is
+delegated to this user (as in a systemd user session), each player runs in
+its own child cgroup of the referee's: a tiny shell wrapper moves itself into
+the cgroup and then execs the player, so every descendant starts inside it.
+The clock is then the cgroup's cumulative `cpu.stat` usage, which keeps the
+CPU of every descendant however it ends (reaped, auto-reaped because
+SIGCHLD is ignored, orphaned, or in a new session), and `cgroup.kill` ends
+them all at game end. Otherwise the referee falls back to summing
+`utime+stime+cutime+cstime` from `/proc` over the live members of the
+player's session, which misses children that no member reaps (SIGCHLD
+ignored, double-fork orphans reaped by init) and processes that leave the
+session, which it cannot kill either. Each game record says which method
+each seat used (`accounting`). Either way, CPU spent after replying or
+during the opponent's turn is charged at the player's next measurement, and
+the clock is enforced while waiting, so a busy player loses on time at once.
+Each move also has a wall-time safety limit of `3 x cpu_remaining + 5`
+seconds. Setup (process start and the hello/ready handshake, such as loading
+a database) is capped separately (10 s CPU, 60 s wall) and not charged to the
+clock. Players run with a 4 GiB address-space limit (`memory_mb`); at game
+end the referee kills the cgroup, then kills session members until none is
+left alive, and reaps the player.
+
+A player loses by naming 1 (`named-1`), naming a non-gap or out-of-range
+number (`illegal-move`), replying without an integer move (`malformed-move`),
+exceeding its CPU clock (`cpu-time`) or the wall limit (`wall-time`), exiting
+or closing its pipes (`crashed`), or failing setup (`setup-failed`,
+`setup-cpu`). When a move puts 2 and 3 in the semigroup, its maker wins
+(`opponent-must-name-1`). An exception in the referee voids the game; void
+games are listed and excluded from ratings.
+
+**Limitations.** A same-user process can move itself out of its cgroup (by
+writing its pid to an ancestor's `cgroup.procs`) and so escape both the
+clock and the final kill; under the `/proc` fallback, the escapes described
+above apply. See the isolation warning above: every player is trusted.
+
+### Built-in players
+
+`python -m sylver.arena.players NAME [--seed S] [--options JSON]` speaks the
+same protocol as an external program and is deterministic given its seed,
+except that the exact players stop searching when their budget ends.
+
+| Player | Behaviour |
+| --- | --- |
+| `random` | Uniform legal move. |
+| `smallest` | Smallest legal move (a weak control). |
+| `exact` | For a gcd-one position with Frobenius number at most `exact_bound` (180 with the native solver, 60 in Python) and the cap: an exact solve using up to a quarter of its remaining clock; plays a winning move, or, when lost, *complicates*. Otherwise it solves the finite children with small Frobenius numbers in increasing order and plays the first P child found, else complicates: of 16 seeded samples and the largest legal move, the one whose child is infinite, else has the largest Frobenius number. |
+| `book` | `exact`, preceded by an outcome book: the 305,011-row exact cache plus cited P-positions (Hutchings primes, `{4,6}`, Blok, Sicherman, published and certified campaign positions). It plays the smallest legal move to a known P child at once; from the empty position it names 5. |
+
+Book facts and claims describe the uncapped game; in capped games they are
+heuristics only. The native solver is built once, like the proof arena's
+shared tools, and passed to `exact` and `book` as an option.
+
+### Leagues and reports
+
+A league plays every opening with every ordered pair of distinct players, so
+each pair meets in both seats, in parallel worker processes (default 4).
+Opening suites: `empty` (the real game, capped), `enders` (small coprime
+pairs, verified N), `database` (exact cache rows sampled reproducibly from
+the Frobenius bands 0–60, 60–100, 100–140, and 140–180, with `--per-band`
+P and N rows each), and `research` (`{16}`, `{16,26}`, W, X; exhibition only,
+outcomes unknown). Outputs:
+
+- `plan.json`: players with command, option, and solver-binary digests,
+  openings, rules, clock, seed, the full schedule, the expected CPU
+  accounting, and digests of the code and data that decide games (with the
+  git commit, when available), written before the first game;
+- `games.jsonl`: one complete record per game (moves with per-move CPU,
+  wall time, and claims; setup costs; result, reason, and detail; CPU
+  accounting per seat), appended as each game finishes, so an interrupted
+  league keeps its completed games (games cut short are not logged);
+  `games/ID/` also keeps each record and both players' stderr. All players
+  of a league run under one cgroup of its own, which is killed and removed
+  when the league ends, however it ends;
+- `standings.json` and `REPORT.md`: scores, Bradley–Terry ratings on the Elo
+  scale with bootstrap intervals (when the win graph is not strongly
+  connected, Ford's condition fails: the report groups the players, says
+  that gaps between groups are set by the prior, and gives intervals only
+  for differences within a group), head-to-head results, loss reasons, how
+  often the perfect-play winner won each opening with a known outcome, CPU
+  per move, void games, and the reproduction command.
+
+`--analyze-bound F` solves every reached position with gcd one and Frobenius
+number at most F natively (60 s and 4 GiB each, unknown beyond) and counts
+*blunders*, moves from an N-position to an N-position, per player. Analysis
+CPU is reported separately and never changes a result. Database positions
+above Frobenius number about 100 can each take a minute to solve, so keep F
+modest.
+
+The recorded pilot in [data/league/](data/league/REPORT.md) (`REPORT.md`,
+`standings.json`, `plan.json`, and `games.jsonl.gz`) is a league of the four
+built-ins over the `empty`, `enders`, and `database` suites with
+`--analyze-bound 150`, run with the command in its report. It is an
+engineering pilot: it measures the harness and the built-in players, not the
+mathematics of any open position. CPU-clocked games depend on the machine and
+its load, so a rerun need not reproduce every game.
+
 ## Checks and recorded evidence
 
 ```sh
