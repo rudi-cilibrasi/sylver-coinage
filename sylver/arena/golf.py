@@ -52,10 +52,39 @@ GOLF_RESEARCH = (
     ('C', '16,26,62,89,98,102', 'N', 6382154),
     ('C', '16,26,33,62,89,102', 'P', 1721485),
 )
+# W={16,26,62,98} has 52 obligations; 47 are covered. Each covered move m
+# is refuted by a recorded reply. For these 35 the refutation is a finite
+# certificate: even moves (gcd two) by an odd witness reaching a finite P
+# position, odd moves by a finite N position itself (the verifier finds its
+# winning move). Witnesses: campaign graph and the plan2 release certificate.
+W = (16, 26, 62, 98)
+W_WITNESSED = {2: 3, 18: 5, 19: 23, 22: 15, 27: 19, 28: 25, 30: 111, 34: 39, 38: 55, 40: 11, 44: 19, 46: 17,
+               50: 29, 54: 33, 60: 27, 67: 31, 76: 43, 82: 27, 102: 95, 134: 85}
+W_FINITE = (3, 5, 7, 9, 11, 15, 17, 23, 25, 33, 35, 41, 43, 51, 59)
+# The other 12 covered moves reach infinite P positions, whose own
+# certificates are campaign or published results outside this proof set.
+W_INFINITE = {4: (6, '{4,6}'), 6: (4, '{4,6}'), 8: (20, 'G={8,20,26}'), 10: (24, 'K={10,16,24}'),
+              12: (14, '{12,14,16}'), 14: (12, '{12,14,16}'), 20: (8, 'G={8,20,26}'),
+              24: (10, 'K={10,16,24}'), 36: (56, 'V={16,26,36,56}'), 56: (36, 'V={16,26,36,56}'),
+              66: (56, 'B={16,26,56,62,66}'), 72: (82, '{16,26,62,72,82} (Sicherman, published)')}
+W_OPEN = (70, 86, 92, 108, 118)
+W_LIMITS = dict(DEFAULT_LIMITS, cpu_seconds=3600., wall_seconds=7200., memory_mb=16384, query_wall_seconds=3600.)
+
+
+def w_targets():
+    """Golf rows for W's finitely certifiable obligations, move order."""
+    from .common import position
+    rows = []
+    for m in sorted([*W_WITNESSED, *W_FINITE]):
+        rows.append(('W', key(position((*W, m))), 'N', None))
+    return rows
+
+
 TIER_LIMITS = {
     'A': dict(DEFAULT_LIMITS, cpu_seconds=600., wall_seconds=1800., memory_mb=8192, query_wall_seconds=600.),
     'B': dict(DEFAULT_LIMITS, cpu_seconds=600., wall_seconds=1800., memory_mb=8192, query_wall_seconds=600.),
     'C': dict(DEFAULT_LIMITS, cpu_seconds=3600., wall_seconds=7200., memory_mb=16384, query_wall_seconds=3600.),
+    'W': W_LIMITS,
 }
 
 
@@ -187,3 +216,72 @@ def golf_pilot(output, tiers=('A', 'B'), repeats=3, seed=0, workers=1, research_
                                  'best': {k: {'competitor': n, 'S': r['S'], 'C': r['C'], 'T': r['T']}
                                           for k, (n, r) in best.items()}})
     return out / 'REPORT.md'
+
+
+def w_book(output, book, workers=1, seed=0, strategies=('golf-witness', 'golf-root')):
+    """Certify W's finitely certifiable obligations into ``book``.
+
+    Targets already recorded in the Book (for example by the golf pilot's
+    research tier) are not re-run. Every valid distinct certificate is
+    admitted; the Book's entry of record decides between them.
+    """
+    from .book import add_certificate, render_book
+    from .policies import GOLF
+    from .tournament import run_tournament
+    out = Path(output); out.mkdir()
+    index = read(Path(book) / 'index.json') if (Path(book) / 'index.json').exists() else {'targets': {}}
+    rows = [r for r in w_targets() if r[1] not in index['targets']]
+    if rows:
+        fixture = build_golf(out / 'fixtures', ('W',), targets=rows)
+        visible = out / 'fixtures' / 'visible'
+        paths = [visible / (n + '.json') for n in fixture['golf']]
+        bundles = [read(p) for p in paths]
+        hints = {sha(b['manifest']): bundle_hints(p, b) for p, b in zip(paths, bundles)}
+        chosen = {n: {'policy': GOLF[n]} for n in strategies}
+        entries = run_tournament(bundles, chosen, out / 'tournament', out / 'tools', 1, seed, hints=hints, workers=workers)
+        runs = read(out / 'tournament' / 'runs.json')
+        seen = set()
+        for (name, r), run in zip(entries, runs):
+            if r['status'] != 'valid' or r['verification']['certificate_sha256'] in seen:
+                continue
+            seen.add(r['verification']['certificate_sha256'])
+            add_certificate(book, out / 'tournament' / run['directory'], out / 'tools', competitor=name)
+    (Path(book) / 'BOOK.md').write_text(render_book(book))
+    (Path(book) / 'W.md').write_text(render_w(book))
+    return Path(book) / 'W.md'
+
+
+def render_w(book):
+    """All 52 obligations of W: Book-certified, infinite dependency, or open."""
+    from .common import position
+    index = read(Path(book) / 'index.json')['targets']
+    certified = 0
+    lines = ['# The Book of W', '',
+             'W = {16,26,62,98} is a node of the move-26 program: W P would establish Q={16,26,88,98} N',
+             '(Q + 62 = W), while U={16,26,88} P would still also need X={16,26,82,88} N. W is short: its',
+             'obligations are its 52 moves below the Quiet End bound. 47 are covered; this table records',
+             'which coverings are self-contained certificates in The Book, replayed by the fixed verifier',
+             'with a fresh memo and no inherited cache. W itself remains unresolved.', '',
+             '| Move | Position | Status | Proof of record | C | States | V (s) |',
+             '| ---: | --- | --- | --- | ---: | ---: | ---: |']
+    for m in sorted([*W_WITNESSED, *W_FINITE, *W_INFINITE, *W_OPEN]):
+        k = key(position((*W, m)))
+        if m in W_OPEN:
+            lines.append(f'| {m} | `{{{k}}}` | open | — | | | |')
+        elif m in W_INFINITE:
+            reply, name = W_INFINITE[m]
+            lines.append(f'| {m} | `{{{k}}}` | depends on {name} | reply {reply} | | | |')
+        elif k in index:
+            target = index[k]
+            e = next(x for x in target['entries'] if x['certificate'] == target['record'])
+            proof = read(Path(book) / 'certificates' / (e['certificate'] + '.json'))
+            node = proof['nodes'][proof['root']]
+            rule = f"reply {node['move']} → `{{{node['child']}}}`" if node['rule'] == 'edge' else 'finite leaf'
+            lines.append(f"| {m} | `{{{k}}}` | **Book** | {rule} | {e['C']} | {e['states']:,} | {e['V']:.3f} |")
+            certified += 1
+        else:
+            lines.append(f'| {m} | `{{{k}}}` | finitely certifiable, not yet in the Book | | | | |')
+    lines[6:6] = [f'**{certified} of 47 covered obligations** are certified here; '
+                  f'{len(W_INFINITE)} depend on infinite P positions (named below each row); '
+                  f'{len(W_OPEN)} are open: {", ".join(map(str, W_OPEN))}.', '']
+    return '\n'.join(lines) + '\n'

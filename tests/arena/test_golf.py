@@ -241,3 +241,20 @@ class GolfEpisodeTests(unittest.TestCase):
                            hints={sha(self.bundle['manifest']): self.hints}, workers=2)
         started = [d for d in (self.root / 'stopped').iterdir() if d.is_dir()]
         self.assertLess(len(started), 6)
+        self.assertEqual(record([a, c]), 'a')
+
+
+class BookOfWTests(unittest.TestCase):
+    def test_w_table_accounts_for_every_obligation(self):
+        from sylver.arena.common import position, profile
+        from sylver.arena.golf import W, W_FINITE, W_INFINITE, W_OPEN, W_WITNESSED, w_targets
+        moves = profile(W)['moves']
+        groups = [set(W_WITNESSED), set(W_FINITE), set(W_INFINITE), set(W_OPEN)]
+        self.assertEqual(sorted(set().union(*groups)), moves)
+        self.assertEqual(sum(map(len, groups)), len(moves))
+        self.assertEqual(len(w_targets()), 35)
+        for m, reply in W_WITNESSED.items():
+            child = position((*position((*W, m)), reply))
+            self.assertEqual(profile(child)['gcd'], 1, m)   # a finite destination
+        for m in W_FINITE:
+            self.assertEqual(profile(position((*W, m)))['gcd'], 1, m)
