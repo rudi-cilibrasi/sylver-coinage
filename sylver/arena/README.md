@@ -346,7 +346,9 @@ JSON Lines over stdin/stdout, one fresh process per player per game:
 `generators` are the canonical minimal generators of the current semigroup;
 `history` is every number named since `start`. Stdout carries protocol lines
 only; players log to stderr, whose last 64 KiB the referee keeps. Claims are
-recorded, never trusted.
+recorded, never trusted. Player text (ready name and version, notes) is
+stored as valid UTF-8, with unencodable characters such as lone surrogates
+replaced by `?`, and truncated.
 
 ### Clocks, accounting, and losses
 
@@ -418,9 +420,12 @@ outcomes unknown). Outputs:
   accounting, and digests of the code and data that decide games (with the
   git commit, when available), written before the first game;
 - `games.jsonl`: one complete record per game (moves with per-move CPU,
-  wall time, and claims; setup costs; result, reason, and detail), appended as
-  each game finishes, so an interrupted league keeps its completed games;
-  `games/ID/` also keeps each record and both players' stderr;
+  wall time, and claims; setup costs; result, reason, and detail; CPU
+  accounting per seat), appended as each game finishes, so an interrupted
+  league keeps its completed games (games cut short are not logged);
+  `games/ID/` also keeps each record and both players' stderr. All players
+  of a league run under one cgroup of its own, which is killed and removed
+  when the league ends, however it ends;
 - `standings.json` and `REPORT.md`: scores, Bradley–Terry ratings on the Elo
   scale with bootstrap intervals (when the win graph is not strongly
   connected, Ford's condition fails: the report groups the players, says
