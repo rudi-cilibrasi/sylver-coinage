@@ -144,24 +144,32 @@ def run_league(players, openings, output, max_move=1000, clock=None, workers=4, 
             'command': command}
     write(output / 'plan.json', plan)
     (output / 'games').mkdir()
-    records, pool = [], ProcessPoolExecutor(workers)
-    try:
-        with (output / 'games.jsonl').open('wb') as log:
-            futures = {pool.submit(play_game, _seat(g['first'], players[g['first']], g['seed']),
-                                   _seat(g['second'], players[g['second']], g['seed']), output / 'games' / g['id'],
-                                   by_name[g['opening']]['start'], max_move, clock, g['id']): g for g in schedule}
-            for future in as_completed(futures):
-                g = futures[future]
-                try:
-                    record = future.result()
-                except Exception as error:
-                    record = _void(g, by_name[g['opening']], max_move, clock, f'worker failed: {error!r}')
-                log.write(canonical(record) + b'\n')
-                log.flush()
-                records.append(record)
-    except BaseException:
-        pool.shutdown(cancel_futures=True)
-        raise
+    records, futures, pool = [], {}, ProcessPoolExecutor(workers)
+    with (output / 'games.jsonl').open('wb') as log:
+        def keep(future):
+            g = futures.pop(future)
+            try:
+                record = future.result()
+            except Exception as error:
+                record = _void(g, by_name[g['opening']], max_move, clock, f'worker failed: {error!r}')
+            log.write(canonical(record) + b'\n')
+            log.flush()
+            records.append(record)
+        try:
+            for g in schedule:
+                futures[pool.submit(play_game, _seat(g['first'], players[g['first']], g['seed']),
+                                    _seat(g['second'], players[g['second']], g['seed']), output / 'games' / g['id'],
+                                    by_name[g['opening']]['start'], max_move, clock, g['id'])] = g
+            for future in as_completed(list(futures)):
+                keep(future)
+        except BaseException:
+            # Pending games are cancelled; games already running finish during
+            # the shutdown and are logged too, so every completed game is kept.
+            pool.shutdown(cancel_futures=True)
+            for future in [f for f in futures if f.done() and not f.cancelled()]:
+                if future.exception() is None or isinstance(future.exception(), Exception):
+                    keep(future)
+            raise
     pool.shutdown()
     records.sort(key=lambda r: r['game'])
     analysis = (analyze(records, plan, build_tools(output.parent / 'arena-tools'), analyze_bound, workers)
@@ -275,7 +283,8 @@ def _table(header, rows, left=1):
 def render(plan, games, standings):
     s, clock, cap = standings, plan['clock'], plan['rules']['max_move']
     names = sorted(s['players'], key=lambda n: (-s['players'][n]['elo'], n))
-    known = {n: o for n, o in s['openings'].items() if o['outcome']}
+    openings = {o['name']: s['openings'][o['name']] for o in plan['openings']}   # plan order, even after a JSON round trip
+    known = {n: o for n, o in openings.items() if o['outcome']}
     lines = ['# Game arena league', '',
              '**Game results are not proofs.** A win, a rating, or a win rate here is evidence about these '
              'programs under these clocks, never about the outcome of a position. Openings that are *capped* '
@@ -284,8 +293,8 @@ def render(plan, games, standings):
              'nothing about real Sylver Coinage. Only openings with gcd one and Frobenius number at most the '
              'cap are exact, and only those are adjudicated.', '',
              f"- Players: {', '.join(names)} (commands and digests in `plan.json`).",
-             f"- Openings: {len(s['openings'])} ({len(known)} with a known outcome, "
-             f"{sum(o['capped'] for o in s['openings'].values())} capped).",
+             f"- Openings: {len(openings)} ({len(known)} with a known outcome, "
+             f"{sum(o['capped'] for o in openings.values())} capped).",
              f'- Rules: name an integer in 2..{cap} outside the semigroup; the player who must name 1 loses.',
              f"- Clock: {clock['cpu_base']} s CPU plus {clock['cpu_increment']} s per legal move; setup up to "
              f"{clock['setup_cpu']} s CPU and {clock['setup_wall']} s wall, not charged; per-move wall limit "
@@ -314,7 +323,7 @@ def render(plan, games, standings):
     lines += _table(['Player', 'Won when it should win', 'Won when it should lose'], [
         (n, f"{c['won_should_win']}/{c['should_win']}", f"{c['won_should_lose']}/{c['should_lose']}")
         for n, c in ((n, s['adjudication'][n]) for n in names)])
-    other = {n: o for n, o in s['openings'].items() if not o['outcome']}
+    other = {n: o for n, o in openings.items() if not o['outcome']}
     if other:
         lines += ['', '## Openings without adjudication', '', 'Capped or of unknown outcome: these results measure '
                   'the programs, not the position.', '']
@@ -339,7 +348,8 @@ def render(plan, games, standings):
     lines += [f"- `{v['game']}`: {v['detail'].splitlines()[-1] if v['detail'] else 'no detail'}" for v in s['void']] or ['None.']
     lines += ['', '## Limitations', '',
               '- A player is charged the CPU of the live processes in its session, including children it has '
-              'reaped; a process that daemonizes out of its session is not charged per move.',
+              'reaped. A process that leaves its session (daemonizes with setsid) is neither charged nor killed at '
+              'game end.',
               '- External players run with resource limits but no filesystem sandbox, so leagues should include '
               'only trusted programs.',
               '- CPU timings depend on the machine and its load, and the exact players stop searching when their '

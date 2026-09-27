@@ -4,10 +4,10 @@ Players speak JSON Lines (schema 1) on stdin/stdout, each in a fresh session.
 A player's clock is charged all CPU of the live processes in its session,
 including children they have reaped, since its previous measurement: work
 done after replying, even during the opponent's turn, is charged at its next
-measurement. A process that leaves the session (daemonizes) is not charged.
-Setup (start-up and the hello/ready handshake) is capped separately and is
-not charged to the clock. Every player failure is an attributed loss; an
-exception in the referee itself voids the game.
+measurement. A process that leaves the session (setsid) is neither charged
+nor killed. Setup (start-up and the hello/ready handshake) is capped
+separately and is not charged to the clock. Every player failure is an
+attributed loss; an exception in the referee itself voids the game.
 """
 import json
 import math
@@ -215,8 +215,8 @@ class Seat:
                       'wall': round(wall, 6), 'claim': reply.get('claim') if reply.get('claim') in ('win', 'loss', 'unknown') else None,
                       'note': note[:200] if isinstance(note, str) else None}
 
-    def close(self, end, output):
-        """Send ``end``, kill the whole session, reap the player, save stderr."""
+    def close(self, end):
+        """Send ``end``, kill the whole session, and reap the player."""
         if self.proc is None:
             return
         try:
@@ -232,7 +232,6 @@ class Seat:
                 pass
         self.proc.wait()
         self.drain.join(2)
-        (output / f'{self.name}.stderr').write_bytes(self.tail)
         # A reader thread still blocked on stderr means an escaped process
         # holds the pipe; its descriptor stays open rather than being reused.
         for stream in (self.proc.stdin, self.proc.stdout) + (() if self.drain.is_alive() else (self.proc.stderr,)):
@@ -284,8 +283,12 @@ def play_game(first, second, output, start=(), max_move=1000, clock=None, game_i
         result = {'winner': None, 'loser': None, 'reason': 'void', 'detail': traceback.format_exc()[-4000:]}
     finally:
         end = {'type': 'end', 'winner': result and result['winner'], 'reason': result['reason'] if result else 'void'}
-        for seat in seats.values():
-            seat.close(end, output)
+        try:
+            seats['first'].close(end)
+        finally:
+            seats['second'].close(end)
+    for s in SEATS:
+        (output / f'{s}.stderr').write_bytes(seats[s].tail)
     record = {'schema': 1, 'game': game_id, 'rules': {'max_move': max_move, 'loser': 'names-1'},
               'start': list(initial.start),
               'players': {s: {'name': p['name'], 'command_sha256': sha([str(c) for c in p['command']])}

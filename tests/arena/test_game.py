@@ -295,6 +295,8 @@ class LeagueTests(unittest.TestCase):
             lines = log.read_text().splitlines()
             self.assertTrue(1 <= len(lines) < 6 * len(ENDERS))
             self.assertTrue(all(json.loads(line)['result']['reason'] for line in lines))
+            # Games still running at the interrupt finish and are logged as well.
+            self.assertEqual(len(lines), len(list((out / 'games').glob('*/record.json'))))
             self.assertNotEqual(league.returncode, 0)
             self.assertFalse((out / 'REPORT.md').exists())
 
