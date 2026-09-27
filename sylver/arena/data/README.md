@@ -16,8 +16,10 @@ API calls. No live mathematical discovery is claimed.
 | `manifest.json` | SHA-256 digests for the published evidence files. |
 
 The source profiles pin file contents, so committing these artifacts does
-not change their identities. Live manifests record the machine that produced
-them. Generate new fixtures to rate episodes under another machine's profile;
+not change their identities. Live manifests record the machine and the arena
+sources that produced them (the accounting and sandbox changes after this
+pilot are a new execution profile). Generate new fixtures to rate episodes
+under another machine's or source version's profile;
 do not compare those scores directly with these measurements. Mathematical
 re-verification can use another checkout of the pinned verifier.
 

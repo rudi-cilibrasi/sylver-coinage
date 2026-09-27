@@ -27,6 +27,24 @@ class AccountingTests(unittest.TestCase):
         self.assertLess(r['cpu_seconds'],.2)
         self.assertEqual(r['returncode'],0)
 
+    def test_supervisor_overhead_is_small(self):
+        # The supervisor's own polling CPU is charged to every episode, so it
+        # must not grow with the number of unrelated processes on the host.
+        r=self.run_code('import time;time.sleep(1.0)')
+        self.assertLess(r['supervisor_cpu'],.25,r['supervisor_cpu'])
+
+    def test_full_poll_ignores_stale_outside_cache(self):
+        from sylver.arena.supervisor import ProcessTree
+        child=subprocess.Popen([sys.executable,'-c','import time;time.sleep(5)'])
+        try:
+            tree=ProcessTree(os.getpid())
+            self.assertIn(child.pid,tree.poll())
+            tree.outside.add(child.pid);tree.members.clear()  # as if a reused pid were cached
+            self.assertNotIn(child.pid,tree.poll())
+            self.assertIn(child.pid,tree.poll(full=True))
+        finally:
+            child.kill();child.wait()
+
     def test_cpu_and_parallel_workers_are_summed(self):
         code='import time\ns=time.process_time()\nwhile time.process_time()-s<.15:pass'
         r=self.run_code('import subprocess,sys\nps=[subprocess.Popen([sys.executable,"-c",'+repr(code)+']) for _ in range(3)]\nfor p in ps:p.wait()')
