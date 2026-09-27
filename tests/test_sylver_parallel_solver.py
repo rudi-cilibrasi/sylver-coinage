@@ -32,19 +32,22 @@ class ParallelSolverTests(unittest.TestCase):
             raise unittest.SkipTest('g++ is required')
         cls.tmp = tempfile.TemporaryDirectory()
         cls.binaries = {}
+
+        def build(name, words, *flags, label=None):
+            binary = Path(cls.tmp.name) / f'{label or name}-{words}'
+            subprocess.run([compiler, '-std=c++20', '-O3', '-Wall', '-Wextra', '-pedantic', '-Werror', '-pthread',
+                            f'-DSYLVER_NATIVE_WORDS={words}', *flags, str(ROOT / 'sylver' / f'{name}.cpp'),
+                            '-o', str(binary)], check=True)
+            return binary
         for name in ('native_solver', 'parallel_solver'):
-            for words in (2, 4):
-                binary = Path(cls.tmp.name) / f'{name}-{words}'
-                subprocess.run([compiler, '-std=c++20', '-O3', '-Wall', '-Wextra', '-pedantic', '-Werror',
-                                '-pthread', f'-DSYLVER_NATIVE_WORDS={words}',
-                                str(ROOT / 'sylver' / f'{name}.cpp'), '-o', str(binary)], check=True)
-                cls.binaries[name, words] = binary
-        # A deliberately broken build that never tries move 7 (a missed
-        # child): --verify-memo must reject what it memoizes.
-        cls.faulty = Path(cls.tmp.name) / 'parallel_solver-faulty'
-        subprocess.run([compiler, '-std=c++20', '-O2', '-pthread', '-DSYLVER_NATIVE_WORDS=2',
-                        '-DSYLVER_PARALLEL_TEST_SKIP_MOVE=7', str(ROOT / 'sylver' / 'parallel_solver.cpp'),
-                        '-o', str(cls.faulty)], check=True)
+            for words in (1, 2, 4, 6):
+                cls.binaries[name, words] = build(name, words)
+        # The BMI2 pext/pdep path that discovery builds use.
+        cls.native_arch = build('parallel_solver', 4, '-march=native', label='parallel_solver-native-arch')
+        # Deliberately broken builds that --verify-memo must reject: one never
+        # tries move 7 (a missed child); one forges a root "winning" by naming 1.
+        cls.faulty = build('parallel_solver', 2, '-DSYLVER_PARALLEL_TEST_SKIP_MOVE=7', label='faulty')
+        cls.forged = build('parallel_solver', 2, '-DSYLVER_PARALLEL_TEST_FORGE_MOVE_ONE', label='forged')
 
     @classmethod
     def tearDownClass(cls):
@@ -72,6 +75,21 @@ class ParallelSolverTests(unittest.TestCase):
         for gens in random_positions(20260927, 120, 100):
             self.assertEqual(self.run_solver('parallel_solver', 2, '--threads', 1, *gens),
                              self.run_solver('native_solver', 2, *gens), gens)
+        # Other word counts, including keys packed across 64-bit boundaries.
+        for words, gens in ((1, (4, 7)), (1, (5, 9, 11)), (6, (16, 26, 33, 62, 89)), (6, (11, 13, 17, 19))):
+            self.assertEqual(self.run_solver('parallel_solver', words, '--threads', 1, *gens),
+                             self.run_solver('native_solver', words, *gens), (words, gens))
+
+    def test_bmi2_build_decides_like_native(self):
+        for index, gens in enumerate(random_positions(77, 30, 120)):
+            native = self.run_solver('native_solver', 4, *gens)
+            exact = subprocess.run([str(self.native_arch), '--threads', '1', *map(str, gens)],
+                                   capture_output=True, text=True, check=True).stdout
+            self.assertEqual(exact, native, gens)
+            threaded = subprocess.run([str(self.native_arch), '--threads', str(2 + index % 4), '--verify-memo',
+                                       *map(str, gens)], capture_output=True, text=True, check=True).stdout.split()
+            self.assertEqual(threaded[0], native.split()[0], gens)
+            self.assertTrue(threaded[-1].startswith('entries='), gens)
 
     def test_many_threads_decide_every_position_like_native(self):
         positions = random_positions(9, 60, 110)
@@ -90,12 +108,15 @@ class ParallelSolverTests(unittest.TestCase):
     def test_verify_memo_accepts_honest_searches(self):
         for index, gens in enumerate(random_positions(31, 40, 110)):
             threads = (1, 2, 4, 8)[index % 4]
-            for args in (['--threads', threads, '--verify-memo', *gens],
-                         ['--threads', threads, '--verify-memo', '--odd-range', 3, 21, 16, 26]):
+            depth = (1, 3, 6, 40, 60)[index % 5]
+            for args in (['--threads', threads, '--split-depth', depth, '--verify-memo', *gens],
+                         ['--threads', threads, '--split-depth', depth, '--verify-memo', '--odd-range', 3, 21, 16, 26]):
                 result = subprocess.run([str(self.binaries['parallel_solver', 4]), *map(str, args)],
                                         capture_output=True, text=True)
                 self.assertEqual(result.returncode, 0, (args, result.stderr))
-                states = result.stdout.split()[-1].split('=')[1]
+                *rows, last = result.stdout.splitlines()
+                states = rows[-1].split()[-1].split('=')[1]
+                self.assertEqual(last, f'verified entries={states}', args)
                 self.assertEqual(result.stderr, f'parallel_solver: memo verified ({states} entries)\n', args)
                 if index % 4:
                     break   # the sweep once per thread count is enough
@@ -110,6 +131,18 @@ class ParallelSolverTests(unittest.TestCase):
                                         capture_output=True, text=True)
                 self.assertEqual(result.returncode, 1, gens)
                 self.assertIn('memo verification failed', result.stderr, gens)
+                self.assertNotIn('verified', result.stdout, gens)
+
+    def test_verify_memo_rejects_a_root_that_names_1(self):
+        # Naming 1 reaches the semigroup of every integer, which has no moves;
+        # an entry claiming that as a win must fail however it is presented.
+        for gens in ((9, 11, 13), (5, 8)):
+            for args in (['--threads', '2', '--verify-memo', *map(str, gens)],
+                         ['--threads', '1', '--verify-memo', '--odd-list', '3', '4', '6']):
+                result = subprocess.run([str(self.forged), *args], capture_output=True, text=True)
+                self.assertEqual(result.returncode, 1, args)
+                self.assertIn('memo verification failed', result.stderr, args)
+                self.assertNotIn('verified', result.stdout, args)
 
     def test_repeated_runs_on_larger_positions(self):
         # Larger searches give threads time to interleave; every repetition
@@ -136,25 +169,28 @@ class ParallelSolverTests(unittest.TestCase):
                              self.run_solver('native_solver', 4, *args), args)
 
     def test_sweep_with_threads_decides_every_row_like_native(self):
-        native = self.run_solver('native_solver', 4, '--odd-range', 3, 41, 16, 26).splitlines()
         for threads in (3, 8):
             rows = self.run_solver('parallel_solver', 4, '--threads', threads, '--odd-range', 3, 41, 16, 26).splitlines()
-            self.assertEqual([r.split()[:2] + r.split()[3:4] for r in rows],
-                             [r.split()[:2] + r.split()[3:4] for r in native])
+            self.assertEqual(len(rows), 20)
             for row in rows:
-                move, outcome, winning = row.split()[:3]
+                move, outcome, winning, frobenius = row.split()[:4]
+                move = move.split('=')[1]
+                # Each row against a separate single-position native run.
+                single = self.run_solver('native_solver', 4, 16, 26, move).split()
+                self.assertEqual([outcome, frobenius], [single[0], single[2]], row)
                 if outcome == 'N':   # a winning move of 16,26,move: its child must be P
-                    child = self.run_solver('native_solver', 4, 16, 26, move.split('=')[1], winning.split('=')[1])
+                    child = self.run_solver('native_solver', 4, 16, 26, move, winning.split('=')[1])
                     self.assertEqual(child.split()[0], 'P', row)
 
     def test_stop_at_p_ends_the_sweep_after_the_first_p_row(self):
-        # {4,6,9}+5 and +7 are N, {4,6,9,11} is P, {4,6,9,13} is N.
-        native = self.run_solver('native_solver', 2, '--odd-list', '5,7,11,13', 4, 6, 9).splitlines()
-        self.assertEqual([row.split()[1] for row in native], ['N', 'N', 'P', 'N'])
+        # The legal odd moves of {4,6,9} are 3, 5, 7, 11: {4,6,9}+5 is N and
+        # {4,6,9,11} is P.
+        native = self.run_solver('native_solver', 2, '--odd-list', '5,11,7', 4, 6, 9).splitlines()
+        self.assertEqual([row.split()[1] for row in native], ['N', 'P', 'N'])
         for threads in (1, 2):
             rows = self.run_solver('parallel_solver', 2, '--threads', threads, '--stop-at-p',
-                                   '--odd-list', '5,7,11,13', 4, 6, 9).splitlines()
-            self.assertEqual([row.split()[:2] for row in rows], [['move=5', 'N'], ['move=7', 'N'], ['move=11', 'P']])
+                                   '--odd-list', '5,11,7', 4, 6, 9).splitlines()
+            self.assertEqual([row.split()[:2] for row in rows], [['move=5', 'N'], ['move=11', 'P']])
 
     def test_rejects_bad_arguments(self):
         binary = str(self.binaries['parallel_solver', 2])
@@ -162,7 +198,8 @@ class ParallelSolverTests(unittest.TestCase):
                      ['--bogus', '1', '4', '5'], ['4', '6'], ['--threads', '2'], ['16', '26', '62', '95', '98', '102'],
                      ['--odd-range', '4', '9', '16', '26'], ['--odd-list', '9,10', '16', '26'], ['--odd-range', '5', '3', '16', '26'], ['4', '7', '--split-depth', '3'],
                      ['--threads', '2', '--split-depth', '0', '4', '5'], ['50000', '50001'], ['4', '5x'],
-                     ['--odd-list', '3', '6', '9'], ['--threads']):
+                     ['--odd-list', '3', '6', '9'], ['--threads'], ['--stop-at-p', '4', '5'],
+                     ['--odd-list', '5,13', '4', '6', '9'], ['2000000000', '2000000001']):
             result = subprocess.run([binary, *args], capture_output=True, text=True)
             self.assertEqual(result.returncode, 1, args)
             self.assertEqual(result.stdout, '', args)

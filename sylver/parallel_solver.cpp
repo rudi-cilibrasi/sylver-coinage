@@ -21,9 +21,11 @@
 // --odd-range and --odd-list evaluate base+m for each listed odd m with one
 // shared memo, as native_solver.cpp's scans do (the base is then the root
 // whose gaps key the memo); later candidates reuse the earlier ones' states.
-// With --verify-memo the finished memo is checked as a certificate before
-// the exit status reports success (see Solver::verify_memo), so N results
-// are checked too, not only the P results that published replays re-run.
+// With --verify-memo the finished memo is checked as a certificate (see
+// Solver::verify_memo), so N results are checked too, not only the P results
+// that published replays re-run. Results are printed as they are decided;
+// the output ends with `verified entries=N` only if the check passed, and
+// output without that line is unverified.
 // Discovery only: published replays and the arena verifier keep using
 // native_solver.cpp.
 #include <algorithm>
@@ -201,7 +203,8 @@ class ShardedMemo {
     static constexpr int kShardBits = 12;
     static constexpr std::uint16_t kEmpty = 0xFFFF;  // no move exceeds 64 * kWords - 1
 
-    explicit ShardedMemo(int stride) : stride_(static_cast<std::size_t>(stride)) {
+    explicit ShardedMemo(int stride)
+        : stride_(std::min(static_cast<std::size_t>(stride), static_cast<std::size_t>(kWords))) {
         for (Shard& shard : shards_) shard.resize(16, stride_);
     }
 
@@ -237,6 +240,20 @@ class ShardedMemo {
 
     static constexpr std::size_t kShards = std::size_t{1} << kShardBits;
 
+#ifdef SYLVER_PARALLEL_TEST_FORGE_MOVE_ONE
+    void overwrite(const Key& key, std::size_t hash, std::uint16_t value) {
+        insert(key, hash, value);
+        Shard& shard = shard_for(hash);
+        for (std::size_t slot = hash & shard.mask;; slot = (slot + 1) & shard.mask) {
+            if (std::equal(key.begin(), key.begin() + static_cast<std::ptrdiff_t>(stride_),
+                           shard.keys.begin() + static_cast<std::ptrdiff_t>(slot * stride_))) {
+                shard.values[slot] = value;
+                return;
+            }
+        }
+    }
+#endif
+
     // Calls f(key, value) for every entry of shard ``index``. Only for use
     // after every search thread has finished.
     template <class F>
@@ -245,7 +262,8 @@ class ShardedMemo {
         for (std::size_t slot = 0; slot < shard.values.size(); ++slot) {
             if (shard.values[slot] == kEmpty) continue;
             Key key{};
-            std::copy_n(shard.keys.begin() + static_cast<std::ptrdiff_t>(slot * stride_), stride_, key.begin());
+            std::copy_n(shard.keys.begin() + static_cast<std::ptrdiff_t>(slot * stride_),
+                        std::min(stride_, key.size()), key.begin());
             f(key, shard.values[slot]);
         }
     }
@@ -281,10 +299,12 @@ class ShardedMemo {
             for (std::size_t i = 0; i < old.values.size(); ++i) {
                 if (old.values[i] == kEmpty) continue;
                 Key key{};
-                std::copy_n(old.keys.begin() + static_cast<std::ptrdiff_t>(i * stride), stride, key.begin());
+                std::copy_n(old.keys.begin() + static_cast<std::ptrdiff_t>(i * stride), std::min(stride, key.size()),
+                            key.begin());
                 std::size_t slot = hash_key(key) & mask;
                 while (values[slot] != kEmpty) slot = (slot + 1) & mask;
-                std::copy_n(key.begin(), stride, keys.begin() + static_cast<std::ptrdiff_t>(slot * stride));
+                std::copy_n(key.begin(), std::min(stride, key.size()),
+                            keys.begin() + static_cast<std::ptrdiff_t>(slot * stride));
                 values[slot] = old.values[i];
             }
         }
@@ -338,6 +358,10 @@ class BusyTable {
 // fail the native limit check rather than overflow).
 [[nodiscard]] std::int64_t frobenius_number(const std::vector<int>& generators) {
     const int modulus = generators.front();
+    // Every positive integer below the smallest generator is a gap, so F is
+    // at least modulus - 1: past the native limit, return that bound rather
+    // than allocate a table of that size.
+    if (modulus - 1 > kMaximumFrobenius) return modulus - 1;
     constexpr std::int64_t infinity = std::numeric_limits<std::int64_t>::max();
     std::vector<std::int64_t> distance(static_cast<std::size_t>(modulus), infinity);
     using QueueEntry = std::pair<std::int64_t, int>;
@@ -384,6 +408,17 @@ class Solver {
 
     [[nodiscard]] std::size_t states_evaluated() { return memo_->size(); }
 
+#ifdef SYLVER_PARALLEL_TEST_FORGE_MOVE_ONE
+    // Test-only forgery that --verify-memo must reject: the root "wins" by
+    // naming 1, whose child (every integer) is recorded as P.
+    void forge_move_one() {
+        const Key root_key = packer_.pack(root_);
+        memo_->overwrite(root_key, hash_key(root_key), 1);
+        const Key all_key = packer_.pack(mask_);
+        memo_->overwrite(all_key, hash_key(all_key), 0);
+    }
+#endif
+
     // Checks the finished memo as a certificate: an N entry must name a legal
     // move whose child is memoized P, and every legal move m of a P entry S
     // must lead to a child memoized N or be a paired loser (a smaller legal
@@ -402,7 +437,9 @@ class Solver {
                 if (failed.load(std::memory_order_relaxed)) return;
                 std::size_t local = 0;
                 memo_->for_each_in_shard(shard, [&](const Key& key, std::uint16_t value) {
-                    const char* problem = check_entry(packer_.unpack(key, root_), value);
+                    const State state = packer_.unpack(key, root_);
+                    const char* problem = packer_.pack(state) != key ? "a key does not encode a state"
+                                                                   : check_entry(state, value);
                     if (problem != nullptr) {
                         std::lock_guard guard(error_mutex);
                         if (!failed.exchange(true)) {
@@ -436,8 +473,12 @@ class Solver {
             const Key key = packer_.pack(position);
             return memo_->lookup(key, hash_key(key));
         };
+        // Naming 1 loses, and a semigroup containing 1 has no moves at all: an
+        // honest search never stores either, and accepting them would let a
+        // forged entry "win" by naming 1.
+        if (state.test(1)) return "an entry for a state containing 1";
         if (value > 0) {
-            if (value > frobenius_ || state.test(value)) return "an N entry names an illegal move";
+            if (value < 2 || value > frobenius_ || state.test(value)) return "an N entry names an illegal move";
             if (memoized(adjoin(state, value)) != 0) return "an N entry's move does not reach a memoized P child";
             return nullptr;
         }
@@ -692,6 +733,9 @@ int main(int argc, char** argv) {
             return std::accumulate(values.begin() + 1, values.end(), values.front(),
                                    [](int left, int right) { return std::gcd(left, right); });
         };
+        if (stop_at_p && moves.empty()) {
+            throw std::invalid_argument("--stop-at-p applies only to --odd-range and --odd-list sweeps");
+        }
         if (!moves.empty()) {
             // One memo for every child base+move, bounded by their largest
             // Frobenius number: each child has gcd one and conductor at most
@@ -703,6 +747,20 @@ int main(int argc, char** argv) {
                 child.push_back(move);
                 std::sort(child.begin(), child.end());
                 if (gcd_of(child) != 1) throw std::invalid_argument("every scanned child must have gcd one");
+                std::vector<bool> generated(static_cast<std::size_t>(move) + 1, false);
+                generated[0] = true;
+                for (int n = 1; n <= move; ++n) {
+                    for (const int g : generators) {
+                        if (g <= n && generated[static_cast<std::size_t>(n - g)]) {
+                            generated[static_cast<std::size_t>(n)] = true;
+                            break;
+                        }
+                    }
+                }
+                if (generated[static_cast<std::size_t>(move)]) {
+                    throw std::invalid_argument("scanned move " + std::to_string(move) +
+                                                " is not a legal move of the base");
+                }
                 const std::int64_t f = frobenius_number(child);
                 if (f > kMaximumFrobenius) {
                     throw std::invalid_argument("scan Frobenius bound exceeds native limit " +
@@ -726,8 +784,12 @@ int main(int argc, char** argv) {
                 if (response == 0 && stop_at_p) break;
             }
             if (verify) {
+#ifdef SYLVER_PARALLEL_TEST_FORGE_MOVE_ONE
+                solver.forge_move_one();
+#endif
                 const std::size_t entries = solver.verify_memo();
                 std::cerr << "parallel_solver: memo verified (" << entries << " entries)\n";
+                std::cout << "verified entries=" << entries << std::endl;
             }
             return EXIT_SUCCESS;
         }
@@ -752,8 +814,12 @@ int main(int argc, char** argv) {
         std::cout << " frobenius=" << frobenius
                   << " states=" << solver.states_evaluated() << std::endl;
         if (verify) {
+#ifdef SYLVER_PARALLEL_TEST_FORGE_MOVE_ONE
+            solver.forge_move_one();
+#endif
             const std::size_t entries = solver.verify_memo();
             std::cerr << "parallel_solver: memo verified (" << entries << " entries)\n";
+            std::cout << "verified entries=" << entries << std::endl;
         }
         return EXIT_SUCCESS;
     } catch (const std::exception& error) {
