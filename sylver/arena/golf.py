@@ -52,14 +52,14 @@ GOLF_RESEARCH = (
     ('C', '16,26,62,89,98,102', 'N', 6382154),
     ('C', '16,26,33,62,89,102', 'P', 1721485),
 )
-# W={16,26,62,98} has 52 obligations; 47 are covered. Each covered move m
-# is refuted by a recorded reply. For these 35 the refutation is a finite
+# W={16,26,62,98} has 52 obligations; 49 are covered. Each covered move m
+# is refuted by a recorded reply. For these 37 the refutation is a finite
 # certificate: even moves (gcd two) by an odd witness reaching a finite P
 # position, odd moves by a finite N position itself (the verifier finds its
 # winning move). Witnesses: campaign graph and the plan2 release certificate.
 W = (16, 26, 62, 98)
 W_WITNESSED = {2: 3, 18: 5, 19: 23, 22: 15, 27: 19, 28: 25, 30: 111, 34: 39, 38: 55, 40: 11, 44: 19, 46: 17,
-               50: 29, 54: 33, 60: 27, 67: 31, 76: 43, 82: 27, 102: 95, 134: 85}
+               50: 29, 54: 33, 60: 27, 67: 31, 76: 43, 82: 27, 86: 129, 92: 139, 102: 95, 134: 85}
 W_FINITE = (3, 5, 7, 9, 11, 15, 17, 23, 25, 33, 35, 41, 43, 51, 59)
 # The other 12 covered moves reach infinite P positions, whose own
 # certificates are campaign or published results outside this proof set.
@@ -67,7 +67,7 @@ W_INFINITE = {4: (6, '{4,6}'), 6: (4, '{4,6}'), 8: (20, 'G={8,20,26}'), 10: (24,
               12: (14, '{12,14,16}'), 14: (12, '{12,14,16}'), 20: (8, 'G={8,20,26}'),
               24: (10, 'K={10,16,24}'), 36: (56, 'V={16,26,36,56}'), 56: (36, 'V={16,26,36,56}'),
               66: (56, 'B={16,26,56,62,66}'), 72: (82, '{16,26,62,72,82} (Sicherman, published)')}
-W_OPEN = (70, 86, 92, 108, 118)
+W_OPEN = (70, 108, 118)  # 86 and 92: replies 129 and 139 (campaigns/w-three-2026-09-27)
 W_LIMITS = dict(DEFAULT_LIMITS, cpu_seconds=3600., wall_seconds=7200., memory_mb=16384, query_wall_seconds=3600.)
 
 
@@ -218,12 +218,14 @@ def golf_pilot(output, tiers=('A', 'B'), repeats=3, seed=0, workers=1, research_
     return out / 'REPORT.md'
 
 
-def w_book(output, book, workers=1, seed=0, strategies=('golf-witness', 'golf-root')):
+def w_book(output, book, workers=1, seed=0, strategies=('golf-witness', 'golf-root'), certificates=None):
     """Certify W's finitely certifiable obligations into ``book``.
 
     Targets already recorded in the Book (for example by the golf pilot's
     research tier) are not re-run. Every valid distinct certificate is
     admitted; the Book's entry of record decides between them.
+    ``certificates`` is an optional directory of proof files from a longer
+    curator search; each is admitted only after the Book's own replay.
     """
     from .book import add_certificate, render_book
     from .policies import GOLF
@@ -256,6 +258,12 @@ def w_book(output, book, workers=1, seed=0, strategies=('golf-witness', 'golf-ro
                          seconds=10., depth=2, max_queries=60)
     index = read(Path(book) / 'index.json') if (Path(book) / 'index.json').exists() else {'targets': {}}
     from .common import position
+    for path in sorted(Path(certificates).glob('*.json')) if certificates else ():
+        proof = read(path)
+        entry = measure(proof, out / 'tools')
+        entry['source'] = {'competitor': 'short-cover prover (curator search)', 'file': path.name}
+        admit(book, proof, entry)
+    index = read(Path(book) / 'index.json') if (Path(book) / 'index.json').exists() else {'targets': {}}
     for m in sorted(W_INFINITE):
         k = key(position((*W, m)))
         if k in index['targets']:
@@ -279,7 +287,7 @@ def render_w(book):
     lines = ['# The Book of W', '',
              'W = {16,26,62,98} is a node of the move-26 program: W P would establish Q={16,26,88,98} N',
              '(Q + 62 = W), while U={16,26,88} P would still also need X={16,26,82,88} N. W is short: its',
-             'obligations are its 52 moves below the Quiet End bound. 47 are covered; this table records',
+             f'obligations are its {52} moves below the Quiet End bound. {52 - len(W_OPEN)} are covered; this table records',
              'which coverings are self-contained certificates in The Book, replayed by the fixed verifier',
              'with a fresh memo and no inherited cache. W itself remains unresolved.', '',
              '| Move | Position | Status | Proof of record | C | States | V (s) |',
@@ -304,7 +312,7 @@ def render_w(book):
         else:
             lines.append(f'| {m} | `{{{k}}}` | finitely certifiable, not yet in the Book | | | | |')
     depends = sum(1 for m in W_INFINITE if key(position((*W, m))) not in index)
-    lines[6:6] = [f'**{certified} of 47 covered obligations** are certified here by self-contained '
+    lines[6:6] = [f'**{certified} of {52 - len(W_OPEN)} covered obligations** are certified here by self-contained '
                   f'certificates; {depends} depend on infinite P positions outside the proof language '
                   f'(named in each row); {len(W_OPEN)} are open: {", ".join(map(str, W_OPEN))}.', '']
     return '\n'.join(lines) + '\n'
@@ -376,11 +384,11 @@ class ShortProver:
             if self.outcome(g) == 'P':
                 return {key(c): {'rule': 'edge', 'outcome': 'N', 'move': r, 'child': key(g)},
                         key(g): {'rule': 'finite', 'outcome': 'P'}}
-        if depth > 0:
+        if depth > 0:  # depth counts cover levels; prove_p spends one
             for r in replies:
                 g = position_of(c, r)
                 if profile(g)['gcd'] != 1 and self.hints.get(g) == 'P':
-                    sub = self.prove_p(g, depth - 1)
+                    sub = self.prove_p(g, depth)
                     if sub:
                         return {key(c): {'rule': 'edge', 'outcome': 'N', 'move': r, 'child': key(g)}, **sub}
         return None

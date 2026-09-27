@@ -43,6 +43,7 @@ def main():
     p.add_argument('--seed',type=int,default=0)
     p=commands.add_parser('book-w');p.add_argument('--output',type=Path,required=True)
     p.add_argument('--book',type=Path,default=ROOT/'sylver/arena/book');p.add_argument('--workers',type=int,default=1)
+    p.add_argument('--certificates',type=Path,help='directory of curator proof files to replay and admit')
     p=commands.add_parser('book');p.add_argument('action',choices=('add','verify','render'))
     p.add_argument('episodes',type=Path,nargs='*');p.add_argument('--book',type=Path,default=ROOT/'sylver/arena/book')
     p.add_argument('--competitor');p.add_argument('--tools',type=Path,default=Path('/tmp/sylver-arena-tools'))
@@ -105,7 +106,7 @@ def main():
         print(golf_pilot(args.output,tuple(args.tiers.split(',')),args.repeats,args.seed,args.workers,args.research_repeats))
     elif args.command=='book-w':
         from .golf import w_book
-        print(w_book(args.output,args.book,args.workers))
+        print(w_book(args.output,args.book,args.workers,certificates=args.certificates))
     elif args.command=='book':
         from .book import add_certificate, render_book, verify_book
         if args.action=='add':
