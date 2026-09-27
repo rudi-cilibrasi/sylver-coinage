@@ -380,7 +380,9 @@ class LeagueTests(unittest.TestCase):
             lines = (out / 'games.jsonl').read_text().splitlines()
             self.assertEqual(len(lines), 4)
             self.assertTrue((out / 'plan.json').exists() and (out / 'REPORT.md').exists())
-            self.assertIn('Game results are not proofs', (out / 'REPORT.md').read_text())
+            report = (out / 'REPORT.md').read_text()
+            self.assertIn('Game results are not proofs', report)
+            self.assertIn('not isolated', report)
             self.assertEqual(sum(v['games'] for v in standings['players'].values()), 8)
             with self.assertRaises(FileExistsError):
                 run_league(players, suite('enders')[:1], out)
@@ -427,6 +429,10 @@ class CliTests(unittest.TestCase):
             subprocess.run([sys.executable, '-m', 'sylver.arena', 'play', 'smallest', 'random', '--start', '4,5',
                             '--games', '2', '--output', str(d / 'p')], check=True, capture_output=True)
             self.assertEqual(len(list((d / 'p').glob('*/record.json'))), 2)
+        for command in ('play', 'league'):
+            usage = subprocess.run([sys.executable, '-m', 'sylver.arena', command, '--help'],
+                                   capture_output=True, text=True, check=True).stdout
+            self.assertIn('trusted', usage)
 
 
 if __name__ == '__main__':

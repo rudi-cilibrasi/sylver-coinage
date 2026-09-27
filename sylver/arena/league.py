@@ -32,6 +32,9 @@ ENDERS = ((4, 5), (4, 7), (5, 6), (5, 7), (6, 7), (7, 8))
 BANDS = ((0, 60), (60, 100), (100, 140), (140, 180))
 RESEARCH = (('16', (16,)), ('16-26', (16, 26)), ('W', (16, 26, 62, 98)), ('X', (16, 26, 82, 88)))
 SUITES = ('empty', 'enders', 'database', 'research')
+ISOLATION = ('**Players are not isolated.** They run as this user without a sandbox, so a player can write '
+             "into its opponent's pipes through /proc (making it appear to name 1), signal or trace it, or change "
+             'files. Results are meaningful only when every player is a trusted program.')
 METHODS = {'cgroup': 'in their own cgroup (cumulative cpu.stat usage of every descendant; cgroup.kill at game end)',
            'session': 'by /proc sums over their session (the fallback without cgroup delegation)'}
 BOOTSTRAP = 200
@@ -303,7 +306,7 @@ def render(plan, games, standings):
              f'(gcd above one, or Frobenius number above the move cap {cap}) follow a house rule: moves are '
              f'limited to 2..{cap}, which never ends a game early but removes larger moves, so their games say '
              'nothing about real Sylver Coinage. Only openings with gcd one and Frobenius number at most the '
-             'cap are exact, and only those are adjudicated.', '',
+             'cap are exact, and only those are adjudicated.', '', ISOLATION, '',
              f"- Players: {', '.join(names)} (commands and digests in `plan.json`).",
              f"- Openings: {len(openings)} ({len(known)} with a known outcome, "
              f"{sum(o['capped'] for o in openings.values())} capped).",
@@ -349,7 +352,8 @@ def render(plan, games, standings):
     lines += _table(['Player', 'Moves', 'Mean CPU (s)', 'Max CPU (s)', 'Mean setup CPU (s)'], [
         (n, c['moves'], '—' if c['mean'] is None else f"{c['mean']:.3f}", '—' if c['max'] is None else f"{c['max']:.3f}",
          '—' if c['setup_mean'] is None else f"{c['setup_mean']:.3f}") for n, c in ((n, s['cpu'][n]) for n in names)])
-    lines += ['', 'CPU is sampled from /proc at clock-tick resolution (typically 10 ms), so very fast moves read as 0.']
+    if s['accounting'].get('session'):
+        lines += ['', 'CPU from /proc has clock-tick resolution (typically 10 ms), so very fast moves read as 0.']
     a = s['analysis']
     if a:
         lines += ['', f"## Blunders (exact analysis, Frobenius number at most {a['bound']})", '',
@@ -370,8 +374,7 @@ def render(plan, games, standings):
                   'double-fork orphans reaped by init) is not charged, and a process that leaves its session is '
                   'neither charged nor killed.']
     lines += [
-              '- External players run with resource limits but no filesystem sandbox, so leagues should include '
-              'only trusted programs.',
+              '- Players run as the same user without a sandbox; see the warning at the top.',
               '- CPU timings depend on the machine and its load, and the exact players stop searching when their '
               'budget ends, so a rerun need not reproduce every game.', '', '## Reproduce', '']
     lines += (['```sh', plan['command'], '```'] if plan.get('command') else

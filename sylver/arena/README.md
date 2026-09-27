@@ -295,6 +295,14 @@ Programs also play Sylver Coinage against each other under CPU clocks.
 the outcome of any position. Nothing here changes the proof referee, the
 episode accountant, or any file pinned by a recorded profile.
 
+> **Only run trusted players.** Players are not isolated from each other or
+> from the referee: each runs as this user without a sandbox, so a hostile
+> player can write into its opponent's stdout pipe through
+> `/proc/PID/fd/1` (the referee then records the opponent as naming 1),
+> signal or trace it, move itself out of its cgroup, or read and change
+> files, including other games' records. Running players under the arena's
+> sandbox launcher (`sandbox.py`) is the planned fix.
+
 ```sh
 python -m sylver.arena play exact book --start 5,7 --games 2 --output /tmp/game
 python -m sylver.arena league --output /tmp/league-pilot \
@@ -376,10 +384,7 @@ games are listed and excluded from ratings.
 **Limitations.** A same-user process can move itself out of its cgroup (by
 writing its pid to an ancestor's `cgroup.procs`) and so escape both the
 clock and the final kill; under the `/proc` fallback, the escapes described
-above apply. External players run
-with resource limits but no filesystem sandbox, so leagues should include
-only trusted programs; running them under the arena's sandbox launcher is a
-follow-up.
+above apply. See the isolation warning above: every player is trusted.
 
 ### Built-in players
 

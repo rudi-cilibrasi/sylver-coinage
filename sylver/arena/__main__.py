@@ -45,8 +45,10 @@ def main():
     p=commands.add_parser('admit');p.add_argument('episode',type=Path);p.add_argument('--output',type=Path,required=True)
     p=commands.add_parser('serve');p.add_argument('bundle',type=Path);p.add_argument('--output',type=Path,required=True)
     p=commands.add_parser('_serve_worker',help=argparse.SUPPRESS);p.add_argument('bundle',type=Path);p.add_argument('output',type=Path);p.add_argument('binary',type=Path)
+    trusted=('Players run as this user without a sandbox and can interfere with each other (for example, '
+             "write into the opponent's pipes through /proc); run only trusted programs. Game results are not proofs.")
     for name in ('play','league'):
-        p=commands.add_parser(name)
+        p=commands.add_parser(name,description=trusted,help=f'{name} Sylver Coinage games between trusted programs')
         if name=='play':
             p.add_argument('first');p.add_argument('second');p.add_argument('--start',default='');p.add_argument('--games',type=int,default=2)
         else:
