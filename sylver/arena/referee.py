@@ -78,13 +78,15 @@ class Channel:
         self.proc.stdin.flush()
     def receive(self, seconds, check=lambda: None):
         """``check`` runs about every 50 ms while waiting; it raises to stop
-        waiting early (the referee uses it to enforce the CPU clock)."""
+        waiting early (the referee uses it to enforce the CPU clock). poll(),
+        unlike select(), accepts descriptors above 1023."""
         deadline = time.monotonic() + seconds; fd = self.proc.stdout.fileno()
+        poller = select.poll(); poller.register(fd, select.POLLIN)
         while b'\n' not in self.buffer:
             left = deadline - time.monotonic()
             if left <= 0:
                 raise TimeoutError('no reply before the wall-time limit')
-            if not select.select([fd], [], [], min(left, .05))[0]:
+            if not poller.poll(math.ceil(min(left, .05) * 1000)):
                 check()
                 continue
             chunk = os.read(fd, 65536)
@@ -113,7 +115,7 @@ class Seat:
     def __init__(self, name, player, clock, max_move):
         self.name, self.player, self.proc = name, player, None
         self.remaining, self.last, self.total = clock['cpu_base'], 0.0, 0.0
-        self.outside, self.tail = set(), b''
+        self.outside, self.tail, self.stopping = set(), b'', False
         self.setup = {'cpu': 0.0, 'wall': 0.0, 'ready': None}
         # A per-process backstop above any CPU a player can use without losing
         # on time; it only matters if this referee dies mid-game.
@@ -170,8 +172,12 @@ class Seat:
             raise failure
 
     def _drain(self):
+        """Keep the last STDERR_TAIL bytes of stderr until EOF or close()."""
         fd = self.proc.stderr.fileno()
-        while True:
+        poller = select.poll(); poller.register(fd, select.POLLIN)
+        while not self.stopping:
+            if not poller.poll(100):
+                continue
             try:
                 chunk = os.read(fd, 65536)
             except OSError:
@@ -251,9 +257,10 @@ class Seat:
             except OSError:
                 pass
         self.proc.wait()
-        self.drain.join(2)
-        # A reader thread still blocked on stderr means an escaped process
-        # holds the pipe; its descriptor stays open rather than being reused.
+        # The reader stops within 0.1 s even if an escaped process still holds
+        # stderr, so every pipe is closed and no descriptor can be reused under it.
+        self.stopping = True
+        self.drain.join(5)
         for stream in (self.proc.stdin, self.proc.stdout) + (() if self.drain.is_alive() else (self.proc.stderr,)):
             try:
                 stream.close()

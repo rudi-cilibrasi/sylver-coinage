@@ -1,8 +1,10 @@
 import itertools
 import json
 import math
+import os
 from pathlib import Path
 import random
+import resource
 import signal
 import subprocess
 import sys
@@ -252,6 +254,22 @@ class RefereeTests(unittest.TestCase):
         with mock.patch.object(Seat, 'cpu', lambda seat: next(readings)):
             r = self.game(silent, self.smallest(), name='nr')
         self.assertEqual((r['result']['loser'], r['result']['reason'], r['setup']['first']['ready']), ('first', 'setup-cpu', None))
+
+    def test_descriptors_above_1024(self):
+        # select() cannot watch descriptors >= 1024; long leagues can reach them.
+        soft, hard = resource.getrlimit(resource.RLIMIT_NOFILE)
+        if hard != resource.RLIM_INFINITY and hard < 1200:
+            self.skipTest('cannot open 1200 descriptors')
+        if soft != resource.RLIM_INFINITY and soft < 1200:
+            resource.setrlimit(resource.RLIMIT_NOFILE, (1200, hard))
+            self.addCleanup(resource.setrlimit, resource.RLIMIT_NOFILE, (soft, hard))
+        fds = [os.open(os.devnull, os.O_RDONLY) for _ in range(1100)]
+        try:
+            r = self.game(self.smallest(), self.smallest(), name='fd')
+        finally:
+            for fd in fds:
+                os.close(fd)
+        self.assertEqual(r['result']['reason'], 'opponent-must-name-1')
 
     def test_text_and_clean(self):
         self.assertEqual(text('a\ud800b' * 3, 5), 'a?ba?')
