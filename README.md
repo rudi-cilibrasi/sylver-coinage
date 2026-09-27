@@ -15,6 +15,12 @@ exceeds 10^12 states.
 
 ## Headline results
 
+- **W frontier reduced to two moves (September 27):** after move 70 from
+  `W={16,26,62,98}`, reply **169** reaches the finite P-position
+  `{16,26,62,70,98,169}`. Fresh native and Python replays agree on P and on
+  exactly **79,594,540 states**. W now has **50 of 52 obligations
+  covered**, with **108,118** remaining. See the
+  [result and reproducible certificate](sylver/campaigns/w-two-2026-09-27/RESULT.md).
 - **W frontier reduced to three moves (September 27):** after move 86 from
   `W={16,26,62,98}`, reply **129** reaches the finite P-position
   `{16,26,62,86,98,129}`; after move 92, reply **139** reaches

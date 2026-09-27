@@ -1,5 +1,11 @@
 # Sylver Coinage after 16: research log
 
+**September 27, later:** the same scan refutes W's move 70 by **169**:
+{16,26,62,70,98,169} is P, confirmed by fresh native and Python replays
+with a matching exact state count (79,594,540). W now has 50 of 52
+obligations covered, with **108, 118** open. See
+[the campaign result](campaigns/w-two-2026-09-27/RESULT.md).
+
 **September 27 continuation:** a parallel odd-reply scan refutes W's move
 86 by **129** and move 92 by **139**: {16,26,62,86,98,129} and
 {16,26,62,92,98,139} are P, each confirmed by fresh native and Python
@@ -1290,6 +1296,17 @@ order makes effective. A flat-memo build of the same recurrence (PR #18,
 byte-identical output) was 1.7–1.9 times faster and replaced it mid-scan.
 The [campaign result](campaigns/w-three-2026-09-27/RESULT.md) links the
 certificates, replay receipts, ledger, audit, and remaining frontier.
+
+### Attempt 28 — W's move 70 falls to 169 (2026-09-27)
+
+The continued odd-reply scan found **{16,26,62,70,98,169}** P (Frobenius
+number 277), refuting W's move 70 by **169**. Fresh native and Python
+replays agree on P and exactly **79,594,540** states; the discovery run of
+the flat-memo engine reported the same count. W has **50 of 52**
+obligations covered; **108, 118** remain. The scan's ledger also records a P
+destination for move 118 awaiting independent replay. W, Q, X, move 26, and
+opening 16 are still unresolved. See the
+[campaign result](campaigns/w-two-2026-09-27/RESULT.md).
 
 ### Sources
 
