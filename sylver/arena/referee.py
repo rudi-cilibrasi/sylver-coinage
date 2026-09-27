@@ -22,9 +22,9 @@ from pathlib import Path
 import reprlib
 import resource
 import select
+import shutil
 import signal
 import subprocess
-import shutil
 import tempfile
 import threading
 import time
