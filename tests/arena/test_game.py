@@ -78,6 +78,14 @@ class RulesTests(unittest.TestCase):
             s = FiniteSolver(gens)
             self.assertEqual(p.legal_moves(), list(s.legal_moves(s.initial_state)))
 
+    def test_iterables_are_read_once(self):
+        # Validation used to consume a one-shot iterator, leaving an empty start.
+        self.assertEqual(Position(iter([4, 6])).generators, (4, 6))
+        self.assertEqual(Position(v for v in (5, 7)).key(), '5,7')
+        self.assertEqual(Position(iter([4, 5]), iter([2, 3])).history, (2, 3))
+        with self.assertRaises(ValueError):
+            Position(iter([1]))
+
     def test_rejects_bad_rules(self):
         for m in (2, True, 10.0, 1 << 21):
             with self.assertRaises(ValueError):

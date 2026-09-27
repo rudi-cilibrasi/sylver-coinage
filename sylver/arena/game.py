@@ -46,6 +46,7 @@ class Position:
     __slots__ = ('max_move', 'start', 'history', 'members', 'generators')
 
     def __init__(self, start=(), history=(), max_move=DEFAULT_MAX_MOVE):
+        start, history = tuple(start), tuple(history)       # iterators are read once
         if type(max_move) is not int or not 3 <= max_move <= MAX_MOVE_LIMIT:
             raise ValueError(f'max_move must be an integer in [3, {MAX_MOVE_LIMIT}]')
         if any(type(v) is not int or not 2 <= v <= max_move for v in start):
