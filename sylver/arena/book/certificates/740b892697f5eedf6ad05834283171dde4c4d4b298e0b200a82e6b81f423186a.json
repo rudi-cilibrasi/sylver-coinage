@@ -1,0 +1,1 @@
+{"nodes":{"2":{"child":"2,3","move":3,"outcome":"N","rule":"edge"},"2,3":{"outcome":"P","rule":"finite"},"4,26":{"child":"4,6","move":6,"outcome":"N","rule":"edge"},"4,6":{"children":[{"child":"2","move":2}],"outcome":"P","rule":"cover","tail":"quiet-end-v1"}},"root":"4,26","schema":1}

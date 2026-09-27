@@ -1308,6 +1308,27 @@ destination for move 118 awaiting independent replay. W, Q, X, move 26, and
 opening 16 are still unresolved. See the
 [campaign result](campaigns/w-two-2026-09-27/RESULT.md).
 
+### Attempt 29 — the Book of W: most of W's coverings become self-contained (2026-09-27)
+
+The certificate-golf machinery was turned on W itself. Of W's 50 covered
+obligations, **42 now have self-contained certificates in The Book**: finite
+leaves, winning edges to finite P positions, and Quiet End covers, each
+replayed by the fixed verifier with a fresh memo and no inherited cache
+([W.md](arena/book/W.md)). Among them are five moves the campaign had routed
+through positions whose certificates rest on Sicherman's `{8,10,22}`
+periodicity result or Blok's `{8,12,...}` pairing family: a bounded search of
+odd replies found finite witnesses 8 by 49 (`{8,26,49,62}`, 18,604 states),
+10 by 9, 14 by 23, and 24 by 15, and a small cover prover answered 20 by 14,
+reaching `R={14,16,20,26}`, whose Quiet End cover needs only finite
+witnesses and `{4,6}`. Moves 4 and 6 also leave the published positions
+behind ({4,6} by a 191-byte cover; 6 by the finite witness 7).
+
+The same search found no finite witness among odd replies up to 301 for the
+theorem-dependent children of `{12,14,16}`, G, K, and V, so moves 12, 36, 56,
+66, and 72 keep their named dependencies. The three new large leaves (moves
+70, 86, 92; 69-80M states each) await their Book replay, and moves 108 and
+118 are open. W, Q, X, move 26, and opening 16 remain unresolved.
+
 ### Sources
 
 - <https://math.colgate.edu/~integers/yg2/yg2.pdf>

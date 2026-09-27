@@ -317,9 +317,10 @@ def render_w(book):
         else:
             lines.append(f'| {m} | `{{{k}}}` | finitely certifiable, not yet in the Book | | | | |')
     depends = sum(1 for m in W_INFINITE if key(position((*W, m))) not in index)
-    lines[6:6] = [f'**{certified} of {52 - len(W_OPEN)} covered obligations** are certified here by self-contained '
-                  f'certificates; {depends} depend on infinite P positions outside the proof language '
-                  f'(named in each row); {len(W_OPEN)} are open: {", ".join(map(str, W_OPEN))}.', '']
+    header = lines.index('| Move | Position | Status | Proof of record | C | States | V (s) |')
+    lines[header:header] = [f'**{certified} of {52 - len(W_OPEN)} covered obligations** are certified here by self-contained '
+                            f'certificates; {depends} depend on infinite P positions outside the proof language '
+                            f'(named in each row); {len(W_OPEN)} are open: {", ".join(map(str, W_OPEN))}.', '']
     return '\n'.join(lines) + '\n'
 
 
