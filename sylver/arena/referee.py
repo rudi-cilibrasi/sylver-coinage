@@ -52,20 +52,26 @@ def clean(value):
 
 
 def session_cpu(sid, outside):
-    """CPU seconds of live processes in session ``sid``, including reaped children."""
+    """CPU seconds of the processes in session ``sid``, including reaped
+    children, and the pids of its members that are not zombies.
+
+    ``outside`` caches pids known to be in other sessions; pids that have
+    left /proc are dropped from it on every scan, so a reused pid is
+    classified afresh unless it was reused within one scan gap."""
     ticks = os.sysconf('SC_CLK_TCK'); total = 0.0; members = []
-    for name in os.listdir('/proc'):
-        if not name.isdigit() or int(name) in outside:
-            continue
+    present = {int(n) for n in os.listdir('/proc') if n.isdigit()}
+    outside.intersection_update(present)
+    for pid in present - outside:
         try:
-            raw = Path('/proc', name, 'stat').read_bytes()
+            raw = Path('/proc', str(pid), 'stat').read_bytes()
             f = raw[raw.rindex(b')') + 2:].split()
             if int(f[3]) != sid:
-                outside.add(int(name)); continue
+                outside.add(pid); continue
             total += sum(int(f[i]) for i in (11, 12, 13, 14)) / ticks
         except (OSError, ValueError, IndexError):
             continue
-        members.append(int(name))
+        if f[0] != b'Z':
+            members.append(pid)
     return total, members
 
 
@@ -249,13 +255,21 @@ class Seat:
             self.channel.send(end)
         except (OSError, ValueError):
             pass
-        now, members = session_cpu(self.proc.pid, self.outside)
-        self.total += max(0.0, now - self.last)
-        for kill, target in [(os.killpg, self.proc.pid)] + [(os.kill, pid) for pid in members]:
-            try:
-                kill(target, signal.SIGKILL)
-            except OSError:
-                pass
+        self.total += max(0.0, session_cpu(self.proc.pid, self.outside)[0] - self.last)
+        # Kill until no live member is left: a member forking during one pass
+        # is caught by the next, which rescans /proc in full.
+        deadline = time.monotonic() + 10
+        while True:
+            self.outside.clear()
+            members = session_cpu(self.proc.pid, self.outside)[1]
+            for kill, target in [(os.killpg, self.proc.pid)] + [(os.kill, pid) for pid in members]:
+                try:
+                    kill(target, signal.SIGKILL)
+                except OSError:
+                    pass
+            if not members or time.monotonic() > deadline:
+                break
+            time.sleep(.005)
         self.proc.wait()
         # The reader stops within 0.1 s even if an escaped process still holds
         # stderr, so every pipe is closed and no descriptor can be reused under it.

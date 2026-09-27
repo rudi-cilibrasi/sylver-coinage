@@ -19,7 +19,7 @@ from sylver.arena.exact import build_tools
 from sylver.arena.game import IllegalMove, Position, minimal_generators
 from sylver.arena.league import ENDERS, bradley_terry, render, run_league, suite
 from sylver.arena.players import PLAYERS, builtin_command, load_book
-from sylver.arena.referee import Seat, clean, play_game, text
+from sylver.arena.referee import Seat, clean, play_game, session_cpu, text
 from sylver.solver import FiniteSolver, solve_position
 
 
@@ -144,15 +144,22 @@ class PlayerTests(unittest.TestCase):
 
 
 SCRIPT = textwrap.dedent('''
-    import json, sys, time, subprocess
+    import json, os, sys, time, subprocess
     MODE = sys.argv[1]
     for line in sys.stdin:
         msg = json.loads(line)
         if msg["type"] == "hello":
+            if MODE == "forker" and os.fork() == 0:
+                # Same session, own process group, forking sleepers without pause.
+                os.setpgid(0, 0); os.closerange(0, 3)
+                while True:
+                    if os.fork() == 0:
+                        time.sleep(30); os._exit(0)
+                    time.sleep(0.002)
             if MODE == "surrogate": print(json.dumps({"type": "ready", "name": "\\ud800", "version": "\\udfff"}), flush=True)
             else: print(json.dumps({"type": "ready", "name": MODE}), flush=True)
         elif msg["type"] == "move":
-            if MODE == "one": print(json.dumps({"move": 1}), flush=True)
+            if MODE in ("one", "forker"): print(json.dumps({"move": 1}), flush=True)
             elif MODE == "surrogate": print(json.dumps({"move": 2, "note": "a\\ud800b", "claim": "\\ud800"}), flush=True)
             elif MODE == "illegal": print(json.dumps({"move": msg["generators"][0]}), flush=True)
             elif MODE == "garbage": print("not json", flush=True)
@@ -278,6 +285,18 @@ class RefereeTests(unittest.TestCase):
             deep = [deep]
         self.assertLessEqual(len(text(deep, 20)), 20)   # bounded, never a RecursionError
         self.assertEqual(clean({'x': ('\udfff', float('nan'), 1.5), '\ud800': 2}), {'x': ['?', None, 1.5], '?': 2})
+
+    def test_forking_player_is_fully_killed(self):
+        for i in range(3):
+            r = self.game(self.scripted('forker'), self.smallest(), name=f'fk{i}')
+            self.assertEqual(r['result']['reason'], 'named-1')
+            out = subprocess.run(['pgrep', '-f', str(self.dir / 'p.py')], capture_output=True, text=True)
+            self.assertEqual(out.stdout.split(), [], f'run {i}')
+
+    def test_stale_pids_leave_the_outside_cache(self):
+        outside = {2 ** 30}       # above pid_max, so never a live process
+        session_cpu(os.getsid(0), outside)
+        self.assertNotIn(2 ** 30, outside)
 
     def test_malformed_replies_lose(self):
         r = self.game(self.scripted('garbage'), self.smallest(), name='m')
