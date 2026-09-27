@@ -258,3 +258,19 @@ class BookOfWTests(unittest.TestCase):
             self.assertEqual(profile(child)['gcd'], 1, m)   # a finite destination
         for m in W_FINITE:
             self.assertEqual(profile(position((*W, m)))['gcd'], 1, m)
+
+    def test_short_prover_certificates_pass_the_referee(self):
+        from sylver.arena.golf import ShortProver
+        from sylver.arena.proof import verify
+        with tempfile.TemporaryDirectory() as d:
+            rows = [((4, 6), 'P'), ((4, 26), 'N')]
+            digest = save(d, encode(rows))
+            prover = ShortProver(Hints(path_for(d, digest), digest), build_tools(Path(d) / 'tools'), seconds=10., depth=2)
+            def batch(ps):
+                return [dict(position=list(p), outcome=outcome(p)) for p in ps]
+            p46 = prover.prove_p((4, 6))
+            self.assertEqual(p46['4,6']['rule'], 'cover')
+            self.assertTrue(verify({'schema': 1, 'root': '4,6', 'nodes': p46}, snapshot(), (4, 6), batch)['valid'])
+            n = prover.prove_n((4, 26), 2)
+            result = verify({'schema': 1, 'root': '4,26', 'nodes': n}, snapshot(), (4, 26), batch)
+            self.assertEqual((result['valid'], result['outcome']), (True, 'N'))
