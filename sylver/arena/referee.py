@@ -1,11 +1,17 @@
-"""One refereed game between two untrusted player processes.
+"""One refereed game between two player processes.
 
-Players speak JSON Lines (schema 1) on stdin/stdout, each in a fresh session.
-A player's clock is charged all CPU of the live processes in its session,
-including children they have reaped, since its previous measurement: work
-done after replying, even during the opponent's turn, is charged at its next
-measurement. A process that leaves the session (setsid) is neither charged
-nor killed. Setup (start-up and the hello/ready handshake) is capped
+Players speak JSON Lines (schema 1) on stdin/stdout, each in a fresh session
+and, where cgroup v2 is delegated to this user, in its own child cgroup of
+the referee's. A player's clock is charged all CPU used by what it started
+since its previous measurement, so work done after replying, even during
+the opponent's turn, is charged at its next measurement. With a cgroup that
+is the cumulative cpu.stat usage, which keeps the CPU of every descendant
+however it exits, and cgroup.kill ends them all. The fallback sums /proc
+over the live members of the session, including children they reaped; it
+misses children reaped by no member (SIGCHLD ignored, orphans reaped by
+init) and processes that leave the session, which it cannot kill either.
+Players are not isolated from each other or from this referee: run only
+trusted programs. Setup (start-up and the hello/ready handshake) is capped
 separately and is not charged to the clock. Every player failure is an
 attributed loss; an exception in the referee itself voids the game.
 """
@@ -29,6 +35,22 @@ CLOCK = {'cpu_base': 2.0, 'cpu_increment': 0.1, 'setup_cpu': 10.0, 'setup_wall':
 SEATS = ('first', 'second')
 OTHER = {'first': 'second', 'second': 'first'}
 STDERR_TAIL = 1 << 16
+CGROUPS = Path('/sys/fs/cgroup')
+# /bin/sh -c ENTER CGROUP COMMAND...: the shell moves itself into CGROUP and
+# execs the player, so all its descendants start there. If the move fails the
+# player still runs, and the referee finds it outside and falls back to /proc.
+ENTER = 'echo $$ > "$0/cgroup.procs" 2>/dev/null; exec "$@"'
+
+
+def own_cgroup():
+    """This process's cgroup v2 directory, if this user may create children
+    in it and move processes between them; else None."""
+    try:
+        line = next(x for x in Path('/proc/self/cgroup').read_text().splitlines() if x.startswith('0::'))
+    except (OSError, StopIteration):
+        return None
+    path = CGROUPS / line[3:].lstrip('/')
+    return path if os.access(path, os.W_OK) and os.access(path / 'cgroup.procs', os.W_OK) else None
 
 
 def text(value, limit):
@@ -117,9 +139,10 @@ class OutOfTime(Exception):
 
 
 class Seat:
-    """One player process: its session, clock, and the tail of its stderr."""
-    def __init__(self, name, player, clock, max_move):
-        self.name, self.player, self.proc = name, player, None
+    """One player process: its cgroup or session, clock, and stderr tail."""
+    def __init__(self, name, player, clock, max_move, cgroups=None):
+        self.name, self.player, self.proc, self.cgroups, self.cgroup = name, player, None, cgroups, None
+        self.accounting = 'session'
         self.remaining, self.last, self.total = clock['cpu_base'], 0.0, 0.0
         self.outside, self.tail, self.stopping = set(), b'', False
         self.setup = {'cpu': 0.0, 'wall': 0.0, 'ready': None}
@@ -130,11 +153,17 @@ class Seat:
     def launch(self, hello, clock):
         """Start the player and complete the handshake; setup CPU is capped
         separately, and the game clock starts from the CPU used by ready."""
-        start = time.monotonic()
+        start, command = time.monotonic(), [str(c) for c in self.player['command']]
+        if self.cgroups is not None:
+            cgroup = self.cgroups / f'sylver-game-{os.getpid()}-{time.monotonic_ns()}-{self.name}'
+            try:
+                cgroup.mkdir()
+                self.cgroup, self.accounting, command = cgroup, 'cgroup', ['/bin/sh', '-c', ENTER, str(cgroup), *command]
+            except OSError:
+                pass
         try:
-            self.proc = subprocess.Popen([str(c) for c in self.player['command']], stdin=subprocess.PIPE,
-                                         stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=self.player.get('cwd'),
-                                         env=self.player.get('env'), start_new_session=True)
+            self.proc = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                         cwd=self.player.get('cwd'), env=self.player.get('env'), start_new_session=True)
         except (OSError, ValueError, subprocess.SubprocessError) as error:
             raise Lost('setup-failed', error)
         self.channel = Channel(self.proc)
@@ -170,6 +199,9 @@ class Seat:
             failure = Lost('setup-failed', f"no ready message within {clock['setup_wall']} s")
         except (EOFError, OSError, ValueError, RecursionError) as error:
             failure = Lost('setup-failed', error)
+        if failure is None and self.cgroup is not None and str(self.proc.pid) not in self._read('cgroup.procs').split():
+            self._release()           # the player is not inside: account via /proc instead
+            self.accounting = 'session'
         self.last = self.cpu()
         self.setup.update(cpu=round(self.last, 6), wall=round(time.monotonic() - start, 6))
         if self.last > clock['setup_cpu']:
@@ -193,7 +225,33 @@ class Seat:
             self.tail = (self.tail + chunk)[-STDERR_TAIL:]
 
     def cpu(self):
+        """Cumulative CPU seconds of everything the player started."""
+        if self.accounting == 'cgroup':
+            return int(self._read('cpu.stat').split('usage_usec ', 1)[1].split()[0]) / 1e6
         return session_cpu(self.proc.pid, self.outside)[0]
+
+    def _read(self, name):
+        return (self.cgroup / name).read_text()
+
+    def _release(self):
+        """Kill anything left in this seat's cgroup and remove it; the killed
+        processes may take a moment to leave it."""
+        if self.cgroup is None:
+            return
+        try:
+            (self.cgroup / 'cgroup.kill').write_text('1')
+        except OSError:
+            pass
+        deadline = time.monotonic() + 5
+        while time.monotonic() < deadline:
+            try:
+                self.cgroup.rmdir()
+                break
+            except FileNotFoundError:
+                break
+            except OSError:
+                time.sleep(.01)
+        self.cgroup = None
 
     def alive(self):
         """Raise EOFError once the player has exited, even if a child still
@@ -248,16 +306,24 @@ class Seat:
                       'note': text(note, 200) if isinstance(note, str) else None}
 
     def close(self, end):
-        """Send ``end``, kill the whole session, and reap the player."""
+        """Send ``end``, kill everything the player started, and reap it."""
         if self.proc is None:
+            self._release()
             return
         try:
             self.channel.send(end)
         except (OSError, ValueError):
             pass
-        self.total += max(0.0, session_cpu(self.proc.pid, self.outside)[0] - self.last)
-        # Kill until no live member is left: a member forking during one pass
-        # is caught by the next, which rescans /proc in full.
+        if self.accounting == 'cgroup':
+            try:
+                (self.cgroup / 'cgroup.kill').write_text('1')
+            except OSError:
+                pass
+        else:                         # /proc loses the CPU of processes once they die
+            self.total += max(0.0, self.cpu() - self.last)
+        # Then kill session members until none is alive (outside the cgroup,
+        # if any): a member forking during one pass is caught by the next,
+        # which rescans /proc in full.
         deadline = time.monotonic() + 10
         while True:
             self.outside.clear()
@@ -271,6 +337,9 @@ class Seat:
                 break
             time.sleep(.005)
         self.proc.wait()
+        if self.accounting == 'cgroup':
+            self.total += max(0.0, self.cpu() - self.last)
+        self._release()
         # The reader stops within 0.1 s even if an escaped process still holds
         # stderr, so every pipe is closed and no descriptor can be reused under it.
         self.stopping = True
@@ -282,12 +351,14 @@ class Seat:
                 pass
 
 
-def play_game(first, second, output, start=(), max_move=1000, clock=None, game_id='game'):
+def play_game(first, second, output, start=(), max_move=1000, clock=None, game_id='game', accounting=None):
     """Play one game; return its record and write it to ``output/record.json``.
 
     Each player is ``{'name', 'command'}`` with optional ``cwd``, ``env`` and
     ``memory_mb`` (4096). The winner of a game reaching {2,3} is the player
     who made the last move; the reason is then 'opponent-must-name-1'.
+    ``accounting`` is 'cgroup', 'session', or None for cgroup where possible;
+    the record says which each seat used.
     """
     output = Path(output)
     clock = dict(CLOCK, **(clock or {}))
@@ -296,8 +367,12 @@ def play_game(first, second, output, start=(), max_move=1000, clock=None, game_i
     initial = position = Position(start, max_move=max_move)
     players = dict(zip(SEATS, (first, second)))
     digests = {s: sha([str(c) for c in p['command']]) for s, p in players.items()}   # commands must be UTF-8
+    cgroups = own_cgroup()
+    accounting = accounting or ('cgroup' if cgroups else 'session')
+    if accounting not in ('cgroup', 'session') or accounting == 'cgroup' and cgroups is None:
+        raise ValueError(f'unsupported CPU accounting {accounting!r} here')
     output.mkdir()
-    seats = {s: Seat(s, players[s], clock, max_move) for s in SEATS}
+    seats = {s: Seat(s, players[s], clock, max_move, cgroups if accounting == 'cgroup' else None) for s in SEATS}
     moves, result, current = [], None, 'first'
     try:
         try:
@@ -336,7 +411,8 @@ def play_game(first, second, output, start=(), max_move=1000, clock=None, game_i
               'players': {s: {'name': p['name'], 'command_sha256': digests[s]} for s, p in players.items()},
               'clock': clock, 'setup': {s: seats[s].setup for s in SEATS}, 'moves': moves, 'result': result,
               'final': {'generators': list(position.generators), 'capped': position.capped(), 'over': position.over()},
-              'cpu_totals': {s: round(seats[s].total, 6) for s in SEATS}}
+              'cpu_totals': {s: round(seats[s].total, 6) for s in SEATS},
+              'accounting': {s: seats[s].accounting for s in SEATS}}
     try:
         canonical(record)
     except (UnicodeError, ValueError):

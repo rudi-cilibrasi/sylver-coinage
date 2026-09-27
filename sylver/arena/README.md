@@ -343,16 +343,27 @@ recorded, never trusted.
 ### Clocks, accounting, and losses
 
 Each player has `cpu_base` seconds of CPU (default 2.0) plus a Fischer
-increment (0.1 s) credited after each legal move. A player is charged the
-change in `utime+stime+cutime+cstime` summed over the live processes of its
-session, read from `/proc`; this includes solver subprocesses it has reaped,
-and CPU spent after replying or during the opponent's turn is charged at its
-next measurement. The clock is enforced while waiting, so a busy player loses
-on time at once. Each move also has a wall-time safety limit of
-`3 x cpu_remaining + 5` seconds. Setup (process start and the hello/ready
-handshake, such as loading a database) is capped separately (10 s CPU, 60 s
-wall) and not charged to the clock. Players run with a 4 GiB address-space
-limit (`memory_mb`), and the whole session is killed and reaped at game end.
+increment (0.1 s) credited after each legal move. Where cgroup v2 is
+delegated to this user (as in a systemd user session), each player runs in
+its own child cgroup of the referee's: a tiny shell wrapper moves itself into
+the cgroup and then execs the player, so every descendant starts inside it.
+The clock is then the cgroup's cumulative `cpu.stat` usage, which keeps the
+CPU of every descendant however it ends (reaped, auto-reaped because
+SIGCHLD is ignored, orphaned, or in a new session), and `cgroup.kill` ends
+them all at game end. Otherwise the referee falls back to summing
+`utime+stime+cutime+cstime` from `/proc` over the live members of the
+player's session, which misses children that no member reaps (SIGCHLD
+ignored, double-fork orphans reaped by init) and processes that leave the
+session, which it cannot kill either. Each game record says which method
+each seat used (`accounting`). Either way, CPU spent after replying or
+during the opponent's turn is charged at the player's next measurement, and
+the clock is enforced while waiting, so a busy player loses on time at once.
+Each move also has a wall-time safety limit of `3 x cpu_remaining + 5`
+seconds. Setup (process start and the hello/ready handshake, such as loading
+a database) is capped separately (10 s CPU, 60 s wall) and not charged to the
+clock. Players run with a 4 GiB address-space limit (`memory_mb`); at game
+end the referee kills the cgroup, then kills session members until none is
+left alive, and reaps the player.
 
 A player loses by naming 1 (`named-1`), naming a non-gap or out-of-range
 number (`illegal-move`), replying without an integer move (`malformed-move`),
@@ -362,8 +373,10 @@ or closing its pipes (`crashed`), or failing setup (`setup-failed`,
 (`opponent-must-name-1`). An exception in the referee voids the game; void
 games are listed and excluded from ratings.
 
-**Limitations.** A process that leaves its session (daemonizes with `setsid`)
-is neither charged per move nor killed at game end. External players run
+**Limitations.** A same-user process can move itself out of its cgroup (by
+writing its pid to an ancestor's `cgroup.procs`) and so escape both the
+clock and the final kill; under the `/proc` fallback, the escapes described
+above apply. External players run
 with resource limits but no filesystem sandbox, so leagues should include
 only trusted programs; running them under the arena's sandbox launcher is a
 follow-up.

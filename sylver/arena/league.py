@@ -26,12 +26,14 @@ from .common import ROOT, canonical, sha, write
 from .exact import build_tools
 from .game import Position
 from .players import CACHE, NATIVE, PLAYERS, builtin_command
-from .referee import CLOCK, SEATS, play_game
+from .referee import CLOCK, SEATS, own_cgroup, play_game
 
 ENDERS = ((4, 5), (4, 7), (5, 6), (5, 7), (6, 7), (7, 8))
 BANDS = ((0, 60), (60, 100), (100, 140), (140, 180))
 RESEARCH = (('16', (16,)), ('16-26', (16, 26)), ('W', (16, 26, 62, 98)), ('X', (16, 26, 82, 88)))
 SUITES = ('empty', 'enders', 'database', 'research')
+METHODS = {'cgroup': 'in their own cgroup (cumulative cpu.stat usage of every descendant; cgroup.kill at game end)',
+           'session': 'by /proc sums over their session (the fallback without cgroup delegation)'}
 BOOTSTRAP = 200
 
 
@@ -121,7 +123,7 @@ def _void(game, opening, max_move, clock, detail):
             'setup': {s: None for s in SEATS}, 'moves': [],
             'result': {'winner': None, 'loser': None, 'reason': 'void', 'detail': detail},
             'final': {'generators': list(p.generators), 'capped': p.capped(), 'over': p.over()},
-            'cpu_totals': {s: 0.0 for s in SEATS}}
+            'cpu_totals': {s: 0.0 for s in SEATS}, 'accounting': {s: None for s in SEATS}}
 
 
 def run_league(players, openings, output, max_move=1000, clock=None, workers=4, seed=0, analyze_bound=0, command=None):
@@ -146,7 +148,7 @@ def run_league(players, openings, output, max_move=1000, clock=None, workers=4, 
                         'options_sha256': sha(p.get('options', {})) if 'builtin' in p else None}
     plan = {'schema': 1, 'players': described, 'openings': openings, 'rules': {'max_move': max_move, 'loser': 'names-1'},
             'clock': clock, 'seed': seed, 'workers': workers, 'analyze_bound': analyze_bound, 'schedule': schedule,
-            'command': command, 'host': {'python': platform.python_version(), 'platform': platform.platform(),
+            'command': command, 'accounting': 'cgroup' if own_cgroup() else 'session', 'host': {'python': platform.python_version(), 'platform': platform.platform(),
                                          'cpus': os.cpu_count()}}
     write(output / 'plan.json', plan)
     (output / 'games').mkdir()
@@ -274,7 +276,8 @@ def standings(plan, records, analysis=None):
         setup = [r['setup'][s]['cpu'] for r in records for s in SEATS if games[r['game']][s] == n and r['setup'][s]]
         cpu[n] = {'moves': len(used), 'mean': round(statistics.fmean(used), 6) if used else None,
                   'max': max(used, default=None), 'setup_mean': round(statistics.fmean(setup), 6) if setup else None}
-    return {'schema': 1, 'games': len(records), 'decided': len(decided),
+    accounting = Counter(m for r in records for m in r['accounting'].values() if m)
+    return {'schema': 1, 'games': len(records), 'decided': len(decided), 'accounting': dict(sorted(accounting.items())),
             'void': [{'game': r['game'], 'detail': r['result']['detail'][-300:]} for r in records if not r['result']['winner']],
             'players': players, 'head_to_head': h2h, 'loss_reasons': {n: dict(c) for n, c in reasons.items()},
             'openings': table, 'adjudication': {n: dict(c) for n, c in verdicts.items()}, 'cpu': cpu, 'analysis': analysis}
@@ -289,6 +292,9 @@ def _table(header, rows, left=1):
 def render(plan, games, standings):
     s, clock, cap = standings, plan['clock'], plan['rules']['max_move']
     names = sorted(s['players'], key=lambda n: (-s['players'][n]['elo'], n))
+    seats = sum(s['accounting'].values())
+    accounting = '; '.join(
+        f"{'all' if n == seats else f'{n} of'} {seats} player seats {METHODS[m]}" for m, n in s['accounting'].items()) or 'none'
     openings = {o['name']: s['openings'][o['name']] for o in plan['openings']}   # plan order, even after a JSON round trip
     known = {n: o for n, o in openings.items() if o['outcome']}
     lines = ['# Game arena league', '',
@@ -305,6 +311,7 @@ def render(plan, games, standings):
              f"- Clock: {clock['cpu_base']} s CPU plus {clock['cpu_increment']} s per legal move; setup up to "
              f"{clock['setup_cpu']} s CPU and {clock['setup_wall']} s wall, not charged; per-move wall limit "
              '3 x remaining CPU + 5 s.',
+             f"- CPU accounting: {accounting}.",
              f"- Games: {s['games']} ({s['decided']} decided, {len(s['void'])} void); seed {plan['seed']}; "
              f"{plan['workers']} parallel games.", '', '## Standings', '']
     lines += _table(['Player', 'Games', 'W', 'L', 'Score', 'Elo', '95% interval'], [
@@ -354,10 +361,15 @@ def render(plan, games, standings):
              c['unknown']) for n, c in ((n, a['players'][n]) for n in names)])
     lines += ['', '## Void games', '']
     lines += [f"- `{v['game']}`: {v['detail'].splitlines()[-1] if v['detail'] else 'no detail'}" for v in s['void']] or ['None.']
-    lines += ['', '## Limitations', '',
-              '- A player is charged the CPU of the live processes in its session, including children it has '
-              'reaped. A process that leaves its session (daemonizes with setsid) is neither charged nor killed at '
-              'game end.',
+    lines += ['', '## Limitations', '']
+    if s['accounting'].get('cgroup'):
+        lines += ['- A same-user process can move itself out of its cgroup and so escape both the clock and the '
+                  'kill at game end.']
+    if s['accounting'].get('session'):
+        lines += ['- Under /proc session sums, CPU of children that no session member reaps (SIGCHLD ignored, '
+                  'double-fork orphans reaped by init) is not charged, and a process that leaves its session is '
+                  'neither charged nor killed.']
+    lines += [
               '- External players run with resource limits but no filesystem sandbox, so leagues should include '
               'only trusted programs.',
               '- CPU timings depend on the machine and its load, and the exact players stop searching when their '

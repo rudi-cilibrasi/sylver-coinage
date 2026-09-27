@@ -19,7 +19,7 @@ from sylver.arena.exact import build_tools
 from sylver.arena.game import IllegalMove, Position, minimal_generators
 from sylver.arena.league import ENDERS, bradley_terry, render, run_league, suite
 from sylver.arena.players import PLAYERS, builtin_command, load_book
-from sylver.arena.referee import Seat, clean, play_game, session_cpu, text
+from sylver.arena.referee import Seat, clean, own_cgroup, play_game, session_cpu, text
 from sylver.solver import FiniteSolver, solve_position
 
 
@@ -144,8 +144,11 @@ class PlayerTests(unittest.TestCase):
 
 
 SCRIPT = textwrap.dedent('''
-    import json, os, sys, time, subprocess
+    import json, os, signal, sys, time, subprocess
     MODE = sys.argv[1]
+    BURN = "import time,sys\\nt=time.process_time()\\nwhile time.process_time()-t<0.8:pass"
+    if MODE == "sigign": signal.signal(signal.SIGCHLD, signal.SIG_IGN)
+    turns = 0
     for line in sys.stdin:
         msg = json.loads(line)
         if msg["type"] == "hello":
@@ -176,6 +179,27 @@ SCRIPT = textwrap.dedent('''
             elif MODE == "child":
                 subprocess.run([sys.executable, "-c", "import time\\nt=time.process_time()\\nwhile time.process_time()-t<1.5:pass"])
                 print(json.dumps({"move": 2}), flush=True)
+            elif MODE in ("sigign", "doublefork", "setsid", "sleeper"):
+                # From the empty start, numbers in 501..1000 never generate each other.
+                turns += 1
+                if MODE == "sleeper": time.sleep(1.0)
+                move = max(n for n in range(501, 1001) if n not in msg["history"]) if turns < 4 else 1
+                print(json.dumps({"move": move}), flush=True)
+                # CPU burned after replying, by processes /proc sums lose track of.
+                if MODE == "sigign" and os.fork() == 0:
+                    t = time.process_time()
+                    while time.process_time() - t < 0.8: pass
+                    os._exit(0)
+                if MODE == "doublefork":
+                    pid = os.fork()
+                    if pid == 0:
+                        if os.fork() == 0:
+                            t = time.process_time()
+                            while time.process_time() - t < 0.8: pass
+                        os._exit(0)
+                    os.waitpid(pid, 0)
+                if MODE == "setsid":
+                    subprocess.Popen([sys.executable, "-c", BURN, sys.argv[0]], start_new_session=True)
             elif MODE == "ponder":
                 # 49 is a gap of <40,41>; the opponent then gets a turn, so the
                 # CPU burned after this reply must be charged at our next turn.
@@ -207,8 +231,8 @@ class RefereeTests(unittest.TestCase):
         return {'name': mode, 'command': [sys.executable, str(self.dir / 'p.py'), mode]}
     def smallest(self):
         return {'name': 'smallest', 'command': builtin_command('smallest')}
-    def game(self, first, second, start=(4, 5), clock=None, name='g'):
-        return play_game(first, second, self.dir / name, start=start,
+    def game(self, first, second, start=(4, 5), clock=None, name='g', accounting=None):
+        return play_game(first, second, self.dir / name, start=start, accounting=accounting,
                          clock=clock or {'cpu_base': 1.0, 'cpu_increment': 0.0, 'setup_cpu': 10.0, 'setup_wall': 30.0})
 
     def test_losses_are_attributed(self):
@@ -286,12 +310,27 @@ class RefereeTests(unittest.TestCase):
         self.assertLessEqual(len(text(deep, 20)), 20)   # bounded, never a RecursionError
         self.assertEqual(clean({'x': ('\udfff', float('nan'), 1.5), '\ud800': 2}), {'x': ['?', None, 1.5], '?': 2})
 
-    def test_forking_player_is_fully_killed(self):
-        for i in range(3):
-            r = self.game(self.scripted('forker'), self.smallest(), name=f'fk{i}')
-            self.assertEqual(r['result']['reason'], 'named-1')
+    @unittest.skipUnless(own_cgroup(), 'needs a delegated cgroup v2 subtree')
+    def test_cgroup_charges_cpu_that_escapes_the_session(self):
+        # Auto-reaped children, double-fork orphans reaped by init, and new
+        # sessions all vanish from /proc session sums; a cgroup keeps their CPU
+        # and cgroup.kill reaches them. Under /proc sums they name 1 unpunished.
+        for mode in ('sigign', 'doublefork', 'setsid'):
+            r = self.game(self.scripted(mode), self.scripted('sleeper'), start=(), name=mode)
+            self.assertEqual((r['result']['loser'], r['result']['reason']), ('first', 'cpu-time'), mode)
+            self.assertEqual(r['accounting'], {'first': 'cgroup', 'second': 'cgroup'})
             out = subprocess.run(['pgrep', '-f', str(self.dir / 'p.py')], capture_output=True, text=True)
-            self.assertEqual(out.stdout.split(), [], f'run {i}')
+            self.assertEqual(out.stdout.split(), [], mode)
+        self.assertEqual([p.name for p in own_cgroup().iterdir() if p.name.startswith('sylver-game-')
+                          and str(os.getpid()) in p.name], [])
+
+    def test_forking_player_is_fully_killed(self):
+        for accounting in ('cgroup', 'session') if own_cgroup() else ('session',):
+            for i in range(3):
+                r = self.game(self.scripted('forker'), self.smallest(), name=f'fk-{accounting}{i}', accounting=accounting)
+                self.assertEqual((r['result']['reason'], r['accounting']['first']), ('named-1', accounting))
+                out = subprocess.run(['pgrep', '-f', str(self.dir / 'p.py')], capture_output=True, text=True)
+                self.assertEqual(out.stdout.split(), [], f'{accounting} run {i}')
 
     def test_stale_pids_leave_the_outside_cache(self):
         outside = {2 ** 30}       # above pid_max, so never a live process
