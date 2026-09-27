@@ -241,3 +241,46 @@ class GolfEpisodeTests(unittest.TestCase):
                            hints={sha(self.bundle['manifest']): self.hints}, workers=2)
         started = [d for d in (self.root / 'stopped').iterdir() if d.is_dir()]
         self.assertLess(len(started), 6)
+
+
+class BookOfWTests(unittest.TestCase):
+    def test_w_table_accounts_for_every_obligation(self):
+        from sylver.arena.common import position, profile
+        from sylver.arena.golf import W, W_FINITE, W_INFINITE, W_OPEN, W_WITNESSED, w_targets
+        moves = profile(W)['moves']
+        groups = [set(W_WITNESSED), set(W_FINITE), set(W_INFINITE), set(W_OPEN)]
+        self.assertEqual(sorted(set().union(*groups)), moves)
+        self.assertEqual(sum(map(len, groups)), len(moves))
+        self.assertEqual(len(w_targets()), 38)
+        for m, reply in W_WITNESSED.items():
+            child = position((*position((*W, m)), reply))
+            self.assertEqual(profile(child)['gcd'], 1, m)   # a finite destination
+        for m in W_FINITE:
+            self.assertEqual(profile(position((*W, m)))['gcd'], 1, m)
+
+    def test_short_prover_certificates_pass_the_referee(self):
+        from sylver.arena.golf import ShortProver
+        from sylver.arena.proof import verify
+        with tempfile.TemporaryDirectory() as d:
+            rows = [((4, 6), 'P'), ((4, 26), 'N')]
+            digest = save(d, encode(rows))
+            prover = ShortProver(Hints(path_for(d, digest), digest), build_tools(Path(d) / 'tools'), seconds=10., depth=2)
+            def batch(ps):
+                return [dict(position=list(p), outcome=outcome(p)) for p in ps]
+            p46 = prover.prove_p((4, 6))
+            self.assertEqual(p46['4,6']['rule'], 'cover')
+            self.assertTrue(verify({'schema': 1, 'root': '4,6', 'nodes': p46}, snapshot(), (4, 6), batch)['valid'])
+            n = prover.prove_n((4, 26), 2)
+            result = verify({'schema': 1, 'root': '4,26', 'nodes': n}, snapshot(), (4, 26), batch)
+            self.assertEqual((result['valid'], result['outcome']), (True, 'N'))
+
+    def test_short_prover_depth_counts_cover_levels(self):
+        # {4,14} is answered by 6, reaching the short P position {4,6}, whose
+        # single cover needs one level: prove_n at depth 1 must reach it.
+        from sylver.arena.golf import ShortProver
+        with tempfile.TemporaryDirectory() as d:
+            digest = save(d, encode([((4, 6), 'P')] + [((4, 14, r), outcome((4, 14, r))) for r in range(3, 60, 2)]))
+            prover = ShortProver(Hints(path_for(d, digest), digest), build_tools(Path(d) / 'tools'), seconds=10., depth=1)
+            nodes = prover.prove_n((4, 14), 1)
+            self.assertIsNotNone(nodes)
+            self.assertEqual(nodes['4,14']['rule'], 'edge')

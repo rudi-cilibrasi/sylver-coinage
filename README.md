@@ -15,6 +15,15 @@ exceeds 10^12 states.
 
 ## Headline results
 
+- **The Book of W (September 27):** 42 of W's 50 covered obligations now
+  have self-contained certificates in [The Book](sylver/arena/book/W.md),
+  each replayed by the fixed verifier with a fresh memo and no inherited
+  cache. Searching for finite witnesses removed the dependence of W's moves
+  8, 10, 14, 20, and 24 on Sicherman's `{8,10,22}` periodicity result and
+  Blok's pairing family (for example, 8 is answered by 49 and 20 by 14,
+  reaching the Quiet End node `{14,16,20,26}`). Five covered moves still
+  rest on theorem-backed positions, three large new leaves await their Book
+  replay, and two moves are open.
 - **W frontier reduced to two moves (September 27):** after move 70 from
   `W={16,26,62,98}`, reply **169** reaches the finite P-position
   `{16,26,62,70,98,169}`. Fresh native and Python replays agree on P and on

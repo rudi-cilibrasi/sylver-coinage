@@ -1,0 +1,1 @@
+{"nodes":{"16,26,30":{"child":"16,26,30,73","move":73,"outcome":"N","rule":"edge"},"16,26,30,73":{"outcome":"P","rule":"finite"}},"root":"16,26,30","schema":1}

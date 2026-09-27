@@ -41,6 +41,10 @@ def main():
     p.add_argument('--tiers',default='A,B');p.add_argument('--repeats',type=int,default=3)
     p.add_argument('--research-repeats',type=int,default=1);p.add_argument('--workers',type=int,default=1)
     p.add_argument('--seed',type=int,default=0)
+    p=commands.add_parser('book-w');p.add_argument('--output',type=Path,required=True)
+    p.add_argument('--book',type=Path,default=ROOT/'sylver/arena/book');p.add_argument('--workers',type=int,default=1)
+    p.add_argument('--certificates',type=Path,help='directory of curator proof files to replay and admit')
+    p.add_argument('--exclude',default='',help='W moves to leave out of this run, e.g. 70,86,92')
     p=commands.add_parser('book');p.add_argument('action',choices=('add','verify','render'))
     p.add_argument('episodes',type=Path,nargs='*');p.add_argument('--book',type=Path,default=ROOT/'sylver/arena/book')
     p.add_argument('--competitor');p.add_argument('--tools',type=Path,default=Path('/tmp/sylver-arena-tools'))
@@ -101,6 +105,10 @@ def main():
     elif args.command=='golf-pilot':
         from .golf import golf_pilot
         print(golf_pilot(args.output,tuple(args.tiers.split(',')),args.repeats,args.seed,args.workers,args.research_repeats))
+    elif args.command=='book-w':
+        from .golf import w_book
+        print(w_book(args.output,args.book,args.workers,certificates=args.certificates,
+                     exclude=[int(m) for m in args.exclude.split(',') if m]))
     elif args.command=='book':
         from .book import add_certificate, render_book, verify_book
         if args.action=='add':

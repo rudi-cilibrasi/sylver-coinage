@@ -83,6 +83,24 @@ protocol and pinned hints.
 
 The Book seeded by this pilot is [sylver/arena/book/BOOK.md](../../book/BOOK.md); per-run leaderboards follow.
 
+## Addendum: a structural cost predictor, tested out of sample
+
+After the pilot, a rule was fitted on the seven panel targets that offered a
+choice: predict the witness leaf's states as the root search's states times
+(witness genus / root genus)^4 and certify with whichever has the lower
+predicted checking cost. It chose correctly on all seven, in sample.
+[predictor_heldout.py](predictor_heldout.py) then measured 23 fresh database
+N targets with a hinted witness (seeded draw, Frobenius 120-200, none in the
+panel; [data](predictor-heldout.jsonl)). **On none of them was the witness
+edge the cheaper certificate**: the verifier's root search usually finds a
+first winning move about as cheap as the hinted witness, and the edge's
+extra bytes decide. The fitted rule chose correctly on 21 of 23 (worst case
+1.2 times the best cost), while always certifying the root leaf chose
+correctly on all 23; in one case the fewest-gaps witness cost 1.8 times the
+root search. The panel's three witness wins were therefore atypical, the
+exponent was overfit, and a cost-aware golfer needs the witness's actual
+cost (for example from Book records), not structure alone.
+
 # Golf leaderboards
 
 Scores are compared only within an identical target, snapshot, verifier, and execution profile.

@@ -354,6 +354,33 @@ not new mathematics. `book verify` replays every entry and requires the same
 certificate digest, root, `C`, and state count; `book render` writes
 `BOOK.md`.
 
+### The Book of W
+
+`W={16,26,62,98}` is the node of the move-26 program whose P outcome would
+establish `Q={16,26,88,98}` N. `python -m sylver.arena book-w --output DIR`
+certifies W's covered obligations into The Book and writes
+[`book/W.md`](book/W.md), a table of all 52 obligations: certified by a
+self-contained Book certificate, depending on a named infinite P position,
+or open.
+
+- Obligations whose recorded refutation is finite (an odd reply reaching a
+  finite P position, or an odd move whose position is finite) are golf
+  targets; the golf strategies certify them and every distinct valid
+  certificate is admitted.
+- `ShortProver` builds cover/edge/finite certificates for short gcd-two P
+  positions and their N parents from hints, with a bounded exact-query
+  fallback. It certifies `{4,6}` with a 191-byte Quiet End cover, so moves 4
+  and 6 need no published position.
+- `--certificates DIR` admits proof files from a longer curator search, each
+  only after the Book's own replay. A search of odd replies found finite
+  witnesses where the campaign had routed through theorem-backed positions:
+  8 by 49, 10 by 9, 14 by 23, and 24 by 15 (instead of G, K, and `{12,14,16}`,
+  whose certificates rest on Sicherman's `{8,10,22}` periodicity result and
+  Blok's pairing family), and 20 by 14, reaching `R={14,16,20,26}`, whose
+  Quiet End cover needs only finite witnesses and `{4,6}`.
+- `--exclude` leaves out moves whose leaves are too large to replay alongside
+  other work (the arena verifier holds each state in 16 words).
+
 ## Game arena
 
 Programs also play Sylver Coinage against each other under CPU clocks.

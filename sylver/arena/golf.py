@@ -52,10 +52,39 @@ GOLF_RESEARCH = (
     ('C', '16,26,62,89,98,102', 'N', 6382154),
     ('C', '16,26,33,62,89,102', 'P', 1721485),
 )
+# W={16,26,62,98} has 52 obligations; 50 are covered. Each covered move m
+# is refuted by a recorded reply. For these 38 the refutation is a finite
+# certificate: even moves (gcd two) by an odd witness reaching a finite P
+# position, odd moves by a finite N position itself (the verifier finds its
+# winning move). Witnesses: campaign graph and the plan2 release certificate.
+W = (16, 26, 62, 98)
+W_WITNESSED = {2: 3, 18: 5, 19: 23, 22: 15, 27: 19, 28: 25, 30: 111, 34: 39, 38: 55, 40: 11, 44: 19, 46: 17,
+               50: 29, 54: 33, 60: 27, 67: 31, 70: 169, 76: 43, 82: 27, 86: 129, 92: 139, 102: 95, 134: 85}
+W_FINITE = (3, 5, 7, 9, 11, 15, 17, 23, 25, 33, 35, 41, 43, 51, 59)
+# The other 12 covered moves reach infinite P positions, whose own
+# certificates are campaign or published results outside this proof set.
+W_INFINITE = {4: (6, '{4,6}'), 6: (4, '{4,6}'), 8: (20, 'G={8,20,26}'), 10: (24, 'K={10,16,24}'),
+              12: (14, '{12,14,16}'), 14: (12, '{12,14,16}'), 20: (8, 'G={8,20,26}'),
+              24: (10, 'K={10,16,24}'), 36: (56, 'V={16,26,36,56}'), 56: (36, 'V={16,26,36,56}'),
+              66: (56, 'B={16,26,56,62,66}'), 72: (82, '{16,26,62,72,82} (Sicherman, published)')}
+W_OPEN = (108, 118)  # 70, 86, 92: replies 169, 129, 139 (campaigns/w-two-, w-three-2026-09-27)
+W_LIMITS = dict(DEFAULT_LIMITS, cpu_seconds=3600., wall_seconds=7200., memory_mb=16384, query_wall_seconds=3600.)
+
+
+def w_targets():
+    """Golf rows for W's finitely certifiable obligations, move order."""
+    from .common import position
+    rows = []
+    for m in sorted([*W_WITNESSED, *W_FINITE]):
+        rows.append(('W', key(position((*W, m))), 'N', None))
+    return rows
+
+
 TIER_LIMITS = {
     'A': dict(DEFAULT_LIMITS, cpu_seconds=600., wall_seconds=1800., memory_mb=8192, query_wall_seconds=600.),
     'B': dict(DEFAULT_LIMITS, cpu_seconds=600., wall_seconds=1800., memory_mb=8192, query_wall_seconds=600.),
     'C': dict(DEFAULT_LIMITS, cpu_seconds=3600., wall_seconds=7200., memory_mb=16384, query_wall_seconds=3600.),
+    'W': W_LIMITS,
 }
 
 
@@ -187,3 +216,190 @@ def golf_pilot(output, tiers=('A', 'B'), repeats=3, seed=0, workers=1, research_
                                  'best': {k: {'competitor': n, 'S': r['S'], 'C': r['C'], 'T': r['T']}
                                           for k, (n, r) in best.items()}})
     return out / 'REPORT.md'
+
+
+def w_book(output, book, workers=1, seed=0, strategies=('golf-witness', 'golf-root'), certificates=None, exclude=()):
+    """Certify W's finitely certifiable obligations into ``book``.
+
+    Targets already recorded in the Book (for example by the golf pilot's
+    research tier) are not re-run. Every valid distinct certificate is
+    admitted; the Book's entry of record decides between them.
+    ``certificates`` is an optional directory of proof files from a longer
+    curator search; each is admitted only after the Book's own replay.
+    """
+    from .book import add_certificate, render_book
+    from .policies import GOLF
+    from .tournament import run_tournament
+    out = Path(output); out.mkdir()
+    from .book import admit, measure
+    from .exact import build_tools
+    build_tools(out / 'tools')
+    for path in sorted(Path(certificates).glob('*.json')) if certificates else ():
+        proof = read(path)
+        entry = measure(proof, out / 'tools', repeats=2)
+        entry['source'] = {'competitor': 'curator certificate', 'file': path.name}
+        admit(book, proof, entry)
+    index = read(Path(book) / 'index.json') if (Path(book) / 'index.json').exists() else {'targets': {}}
+    from .common import position
+    skip = {key(position((*W, m))) for m in exclude}  # e.g. leaves too large to replay alongside other work
+    rows = [r for r in w_targets() if r[1] not in index['targets'] and r[1] not in skip]
+    if rows:
+        fixture = build_golf(out / 'fixtures', ('W',), targets=rows)
+        visible = out / 'fixtures' / 'visible'
+        paths = [visible / (n + '.json') for n in fixture['golf']]
+        bundles = [read(p) for p in paths]
+        hints = {sha(b['manifest']): bundle_hints(p, b) for p, b in zip(paths, bundles)}
+        chosen = {n: {'policy': GOLF[n]} for n in strategies}
+        entries = run_tournament(bundles, chosen, out / 'tournament', out / 'tools', 1, seed, hints=hints, workers=workers)
+        runs = read(out / 'tournament' / 'runs.json')
+        seen = set()
+        for (name, r), run in zip(entries, runs):
+            if r['status'] != 'valid' or r['verification']['certificate_sha256'] in seen:
+                continue
+            seen.add(r['verification']['certificate_sha256'])
+            add_certificate(book, out / 'tournament' / run['directory'], out / 'tools', competitor=name, repeats=2)
+    # Obligations the campaign routed through infinite P positions: try a
+    # bounded short-cover proof; admission re-verifies whatever is found.
+    from .book import admit, measure
+    from .exact import build_tools
+    from .hints import Hints
+    digest = save(out / 'hints', encode(hint_rows()))
+    prover = ShortProver(Hints(path_for(out / 'hints', digest), digest), build_tools(out / 'tools'),
+                         seconds=10., depth=2, max_queries=60)
+    index = read(Path(book) / 'index.json') if (Path(book) / 'index.json').exists() else {'targets': {}}
+    from .common import position
+    index = read(Path(book) / 'index.json') if (Path(book) / 'index.json').exists() else {'targets': {}}
+    for m in sorted(W_INFINITE):
+        k = key(position((*W, m)))
+        if k in index['targets']:
+            continue
+        nodes = prover.prove_n(position((*W, m)), 2)
+        if nodes:
+            proof = {'schema': 1, 'root': k, 'nodes': nodes}
+            entry = measure(proof, out / 'tools', repeats=2)
+            entry['source'] = {'competitor': 'short-cover prover (curator tool)'}
+            admit(book, proof, entry)
+    (Path(book) / 'BOOK.md').write_text(render_book(book))
+    (Path(book) / 'W.md').write_text(render_w(book))
+    return Path(book) / 'W.md'
+
+
+def render_w(book):
+    """All 52 obligations of W: Book-certified, infinite dependency, or open."""
+    from .common import position
+    index = read(Path(book) / 'index.json')['targets']
+    certified = 0
+    lines = ['# The Book of W', '',
+             'W = {16,26,62,98} is a node of the move-26 program: W P would establish Q={16,26,88,98} N',
+             '(Q + 62 = W), while U={16,26,88} P would still also need X={16,26,82,88} N. W is short: its',
+             f'obligations are its {52} moves below the Quiet End bound. {52 - len(W_OPEN)} are covered; this table records',
+             'which coverings are self-contained certificates in The Book, replayed by the fixed verifier',
+             'with a fresh memo and no inherited cache. W itself remains unresolved.', '',
+             '| Move | Position | Status | Proof of record | C | States | V (s) |',
+             '| ---: | --- | --- | --- | ---: | ---: | ---: |']
+    for m in sorted([*W_WITNESSED, *W_FINITE, *W_INFINITE, *W_OPEN]):
+        k = key(position((*W, m)))
+        if m in W_OPEN:
+            lines.append(f'| {m} | `{{{k}}}` | open | — | | | |')
+        elif m in W_INFINITE and k not in index:
+            reply, name = W_INFINITE[m]
+            lines.append(f'| {m} | `{{{k}}}` | depends on {name} | reply {reply} | | | |')
+        elif k in index:
+            target = index[k]
+            e = next(x for x in target['entries'] if x['certificate'] == target['record'])
+            proof = read(Path(book) / 'certificates' / (e['certificate'] + '.json'))
+            node = proof['nodes'][proof['root']]
+            rule = f"reply {node['move']} → `{{{node['child']}}}`" if node['rule'] == 'edge' else 'finite leaf'
+            if proof['nodes'].get(node.get('child'), {}).get('rule') == 'cover':
+                rule += ' (Quiet End cover)'
+            lines.append(f"| {m} | `{{{k}}}` | **Book** | {rule} | {e['C']} | {e['states']:,} | {e['V']:.3f} |")
+            certified += 1
+        else:
+            lines.append(f'| {m} | `{{{k}}}` | finitely certifiable, not yet in the Book | | | | |')
+    depends = sum(1 for m in W_INFINITE if key(position((*W, m))) not in index)
+    header = lines.index('| Move | Position | Status | Proof of record | C | States | V (s) |')
+    lines[header:header] = [f'**{certified} of {52 - len(W_OPEN)} covered obligations** are certified here by self-contained '
+                            f'certificates; {depends} depend on infinite P positions outside the proof language '
+                            f'(named in each row); {len(W_OPEN)} are open: {", ".join(map(str, W_OPEN))}.', '']
+    return '\n'.join(lines) + '\n'
+
+
+class ShortProver:
+    """Build cover/edge/finite certificates for short gcd-two P positions.
+
+    A curator tool for The Book, not a rated competitor: it consults hints
+    first and falls back to bounded exact queries (the native solver, fresh
+    memo) to find a finite witness for each child. Nothing it returns is
+    trusted; admission re-verifies the whole certificate.
+    """
+    def __init__(self, hints, binary, odd_limit=301, seconds=120., depth=3, max_queries=200, seeds=None):
+        self.hints, self.binary, self.odd_limit, self.seconds, self.depth = hints, binary, odd_limit, seconds, depth
+        self.known = {}
+        self.seeds = seeds or {}  # position key -> replies to try first (e.g. campaign records)
+        self.queries = max_queries  # exact-query budget across the whole proof
+
+    def outcome(self, p):
+        from .common import profile
+        k = key(p)
+        if k in self.known:
+            return self.known[k]
+        o = self.hints.get(p)
+        if o == 'unknown' and profile(p).get('frobenius', 1024) <= 1023 and self.queries > 0:
+            self.queries -= 1
+            import subprocess
+            try:
+                out = subprocess.run([str(self.binary), *map(str, p)], capture_output=True, text=True,
+                                     timeout=self.seconds).stdout.split()
+                o = out[0] if out and out[0] in ('P', 'N') else 'unknown'
+            except subprocess.TimeoutExpired:
+                o = 'unknown'
+        self.known[k] = o
+        return o
+
+    def prove_p(self, p, depth=None):
+        from .common import profile
+        depth = self.depth if depth is None else depth
+        info = profile(p)
+        if info['gcd'] == 1:
+            return {key(p): {'rule': 'finite', 'outcome': 'P'}} if self.outcome(p) == 'P' else None
+        if not info['complete'] or depth == 0:
+            return None
+        nodes, rows = {}, []
+        for m in info['moves']:
+            child = self.prove_n(position_of(p, m), depth - 1)
+            if child is None:
+                return None
+            nodes.update(child); rows.append({'move': m, 'child': key(position_of(p, m))})
+        nodes[key(p)] = {'rule': 'cover', 'outcome': 'P', 'tail': info['tail'], 'children': rows}
+        return nodes
+
+    def prove_n(self, c, depth):
+        from .common import profile
+        info = profile(c)
+        if info['gcd'] == 1:
+            return {key(c): {'rule': 'finite', 'outcome': 'N'}} if self.outcome(c) == 'N' else None
+        replies = list(info['moves']) + [r for r in range(3, self.odd_limit + 1, 2) if r not in info['moves']]
+        seeded = [r for r in self.seeds.get(key(c), ()) if r in replies]
+        replies = seeded + [r for r in replies if r not in seeded]
+        finite = [r for r in replies if profile(position_of(c, r))['gcd'] == 1]
+        # Seeds, then hinted finite witnesses, then exact search by increasing Frobenius.
+        finite.sort(key=lambda r: (r not in seeded, self.hints.get(position_of(c, r)) != 'P',
+                                   profile(position_of(c, r))['frobenius'], r))
+        for r in finite:
+            g = position_of(c, r)
+            if self.outcome(g) == 'P':
+                return {key(c): {'rule': 'edge', 'outcome': 'N', 'move': r, 'child': key(g)},
+                        key(g): {'rule': 'finite', 'outcome': 'P'}}
+        if depth > 0:  # depth counts cover levels; prove_p spends one
+            for r in replies:
+                g = position_of(c, r)
+                if profile(g)['gcd'] != 1 and self.hints.get(g) == 'P':
+                    sub = self.prove_p(g, depth)
+                    if sub:
+                        return {key(c): {'rule': 'edge', 'outcome': 'N', 'move': r, 'child': key(g)}, **sub}
+        return None
+
+
+def position_of(p, m):
+    from .common import position
+    return position((*p, m))
