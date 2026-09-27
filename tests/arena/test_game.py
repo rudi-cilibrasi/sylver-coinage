@@ -1,11 +1,16 @@
 import json
+from pathlib import Path
 import random
 import subprocess
+import sys
+import tempfile
+import textwrap
 import unittest
 
 from sylver.arena.exact import build_tools
 from sylver.arena.game import IllegalMove, Position, minimal_generators
 from sylver.arena.players import PLAYERS, builtin_command, load_book
+from sylver.arena.referee import play_game
 from sylver.solver import FiniteSolver, solve_position
 
 
@@ -125,6 +130,115 @@ class PlayerTests(unittest.TestCase):
         replies = [json.loads(x) for x in out.stdout.splitlines()]
         self.assertEqual(replies[0]['type'], 'ready')
         self.assertEqual(replies[1]['move'], 2)
+
+
+SCRIPT = textwrap.dedent('''
+    import json, sys, time, subprocess
+    MODE = sys.argv[1]
+    for line in sys.stdin:
+        msg = json.loads(line)
+        if msg["type"] == "hello":
+            print(json.dumps({"type": "ready", "name": MODE}), flush=True)
+        elif msg["type"] == "move":
+            if MODE == "one": print(json.dumps({"move": 1}), flush=True)
+            elif MODE == "illegal": print(json.dumps({"move": msg["generators"][0]}), flush=True)
+            elif MODE == "garbage": print("not json", flush=True)
+            elif MODE == "float": print(json.dumps({"move": 2.0}), flush=True)
+            elif MODE == "crash": sys.exit(3)
+            elif MODE == "orphan":
+                # The child keeps our stdout open, so only the exit shows the crash.
+                subprocess.Popen([sys.executable, "-c", "import time; time.sleep(60)", sys.argv[0]])
+                sys.exit(3)
+            elif MODE == "sleep": time.sleep(60)
+            elif MODE == "burn":
+                t = time.process_time()
+                while time.process_time() - t < 5: pass
+            elif MODE == "child":
+                subprocess.run([sys.executable, "-c", "import time\\nt=time.process_time()\\nwhile time.process_time()-t<1.5:pass"])
+                print(json.dumps({"move": 2}), flush=True)
+            elif MODE == "ponder":
+                # 49 is a gap of <40,41>; the opponent then gets a turn, so the
+                # CPU burned after this reply must be charged at our next turn.
+                print(json.dumps({"move": 49}), flush=True)
+                t = time.process_time()
+                while time.process_time() - t < 1.5: pass
+        else:
+            break
+''')
+# Replies with the bytes of the Python expression in argv[1] (test-only eval).
+RAW = textwrap.dedent('''
+    import json, sys
+    REPLY = eval(sys.argv[1])
+    for line in sys.stdin:
+        kind = json.loads(line)["type"]
+        if kind == "hello": print(json.dumps({"type": "ready"}), flush=True)
+        elif kind == "move": sys.stdout.buffer.write(REPLY); sys.stdout.flush()
+        else: break
+''')
+
+
+class RefereeTests(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory(); self.dir = Path(self.tmp.name)
+        (self.dir / 'p.py').write_text(SCRIPT)
+    def tearDown(self):
+        self.tmp.cleanup()
+    def scripted(self, mode):
+        return {'name': mode, 'command': [sys.executable, str(self.dir / 'p.py'), mode]}
+    def smallest(self):
+        return {'name': 'smallest', 'command': builtin_command('smallest')}
+    def game(self, first, second, start=(4, 5), clock=None, name='g'):
+        return play_game(first, second, self.dir / name, start=start,
+                         clock=clock or {'cpu_base': 1.0, 'cpu_increment': 0.0, 'setup_cpu': 10.0, 'setup_wall': 30.0})
+
+    def test_losses_are_attributed(self):
+        for mode, reason in (('one', 'named-1'), ('illegal', 'illegal-move'), ('garbage', 'malformed-move'),
+                             ('float', 'malformed-move'), ('crash', 'crashed'), ('burn', 'cpu-time')):
+            r = self.game(self.scripted(mode), self.smallest(), name=mode)
+            self.assertEqual((r['result']['loser'], r['result']['reason']), ('first', reason), mode)
+
+    def test_sleeping_player_loses_on_wall_time(self):
+        r = self.game(self.scripted('sleep'), self.smallest(), clock={'cpu_base': .2, 'cpu_increment': 0., 'setup_cpu': 10., 'setup_wall': 30.})
+        self.assertEqual(r['result']['reason'], 'wall-time')
+
+    def test_child_process_cpu_is_charged(self):
+        r = self.game(self.scripted('child'), self.smallest())
+        self.assertEqual((r['result']['loser'], r['result']['reason']), ('first', 'cpu-time'))
+
+    def test_pondering_cpu_is_charged(self):
+        r = self.game(self.scripted('ponder'), self.smallest(), start=(40, 41))
+        self.assertEqual((r['result']['loser'], r['result']['reason']), ('first', 'cpu-time'))
+
+    def test_normal_game_record(self):
+        r = self.game(self.smallest(), self.smallest(), start=(4, 5))
+        self.assertEqual(r['result']['reason'], 'opponent-must-name-1')
+        self.assertTrue(r['final']['over'])
+        self.assertEqual([m['move'] for m in r['moves']], [2, 3])   # {4,5}+2 -> {2,5}; +3 -> {2,3}
+        self.assertEqual(r['result']['winner'], 'second')
+        self.assertTrue((self.dir / 'g/record.json').exists())
+
+    def test_crash_and_cleanup(self):
+        for mode in ('crash', 'orphan'):
+            r = self.game(self.scripted(mode), self.smallest(), name=mode)
+            self.assertEqual(r['result']['reason'], 'crashed', mode)
+            out = subprocess.run(['pgrep', '-f', str(self.dir / 'p.py')], capture_output=True, text=True)
+            self.assertEqual(out.stdout.strip(), '', mode)
+
+    def test_malformed_replies_lose(self):
+        r = self.game(self.scripted('garbage'), self.smallest(), name='m')
+        self.assertEqual(r['result']['reason'], 'malformed-move')
+        (self.dir / 'raw.py').write_text(RAW)
+        hostile = (("b'[2]\\n'", 'malformed-move'), ("b'true\\n'", 'malformed-move'),
+                   ("b'{\"move\": true}\\n'", 'malformed-move'), ("b'{\"move\": \"2\"}\\n'", 'malformed-move'),
+                   ("b'{\"move\": NaN}\\n'", 'malformed-move'),
+                   ("b'{\"move\": ' + b'9' * 5000 + b'}\\n'", 'malformed-move'),   # beyond int() digit limit
+                   ("b'{\"move\": ' + b'9' * 4000 + b'}\\n'", 'illegal-move'),
+                   ("b'{\"move\": -1}\\n'", 'illegal-move'), ("b'[' * 100000 + b'\\n'", 'malformed-move'),
+                   ("b'\\xff\\xfe\\n'", 'malformed-move'), ("b'x' * (2 << 20)", 'malformed-move'))
+        for i, (reply, reason) in enumerate(hostile):
+            player = {'name': 'raw', 'command': [sys.executable, str(self.dir / 'raw.py'), reply]}
+            r = self.game(player, self.smallest(), name=f'raw{i}')
+            self.assertEqual((r['result']['loser'], r['result']['reason']), ('first', reason), reply[:40])
 
 
 if __name__ == '__main__':
