@@ -106,11 +106,26 @@ and held-out results separately. See the [arena instructions](sylver/arena/READM
 and [recorded pilot](sylver/arena/data/pilot/REPORT.md). This is an engineering
 experiment; no new live discovery or real-LLM performance advantage is claimed.
 
+**Certificate golf and The Book.** Programs also compete to *certify* results
+the database already knows with the shortest, cheapest-to-check proofs. The
+frozen 308,322-fact database is an untrusted, hash-pinned hint oracle; every
+certificate is replayed by the fixed verifier. The
+[golf pilot](sylver/arena/data/golf/REPORT.md) certified all 16 panel targets
+(search baselines without hints certified none) and found witness choices up
+to 2.9 times cheaper to check than the verifier's own root search.
+[The Book](sylver/arena/book/BOOK.md) keeps the cheapest-to-check certificate
+for each target, re-verified three times with deterministic state counts.
+
+```sh
+python -m sylver.arena golf-pilot --output /tmp/golf-pilot --workers 3
+python -m sylver.arena book verify
+```
+
 ## Repository map
 
 | Path | Contents |
 | --- | --- |
-| `sylver/arena/` | frozen challenges, canonical proof referee, accounted episodes, policy evolution, and CLI tournaments |
+| `sylver/arena/` | frozen challenges, canonical proof referee, accounted episodes, policy evolution, CLI tournaments, certificate golf, and The Book (`book/`) |
 | `sylver/solver.py` | exact finite evaluator (Python reference) |
 | `sylver/native_solver.cpp` | the same recurrence in C++ (differentially tested) |
 | `sylver/periodicity_engine.cpp` | g=2 ultimate-periodicity engine: checkpointed, parallel exact fallbacks, compact v2 representation |

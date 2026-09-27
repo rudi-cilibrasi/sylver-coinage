@@ -1,8 +1,9 @@
 # Recorded arena evidence
 
-This directory records the first offline arena pilot and its regression
-checks. The pilot uses a scripted model test double, no network, and no paid
-API calls. No live mathematical discovery is claimed.
+This directory records the first offline arena pilot, its regression
+checks, and the certificate golf pilot. Neither uses network access or paid
+API calls; the first pilot's model arm is a scripted test double. No live
+mathematical discovery is claimed by either.
 
 | Artifact | Contents |
 | --- | --- |
@@ -22,6 +23,23 @@ pilot are a new execution profile). Generate new fixtures to rate episodes
 under another machine's or source version's profile;
 do not compare those scores directly with these measurements. Mathematical
 re-verification can use another checkout of the pinned verifier.
+
+## Certificate golf pilot (#16)
+
+| Artifact | Contents |
+| --- | --- |
+| [golf/REPORT.md](golf/REPORT.md) | Median S per target and competitor, lowest-median counts, findings and decision, and every per-run leaderboard. |
+| [golf/summary.json](golf/summary.json) | Per-target medians, winners, and the best certificate's C, T, and S. |
+| [golf/plan.json](golf/plan.json) | Predeclared tiers, repetitions, seed, workers, pinned hint digest, targets, and competitors. |
+| `golf/leaderboard-AB.json`, `golf/leaderboard-C.json` | Per-target rankings, grouped by identical task, snapshot, verifier, and execution profile. |
+| `golf/artifacts.tar.gz` | Golf fixtures with the pinned hint file, and every episode's bundle, competitor, certificate, transcripts, and CPU receipts. Compiled binaries are omitted. |
+
+The pinned hint file is `aa421ec0…` (308,322 facts: the 305,011-row cache
+plus the post-PR13 evidence graph), inside the archive at
+`fixtures/visible/hints/`. The Book seeded by this pilot is
+[../book/BOOK.md](../book/BOOK.md). Replay any archived golf episode as
+described above, passing the extracted episode directory to
+`python -m sylver.arena verify`.
 
 ## Replay an archived pilot episode
 
