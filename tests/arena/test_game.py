@@ -1,14 +1,18 @@
 import json
+import math
 from pathlib import Path
 import random
+import signal
 import subprocess
 import sys
 import tempfile
 import textwrap
+import time
 import unittest
 
 from sylver.arena.exact import build_tools
 from sylver.arena.game import IllegalMove, Position, minimal_generators
+from sylver.arena.league import ENDERS, bradley_terry, render, run_league, suite
 from sylver.arena.players import PLAYERS, builtin_command, load_book
 from sylver.arena.referee import play_game
 from sylver.solver import FiniteSolver, solve_position
@@ -239,6 +243,60 @@ class RefereeTests(unittest.TestCase):
             player = {'name': 'raw', 'command': [sys.executable, str(self.dir / 'raw.py'), reply]}
             r = self.game(player, self.smallest(), name=f'raw{i}')
             self.assertEqual((r['result']['loser'], r['result']['reason']), ('first', reason), reply[:40])
+
+
+class LeagueTests(unittest.TestCase):
+    def test_bradley_terry_orders_players(self):
+        results = [('a', 'b')] * 8 + [('b', 'a')] * 2 + [('b', 'c')] * 8 + [('c', 'b')] * 2 + [('a', 'c')] * 9 + [('c', 'a')]
+        r = bradley_terry(results, ['a', 'b', 'c'])
+        self.assertGreater(r['a'], r['b']); self.assertGreater(r['b'], r['c'])
+        self.assertAlmostEqual(sum(r.values()), 0, places=6)
+        r = bradley_terry([('a', 'b')] * 5, ['a', 'b'])
+        self.assertTrue(all(math.isfinite(v) for v in r.values()))
+
+    def test_suites(self):
+        self.assertEqual(suite('empty')[0]['start'], [])
+        self.assertTrue(all(o['outcome'] == 'N' for o in suite('enders')))
+        db = suite('database', seed=0, per_band=1)
+        self.assertEqual(len(db), 8)
+        self.assertEqual(db, suite('database', seed=0, per_band=1))
+        self.assertEqual({o['outcome'] for o in db}, {'P', 'N'})
+
+    def test_league_writes_incrementally(self):
+        with tempfile.TemporaryDirectory() as d:
+            out = Path(d) / 'league'
+            players = {n: {'name': n, 'command': builtin_command(n)} for n in ('smallest', 'random')}
+            standings = run_league(players, suite('enders')[:2], out, workers=2,
+                                   clock={'cpu_base': 2.0, 'cpu_increment': 0.1, 'setup_cpu': 10.0, 'setup_wall': 30.0})
+            lines = (out / 'games.jsonl').read_text().splitlines()
+            self.assertEqual(len(lines), 4)
+            self.assertTrue((out / 'plan.json').exists() and (out / 'REPORT.md').exists())
+            self.assertEqual(sum(v['games'] for v in standings['players'].values()), 8)
+            with self.assertRaises(FileExistsError):
+                run_league(players, suite('enders')[:1], out)
+
+    def test_interrupted_league_keeps_finished_games(self):
+        with tempfile.TemporaryDirectory() as d:
+            out = Path(d) / 'league'
+            code = textwrap.dedent(f'''
+                from sylver.arena.league import run_league, suite
+                from sylver.arena.players import builtin_command
+                players = {{n: {{'name': n, 'command': builtin_command(n.rstrip('2'), seed=2)}}
+                           for n in ('smallest', 'random', 'random2')}}
+                run_league(players, suite('enders'), {str(out)!r}, workers=1)
+            ''')
+            league = subprocess.Popen([sys.executable, '-c', code], stderr=subprocess.DEVNULL)
+            log, deadline = out / 'games.jsonl', time.monotonic() + 120
+            while not (log.exists() and log.read_bytes().count(b'\n')) and time.monotonic() < deadline:
+                time.sleep(.02)
+            self.assertIsNone(league.poll(), 'finished games must be logged while the league runs')
+            league.send_signal(signal.SIGINT)
+            league.wait(120)
+            lines = log.read_text().splitlines()
+            self.assertTrue(1 <= len(lines) < 6 * len(ENDERS))
+            self.assertTrue(all(json.loads(line)['result']['reason'] for line in lines))
+            self.assertNotEqual(league.returncode, 0)
+            self.assertFalse((out / 'REPORT.md').exists())
 
 
 if __name__ == '__main__':
