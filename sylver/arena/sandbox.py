@@ -15,7 +15,9 @@ fail for every family without network, for AF_UNIX always (so the provider
 cannot ask a session bus or other local service to act outside the sandbox),
 and denies io_uring. Weaker than bwrap in two stated ways: path existence and
 metadata (stat) stay visible, and there is no private PID namespace, so
-other processes' /proc entries exist but are unreadable.
+other processes' /proc entries exist but are unreadable. ptrace,
+process_vm_readv/writev, and pidfd_getfd are denied by seccomp, so the
+same-user evaluator cannot be inspected whatever kernel.yama.ptrace_scope is.
 """
 import ctypes
 import os
@@ -29,8 +31,14 @@ SYSTEM_DIRS = ('/usr', '/lib', '/lib64', '/bin')
 SYSTEM_FILES = ('/etc/ld.so.cache', '/etc/localtime')
 NETWORK_FILES = ('/etc/ssl', '/etc/resolv.conf', '/etc/hosts')
 _CREATE_RULESET, _ADD_RULE, _RESTRICT_SELF = 444, 445, 446
-_IO_URING_SETUP = 425
-_ARCH = {'x86_64': (0xC000003E, 41), 'aarch64': (0xC00000B7, 198)}  # audit arch, socket()
+_IO_URING_SETUP, _PIDFD_GETFD = 425, 438
+# audit arch, socket(), and the calls that read or write another process:
+# ptrace, process_vm_readv, process_vm_writev. Denying them makes the
+# sandbox independent of kernel.yama.ptrace_scope, since there is no PID
+# namespace and the evaluator runs as the same user.
+_ARCH = {'x86_64': (0xC000003E, 41, (101, 310, 311)),
+         'aarch64': (0xC00000B7, 198, (117, 270, 271))}
+MIN_AUTO_LANDLOCK_ABI = 6  # signal and abstract-socket scoping
 _cache = {}
 
 
@@ -45,10 +53,20 @@ def landlock_abi():
     return _cache['abi']
 
 
+def _userns_blocked(binary):
+    """Ubuntu's AppArmor userns restriction defeats a non-setuid bwrap."""
+    try:
+        restricted = Path('/proc/sys/kernel/apparmor_restrict_unprivileged_userns').read_text().strip() == '1'
+    except OSError:
+        return False
+    return restricted and not os.stat(binary).st_mode & 0o4000
+
+
 def bwrap_works():
     if 'bwrap' not in _cache:
         works = False
-        if shutil.which('bwrap'):
+        binary = shutil.which('bwrap')
+        if binary and not _userns_blocked(binary):
             argv = ['bwrap', '--unshare-all', '--die-with-parent', '--new-session',
                     '--proc', '/proc', '--dev', '/dev', '--tmpfs', '/tmp']
             for path in SYSTEM_DIRS:
@@ -64,7 +82,12 @@ def bwrap_works():
 
 
 def backend():
-    """'bwrap', 'landlock', or 'none'. SYLVER_ARENA_SANDBOX may pin a backend."""
+    """'bwrap', 'landlock', or 'none'. SYLVER_ARENA_SANDBOX may pin a backend.
+
+    Automatic selection uses Landlock only from ABI 6, where signals and
+    abstract sockets are scoped. Pinning 'landlock' accepts any ABI and the
+    weaker guarantee; the ABI is recorded in every profile either way.
+    """
     forced = os.environ.get('SYLVER_ARENA_SANDBOX')
     if forced:
         if forced not in ('bwrap', 'landlock'):
@@ -72,7 +95,7 @@ def backend():
         return forced
     if bwrap_works():
         return 'bwrap'
-    if landlock_abi() >= 1 and platform.machine() in _ARCH:
+    if landlock_abi() >= MIN_AUTO_LANDLOCK_ABI and platform.machine() in _ARCH:
         return 'landlock'
     return 'none'
 
@@ -188,23 +211,27 @@ def _landlock(libc, abi, read_dirs, read_files, write_dirs, allow_network):
 
 
 def _seccomp(libc, allow_network):
-    arch, socket_nr = _ARCH[platform.machine()]
+    arch, socket_nr, (ptrace, vm_read, vm_write) = _ARCH[platform.machine()]
     LD, JEQ, JGE, RET = 0x20, 0x15, 0x35, 0x06
     ALLOW, ERRNO, KILL = 0x7fff0000, 0x00050000 | 1, 0x80000000   # EPERM
     # A jump at index i goes to i+1+offset. Targets are noted per row.
     prog = [
         (LD, 0, 0, 4),                        # 0 arch
-        (JEQ, 0, 9, arch),                    # 1 foreign arch -> 11 kill
+        (JEQ, 0, 13, arch),                   # 1 foreign arch -> 15 kill
         (LD, 0, 0, 0),                        # 2 syscall number
-        (JGE, 6, 0, 0x40000000),              # 3 x32 ABI -> 10 errno
-        (JEQ, 5, 0, _IO_URING_SETUP),         # 4 -> 10 errno
-        (JEQ, 1, 0, socket_nr),               # 5 -> 7 family check
-        (RET, 0, 0, ALLOW),                   # 6
-        (LD, 0, 0, 16),                       # 7 socket family (args[0] low word)
-        (JEQ, 1, 0, 1),                       # 8 AF_UNIX -> errno (10)
-        (RET, 0, 0, ALLOW if allow_network else ERRNO),  # 9 other families
-        (RET, 0, 0, ERRNO),                   # 10
-        (RET, 0, 0, KILL),                    # 11
+        (JGE, 10, 0, 0x40000000),             # 3 x32 ABI -> 14 errno
+        (JEQ, 9, 0, _IO_URING_SETUP),         # 4 -> 14 errno
+        (JEQ, 8, 0, ptrace),                  # 5 -> 14 errno
+        (JEQ, 7, 0, vm_read),                 # 6 -> 14 errno
+        (JEQ, 6, 0, vm_write),                # 7 -> 14 errno
+        (JEQ, 5, 0, _PIDFD_GETFD),            # 8 -> 14 errno
+        (JEQ, 1, 0, socket_nr),               # 9 -> 11 family check
+        (RET, 0, 0, ALLOW),                   # 10
+        (LD, 0, 0, 16),                       # 11 socket family (args[0] low word)
+        (JEQ, 1, 0, 1),                       # 12 AF_UNIX -> 14 errno
+        (RET, 0, 0, ALLOW if allow_network else ERRNO),  # 13 other families
+        (RET, 0, 0, ERRNO),                   # 14
+        (RET, 0, 0, KILL),                    # 15
     ]
     array = (_Filter * len(prog))(*[_Filter(*row) for row in prog])
     program = _Program(len(prog), array)

@@ -34,7 +34,10 @@ class ProcessTree:
     ``root`` is a subreaper: a process joins the tree only as the child of a
     member (a new pid, classified when first seen, in parent-first passes) or
     by reparenting to ``root``, which only happens to members' descendants.
-    A pid that vanishes is forgotten, so a reused pid is classified afresh.
+    A pid that vanishes is forgotten, so a reused pid is classified afresh;
+    a pid reused within one discovery gap could still hide in the cache, so
+    ``full`` polls ignore it. The supervisor uses them for every decision
+    that nothing remains to kill or charge, and every two seconds.
     Rescanning every stat file on each 10 ms poll cost ~20 ms of charged
     supervisor CPU on a workstation with ~450 processes. Discovery (listing
     /proc) is needed only to find new processes; final CPU comes from wait4,
@@ -45,8 +48,10 @@ class ProcessTree:
         self.members = {}
         self.outside = set()
 
-    def poll(self, discover=True):
-        if not discover:
+    def poll(self, discover=True, full=False):
+        if full:
+            self.outside.clear()
+        if not discover and not full:
             # Refresh known members only; new processes wait for discovery.
             records = {}
             for pid in self.members:
@@ -80,11 +85,6 @@ class ProcessTree:
                 self.outside |= pending; break
         self.members = records
         return records
-
-
-def descendants(root):
-    """One full scan; kept for callers outside the supervisor loop."""
-    return ProcessTree(root).poll()
 
 
 def supervise(command, output, limits, cwd=None, env=None):
@@ -121,9 +121,10 @@ def supervise(command, output, limits, cwd=None, env=None):
                     reaped.append({'pid':pid,'returncode':code,'user_cpu':usage.ru_utime,'system_cpu':usage.ru_stime})
                     if pid==worker.pid:
                         root_exit=code;worker.returncode=code
-                # Discover new processes every 50 ms, and always before
-                # deciding that no descendant remains or when killing.
-                active=tree.poll(discover=polls%5==0 or root_exit is not None or reason is not None)
+                # Discover new processes every 50 ms; rescan fully every 2 s
+                # and before deciding that no descendant remains or killing.
+                decisive=root_exit is not None or reason is not None
+                active=tree.poll(discover=polls%5==0,full=decisive or polls%200==0)
                 polls+=1
                 peak=max(peak,sum(v[2] for v in active.values()))
                 elapsed=time.monotonic()-start
@@ -144,7 +145,7 @@ def supervise(command, output, limits, cwd=None, env=None):
             error=type(exc).__name__+': '+str(exc)
             # Cancellation cannot leave solver/model descendants running.
             while True:
-                active=tree.poll()
+                active=tree.poll(full=True)
                 for pid in active:
                     try: os.kill(pid,signal.SIGKILL)
                     except ProcessLookupError: pass

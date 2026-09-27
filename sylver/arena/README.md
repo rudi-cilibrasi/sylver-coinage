@@ -132,7 +132,9 @@ incrementally: it reads `/proc` stat files only for tree members and for
 pids it has not seen, and lists `/proc` to discover new processes every
 50 ms. (Re-reading every stat file on each 10 ms poll cost about 20 ms of
 charged CPU on a workstation running ~450 processes, rivaling the work being
-measured.) `/proc` sampling enforces aggregate CPU/RSS
+measured.) Newly forked processes therefore enter aggregate RSS/CPU
+sampling within 50 ms; every decision that nothing remains to kill or charge
+uses a full rescan. `/proc` sampling enforces aggregate CPU/RSS
 and a wall watchdog; per-process address-space/CPU limits provide additional
 hard guards. Aggregate polling has scheduler-sized overshoot; final measured
 CPU above the episode budget invalidates the score. Memory is a per-process
@@ -210,13 +212,19 @@ backend, recorded in each provider directory and in the execution profile:
   (`TMPDIR`, `HOME`), TCP is denied, signals and abstract Unix sockets cannot
   leave the sandbox (Landlock ABI 6+), and a seccomp filter denies
   `socket()` (all families without network; `AF_UNIX` always, so a provider
-  cannot ask a session bus or other local service to act for it) and
-  io_uring. Two stated differences from bwrap: path existence and metadata
+  cannot ask a session bus or other local service to act for it), io_uring,
+  and `ptrace`, `process_vm_readv`/`writev` and `pidfd_getfd`, so the
+  same-user evaluator cannot be inspected whatever `kernel.yama.ptrace_scope`
+  says. Two stated differences from bwrap: path existence and metadata
   (`stat`) remain visible, and there is no private PID namespace (other
   processes' `/proc` entries exist but cannot be read).
 
-If neither backend works, provider commands fail closed with an explanatory
-error. `SYLVER_ARENA_SANDBOX=bwrap|landlock` pins a backend.
+Automatic selection uses Landlock only from ABI 6 (Linux 6.12+), where
+signals and abstract sockets are scoped; otherwise provider commands fail
+closed with an explanatory error. `SYLVER_ARENA_SANDBOX=bwrap|landlock`
+pins a backend (pinned Landlock accepts older ABIs and their weaker signal
+isolation). The backend and ABI are part of the execution profile, so set
+the variable identically when generating and running fixtures.
 
 An agent config specifies an absolute executable/script command, a prompt or
 prompt-template name, `model_id`, and request/token/cost/latency limits. Its

@@ -24,6 +24,24 @@ attempt("udp", lambda: socket.socket(socket.AF_INET, socket.SOCK_DGRAM))
 attempt("unix", lambda: socket.socket(socket.AF_UNIX, socket.SOCK_STREAM))
 attempt("signal", lambda: os.kill(PARENT, 0))
 attempt("scratch", lambda: Path("scratch.txt").write_text("ok"))
+def ptrace():
+    import ctypes
+    libc = ctypes.CDLL(None, use_errno=True)
+    if libc.ptrace(16, PARENT, 0, 0) != 0:          # PTRACE_ATTACH
+        raise OSError(ctypes.get_errno(), "ptrace denied")
+    libc.ptrace(17, PARENT, 0, 0)                    # PTRACE_DETACH
+attempt("ptrace", ptrace)
+def ptrace_child():
+    # Yama's default scope allows tracing one's own child; only seccomp stops it.
+    import ctypes, subprocess
+    child = subprocess.Popen(["/bin/sleep", "5"])
+    try:
+        libc = ctypes.CDLL(None, use_errno=True)
+        if libc.ptrace(16, child.pid, 0, 0) != 0:
+            raise OSError(ctypes.get_errno(), "ptrace denied")
+    finally:
+        child.kill(); child.wait()
+attempt("ptrace_child", ptrace_child)
 result["visible"] = p.exists()
 print(json.dumps(result))
 '''
@@ -61,8 +79,8 @@ class AgentIsolationTests(unittest.TestCase):
     def test_landlock_backend_confines_provider(self):
         if sandbox.landlock_abi() < 1:
             self.skipTest('Landlock unsupported by this kernel')
-        r = self.run_probe('landlock')
-        for name in ('read', 'write', 'list', 'tcp', 'udp', 'unix'):
+        r = self.run_probe('landlock')  # pinned: any ABI >= 1 is accepted
+        for name in ('read', 'write', 'list', 'tcp', 'udp', 'unix', 'ptrace', 'ptrace_child'):
             self.assertFalse(r[name], name)
         if sandbox.landlock_abi() >= 6:
             self.assertFalse(r['signal'])   # scoped: cannot signal the test process
