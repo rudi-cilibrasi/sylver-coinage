@@ -2,7 +2,7 @@
 
 **Game results are not proofs.** A win, a rating, or a win rate here is evidence about these programs under these clocks, never about the outcome of a position. Openings are *capped* unless they have gcd one and a Frobenius number at most the move cap 1000; the empty position is capped. Capped games follow a house rule: moves are limited to 2..1000, which never ends a game early but removes larger moves, so their games say nothing about real Sylver Coinage. Only uncapped openings are exact, and only those are adjudicated.
 
-**Players are not isolated.** They run as this user without a sandbox, so a player can write into its opponent's pipes through /proc (making it appear to name 1), signal or trace it, or change files. Results are meaningful only when every player is a trusted program.
+**Players are sandboxed** (landlock): each can read only its own files (built-ins: the checkout, the interpreter, and the solver) and write only a scratch directory, and cannot read other processes' /proc entries, signal or trace them, or leave its cgroup. Path existence and metadata remain visible; see sylver/arena/README.md for the backend guarantees.
 
 - Players: book, exact, smallest, random (commands and digests in `plan.json`).
 - Openings: 15 (14 with a known outcome, 1 capped).
@@ -13,25 +13,14 @@
 
 ## Standings
 
-| Player | Group | Games | W | L | Score | Elo |
+| Player | Games | W | L | Score | Elo | 95% interval |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| book | 1 | 90 | 77 | 13 | 85.6% | +458 |
-| exact | 1 | 90 | 73 | 17 | 81.1% | +413 |
-| smallest | 2 | 90 | 20 | 70 | 22.2% | -377 |
-| random | 2 | 90 | 10 | 80 | 11.1% | -493 |
+| book | 90 | 74 | 16 | 82.2% | +277 | [+199, +388] |
+| exact | 90 | 71 | 19 | 78.9% | +248 | [+171, +364] |
+| smallest | 90 | 20 | 70 | 22.2% | -238 | [-315, -182] |
+| random | 90 | 15 | 75 | 16.7% | -287 | [-415, -198] |
 
-Elo is a Bradley–Terry rating (0.5 virtual wins and losses per player against a fixed anchor) with mean zero. **Rating gaps between groups are set by the prior, not by the games.** The win graph is not strongly connected (Ford's condition fails): every game between two groups was won by the higher group, so without the prior the gap between groups would be infinite, and it widens without bound as the prior shrinks. Only the order of the groups is data. A gap below is the lowest rating in the higher group minus the highest in the lower group.
-
-| Groups | Gap at prior 0.5 | Gap at prior 0.05 |
-| --- | ---: | ---: |
-| 1 over 2 | +790 | +1170 |
-
-Within a group the games determine the differences; intervals hold the 2.5–97.5 percentiles of 200 bootstrap resamples of the decided games.
-
-| Pair in one group | Score | Elo difference | 95% interval |
-| --- | ---: | ---: | ---: |
-| book − exact | 17–13 | +45 | [-84, +199] |
-| smallest − random | 20–10 | +116 | [-26, +252] |
+Elo is a Bradley–Terry rating (0.5 virtual wins and losses per player against a fixed anchor) with mean zero; the interval holds the 2.5–97.5 percentiles of 200 bootstrap resamples of the decided games.
 
 ## Head to head
 
@@ -39,19 +28,19 @@ Wins–losses of the row player against the column player, over both seats and a
 
 |  | book | exact | smallest | random |
 | --- | ---: | ---: | ---: | ---: |
-| book | — | 17–13 | 30–0 | 30–0 |
-| exact | 13–17 | — | 30–0 | 30–0 |
+| book | — | 16–14 | 30–0 | 28–2 |
+| exact | 14–16 | — | 30–0 | 27–3 |
 | smallest | 0–30 | 0–30 | — | 20–10 |
-| random | 0–30 | 0–30 | 10–20 | — |
+| random | 2–28 | 3–27 | 10–20 | — |
 
 ## Loss reasons
 
-| Player | opponent-must-name-1 |
-| --- | ---: |
-| book | 13 |
-| exact | 17 |
-| smallest | 70 |
-| random | 80 |
+| Player | cpu-time | opponent-must-name-1 |
+| --- | ---: | ---: |
+| book | 5 | 11 |
+| exact | 7 | 12 |
+| smallest | 0 | 70 |
+| random | 0 | 75 |
 
 ## Openings with a known outcome
 
@@ -69,17 +58,17 @@ Outcome is for the player to move under perfect play (N: the first player should
 | db-0-60-N0 | {8,10,14,35} | N | 47 | 7/12 |
 | db-60-100-P0 | {16,20,22,26,34,57} | P | 87 | 7/12 |
 | db-60-100-N0 | {10,16,23,38} | N | 67 | 6/12 |
-| db-100-140-P0 | {16,26,38,50,60,62,89,133,145} | P | 135 | 6/12 |
+| db-100-140-P0 | {16,26,38,50,60,62,89,133,145} | P | 135 | 7/12 |
 | db-100-140-N0 | {16,26,28,36,38,46,115,123,127,137,145} | N | 135 | 5/12 |
-| db-140-180-P0 | {16,26,30,38,40,44,50,107,121,125,129,131} | P | 143 | 6/12 |
-| db-140-180-N0 | {16,26,73,82,86,88,127,133,139} | N | 145 | 6/12 |
+| db-140-180-P0 | {16,26,30,38,40,44,50,107,121,125,129,131} | P | 143 | 7/12 |
+| db-140-180-N0 | {16,26,73,82,86,88,127,133,139} | N | 145 | 4/12 |
 
 | Player | Won when it should win | Won when it should lose |
 | --- | ---: | ---: |
-| book | 41/42 | 32/42 |
-| exact | 38/42 | 29/42 |
+| book | 40/42 | 30/42 |
+| exact | 38/42 | 28/42 |
 | smallest | 9/42 | 9/42 |
-| random | 5/42 | 5/42 |
+| random | 6/42 | 8/42 |
 
 ## Openings without adjudication
 
@@ -93,21 +82,21 @@ Capped or of unknown outcome: these results measure the programs, not the positi
 
 | Player | Moves | Mean CPU (s) | Max CPU (s) | Mean setup CPU (s) |
 | --- | ---: | ---: | ---: | ---: |
-| book | 677 | 0.069 | 1.879 | 0.554 |
-| exact | 692 | 0.074 | 2.031 | 0.082 |
-| smallest | 110 | 0.000 | 0.001 | 0.082 |
-| random | 286 | 0.000 | 0.001 | 0.082 |
+| book | 424 | 0.207 | 0.804 | 0.516 |
+| exact | 440 | 0.247 | 0.815 | 0.126 |
+| smallest | 110 | 0.000 | 0.001 | 0.123 |
+| random | 279 | 0.000 | 0.001 | 0.124 |
 
 ## Blunders (exact analysis, Frobenius number at most 150)
 
-A blunder is a move from an N-position to an N-position. Positions were solved by the native solver, 60 s each: 597 positions, 7 unknown after the limit. Analysis CPU was 1442.3 s; it never affects results.
+A blunder is a move from an N-position to an N-position. Positions were solved by the native solver, 60 s each: 551 positions, 2 unknown after the limit. Analysis CPU was 1220.1 s; it never affects results.
 
 | Player | Analysed moves | From N | Blunders | Blunder rate | Unknown |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| book | 438 | 322 | 24 | 7.5% | 6 |
-| exact | 433 | 270 | 34 | 12.6% | 5 |
-| smallest | 102 | 70 | 52 | 74.3% | 3 |
-| random | 246 | 91 | 75 | 82.4% | 6 |
+| book | 378 | 293 | 45 | 15.4% | 2 |
+| exact | 374 | 258 | 57 | 22.1% | 2 |
+| smallest | 102 | 73 | 55 | 75.3% | 0 |
+| random | 239 | 100 | 81 | 81.0% | 2 |
 
 ## Void games
 
@@ -122,5 +111,5 @@ None.
 ## Reproduce
 
 ```sh
-python -m sylver.arena league --output /tmp/league-pilot --players random,smallest,exact,book --suites empty,enders,database --per-band 1 --workers 4 --analyze-bound 150 --seed 0
+python -m sylver.arena league --output /tmp/claude-1001/-home-ruclaw-src-sylver-coinage/cd9b0cdd-5710-4000-902b-0c5c9cdc90cc/scratchpad/league-sbx/league-pilot --players random,smallest,exact,book --suites empty,enders,database --per-band 1 --workers 4 --analyze-bound 150 --seed 0
 ```
