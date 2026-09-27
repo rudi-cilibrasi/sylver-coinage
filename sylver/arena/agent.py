@@ -5,39 +5,41 @@ import os
 from pathlib import Path
 import subprocess
 import sys
+import tempfile
 
+from . import sandbox
 from .common import canonical, fields, read, sha, write
 from .policies import PROMPTS
 
 
 def command_response(command, request, directory, seconds, allow_network=False, credentials=()):
-    """The provider executable sees system runtimes and its own files only.
+    """The provider sees system runtimes and its own files only.
 
     No checkout, home directory, challenge evaluator, baseline file, or referee
-    directory is mounted. Request content arrives on stdin. Stdout is a single
-    provider envelope. Credentials are inherited selectively, never serialized.
+    directory is readable (see sandbox.py for the per-backend guarantees).
+    Request content arrives on stdin. Stdout is a single provider envelope.
+    Credentials are inherited selectively, never serialized.
     """
     directory=Path(directory);directory.mkdir()
     executable=Path(command[0]).resolve()
     if not executable.is_file():raise ValueError('model command must be an absolute executable path')
-    mounts={Path('/usr'),Path('/lib'),Path('/lib64'),Path('/bin')}
-    # Explicit provider scripts are mounted individually, not their directory.
+    # Explicit provider scripts are made readable individually, not their directory.
     provider_files=[executable]+[Path(x).resolve() for x in command[1:] if Path(x).is_file()]
-    sandbox=['bwrap','--unshare-all','--die-with-parent','--new-session',
-             '--proc','/proc','--dev','/dev','--tmpfs','/tmp','--chdir','/tmp']
-    if allow_network:sandbox+=['--share-net']
-    for path in sorted(mounts):
-        if path.exists():sandbox+=['--ro-bind',str(path),str(path)]
-    for path in provider_files:
-        if not any(path.is_relative_to(m) for m in mounts):sandbox+=['--ro-bind',str(path),str(path)]
-    if allow_network:
-        for name in ('/etc/ssl','/etc/resolv.conf','/etc/hosts'):
-            if Path(name).exists():sandbox+=['--ro-bind',name,name]
+    write(directory/'sandbox.json',sandbox.describe())
+    scratch=tempfile.TemporaryDirectory(prefix='sylver-provider-')
+    try:
+        return _run_provider(sandbox.wrap(command,provider_files,allow_network,scratch.name),
+                             request,directory,seconds,credentials)
+    finally:
+        scratch.cleanup()
+
+
+def _run_provider(argv, request, directory, seconds, credentials):
     env={'PATH':'/usr/bin:/bin','LANG':'C.UTF-8',**{k:os.environ[k] for k in credentials if k in os.environ}}
     stdout=directory/'stdout.json';stderr=directory/'stderr.txt'
     failure=None
     with stdout.open('wb') as out,stderr.open('wb') as err:
-        process=subprocess.Popen([*sandbox,'--',*command],stdin=subprocess.PIPE,stdout=out,stderr=err,env=env)
+        process=subprocess.Popen(argv,stdin=subprocess.PIPE,stdout=out,stderr=err,env=env)
         try:process.communicate(canonical(request),timeout=seconds)
         except subprocess.TimeoutExpired:
             process.kill();process.communicate();failure=ValueError('model latency limit')
@@ -53,7 +55,9 @@ def command_response(command, request, directory, seconds, allow_network=False, 
             leaked=True
     if leaked:raise ValueError('provider echoed a credential')
     if failure:raise failure
-    if process.returncode:raise ValueError('model command failed')
+    if process.returncode:
+        # The sandbox's own startup errors land in stderr.txt too.
+        raise ValueError(f'model command failed (exit {process.returncode}; see {stderr.name})')
     return read(stdout)
 
 

@@ -12,7 +12,9 @@ python -m sylver.arena pilot --output /tmp/arena-pilot
 ```
 
 It requires Python 3.11+, g++, Linux `/proc`/`wait4`/subreaper support, and
-Bubblewrap (`bwrap`) for external agent/provider commands. No network,
+a sandbox for external agent/provider commands: Bubblewrap (`bwrap`) where
+unprivileged user namespaces work, otherwise Landlock (Linux 5.13+, no
+privileges needed; see below). No network,
 credentials, Python packages, or paid model calls are needed. Output paths
 must be new. The default pilot compares three baselines, a scripted agent,
 and selected prompt/policy variants on four training and four held-out
@@ -125,7 +127,14 @@ over-budget runs have null scores.
 Each phase has a Linux subreaper supervisor. Final user+system CPU comes
 from `wait4`: descendants reaped by their parents are included, and orphaned
 children (including a new process session) are adopted, killed, and charged.
-Supervisor CPU is charged too. `/proc` sampling enforces aggregate CPU/RSS
+Supervisor CPU is charged too, so the supervisor tracks its process tree
+incrementally: it reads `/proc` stat files only for tree members and for
+pids it has not seen, and lists `/proc` to discover new processes every
+50 ms. (Re-reading every stat file on each 10 ms poll cost about 20 ms of
+charged CPU on a workstation running ~450 processes, rivaling the work being
+measured.) Newly forked processes therefore enter aggregate RSS/CPU
+sampling within 50 ms; every decision that nothing remains to kill or charge
+uses a full rescan. `/proc` sampling enforces aggregate CPU/RSS
 and a wall watchdog; per-process address-space/CPU limits provide additional
 hard guards. Aggregate polling has scheduler-sized overshoot; final measured
 CPU above the episode budget invalidates the score. Memory is a per-process
@@ -186,10 +195,36 @@ The three built-ins use that same protocol:
 Evolvable policy programs are a bounded JSON DSL: strategy, batch size, odd
 limit, slice lifetime, rounds, subsidiary depth, and compact/witness proof
 style. Competitors cannot execute arbitrary Python or replace the checker.
-External ordinary programs or AI providers run in a Bubblewrap sandbox with
-system runtimes and their explicit provider files; the checkout, home,
-evaluator, referee, and baseline files are not mounted. Network access is off
-unless the configured trusted provider explicitly requests it.
+External ordinary programs or AI providers run sandboxed with system runtimes
+(`/usr`, `/lib`, `/lib64`, `/bin`) and their explicit provider files (every
+file named in the configured command); the checkout, home, evaluator,
+referee, and baseline files are unreadable. Network access is off unless the
+configured trusted provider explicitly requests it. `sandbox.py` chooses the
+backend, recorded in each provider directory and in the execution profile:
+
+- **Bubblewrap** when it can create namespaces: unmounted files are
+  invisible, with private PID, IPC, and network namespaces and `/tmp`.
+- **Landlock** otherwise, as on Ubuntu 24.04, whose AppArmor policy
+  (`kernel.apparmor_restrict_unprivileged_userns=1`) blocks unprivileged user
+  namespaces and hence every bwrap mode. A launcher restricts itself and then
+  execs the provider: file contents and directory listings outside the
+  allowed set are denied, writes go only to a fresh scratch directory
+  (`TMPDIR`, `HOME`), TCP is denied, signals and abstract Unix sockets cannot
+  leave the sandbox (Landlock ABI 6+), and a seccomp filter denies
+  `socket()` (all families without network; `AF_UNIX` always, so a provider
+  cannot ask a session bus or other local service to act for it), io_uring,
+  and `ptrace`, `process_vm_readv`/`writev` and `pidfd_getfd`, so the
+  same-user evaluator cannot be inspected whatever `kernel.yama.ptrace_scope`
+  says. Two stated differences from bwrap: path existence and metadata
+  (`stat`) remain visible, and there is no private PID namespace (other
+  processes' `/proc` entries exist but cannot be read).
+
+Automatic selection uses Landlock only from ABI 6 (Linux 6.12+), where
+signals and abstract sockets are scoped; otherwise provider commands fail
+closed with an explanatory error. `SYLVER_ARENA_SANDBOX=bwrap|landlock`
+pins a backend (pinned Landlock accepts older ABIs and their weaker signal
+isolation). The backend and ABI are part of the execution profile, so set
+the variable identically when generating and running fixtures.
 
 An agent config specifies an absolute executable/script command, a prompt or
 prompt-template name, `model_id`, and request/token/cost/latency limits. Its
