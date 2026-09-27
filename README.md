@@ -113,6 +113,23 @@ and held-out results separately. See the [arena instructions](sylver/arena/READM
 and [recorded pilot](sylver/arena/data/pilot/REPORT.md). This is an engineering
 experiment; no new live discovery or real-LLM performance advantage is claimed.
 
+**Certificate golf and The Book.** Programs also compete to *certify* results
+the database already knows with the shortest, cheapest-to-check proofs. The
+frozen 308,322-fact database is an untrusted, hash-pinned hint oracle; every
+certificate is replayed by the fixed verifier. In the
+[golf pilot](sylver/arena/data/golf/REPORT.md) every hinted strategy certified
+all 16 panel targets; the hint-free control needed 1.5–2.6 times the CPU on
+finite targets and certified neither gcd-two W target. Where the database
+offered a much cheaper witness, the witness certificate scored up to 2.8
+times better than the verifier's own root search.
+[The Book](sylver/arena/book/BOOK.md) keeps the cheapest-to-check certificate
+for each target, re-verified three times with deterministic state counts.
+
+```sh
+python -m sylver.arena golf-pilot --output /tmp/golf-pilot --workers 3
+python -m sylver.arena book verify
+```
+
 Programs can also play the game itself. `python -m sylver.arena league --output
 /tmp/league-pilot` runs a round robin of player programs (built-in `random`,
 `smallest`, `exact`, and `book` players, or external executables speaking a
@@ -125,7 +142,7 @@ and the [recorded pilot league](sylver/arena/data/league/REPORT.md).
 
 | Path | Contents |
 | --- | --- |
-| `sylver/arena/` | frozen challenges, canonical proof referee, accounted episodes, policy evolution, CLI tournaments, and game-playing leagues |
+| `sylver/arena/` | frozen challenges, canonical proof referee, accounted episodes, policy evolution, CLI tournaments, certificate golf and The Book (`book/`), and game-playing leagues |
 | `sylver/solver.py` | exact finite evaluator (Python reference) |
 | `sylver/native_solver.cpp` | the same recurrence in C++ (differentially tested) |
 | `sylver/fast_solver.cpp` | discovery engine: the native recurrence with a flat memo, 1.7–1.9x faster, byte-identical output (differentially tested) |

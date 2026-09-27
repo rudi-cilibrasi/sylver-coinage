@@ -288,6 +288,72 @@ the episode's fixed verification profile and score.
 Resolving W would establish Q N. U P still also requires X N; neither local
 leaderboard improvements nor the current W results solve opening 16.
 
+## Certificate golf and The Book (#16)
+
+Golf asks a different question from discovery: given a result the database
+already knows, how cheaply can a program **certify** it? Every golf target is
+public (its outcome is in the manifest context), so golf measures
+certification efficiency, never discovery, and the score is the same
+`S=(C+100)*(T+1)`.
+
+```sh
+python -m sylver.arena fixtures --golf --output /tmp/golf-fixtures       # tiers A,B
+python -m sylver.arena run /tmp/golf-fixtures/visible/golf-A-...json \
+    --policy golf-probe --output /tmp/golf-episode
+python -m sylver.arena golf-pilot --output /tmp/golf-pilot --workers 3   # tournament + Book
+python -m sylver.arena book verify                                       # replay The Book
+```
+
+**Hints.** The frozen database (the 305,011-row cache plus the post-PR13
+evidence graph, 308,322 facts) is an untrusted oracle. It is a sorted text
+file, `hints/SHA256.txt.gz` beside the bundles, whose digest is pinned by
+every golf manifest (only `golf` manifests may pin hints). The protocol's
+`hint` operation returns `P`, `N`, or `unknown` for up to 4096 positions,
+labelled `untrusted-hint`; the file loads on first use and that CPU is
+charged. Hints never become proof nodes and no rule can cite them, so a
+wrong hint can only make a certificate fail the fixed verifier's replay.
+Golf bundles have an empty trusted snapshot: every byte of a certificate
+counts in `C` and every finite leaf is replayed in `T`.
+
+**Strategies** (policy DSL, no arbitrary code): `golf-root` submits one
+finite leaf; `golf-witness` answers an N target with the hinted finite P
+child of fewest gaps; `golf-probe`, when there is a choice, races bounded
+exact queries (charged) over up to `batch_size` hinted witnesses and the
+root, each capped by the time that could still beat the best estimate
+`(C+100)*(seconds+1)`, and never falls back to a witness its probe refuted.
+`golf-blind` is the hint-free control: it computes a finite target's outcome
+exactly and searches up to `rounds` odd replies for a gcd-two target's
+witness. A gcd-two N target has no finite root, so every strategy answers it
+with a witness, scanning odd replies up to `odd_limit`. Finite P targets get
+a root leaf, since a one-level cover multiplies `C` by roughly 50–100;
+gcd-two P targets need covers, which these strategies do not build.
+External programs and agents can build any certificate the proof language
+allows, including covers.
+
+**Panel.** Tiers A (Frobenius 100–150) and B (150–200) are predeclared,
+seeded draws from the database, accepted by the verifier's deterministic
+root-search state count rather than by timing. N targets are drawn among
+positions with at least one hinted P child: the database records outcomes,
+not winning moves, so only there does it create a choice. P targets are
+root-leaf controls. Tier C is the campaign's own branch refutations
+around W: moves 134 and 102 (gcd two, answered by 85 and 95) and the finite
+pair after 102 and 89, whose verifier root search takes 6,382,154 states
+against 1,721,485 for the hinted witness 33. Tier C needs a 16 GiB profile.
+
+**The Book** (`sylver/arena/book/`) keeps, for each target, every admitted
+certificate. `book add EPISODE` re-verifies it from scratch (never trusting
+the episode's receipt) and records `C`, the verifier's evaluated-state count,
+which must agree across runs, and each run's CPU. The entry of record
+minimizes the deterministic checking cost `(C+100)*(states/RATE+1)`, the
+agreed score's shape with verification time replaced by the verifier's own
+work at a fixed `RATE` (100,000 states per second, recorded in the index), so
+timing noise never changes the record; measured CPU is shown for
+information. Entries are compared only under one verifier version. Book
+entries are independent, cheaper-to-check certificates of public results,
+not new mathematics. `book verify` replays every entry and requires the same
+certificate digest, root, `C`, and state count; `book render` writes
+`BOOK.md`.
+
 ## Game arena
 
 Programs also play Sylver Coinage against each other under CPU clocks.

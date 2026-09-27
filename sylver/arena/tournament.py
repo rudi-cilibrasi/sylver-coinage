@@ -56,25 +56,53 @@ def render(entries,title='Proof-search arena'):
     return '\n'.join(lines)+'\n'
 
 
-def run_tournament(bundles,competitors,output,tools,repeats=3,seed=0):
+def run_tournament(bundles,competitors,output,tools,repeats=3,seed=0,hints=None,workers=1):
+    """``hints`` maps sha(manifest) to a golf task's pinned hint file.
+
+    ``workers`` > 1 runs episodes concurrently; each still has its own
+    subreaper and CPU accounting, and results keep the schedule order.
+    """
+    import threading
+    from concurrent.futures import ThreadPoolExecutor
     if type(repeats) is not int or repeats<1:raise ValueError('positive repeat count required')
-    out=Path(output);out.mkdir();entries=[];runs=[]
+    if type(workers) is not int or workers<1:raise ValueError('positive worker count required')
+    out=Path(output);out.mkdir()
     plan={'schema':1,'targets':[sha(b['manifest']) for b in bundles],
-          'competitors':competitors,'repeats':repeats,'seed':seed,
+          'competitors':competitors,'repeats':repeats,'seed':seed,'workers':workers,
           'order':'round-robin rotated competitors; matching profiles only'}
     write(out/'plan.json',plan)
+    schedule=[]
     for repeat in range(repeats):
         order=list(competitors);shift=repeat%len(order);order=order[shift:]+order[:shift]
-        for task,bundle in enumerate(bundles):
-            for name in order:
-                program=competitors[name]
-                path=out/f'round-{repeat:02d}-task-{task:02d}-{name}'
-                r=run_episode(bundle,program.get('policy'),path,tools,seed+repeat,agent=program.get('agent'))
-                entries.append((name,r));runs.append({'competitor':name,'directory':path.name})
-                write(out/'runs.json',runs)
-                write(out/'leaderboard.json',leaderboard(entries))
-                (out/'REPORT.md').write_text(render(entries))
-    return entries
+        for task in range(len(bundles)):
+            schedule+=[(repeat,task,name) for name in order]
+    done={};lock=threading.Lock()
+    def play(item):
+        repeat,task,name=item;bundle=bundles[task];program=competitors[name]
+        path=out/f'round-{repeat:02d}-task-{task:02d}-{name}'
+        r=run_episode(bundle,program.get('policy'),path,tools,seed+repeat,agent=program.get('agent'),
+                      hints=(hints or {}).get(sha(bundle['manifest'])))
+        with lock:
+            done[item]=(name,r,path.name)
+            ordered=[done[i] for i in schedule if i in done]
+            entries=[(n,x) for n,x,_ in ordered]
+            write(out/'runs.json',[{'competitor':n,'directory':d} for n,_,d in ordered])
+            write(out/'leaderboard.json',leaderboard(entries))
+            (out/'REPORT.md').write_text(render(entries))
+    if workers==1:
+        for item in schedule:play(item)
+    else:
+        with ThreadPoolExecutor(workers) as pool:
+            futures=[pool.submit(play,item) for item in schedule]
+            try:
+                for future in futures:future.result()
+            except BaseException:
+                # Ctrl-C or a failed episode stops the queue: pending episodes
+                # never start; running ones finish (their supervisors see the
+                # same interrupt) and stay recorded.
+                pool.shutdown(wait=True,cancel_futures=True)
+                raise
+    return [(done[i][0],done[i][1]) for i in schedule]
 
 
 def reverify(episode,output,tools):

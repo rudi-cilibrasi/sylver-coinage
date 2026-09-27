@@ -10,7 +10,7 @@ from .evolution import run_evolution
 from .exact import build_tools
 from .fixtures import build_fixtures
 from .pilot import pilot
-from .policies import BASELINES
+from .policies import BASELINES, GOLF
 from .protocol import Session
 from .snapshot import export_graph, validate_bundle, load_bundle
 from .tournament import leaderboard, render, reverify, run_tournament
@@ -25,15 +25,25 @@ def main():
     p.add_argument('--memory-mb',type=int,default=512)
     p.add_argument('--model-id',default='none');p.add_argument('--model-requests',type=int,default=0)
     p.add_argument('--model-tokens',type=int,default=0);p.add_argument('--model-cost',type=float,default=0.)
+    p.add_argument('--golf',action='store_true',help='certificate-golf panel with pinned database hints')
+    p.add_argument('--tiers',default='A,B',help='golf tiers: A,B (finite panel) and C (research, 16 GiB)')
     p=commands.add_parser('inspect');p.add_argument('bundle',type=Path)
     p=commands.add_parser('snapshot');p.add_argument('--graph',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
-    p=commands.add_parser('run');p.add_argument('bundle',type=Path);p.add_argument('--policy',choices=BASELINES,default='increasing')
+    p=commands.add_parser('run');p.add_argument('bundle',type=Path);p.add_argument('--policy',choices=[*BASELINES,*GOLF],default='increasing')
     p.add_argument('--agent',type=Path);p.add_argument('--output',type=Path,required=True);p.add_argument('--tools',type=Path,default=Path('/tmp/sylver-arena-tools'))
     p.add_argument('--seed',type=int,default=0)
     p=commands.add_parser('verify');p.add_argument('episode',type=Path);p.add_argument('--output',type=Path,required=True)
     p.add_argument('--tools',type=Path,default=Path('/tmp/sylver-arena-tools'))
     p=commands.add_parser('tournament');p.add_argument('bundles',type=Path,nargs='+');p.add_argument('--output',type=Path,required=True)
     p.add_argument('--repeats',type=int,default=3);p.add_argument('--seed',type=int,default=0)
+    p.add_argument('--workers',type=int,default=1,help='concurrent episodes (each separately accounted)')
+    p=commands.add_parser('golf-pilot');p.add_argument('--output',type=Path,required=True)
+    p.add_argument('--tiers',default='A,B');p.add_argument('--repeats',type=int,default=3)
+    p.add_argument('--research-repeats',type=int,default=1);p.add_argument('--workers',type=int,default=1)
+    p.add_argument('--seed',type=int,default=0)
+    p=commands.add_parser('book');p.add_argument('action',choices=('add','verify','render'))
+    p.add_argument('episodes',type=Path,nargs='*');p.add_argument('--book',type=Path,default=ROOT/'sylver/arena/book')
+    p.add_argument('--competitor');p.add_argument('--tools',type=Path,default=Path('/tmp/sylver-arena-tools'))
     p=commands.add_parser('report');p.add_argument('tournament',type=Path)
     p=commands.add_parser('pilot');p.add_argument('--output',type=Path,required=True);p.add_argument('--repeats',type=int,default=3);p.add_argument('--seed',type=int,default=0)
     p=commands.add_parser('evolve');p.add_argument('bundles',type=Path,nargs='+');p.add_argument('--output',type=Path,required=True)
@@ -44,7 +54,7 @@ def main():
     p=commands.add_parser('resume');p.add_argument('episode',type=Path)
     p=commands.add_parser('admit');p.add_argument('episode',type=Path);p.add_argument('--output',type=Path,required=True)
     p=commands.add_parser('serve');p.add_argument('bundle',type=Path);p.add_argument('--output',type=Path,required=True)
-    p=commands.add_parser('_serve_worker',help=argparse.SUPPRESS);p.add_argument('bundle',type=Path);p.add_argument('output',type=Path);p.add_argument('binary',type=Path)
+    p=commands.add_parser('_serve_worker',help=argparse.SUPPRESS);p.add_argument('bundle',type=Path);p.add_argument('output',type=Path);p.add_argument('binary',type=Path);p.add_argument('hints',nargs='?')
     trusted=('Players run as this user without a sandbox and can interfere with each other (for example, '
              "write into the opponent's pipes through /proc); run only trusted programs. Game results are not proofs.")
     for name in ('play','league'):
@@ -59,21 +69,46 @@ def main():
         p.add_argument('--output',type=Path,required=True);p.add_argument('--max-move',type=int,default=1000)
         p.add_argument('--cpu',type=float,default=2.);p.add_argument('--increment',type=float,default=.1);p.add_argument('--seed',type=int,default=0)
     args=parser.parse_args()
-    if args.command=='fixtures':print(json.dumps(build_fixtures(args.output,dict(DEFAULT_LIMITS,cpu_seconds=args.cpu_seconds,wall_seconds=args.wall_seconds,memory_mb=args.memory_mb,model_id=args.model_id,model_requests=args.model_requests,model_tokens=args.model_tokens,model_cost=args.model_cost),historical=args.historical,live=args.live),indent=2))
+    if args.command=='fixtures' and args.golf:
+        from .golf import build_golf
+        print(json.dumps(build_golf(args.output,tuple(args.tiers.split(','))),indent=2))
+    elif args.command=='fixtures':print(json.dumps(build_fixtures(args.output,dict(DEFAULT_LIMITS,cpu_seconds=args.cpu_seconds,wall_seconds=args.wall_seconds,memory_mb=args.memory_mb,model_id=args.model_id,model_requests=args.model_requests,model_tokens=args.model_tokens,model_cost=args.model_cost),historical=args.historical,live=args.live),indent=2))
     elif args.command=='inspect':
         bundle=load_bundle(args.bundle);validate_bundle(bundle);print(json.dumps(bundle['manifest'],indent=2))
     elif args.command=='snapshot':
         if args.output.exists():raise ValueError('output already exists')
         write(args.output,export_graph(args.graph,ROOT));print(args.output)
     elif args.command=='run':
-        r=run_episode(load_bundle(args.bundle),BASELINES[args.policy],args.output,args.tools,args.seed,
-                      agent=read(args.agent) if args.agent else None)
+        from .golf import bundle_hints
+        bundle=load_bundle(args.bundle)
+        r=run_episode(bundle,{**BASELINES,**GOLF}[args.policy],args.output,args.tools,args.seed,
+                      agent=read(args.agent) if args.agent else None,hints=bundle_hints(args.bundle,bundle))
         print(json.dumps({k:r[k] for k in ('status','C','T','S','log_score')},indent=2))
     elif args.command=='verify':print(json.dumps(reverify(args.episode,args.output,args.tools),indent=2))
     elif args.command=='tournament':
-        run_tournament([load_bundle(p) for p in args.bundles],{n:{'policy':p} for n,p in BASELINES.items()},
-                       args.output,args.output.parent/'arena-tools',args.repeats,args.seed)
+        from .common import sha
+        from .golf import bundle_hints, competitors
+        bundles=[load_bundle(p) for p in args.bundles]
+        golf=all(b['manifest']['kind']=='golf' for b in bundles)
+        if any(b['manifest']['kind']=='golf' for b in bundles) and not golf:raise ValueError('do not mix golf and search tasks')
+        run_tournament(bundles,competitors() if golf else {n:{'policy':p} for n,p in BASELINES.items()},
+                       args.output,args.output.parent/'arena-tools',args.repeats,args.seed,
+                       hints={sha(b['manifest']):bundle_hints(p,b) for p,b in zip(args.bundles,bundles)},
+                       workers=args.workers)
         print(args.output/'REPORT.md')
+    elif args.command=='golf-pilot':
+        from .golf import golf_pilot
+        print(golf_pilot(args.output,tuple(args.tiers.split(',')),args.repeats,args.seed,args.workers,args.research_repeats))
+    elif args.command=='book':
+        from .book import add_certificate, render_book, verify_book
+        if args.action=='add':
+            for episode in args.episodes:
+                print(json.dumps(add_certificate(args.book,episode,args.tools,args.competitor),indent=2))
+            (args.book/'BOOK.md').write_text(render_book(args.book))
+        elif args.action=='verify':
+            report=verify_book(args.book,args.tools);print(json.dumps(report,indent=2))
+            if not all(r['ok'] for r in report):raise SystemExit(1)
+        else:(args.book/'BOOK.md').write_text(render_book(args.book));print(args.book/'BOOK.md')
     elif args.command=='report':
         entries=[(r['competitor'],read(args.tournament/r['directory']/'receipt.json')) for r in read(args.tournament/'runs.json')]
         print(render(entries))
@@ -103,8 +138,10 @@ def main():
         binary=build_tools(args.output/'tools')
         work=args.output/'work';work.mkdir()
         control=args.output/'supervisor.json'
+        from .golf import bundle_hints
+        hints=bundle_hints(args.bundle,bundle)  # the copied bundle's directory has no hints/
         write(control,{'command':[sys.executable,'-m','sylver.arena','_serve_worker',
-                                 str(args.output/'bundle.json'),str(work),str(binary)],
+                                 str(args.output/'bundle.json'),str(work),str(binary),*([hints] if hints else [])],
                        'output':str(args.output/'accounting'),
                        'limits':bundle['manifest']['execution']['limits'],'cwd':str(ROOT)})
         process=subprocess.Popen([sys.executable,'-m','sylver.arena.supervisor',str(control)],cwd=ROOT)
@@ -150,7 +187,7 @@ def main():
     elif args.command=='_serve_worker':
         from .common import decode
         bundle=load_bundle(args.bundle)
-        session=Session(bundle,args.binary,args.output,bundle['manifest']['execution']['limits'])
+        session=Session(bundle,args.binary,args.output,bundle['manifest']['execution']['limits'],hints=args.hints)
         for line in sys.stdin:
             print(json.dumps(session.request(decode(line))),flush=True)
 

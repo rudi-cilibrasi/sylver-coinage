@@ -1,8 +1,9 @@
 # Recorded arena evidence
 
-This directory records the first offline arena pilot and its regression
-checks. The pilot uses a scripted model test double, no network, and no paid
-API calls. No live mathematical discovery is claimed.
+This directory records the first offline arena pilot, its regression
+checks, the certificate golf pilot, and the game league pilot. None uses
+network access or paid API calls; the first pilot's model arm is a scripted
+test double. None claims a new mathematical discovery.
 
 | Artifact | Contents |
 | --- | --- |
@@ -23,7 +24,41 @@ under another machine's or source version's profile;
 do not compare those scores directly with these measurements. Mathematical
 re-verification can use another checkout of the pinned verifier.
 
+## Certificate golf pilot (#16)
+
+| Artifact | Contents |
+| --- | --- |
+| [golf/REPORT.md](golf/REPORT.md) | Median S per target and competitor, lowest-median counts, findings and decision, and every per-run leaderboard. |
+| [golf/summary.json](golf/summary.json) | Per-target medians, winners, and the best certificate's C, T, and S. |
+| [golf/plan.json](golf/plan.json) | Predeclared tiers, repetitions, seed, workers, pinned hint digest, targets, and competitors. |
+| `golf/leaderboard-AB.json`, `golf/leaderboard-C.json` | Per-target rankings, grouped by identical task, snapshot, verifier, and execution profile. |
+| `golf/artifacts.tar.gz` | Golf fixtures with the pinned hint file, and every episode's bundle, competitor, certificate, transcripts, and CPU receipts. Compiled binaries are omitted. |
+
+The pinned hint file is `aa421ec0…` (308,322 facts: the 305,011-row cache
+plus the post-PR13 evidence graph), inside the archive at
+`fixtures/visible/hints/`. The Book seeded by this pilot is
+[../book/BOOK.md](../book/BOOK.md). Replay any archived golf episode as
+described above, passing the extracted episode directory to
+`python -m sylver.arena verify`.
+
+## Game league pilot (#17)
+
+| Artifact | Contents |
+| --- | --- |
+| [league/REPORT.md](league/REPORT.md) | Standings, Bradley–Terry ratings with the prior-set gaps flagged, head to head, loss reasons, adjudicated openings, per-move CPU, and blunder analysis. |
+| [league/standings.json](league/standings.json), [league/plan.json](league/plan.json) | Machine-readable standings; the predeclared plan with player commands, code digests, and the commit. |
+| `league/games.jsonl.gz` | Every game: moves with per-move CPU and wall time, claims, results, and accounting method. |
+
+Game results are games, not proofs; the league report re-renders exactly
+from these files.
+
 ## Replay an archived pilot episode
+
+Replays need the verifier version that produced the episode. Certificate
+golf (#16) changed verifier sources, so replay the first pilot and the
+historical checks from a checkout of commit `589066c`, for example
+`git worktree add /tmp/pilot-checkout 589066c`, and run these commands
+there. Golf episodes replay from the golf commit onward.
 
 From the repository root, extract into a new directory:
 
