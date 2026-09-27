@@ -14,10 +14,11 @@ import time
 import unittest
 from unittest import mock
 
-from sylver.arena.common import read
+from sylver.arena.common import read, sha
 from sylver.arena.exact import build_tools
 from sylver.arena.game import IllegalMove, Position, minimal_generators
-from sylver.arena.league import ENDERS, _fit, bradley_terry, render, run_league, standings, suite, win_groups
+from sylver.arena.league import (ENDERS, _fit, _native, analyze, bradley_terry, render, resolve, run_league, standings,
+                                 suite, win_groups)
 from sylver.arena.players import PLAYERS, builtin_command, load_book
 from sylver.arena.referee import CLOCK, OTHER, Seat, clean, own_cgroup, play_game, session_cpu, text
 from sylver.solver import FiniteSolver, solve_position
@@ -487,6 +488,32 @@ class LeagueTests(unittest.TestCase):
             self.assertEqual(sorted(r['game'] for r in logged), ['0000-ender-4-5-r1-vs-r2', '0002-ender-4-5-r2-vs-r1'])
             left = subprocess.run(['pgrep', '-f', str(d / 'slow.py')], capture_output=True, text=True).stdout.split()
             self.assertEqual(left, [])
+
+    def test_analysis_skips_void_games_and_caps_memory(self):
+        binary = build_tools('/tmp/sylver-arena-tools')
+        plan, records = fake_league([('a', 'b', 'b'), ('a', 'b', 'b')])
+        for r in records:
+            r['moves'] = [{'ply': 1, 'seat': 'first', 'move': 2}]    # {4,5} is N; 2 reaches {2,5}, also N
+        records[1]['result'] = {'winner': None, 'loser': None, 'reason': 'void', 'detail': 'x'}
+        a = analyze(records, plan, binary, 60)
+        self.assertEqual(a['players']['a'], {'analysed': 1, 'from_n': 1, 'blunders': 1, 'unknown': 0})
+        self.assertEqual((_native(binary, '4,5'), _native(binary, '4,5', memory_mb=1)), ('N', None))
+
+    def test_plan_records_code_and_binary_digests(self):
+        with tempfile.TemporaryDirectory() as d:
+            players = {n: resolve(n, Path(d) / 'tools') for n in ('smallest', 'exact')}
+            run_league(players, suite('enders')[:1], Path(d) / 'league', workers=2)
+            plan = read(Path(d) / 'league/plan.json')
+            code = plan['code']
+            self.assertEqual(code['files']['sylver/arena/referee.py'], sha(Path('sylver/arena/referee.py').read_bytes()))
+            self.assertIn('sylver/move26_data/periodicity_x.cache', code['files'])
+            self.assertTrue(code['git'] is None or len(code['git']) == 40)
+            binary = players['exact']['options']['binary']
+            self.assertEqual(plan['players']['exact']['binary_sha256'], sha(Path(binary).read_bytes()))
+            self.assertIsNone(plan['players']['smallest']['binary_sha256'])
+            report = (Path(d) / 'league/REPORT.md').read_text()
+            self.assertNotIn('gcd above one', report)
+            self.assertIn('the empty position is capped', report)
 
     def test_bad_clock_is_rejected_before_any_game(self):
         players = {n: {'name': n, 'command': builtin_command(n)} for n in ('smallest', 'random')}

@@ -413,8 +413,10 @@ the Frobenius bands 0–60, 60–100, 100–140, and 140–180, with `--per-band
 P and N rows each), and `research` (`{16}`, `{16,26}`, W, X; exhibition only,
 outcomes unknown). Outputs:
 
-- `plan.json`: players with command and option digests, openings, rules,
-  clock, seed, and the full schedule, written before the first game;
+- `plan.json`: players with command, option, and solver-binary digests,
+  openings, rules, clock, seed, the full schedule, the expected CPU
+  accounting, and digests of the code and data that decide games (with the
+  git commit, when available), written before the first game;
 - `games.jsonl`: one complete record per game (moves with per-move CPU,
   wall time, and claims; setup costs; result, reason, and detail), appended as
   each game finishes, so an interrupted league keeps its completed games;
@@ -428,7 +430,7 @@ outcomes unknown). Outputs:
   per move, void games, and the reproduction command.
 
 `--analyze-bound F` solves every reached position with gcd one and Frobenius
-number at most F natively (60 s each, unknown on timeout) and counts
+number at most F natively (60 s and 4 GiB each, unknown beyond) and counts
 *blunders*, moves from an N-position to an N-position, per player. Analysis
 CPU is reported separately and never changes a result. Database positions
 above Frobenius number about 100 can each take a minute to solve, so keep F

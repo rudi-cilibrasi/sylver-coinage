@@ -39,6 +39,10 @@ ISOLATION = ('**Players are not isolated.** They run as this user without a sand
 METHODS = {'cgroup': 'in their own cgroup (cumulative cpu.stat usage of every descendant; cgroup.kill at game end)',
            'session': 'by /proc sums over their session (the fallback without cgroup delegation)'}
 BOOTSTRAP = 200
+# Sources and data that decide games and reports; plan.json records their digests.
+CODE = ('sylver/arena/game.py', 'sylver/arena/players.py', 'sylver/arena/referee.py', 'sylver/arena/league.py',
+        'sylver/arena/common.py', 'sylver/arena/exact.py', 'sylver/arena/__main__.py', 'sylver/solver.py',
+        'sylver/short_certificates.py', 'sylver/native_solver.cpp', 'sylver/move26_data/periodicity_x.cache')
 
 
 def suite(name, seed=0, per_band=1):
@@ -184,6 +188,20 @@ def resolve(name, tools, executable=None, seed=0):
     return {'name': name, 'builtin': name, 'options': options, 'command': builtin_command(name, seed, options), 'cwd': str(ROOT)}
 
 
+def _code():
+    """Digests of CODE and, where git is available, the checkout's commit and
+    whether its sylver/ tree has uncommitted changes."""
+    def git(*args):
+        try:
+            out = subprocess.run(['git', '-C', str(ROOT), *args], capture_output=True, text=True, timeout=30)
+        except (OSError, subprocess.SubprocessError):
+            return None
+        return out.stdout.strip() if out.returncode == 0 else None
+    status = git('status', '--porcelain', '--', 'sylver')
+    return {'git': git('rev-parse', 'HEAD'), 'dirty': None if status is None else bool(status),
+            'files': {f: sha((ROOT / f).read_bytes()) for f in CODE}}
+
+
 def _seat(name, player, seed):
     if 'builtin' in player:
         player = dict(player, command=builtin_command(player['builtin'], seed, player.get('options')))
@@ -218,11 +236,13 @@ def run_league(players, openings, output, max_move=1000, clock=None, workers=4, 
     described, cgroups = {}, own_cgroup()
     for n, p in players.items():
         argv = [str(c) for c in p['command']]
+        binary = p.get('options', {}).get('binary')
         described[n] = {'command': argv, 'command_sha256': sha(argv), 'builtin': p.get('builtin'),
-                        'options_sha256': sha(p.get('options', {})) if 'builtin' in p else None}
+                        'options_sha256': sha(p.get('options', {})) if 'builtin' in p else None,
+                        'binary_sha256': sha(Path(binary).read_bytes()) if binary else None}
     plan = {'schema': 1, 'players': described, 'openings': openings, 'rules': {'max_move': max_move, 'loser': 'names-1'},
             'clock': clock, 'seed': seed, 'workers': workers, 'analyze_bound': analyze_bound, 'schedule': schedule,
-            'command': command, 'accounting': 'cgroup' if cgroups else 'session',
+            'command': command, 'accounting': 'cgroup' if cgroups else 'session', 'code': _code(),
             'host': {'python': platform.python_version(), 'platform': platform.platform(), 'cpus': os.cpu_count()}}
     write(output / 'plan.json', plan)
     (output / 'games').mkdir()
@@ -277,9 +297,13 @@ def run_league(players, openings, output, max_move=1000, clock=None, workers=4, 
     return result
 
 
-def _native(binary, key, seconds=60):
+def _native(binary, key, seconds=60, memory_mb=4096):
+    """'P' or 'N', or None when unknown within ``seconds`` and ``memory_mb``.
+    The shell sets the memory limit: analysis runs in threads, where
+    preexec_fn is unsafe."""
     try:
-        out = subprocess.run([str(binary), *key.split(',')], capture_output=True, text=True, timeout=seconds)
+        out = subprocess.run(['/bin/sh', '-c', 'ulimit -v "$0" && exec "$@"', str(memory_mb * 1024), str(binary),
+                              *key.split(',')], capture_output=True, text=True, timeout=seconds)
     except subprocess.TimeoutExpired:
         return None
     match = NATIVE.fullmatch(out.stdout.strip())
@@ -295,6 +319,8 @@ def analyze(records, plan, binary, bound, workers=4):
     max_move = plan['rules']['max_move']
     bound, games, moves, keys = min(bound, max_move, 1023), {g['id']: g for g in plan['schedule']}, [], {}
     for r in records:
+        if r['result']['reason'] == 'void':
+            continue
         p = Position(r['start'], max_move=max_move)
         for m in r['moves']:
             q = p.play(m['move'])
@@ -402,11 +428,11 @@ def render(plan, games, standings):
     known = {n: o for n, o in openings.items() if o['outcome']}
     lines = ['# Game arena league', '',
              '**Game results are not proofs.** A win, a rating, or a win rate here is evidence about these '
-             'programs under these clocks, never about the outcome of a position. Openings that are *capped* '
-             f'(gcd above one, or Frobenius number above the move cap {cap}) follow a house rule: moves are '
-             f'limited to 2..{cap}, which never ends a game early but removes larger moves, so their games say '
-             'nothing about real Sylver Coinage. Only openings with gcd one and Frobenius number at most the '
-             'cap are exact, and only those are adjudicated.', '', ISOLATION, '',
+             'programs under these clocks, never about the outcome of a position. Openings are *capped* unless '
+             f'they have gcd one and a Frobenius number at most the move cap {cap}; the empty position is capped. '
+             f'Capped games follow a house rule: moves are limited to 2..{cap}, which never ends a game early but '
+             'removes larger moves, so their games say nothing about real Sylver Coinage. Only uncapped openings '
+             'are exact, and only those are adjudicated.', '', ISOLATION, '',
              f"- Players: {', '.join(names)} (commands and digests in `plan.json`).",
              f"- Openings: {len(openings)} ({len(known)} with a known outcome, "
              f"{sum(o['capped'] for o in openings.values())} capped).",
