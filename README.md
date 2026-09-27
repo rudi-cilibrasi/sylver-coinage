@@ -24,6 +24,12 @@ exceeds 10^12 states.
   reaching the Quiet End node `{14,16,20,26}`). Five covered moves still
   rest on theorem-backed positions, three large new leaves await their Book
   replay, and two moves are open.
+- **W frontier reduced to one move (September 27):** after move 118 from
+  `W={16,26,62,98}`, reply **167** reaches the finite P-position
+  `{16,26,62,98,118,167}`. Fresh native and Python replays agree on P and on
+  exactly **115,933,058 states**. W now has **51 of 52 obligations
+  covered**; only **108** remains. See the
+  [result and reproducible certificate](sylver/campaigns/w-one-2026-09-27/RESULT.md).
 - **W frontier reduced to two moves (September 27):** after move 70 from
   `W={16,26,62,98}`, reply **169** reaches the finite P-position
   `{16,26,62,70,98,169}`. Fresh native and Python replays agree on P and on

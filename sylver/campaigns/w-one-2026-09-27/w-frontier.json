@@ -1,0 +1,32 @@
+{
+  "position": [
+    16,
+    26,
+    62,
+    98
+  ],
+  "outcome": "unknown",
+  "open_moves": [
+    108
+  ],
+  "covered_obligations": 51,
+  "total_obligations": 52,
+  "new_reply": {
+    "opponent_move": 118,
+    "reply": 167,
+    "P_destination": [
+      16,
+      26,
+      62,
+      98,
+      118,
+      167
+    ],
+    "certificate_sha256": "6de1a218128f20bd28b595f822338a7769ed5aed1f28047424b4aa9df9ee208d",
+    "verification_receipt": "verification/w118/receipt.json",
+    "verification_sha256": "e3b7368daf93b30c3649d94914c8a687745304c0db95ddbfcc06a632cb0a2d5b",
+    "states": 115933058
+  },
+  "previous_frontier": "sylver/campaigns/w-two-2026-09-27/w-frontier.json",
+  "scope": "W remains unresolved. Move 118 is refuted by reply 167. The finite witness was independently replayed with native and Python solvers using empty memos and no inherited outcome cache. Other W obligations retain their existing dependencies."
+}

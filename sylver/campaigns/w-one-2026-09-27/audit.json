@@ -1,0 +1,71 @@
+{
+  "rows": 189,
+  "branches": {
+    "70": {
+      "scan_N": 31,
+      "scan_P": [
+        169
+      ],
+      "verified_P": [
+        169
+      ],
+      "pending_replay_P": [],
+      "prior_classified": 52,
+      "first_unclassified_odd_reply": null,
+      "scan_max_reply": 169
+    },
+    "86": {
+      "scan_N": 15,
+      "scan_P": [
+        129
+      ],
+      "verified_P": [
+        129
+      ],
+      "pending_replay_P": [],
+      "prior_classified": 52,
+      "first_unclassified_odd_reply": null,
+      "scan_max_reply": 131
+    },
+    "92": {
+      "scan_N": 13,
+      "scan_P": [
+        139
+      ],
+      "verified_P": [
+        139
+      ],
+      "pending_replay_P": [],
+      "prior_classified": 57,
+      "first_unclassified_odd_reply": null,
+      "scan_max_reply": 141
+    },
+    "108": {
+      "scan_N": 53,
+      "scan_P": [
+        213
+      ],
+      "verified_P": [],
+      "pending_replay_P": [
+        213
+      ],
+      "prior_classified": 52,
+      "first_unclassified_odd_reply": 215,
+      "scan_max_reply": 213
+    },
+    "118": {
+      "scan_N": 30,
+      "scan_P": [
+        167
+      ],
+      "verified_P": [
+        167
+      ],
+      "pending_replay_P": [],
+      "prior_classified": 52,
+      "first_unclassified_odd_reply": null,
+      "scan_max_reply": 167
+    }
+  },
+  "failures": []
+}
