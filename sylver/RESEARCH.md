@@ -1,5 +1,14 @@
 # Sylver Coinage after 16: research log
 
+**September 27, W is P:** a shared-memo sweep of the new parallel engine
+answers W's last open move, 108, with **213**: {16,26,62,98,108,213} is P,
+confirmed by fresh native and Python replays with a matching exact state
+count (156,823,029). All 52 Quiet End obligations of W={16,26,62,98} are
+covered, so **W is P** and **Q={16,26,88,98} is N** (Q+62 = W). By the
+September 5 reduction, U={16,26,88} P now needs only X={16,26,82,88} N.
+Replayed finite witnesses also answer W's moves 72 (107), 56 (97), and 66
+(263). See [the campaign result](campaigns/w-p-2026-09-27/RESULT.md).
+
 **September 27, later still:** W's move 118 falls to **167**:
 {16,26,62,98,118,167} is P, confirmed by fresh native and Python replays
 with a matching exact state count (115,933,058). W now has 51 of 52
@@ -1351,6 +1360,45 @@ ledger's last row, a P destination for move 108 found by that sweep, was
 under independent replay when the record was made and is not claimed
 there. W, Q, X, move 26, and opening 16 are still unresolved. See the
 [campaign result](campaigns/w-one-2026-09-27/RESULT.md).
+
+### Attempt 31 — W is P (2026-09-27)
+
+The parallel engine (`sylver/parallel_solver.cpp`) changed the economics of
+the odd-reply scans. Its threads share one sharded memo keyed by the root's
+gap bits, and its sweep mode evaluates a batch of candidates base+r with a
+single memo, so a candidate after the first reuses most of its
+predecessors' positions: move 108's replies 193–211 then cost seconds each,
+where a fresh single-threaded query had cost about 15 minutes. Its
+`--verify-memo` pass checks the finished memo as a certificate, which
+covers N rows too.
+
+The first sweep batch for move 108 ended at **213**:
+{16,26,62,98,108,213} is P (Frobenius number 331). Fresh native and Python
+replays agree on P and exactly **156,823,029** states. With it, all **52**
+Quiet End obligations of W={16,26,62,98} are covered, so **W is P**. The
+campaign's `audit.py` recomputes the obligations with the arena referee's
+profile and an independent coin-sum count, and accepts three kinds of
+evidence: 45 Book certificates (the witnesses for moves 56, 72 and 86 were
+admitted too), 5 finite witnesses replayed by native and Python solvers
+(66, 70, 92, 108, 118), and, for moves 12 and 36 only, winning replies
+to the repository's certificates of {12,14,16} and V={16,26,36,56}, which
+rest on three explicitly assumed published P-positions ({8,10,12,14} and
+{8,12,26,30} from Blok's pairing family, and {8,10,22}).
+
+Consequences: **Q={16,26,88,98} is N**, since Q+62 = W. By the September 5
+reduction (which rests on the project's earlier audit of U's other
+branches), U={16,26,88} is P if and only if X={16,26,82,88} and Q are both
+N, so **U P now needs only X N**, and U P would make {16,26} N. X, U, move
+26, and opening 16 remain unresolved.
+
+Sweeps of W's infinitely routed moves also found finite witnesses:
+**{16,26,62,72,107}** P (50,192,273 states) answers move 72 without
+Sicherman's published {16,26,62,72,82}, and **{16,26,56,62,97}** P
+(25,236,025 states) and **{16,26,62,66,263}** P (103,189,655 states) answer
+moves 56 and 66 by finite witnesses instead of through V and B (V is still
+used for move 36). Move 12 has no odd witness up to 977 and
+move 36 none up to 401. See the
+[campaign result](campaigns/w-p-2026-09-27/RESULT.md).
 
 ### Sources
 

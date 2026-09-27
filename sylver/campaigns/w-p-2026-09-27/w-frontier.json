@@ -1,0 +1,41 @@
+{
+  "position": [
+    16,
+    26,
+    62,
+    98
+  ],
+  "outcome": "P",
+  "open_moves": [],
+  "covered_obligations": 52,
+  "total_obligations": 52,
+  "evidence": {
+    "book": 45,
+    "certified-node": 2,
+    "finite-witness": 5
+  },
+  "certified_node_moves": [
+    12,
+    36
+  ],
+  "new_reply": {
+    "opponent_move": 108,
+    "reply": 213,
+    "P_destination": [
+      16,
+      26,
+      62,
+      98,
+      108,
+      213
+    ],
+    "certificate_sha256": "0fe0dbeca9ff4a98b168f5303236163b0a58915ef8b90636e21cadad4f001f2d",
+    "verification_receipt": "verification/w108/receipt.json",
+    "verification_sha256": "af4044198fbdc6fbb037ebda27e59bd15ddcff8bba0cebd802fa5ce64acbece6",
+    "states": 156823029
+  },
+  "audit": "audit.json",
+  "previous_frontier": "sylver/campaigns/w-one-2026-09-27/w-frontier.json",
+  "consequence": "Q={16,26,88,98} is N (Q+62=W). U={16,26,88} P now needs only X={16,26,82,88} N.",
+  "scope": "W is P by the Quiet End Theorem: all 52 obligations are covered by Book certificates, finite witnesses replayed by native and Python solvers, or (moves 12 and 36) repository certificates of {12,14,16} and V={16,26,36,56}, which assume the published P-positions {8,10,12,14}, {8,12,26,30} and {8,10,22}."
+}

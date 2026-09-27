@@ -52,22 +52,24 @@ GOLF_RESEARCH = (
     ('C', '16,26,62,89,98,102', 'N', 6382154),
     ('C', '16,26,33,62,89,102', 'P', 1721485),
 )
-# W={16,26,62,98} has 52 obligations; 50 are covered. Each covered move m
-# is refuted by a recorded reply. For these 38 the refutation is a finite
-# certificate: even moves (gcd two) by an odd witness reaching a finite P
-# position, odd moves by a finite N position itself (the verifier finds its
-# winning move). Witnesses: campaign graph and the plan2 release certificate.
+# W={16,26,62,98} has 52 Quiet End obligations, all covered: W is P
+# (campaigns/w-p-2026-09-27). Each move m is refuted by a recorded reply. For
+# the 43 moves below the refutation is a finite certificate: even moves (gcd
+# two) by an odd witness reaching a finite P position, odd moves by a finite
+# N position itself (the verifier finds its winning move). Witnesses: the
+# campaign graph, the plan2 release certificate, and the September 27 scans.
 W = (16, 26, 62, 98)
 W_WITNESSED = {2: 3, 18: 5, 19: 23, 22: 15, 27: 19, 28: 25, 30: 111, 34: 39, 38: 55, 40: 11, 44: 19, 46: 17,
-               50: 29, 54: 33, 60: 27, 67: 31, 70: 169, 76: 43, 82: 27, 86: 129, 92: 139, 102: 95, 134: 85}
+               50: 29, 54: 33, 56: 97, 60: 27, 66: 263, 67: 31, 70: 169, 72: 107, 76: 43, 82: 27, 86: 129, 92: 139,
+               102: 95, 108: 213, 118: 167, 134: 85}
 W_FINITE = (3, 5, 7, 9, 11, 15, 17, 23, 25, 33, 35, 41, 43, 51, 59)
-# The other 12 covered moves reach infinite P positions, whose own
-# certificates are campaign or published results outside this proof set.
+# The other 9 moves were routed through infinite P positions, whose own
+# certificates are campaign or published results outside this proof set;
+# The Book has finite certificates for all but 12 and 36 (see W.md).
 W_INFINITE = {4: (6, '{4,6}'), 6: (4, '{4,6}'), 8: (20, 'G={8,20,26}'), 10: (24, 'K={10,16,24}'),
               12: (14, '{12,14,16}'), 14: (12, '{12,14,16}'), 20: (8, 'G={8,20,26}'),
-              24: (10, 'K={10,16,24}'), 36: (56, 'V={16,26,36,56}'), 56: (36, 'V={16,26,36,56}'),
-              66: (56, 'B={16,26,56,62,66}'), 72: (82, '{16,26,62,72,82} (Sicherman, published)')}
-W_OPEN = (108, 118)  # 70, 86, 92: replies 169, 129, 139 (campaigns/w-two-, w-three-2026-09-27)
+              24: (10, 'K={10,16,24}'), 36: (56, 'V={16,26,36,56}')}
+W_OPEN = ()  # moves with no recorded refutation
 W_LIMITS = dict(DEFAULT_LIMITS, cpu_seconds=3600., wall_seconds=7200., memory_mb=16384, query_wall_seconds=3600.)
 
 
@@ -271,7 +273,7 @@ def w_book(output, book, workers=1, seed=0, strategies=('golf-witness', 'golf-ro
     index = read(Path(book) / 'index.json') if (Path(book) / 'index.json').exists() else {'targets': {}}
     for m in sorted(W_INFINITE):
         k = key(position((*W, m)))
-        if k in index['targets']:
+        if k in index['targets'] or k in skip:
             continue
         nodes = prover.prove_n(position((*W, m)), 2)
         if nodes:
@@ -285,16 +287,24 @@ def w_book(output, book, workers=1, seed=0, strategies=('golf-witness', 'golf-ro
 
 
 def render_w(book):
-    """All 52 obligations of W: Book-certified, infinite dependency, or open."""
+    """All 52 obligations of W: Book-certified, finite witness, infinite dependency, or open."""
     from .common import position
     index = read(Path(book) / 'index.json')['targets']
     certified = 0
+    if W_OPEN:
+        status = (f'{52 - len(W_OPEN)} are covered. W itself remains unresolved: W P would establish '
+                  'Q={16,26,88,98} N (Q + 62 = W), while U={16,26,88} P would still also need X={16,26,82,88} N.')
+    else:
+        status = ('all 52 are covered, so **W is P** ([campaign record](../../campaigns/w-p-2026-09-27/RESULT.md), '
+                  'which lists what it rests on: the Quiet End Theorem and, through moves 12 and 36, three published '
+                  'P-positions). Hence Q={16,26,88,98} is N (Q + 62 = W), and U={16,26,88} P now needs only '
+                  'X={16,26,82,88} N.')
     lines = ['# The Book of W', '',
-             'W = {16,26,62,98} is a node of the move-26 program: W P would establish Q={16,26,88,98} N',
-             '(Q + 62 = W), while U={16,26,88} P would still also need X={16,26,82,88} N. W is short: its',
-             f'obligations are its {52} moves below the Quiet End bound. {52 - len(W_OPEN)} are covered; this table records',
-             'which coverings are self-contained certificates in The Book, replayed by the fixed verifier',
-             'with a fresh memo and no inherited cache. W itself remains unresolved.', '',
+             'W = {16,26,62,98} is a node of the move-26 program. W is short, and its obligations are the 52 moves',
+             'the Quiet End Theorem leaves: the 34 even moves 2g for the gaps g of its half {8,13,31,49}, and the',
+             f"half's 18 odd gaps above 1; {status} This table records which coverings are",
+             'self-contained certificates in The Book, replayed by the fixed verifier with a fresh memo and',
+             'no inherited cache.', '',
              '| Move | Position | Status | Proof of record | C | States | V (s) |',
              '| ---: | --- | --- | --- | ---: | ---: | ---: |']
     for m in sorted([*W_WITNESSED, *W_FINITE, *W_INFINITE, *W_OPEN]):
@@ -314,13 +324,18 @@ def render_w(book):
                 rule += ' (Quiet End cover)'
             lines.append(f"| {m} | `{{{k}}}` | **Book** | {rule} | {e['C']} | {e['states']:,} | {e['V']:.3f} |")
             certified += 1
+        elif m in W_WITNESSED:
+            child = key(position((*W, m, W_WITNESSED[m])))
+            lines.append(f'| {m} | `{{{k}}}` | finite witness, not yet in the Book | reply {W_WITNESSED[m]} → `{{{child}}}` | | | |')
         else:
-            lines.append(f'| {m} | `{{{k}}}` | finitely certifiable, not yet in the Book | | | | |')
+            lines.append(f'| {m} | `{{{k}}}` | finite position, not yet in the Book | | | | |')
     depends = sum(1 for m in W_INFINITE if key(position((*W, m))) not in index)
     header = lines.index('| Move | Position | Status | Proof of record | C | States | V (s) |')
+    pending = 52 - len(W_OPEN) - certified - depends
     lines[header:header] = [f'**{certified} of {52 - len(W_OPEN)} covered obligations** are certified here by self-contained '
-                            f'certificates; {depends} depend on infinite P positions outside the proof language '
-                            f'(named in each row); {len(W_OPEN)} are open: {", ".join(map(str, W_OPEN))}.', '']
+                            f'certificates; {pending} more have finite witnesses not yet in the Book; {depends} depend on '
+                            f'infinite P positions outside the proof language (named in each row); '
+                            + (f'{len(W_OPEN)} are open: {", ".join(map(str, W_OPEN))}.' if W_OPEN else 'none is open.'), '']
     return '\n'.join(lines) + '\n'
 
 
