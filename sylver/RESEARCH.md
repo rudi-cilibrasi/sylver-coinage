@@ -1323,9 +1323,11 @@ reaching `R={14,16,20,26}`, whose Quiet End cover needs only finite
 witnesses and `{4,6}`. Moves 4 and 6 also leave the published positions
 behind ({4,6} by a 191-byte cover; 6 by the finite witness 7).
 
-The same search found no finite witness among odd replies up to 301 for the
-theorem-dependent children of `{12,14,16}`, G, K, and V, so moves 12, 36, 56,
-66, and 72 keep their named dependencies. The three new large leaves (moves
+The same search (odd replies up to 301, each exact query capped at 180
+seconds) found no finite witness for W's move 12 or for at least one
+theorem-routed child each of `{12,14,16}`, G, K, and V, so moves 12, 36, 56,
+66, and 72 keep their named dependencies; a longer search could still
+succeed. The three new large leaves (moves
 70, 86, 92; 69-80M states each) await their Book replay, and moves 108 and
 118 are open. W, Q, X, move 26, and opening 16 remain unresolved.
 
