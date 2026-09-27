@@ -8,6 +8,7 @@ import subprocess
 import sys
 import time
 
+from . import sandbox
 from .common import ROOT, canonical, read, sha, write
 from .exact import build_tools
 from .policies import validate_policy
@@ -34,10 +35,10 @@ def execution_profile(limits=None):
             'cpu':cpu,'python':platform.python_version(),'kernel':platform.release(),
             'libc':list(platform.libc_ver()),'logical_cpus':os.cpu_count(),
             'compiler':subprocess.check_output(['g++','--version'],text=True).splitlines()[0],
-            'accounting':'linux-subreaper-wait4-aggregate-v1',
+            'accounting':'linux-subreaper-wait4-aggregate-v1','sandbox':sandbox.describe(),
             'limits':limits or DEFAULT_LIMITS,
             'sources':{name:sha((Path(__file__).parent/name).read_bytes()) for name in
-                       ('episode.py','supervisor.py','exact.py','worker.py','protocol.py','policies.py','agent.py')}}
+                       ('episode.py','supervisor.py','exact.py','worker.py','protocol.py','policies.py','agent.py','sandbox.py')}}
 
 
 def _phase(config,run):

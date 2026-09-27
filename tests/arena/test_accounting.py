@@ -27,6 +27,12 @@ class AccountingTests(unittest.TestCase):
         self.assertLess(r['cpu_seconds'],.2)
         self.assertEqual(r['returncode'],0)
 
+    def test_supervisor_overhead_is_small(self):
+        # The supervisor's own polling CPU is charged to every episode, so it
+        # must not grow with the number of unrelated processes on the host.
+        r=self.run_code('import time;time.sleep(1.0)')
+        self.assertLess(r['supervisor_cpu'],.25,r['supervisor_cpu'])
+
     def test_cpu_and_parallel_workers_are_summed(self):
         code='import time\ns=time.process_time()\nwhile time.process_time()-s<.15:pass'
         r=self.run_code('import subprocess,sys\nps=[subprocess.Popen([sys.executable,"-c",'+repr(code)+']) for _ in range(3)]\nfor p in ps:p.wait()')

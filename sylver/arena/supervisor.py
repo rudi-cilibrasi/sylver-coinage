@@ -18,24 +18,73 @@ import time
 from .common import read, write
 
 
+def _stat(pid):
+    value = (Path('/proc') / str(pid) / 'stat').read_text()
+    fields = value[value.rindex(')')+2:].split()
+    return (int(fields[1]),
+            sum(int(fields[i]) for i in (11,12,13,14)) / os.sysconf('SC_CLK_TCK'),
+            int(fields[21]) * os.sysconf('SC_PAGE_SIZE'))
+
+
+class ProcessTree:
+    """Live descendants of ``root``, tracked incrementally.
+
+    Each poll lists /proc once, reads stat for tree members, and reads a pid
+    outside the tree only the first time it appears. That is sound because
+    ``root`` is a subreaper: a process joins the tree only as the child of a
+    member (a new pid, classified when first seen, in parent-first passes) or
+    by reparenting to ``root``, which only happens to members' descendants.
+    A pid that vanishes is forgotten, so a reused pid is classified afresh.
+    Rescanning every stat file on each 10 ms poll cost ~20 ms of charged
+    supervisor CPU on a workstation with ~450 processes. Discovery (listing
+    /proc) is needed only to find new processes; final CPU comes from wait4,
+    so polls between discoveries refresh known members only.
+    """
+    def __init__(self, root):
+        self.root = root
+        self.members = {}
+        self.outside = set()
+
+    def poll(self, discover=True):
+        if not discover:
+            # Refresh known members only; new processes wait for discovery.
+            records = {}
+            for pid in self.members:
+                try:
+                    records[pid] = _stat(pid)
+                except (OSError, ValueError, IndexError):
+                    pass
+            self.members = records
+            return records
+        present = {int(n) for n in os.listdir('/proc') if n.isdigit()}
+        self.outside &= present
+        records = {}
+        pending = present - self.outside - {self.root}
+        while pending:
+            progressed = False
+            for pid in sorted(pending):
+                try:
+                    record = _stat(pid)
+                except (OSError, ValueError, IndexError):
+                    pending.discard(pid); progressed = True; continue
+                if record[0] == self.root or record[0] in records:
+                    records[pid] = record
+                elif record[0] in pending:
+                    continue  # classify after its parent
+                else:
+                    self.outside.add(pid)
+                pending.discard(pid); progressed = True
+            if not progressed:
+                # A parent/child cycle can only come from pid reuse races;
+                # nothing here descends from root.
+                self.outside |= pending; break
+        self.members = records
+        return records
+
+
 def descendants(root):
-    records = {}
-    for path in Path('/proc').glob('[0-9]*/stat'):
-        try:
-            value = path.read_text()
-            fields = value[value.rindex(')')+2:].split()
-            records[int(path.parent.name)] = (int(fields[1]),
-                sum(int(fields[i]) for i in (11,12,13,14)) / os.sysconf('SC_CLK_TCK'),
-                int(fields[21]) * os.sysconf('SC_PAGE_SIZE'))
-        except (OSError, ValueError, IndexError):
-            continue
-    found = {root}
-    while True:
-        more = {pid for pid,(ppid,_,_) in records.items() if ppid in found}
-        if more <= found:
-            break
-        found |= more
-    return {pid:records[pid] for pid in found if pid != root and pid in records}
+    """One full scan; kept for callers outside the supervisor loop."""
+    return ProcessTree(root).poll()
 
 
 def supervise(command, output, limits, cwd=None, env=None):
@@ -57,6 +106,7 @@ def supervise(command, output, limits, cwd=None, env=None):
         worker=subprocess.Popen(command,stdout=stdout,stderr=stderr,cwd=cwd,env=env,
                                 start_new_session=True,preexec_fn=cap)
         reaped=[];user=system=0.;reason=None;root_exit=None;peak=0;error=None
+        tree=ProcessTree(os.getpid());polls=0
         try:
             while True:
                 while True:
@@ -71,7 +121,10 @@ def supervise(command, output, limits, cwd=None, env=None):
                     reaped.append({'pid':pid,'returncode':code,'user_cpu':usage.ru_utime,'system_cpu':usage.ru_stime})
                     if pid==worker.pid:
                         root_exit=code;worker.returncode=code
-                active=descendants(os.getpid())
+                # Discover new processes every 50 ms, and always before
+                # deciding that no descendant remains or when killing.
+                active=tree.poll(discover=polls%5==0 or root_exit is not None or reason is not None)
+                polls+=1
                 peak=max(peak,sum(v[2] for v in active.values()))
                 elapsed=time.monotonic()-start
                 cpu=user+system+sum(v[1] for v in active.values())+time.process_time()-cpu_start
@@ -91,7 +144,7 @@ def supervise(command, output, limits, cwd=None, env=None):
             error=type(exc).__name__+': '+str(exc)
             # Cancellation cannot leave solver/model descendants running.
             while True:
-                active=descendants(os.getpid())
+                active=tree.poll()
                 for pid in active:
                     try: os.kill(pid,signal.SIGKILL)
                     except ProcessLookupError: pass
