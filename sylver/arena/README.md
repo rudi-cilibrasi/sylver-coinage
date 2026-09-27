@@ -330,8 +330,8 @@ games are listed and excluded from ratings.
 **Limitations.** A process that leaves its session (daemonizes with `setsid`)
 is neither charged per move nor killed at game end. External players run
 with resource limits but no filesystem sandbox, so leagues should include
-only trusted programs; the arena's Bubblewrap launcher is a follow-up for
-hosts that permit unprivileged user namespaces.
+only trusted programs; running them under the arena's sandbox launcher is a
+follow-up.
 
 ### Built-in players
 
