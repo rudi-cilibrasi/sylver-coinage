@@ -52,6 +52,34 @@ def game_clock(clock=None):
     return clock
 
 
+def remove_cgroup(path):
+    """Kill everything in cgroup ``path`` and below, then remove those
+    cgroups; killed processes may take a moment to leave them."""
+    try:
+        (path / 'cgroup.kill').write_text('1')
+    except OSError:
+        pass
+    deadline = time.monotonic() + 5
+
+    def remove(directory):
+        for child in [c for c in directory.iterdir() if c.is_dir()]:
+            remove(child)
+        while True:
+            try:
+                directory.rmdir()
+                return
+            except FileNotFoundError:
+                return
+            except OSError:
+                if time.monotonic() > deadline:
+                    return
+                time.sleep(.01)
+    try:
+        remove(path)
+    except OSError:
+        pass
+
+
 def own_cgroup():
     """This process's cgroup v2 directory, if this user may create children
     in it and move processes between them; else None."""
@@ -244,24 +272,9 @@ class Seat:
         return (self.cgroup / name).read_text()
 
     def _release(self):
-        """Kill anything left in this seat's cgroup and remove it; the killed
-        processes may take a moment to leave it."""
-        if self.cgroup is None:
-            return
-        try:
-            (self.cgroup / 'cgroup.kill').write_text('1')
-        except OSError:
-            pass
-        deadline = time.monotonic() + 5
-        while time.monotonic() < deadline:
-            try:
-                self.cgroup.rmdir()
-                break
-            except FileNotFoundError:
-                break
-            except OSError:
-                time.sleep(.01)
-        self.cgroup = None
+        if self.cgroup is not None:
+            remove_cgroup(self.cgroup)
+            self.cgroup = None
 
     def alive(self):
         """Raise EOFError once the player has exited, even if a child still
@@ -361,20 +374,22 @@ class Seat:
                 pass
 
 
-def play_game(first, second, output, start=(), max_move=1000, clock=None, game_id='game', accounting=None):
+def play_game(first, second, output, start=(), max_move=1000, clock=None, game_id='game', accounting=None,
+              cgroups=None):
     """Play one game; return its record and write it to ``output/record.json``.
 
     Each player is ``{'name', 'command'}`` with optional ``cwd``, ``env`` and
     ``memory_mb`` (4096). The winner of a game reaching {2,3} is the player
     who made the last move; the reason is then 'opponent-must-name-1'.
     ``accounting`` is 'cgroup', 'session', or None for cgroup where possible;
-    the record says which each seat used.
+    the record says which each seat used. Seat cgroups are made under
+    ``cgroups``, by default this process's own cgroup.
     """
     output, clock = Path(output), game_clock(clock)
     initial = position = Position(start, max_move=max_move)
     players = dict(zip(SEATS, (first, second)))
     digests = {s: sha([str(c) for c in p['command']]) for s, p in players.items()}   # commands must be UTF-8
-    cgroups = own_cgroup()
+    cgroups = cgroups or own_cgroup()
     accounting = accounting or ('cgroup' if cgroups else 'session')
     if accounting not in ('cgroup', 'session') or accounting == 'cgroup' and cgroups is None:
         raise ValueError(f'unsupported CPU accounting {accounting!r} here')

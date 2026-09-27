@@ -19,6 +19,7 @@ import re
 import resource
 import statistics
 import subprocess
+import time
 
 from sylver.solver import frobenius_number, solve_position
 
@@ -26,7 +27,7 @@ from .common import ROOT, canonical, sha, write
 from .exact import build_tools
 from .game import Position
 from .players import CACHE, NATIVE, PLAYERS, builtin_command
-from .referee import SEATS, game_clock, own_cgroup, play_game
+from .referee import SEATS, game_clock, own_cgroup, play_game, remove_cgroup
 
 ENDERS = ((4, 5), (4, 7), (5, 6), (5, 7), (6, 7), (7, 8))
 BANDS = ((0, 60), (60, 100), (100, 140), (140, 180))
@@ -214,44 +215,59 @@ def run_league(players, openings, output, max_move=1000, clock=None, workers=4, 
     schedule = [{'first': a, 'second': b, 'opening': o['name']} for o in openings for a in names for b in names if a != b]
     for i, g in enumerate(schedule):
         g.update(id=f"{i:04d}-{g['opening']}-{g['first']}-vs-{g['second']}", seed=seed + i)
-    described = {}
+    described, cgroups = {}, own_cgroup()
     for n, p in players.items():
         argv = [str(c) for c in p['command']]
         described[n] = {'command': argv, 'command_sha256': sha(argv), 'builtin': p.get('builtin'),
                         'options_sha256': sha(p.get('options', {})) if 'builtin' in p else None}
     plan = {'schema': 1, 'players': described, 'openings': openings, 'rules': {'max_move': max_move, 'loser': 'names-1'},
             'clock': clock, 'seed': seed, 'workers': workers, 'analyze_bound': analyze_bound, 'schedule': schedule,
-            'command': command, 'accounting': 'cgroup' if own_cgroup() else 'session', 'host': {'python': platform.python_version(), 'platform': platform.platform(),
-                                         'cpus': os.cpu_count()}}
+            'command': command, 'accounting': 'cgroup' if cgroups else 'session',
+            'host': {'python': platform.python_version(), 'platform': platform.platform(), 'cpus': os.cpu_count()}}
     write(output / 'plan.json', plan)
     (output / 'games').mkdir()
-    records, futures, pool = [], {}, ProcessPoolExecutor(workers)
-    with (output / 'games.jsonl').open('wb') as log:
-        def keep(future):
-            g = futures.pop(future)
-            try:
-                record = future.result()
-            except Exception as error:
-                record = _void(g, by_name[g['opening']], max_move, clock, f'worker failed: {error!r}')
-            log.write(canonical(record) + b'\n')
-            log.flush()
-            records.append(record)
+    if cgroups is not None:            # all of this league's player cgroups go under one
+        cgroups = cgroups / f'sylver-league-{os.getpid()}-{time.monotonic_ns()}'
         try:
-            for g in schedule:
-                futures[pool.submit(play_game, _seat(g['first'], players[g['first']], g['seed']),
-                                    _seat(g['second'], players[g['second']], g['seed']), output / 'games' / g['id'],
-                                    by_name[g['opening']]['start'], max_move, clock, g['id'])] = g
-            for future in as_completed(list(futures)):
-                keep(future)
-        except BaseException:
-            # Pending games are cancelled; games already running finish during
-            # the shutdown and are logged too, so every completed game is kept.
-            pool.shutdown(cancel_futures=True)
-            for future in [f for f in futures if f.done() and not f.cancelled()]:
-                if future.exception() is None or isinstance(future.exception(), Exception):
+            cgroups.mkdir()
+        except OSError:
+            cgroups = None
+    records, futures, pool = [], {}, ProcessPoolExecutor(workers)
+    try:
+        with (output / 'games.jsonl').open('wb') as log:
+            def keep(future):
+                g = futures.pop(future)
+                try:
+                    record = future.result()
+                except Exception as error:
+                    record = _void(g, by_name[g['opening']], max_move, clock, f'worker failed: {error!r}')
+                log.write(canonical(record) + b'\n')
+                log.flush()
+                records.append(record)
+            try:
+                for g in schedule:
+                    futures[pool.submit(play_game, _seat(g['first'], players[g['first']], g['seed']),
+                                        _seat(g['second'], players[g['second']], g['seed']), output / 'games' / g['id'],
+                                        by_name[g['opening']]['start'], max_move, clock, g['id'], cgroups=cgroups)] = g
+                for future in as_completed(list(futures)):
                     keep(future)
-            raise
-    pool.shutdown()
+            except BaseException:
+                # Pending games are cancelled. A signal to this process alone
+                # lets running games finish during the shutdown, and they are
+                # logged; a terminal's Ctrl-C also interrupts the workers, whose
+                # games then end without a record, and idle workers die, so the
+                # pool breaks and terminates the rest. Only games that completed
+                # are logged, never a void placeholder.
+                pool.shutdown(cancel_futures=True)
+                for future in [f for f in futures if f.done() and not f.cancelled() and f.exception() is None]:
+                    keep(future)
+                raise
+        pool.shutdown()
+    finally:
+        # Every player of this league ran under its cgroup: whatever a
+        # terminated worker could not clean up is killed here.
+        if cgroups is not None:
+            remove_cgroup(cgroups)
     records.sort(key=lambda r: r['game'])
     analysis = (analyze(records, plan, build_tools(output.parent / 'arena-tools'), analyze_bound, workers)
                 if analyze_bound else None)

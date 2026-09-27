@@ -462,6 +462,32 @@ class LeagueTests(unittest.TestCase):
             self.assertEqual((st['decided'], st['void']), (2, []))
             self.assertEqual((st['players']['poison']['wins'], st['players']['poison']['losses']), (0, 2))
 
+    def test_group_interrupt_logs_only_completed_games(self):
+        # A terminal's Ctrl-C reaches the workers too: idle ones die, the pool
+        # breaks, and games cut short must not be logged, not even as void.
+        with tempfile.TemporaryDirectory() as d:
+            d = Path(d); out = d / 'league'
+            (d / 'slow.py').write_text('import sys, time\nsys.stdin.readline()\n'
+                                       'print(\'{"type": "ready"}\', flush=True)\ntime.sleep(60)\n')
+            code = textwrap.dedent(f'''
+                import sys
+                from sylver.arena.league import run_league, suite
+                from sylver.arena.players import builtin_command
+                players = {{n: {{'name': n, 'command': builtin_command('random', seed=i)}} for i, n in enumerate(('r1', 'r2'))}}
+                players['slow'] = {{'name': 'slow', 'command': [sys.executable, {str(d / 'slow.py')!r}]}}
+                run_league(players, suite('enders')[:1], {str(out)!r}, workers=8)
+            ''')
+            league = subprocess.Popen([sys.executable, '-c', code], stderr=subprocess.DEVNULL, start_new_session=True)
+            log, deadline = out / 'games.jsonl', time.monotonic() + 120
+            while not (log.exists() and log.read_bytes().count(b'\n') >= 2) and time.monotonic() < deadline:
+                time.sleep(.02)
+            os.killpg(league.pid, signal.SIGINT)
+            league.wait(120)
+            logged = [json.loads(line) for line in log.read_text().splitlines()]
+            self.assertEqual(sorted(r['game'] for r in logged), ['0000-ender-4-5-r1-vs-r2', '0002-ender-4-5-r2-vs-r1'])
+            left = subprocess.run(['pgrep', '-f', str(d / 'slow.py')], capture_output=True, text=True).stdout.split()
+            self.assertEqual(left, [])
+
     def test_bad_clock_is_rejected_before_any_game(self):
         players = {n: {'name': n, 'command': builtin_command(n)} for n in ('smallest', 'random')}
         with tempfile.TemporaryDirectory() as d:
