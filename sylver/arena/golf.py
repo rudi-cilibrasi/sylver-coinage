@@ -318,9 +318,10 @@ class ShortProver:
     memo) to find a finite witness for each child. Nothing it returns is
     trusted; admission re-verifies the whole certificate.
     """
-    def __init__(self, hints, binary, odd_limit=301, seconds=120., depth=3, max_queries=200):
+    def __init__(self, hints, binary, odd_limit=301, seconds=120., depth=3, max_queries=200, seeds=None):
         self.hints, self.binary, self.odd_limit, self.seconds, self.depth = hints, binary, odd_limit, seconds, depth
         self.known = {}
+        self.seeds = seeds or {}  # position key -> replies to try first (e.g. campaign records)
         self.queries = max_queries  # exact-query budget across the whole proof
 
     def outcome(self, p):
@@ -364,9 +365,12 @@ class ShortProver:
         if info['gcd'] == 1:
             return {key(c): {'rule': 'finite', 'outcome': 'N'}} if self.outcome(c) == 'N' else None
         replies = list(info['moves']) + [r for r in range(3, self.odd_limit + 1, 2) if r not in info['moves']]
+        seeded = [r for r in self.seeds.get(key(c), ()) if r in replies]
+        replies = seeded + [r for r in replies if r not in seeded]
         finite = [r for r in replies if profile(position_of(c, r))['gcd'] == 1]
-        # Hinted finite witnesses first, then exact search in increasing Frobenius order.
-        finite.sort(key=lambda r: (self.hints.get(position_of(c, r)) != 'P', profile(position_of(c, r))['frobenius'], r))
+        # Seeds, then hinted finite witnesses, then exact search by increasing Frobenius.
+        finite.sort(key=lambda r: (r not in seeded, self.hints.get(position_of(c, r)) != 'P',
+                                   profile(position_of(c, r))['frobenius'], r))
         for r in finite:
             g = position_of(c, r)
             if self.outcome(g) == 'P':
