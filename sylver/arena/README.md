@@ -356,12 +356,14 @@ certificate digest, root, `C`, and state count; `book render` writes
 
 ### The Book of W
 
-`W={16,26,62,98}` is the node of the move-26 program whose P outcome would
-establish `Q={16,26,88,98}` N. `python -m sylver.arena book-w --output DIR`
-certifies W's covered obligations into The Book and writes
-[`book/W.md`](book/W.md), a table of all 52 obligations: certified by a
-self-contained Book certificate, depending on a named infinite P position,
-or open.
+`W={16,26,62,98}` is the node of the move-26 program whose P outcome
+establishes `Q={16,26,88,98}` N; W is P
+([campaign result](../campaigns/w-p-2026-09-27/RESULT.md)).
+`python -m sylver.arena book-w --output DIR` certifies W's covered
+obligations into The Book and writes [`book/W.md`](book/W.md), a table of
+all 52 obligations: certified by a self-contained Book certificate, covered
+by a replayed finite witness not yet in the Book, depending on a named
+infinite P position, or open.
 
 - Obligations whose recorded refutation is finite (an odd reply reaching a
   finite P position, or an odd move whose position is finite) are golf
@@ -378,8 +380,11 @@ or open.
   whose certificates rest on Sicherman's `{8,10,22}` periodicity result and
   Blok's pairing family), and 20 by 14, reaching `R={14,16,20,26}`, whose
   Quiet End cover needs only finite witnesses and `{4,6}`.
-- `--exclude` leaves out moves whose leaves are too large to replay alongside
-  other work (the arena verifier holds each state in 16 words).
+- `--exclude` leaves moves out of the golf rows and the short-cover prover,
+  for example moves whose leaves are too large to replay alongside other
+  work (the arena verifier holds each state in 16 words) or whose searches
+  are known to fail; curator certificates passed with `--certificates` are
+  still admitted.
 
 ## Game arena
 

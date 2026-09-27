@@ -15,15 +15,28 @@ exceeds 10^12 states.
 
 ## Headline results
 
-- **The Book of W (September 27):** 42 of W's 50 covered obligations now
-  have self-contained certificates in [The Book](sylver/arena/book/W.md),
-  each replayed by the fixed verifier with a fresh memo and no inherited
-  cache. Searching for finite witnesses removed the dependence of W's moves
-  8, 10, 14, 20, and 24 on Sicherman's `{8,10,22}` periodicity result and
-  Blok's pairing family (for example, 8 is answered by 49 and 20 by 14,
-  reaching the Quiet End node `{14,16,20,26}`). Five covered moves still
-  rest on theorem-backed positions, three large new leaves await their Book
-  replay, and two moves are open.
+- **W={16,26,62,98} is P (September 27):** W's last open move, 108, is
+  answered by **213**: `{16,26,62,98,108,213}` is P, and fresh native and
+  Python replays agree on exactly **156,823,029 states**. All **52** of W's
+  Quiet End obligations are now covered, so **W is P** and hence
+  **Q={16,26,88,98} is N** (Q+62 = W); U={16,26,88} P now needs only
+  X={16,26,82,88} N. New finite witnesses also answer W's moves 72 (by
+  107), 56 (by 97) and 66 (by 263), so W no longer depends on Sicherman's
+  published `{16,26,62,72,82}`; through moves 12 and 36 it still rests on
+  three published P-positions that the repository's certificates assume
+  (`{8,10,12,14}`, `{8,12,26,30}`, `{8,10,22}`). The searches used the new
+  parallel engine's shared-memo sweeps. See the
+  [result](sylver/campaigns/w-p-2026-09-27/RESULT.md) and the
+  [obligation table](https://rudi-cilibrasi.github.io/sylver-coinage/w.html).
+- **The Book of W (September 27):** 45 of W's 52 obligations have
+  self-contained certificates in [The Book](sylver/arena/book/W.md), each
+  replayed by the fixed verifier with a fresh memo and no inherited cache.
+  Searching for finite witnesses removed the dependence of W's moves 8, 10,
+  14, 20, 24, 56, 66, and 72 on theorem-backed or published positions (for
+  example, 8 is answered by 49 and 20 by 14, reaching the Quiet End node
+  `{14,16,20,26}`). Five more moves are covered by replayed finite
+  witnesses whose large leaves await their Book replay; moves 12 and 36
+  still rest on theorem-backed positions.
 - **W frontier reduced to one move (September 27):** after move 118 from
   `W={16,26,62,98}`, reply **167** reaches the finite P-position
   `{16,26,62,98,118,167}`. Fresh native and Python replays agree on P and on

@@ -251,12 +251,27 @@ class BookOfWTests(unittest.TestCase):
         groups = [set(W_WITNESSED), set(W_FINITE), set(W_INFINITE), set(W_OPEN)]
         self.assertEqual(sorted(set().union(*groups)), moves)
         self.assertEqual(sum(map(len, groups)), len(moves))
-        self.assertEqual(len(w_targets()), 38)
+        self.assertEqual(len(w_targets()), 43)
+        self.assertEqual(W_OPEN, ())
         for m, reply in W_WITNESSED.items():
             child = position((*position((*W, m)), reply))
             self.assertEqual(profile(child)['gcd'], 1, m)   # a finite destination
         for m in W_FINITE:
             self.assertEqual(profile(position((*W, m)))['gcd'], 1, m)
+
+    def test_book_of_w_page_is_current_and_every_witness_has_evidence(self):
+        # W.md must be the renderer's output for the committed Book, and every
+        # move the table lists as finitely witnessed must be covered in the W
+        # audit by a Book certificate or a replayed finite witness.
+        import json
+        from sylver.arena.golf import W_WITNESSED, render_w
+        root = Path(__file__).resolve().parents[2]
+        book = root / 'sylver/arena/book'
+        self.assertEqual((book / 'W.md').read_text(), render_w(book))
+        audit = json.loads((root / 'sylver/campaigns/w-p-2026-09-27/audit.json').read_text())
+        self.assertEqual(audit['outcome'], 'P')
+        for m in W_WITNESSED:
+            self.assertIn(audit['obligations'][str(m)]['evidence'], ('book', 'finite-witness'), m)
 
     def test_short_prover_certificates_pass_the_referee(self):
         from sylver.arena.golf import ShortProver

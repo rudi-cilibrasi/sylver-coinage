@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>W is P</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='13' font-size='13'%3E%E2%9A%92%3C/text%3E%3C/svg%3E">
+<style>
+  /* The Book's print-like typography: black on white in every color scheme. */
+  body {
+    margin: 0 auto; max-width: 58rem; padding: 2.2rem 1.4rem 4rem;
+    background: #ffffff; color: #000000;
+    font-family: "Latin Modern Roman", "CMU Serif", "Computer Modern",
+                 Georgia, "Times New Roman", serif;
+    font-size: 17px; line-height: 1.45;
+  }
+  h1 { font-size: 1.9rem; font-weight: normal; margin: 0 0 1rem; text-wrap: balance; }
+  h2 { font-size: 1.2rem; font-weight: normal; font-style: italic; margin: 1.6rem 0 .4rem; }
+  p, li { max-width: 42rem; }
+  p { margin: .5rem 0; }
+  a { color: #000; }
+  .tablewrap { overflow-x: auto; margin: 1.2rem 0; }
+  table { border-collapse: collapse; margin: 0 auto; font-variant-numeric: tabular-nums; border: 1.5px solid #000; }
+  td, th { border: 1px solid #000; padding: .26rem .5rem; font-size: .86rem; white-space: nowrap; }
+  th { font-weight: bold; text-align: center; }
+  td.num { text-align: right; }
+  td.pos { font-family: "Latin Modern Mono", "CMU Typewriter Text", Menlo, monospace; font-size: .8rem; }
+  button {
+    font: inherit; font-size: .82rem; padding: .05rem .55rem; border: 1px solid #000;
+    border-radius: 0; background: #fff; color: #000; cursor: pointer;
+  }
+  button:hover, button:focus-visible { background: #000; color: #fff; }
+  button:disabled { cursor: default; background: #fff; color: #000; opacity: .5; }
+  .ok { font-weight: bold; }
+  .bad { font-weight: bold; text-decoration: underline; }
+  .muted { font-style: italic; }
+  #status { font-style: italic; }
+  .footnote { font-size: .85rem; margin-top: 2.2rem; border-top: 1px solid #000; padding-top: .6rem; }
+  code { font-size: .9em; }
+</style>
+</head>
+<body>
+<h1>W = {16,26,62,98} is P</h1>
+<p>
+  In Sylver Coinage, W is the position after the numbers 16, 26, 62 and 98
+  have been named. Every number W generates is even, so infinitely many
+  moves remain; but W is <i>short</i>, so by the Quiet End Theorem it is
+  a P-position (the player to move loses) exactly when each of its 52
+  <i>obligations</i>, the moves listed below, leads to an N-position.
+  Each one does. For moves 12 and 36 the evidence goes through repository
+  certificates that assume three published P-positions ({8,10,12,14} and
+  {8,12,26,30} from Blok's pairing family, and Sicherman's {8,10,22}); the
+  <a href="https://github.com/rudi-cilibrasi/sylver-coinage/blob/main/sylver/campaigns/w-p-2026-09-27/RESULT.md">result</a>
+  lists everything the claim rests on.
+</p>
+<p>
+  <b>Consequences.</b> Q = {16,26,88,98} is N, because naming 62 from Q
+  reaches W. If U = {16,26,88} is P, then 88 answers 26 and the reply 26 to
+  the opening 16 loses; U P now requires only that X = {16,26,82,88} is N.
+  X, U, move 26, and the opening 16 remain open.
+</p>
+<p>
+  <b>Check it yourself.</b> Book certificates with small finite leaves can
+  be replayed here by the independent JavaScript checker and in-browser
+  solver of <a href="book.html">The Book</a>. Larger witnesses link to their
+  native and Python replay receipts; two moves rest on repository
+  certificates of infinite P-positions, named in their rows.
+</p>
+<p id="status">Loading the audit from the repository&hellip;</p>
+<div class="tablewrap">
+  <table id="w" hidden>
+    <thead><tr><th>Move</th><th>Position</th><th>Evidence</th><th>Answer</th><th>States</th><th>Check</th></tr></thead>
+    <tbody></tbody>
+  </table>
+</div>
+<p class="footnote">
+  Source: <a href="https://github.com/rudi-cilibrasi/sylver-coinage/blob/main/sylver/campaigns/w-p-2026-09-27/RESULT.md">the campaign result</a>
+  and its <code>audit.json</code>, produced by <code>python sylver/campaigns/w-p-2026-09-27/audit.py</code>,
+  which recomputes W's obligations with the arena referee's profile. Back to
+  <a href="book.html">The Book</a>, the <a href="index.html">solver demo</a>, or the
+  <a href="tables.html">campaign tables</a>.
+</p>
+<script src="solver.js"></script>
+<script src="book.js"></script>
+<script src="w.js"></script>
+<script>
+"use strict";
+const LOCAL = new URLSearchParams(location.search).has("local");   // serve the checkout: /docs/w.html?local
+const RAW = LOCAL ? "../" : "https://raw.githubusercontent.com/rudi-cilibrasi/sylver-coinage/main/";
+const BLOB = "https://github.com/rudi-cilibrasi/sylver-coinage/blob/main/";
+const BROWSER_LIMIT = 140;   // largest leaf Frobenius number the page will replay
+
+function solveInBrowser(gens) {
+  return new SylverSolver(gens, 6000000).solve().winningMove === null ? "P" : "N";
+}
+
+function cell(tr, cls, content) {
+  const td = document.createElement("td");
+  td.className = cls;
+  if (content instanceof Node) td.appendChild(content); else td.textContent = content;
+  tr.appendChild(td);
+  return td;
+}
+
+async function addCheck(check, r) {
+  try {
+    const proof = await (await fetch(RAW + r.link)).json();
+    const leaf = largestLeaf(proof);
+    if (leaf > BROWSER_LIMIT) {
+      check.className = "muted"; check.textContent = "leaf too large (F=" + leaf + ")";
+      return;
+    }
+    const button = document.createElement("button");
+    button.textContent = "Check";
+    button.addEventListener("click", () => {
+      button.disabled = true; button.textContent = "checking…";
+      setTimeout(() => {
+        const label = checkLabel(checkCertificate(proof, solveInBrowser));
+        const span = document.createElement("span");
+        span.className = label.cls; span.textContent = label.text;
+        check.textContent = ""; check.appendChild(span);
+      }, 20);
+    });
+    check.className = ""; check.textContent = ""; check.appendChild(button);
+  } catch (e) {
+    check.className = "muted"; check.textContent = "could not load the certificate";
+  }
+}
+
+async function main() {
+  const status = document.getElementById("status");
+  let described;
+  try {
+    const audit = await (await fetch(RAW + "sylver/campaigns/w-p-2026-09-27/audit.json")).json();
+    described = describeAudit(audit);
+  } catch (e) {
+    status.textContent = "Could not load the audit: " + e.message +
+      ". The page reads sylver/campaigns/w-p-2026-09-27/audit.json from GitHub; try again later.";
+    return;
+  }
+  const body = document.querySelector("#w tbody");
+  const pending = [];
+  for (const r of described.rows) {
+    const tr = document.createElement("tr");
+    cell(tr, "num", String(r.move));
+    cell(tr, "pos", r.position);
+    cell(tr, "", r.evidence);
+    const answer = r.link ? document.createElement("a") : document.createElement("span");
+    if (r.link) answer.href = BLOB + r.link;
+    answer.textContent = r.answer;
+    if (r.title) answer.title = r.title;
+    cell(tr, "", answer);
+    cell(tr, "num", r.states === null ? "" : r.states.toLocaleString("en-US"));
+    const check = cell(tr, "muted", "");
+    if (r.checkable) {
+      check.textContent = "loading…";
+      pending.push(addCheck(check, r));
+    } else {
+      check.textContent = r.evidence === "finite witness" ? "native + Python" : "repository";
+    }
+    body.appendChild(tr);
+  }
+  document.getElementById("w").hidden = false;
+  const counts = Object.entries(described.counts).map(([k, n]) => n + " by " + k).join(", ");
+  if (described.outcome === "P" && described.failures.length === 0 && described.rows.length === described.total) {
+    status.textContent = described.total + " obligations, all covered (audit outcome P): " + counts + ".";
+  } else {
+    status.textContent = "The audit does not currently report P (outcome " + described.outcome + "): " +
+      described.rows.length + " of " + described.total + " obligations covered; " +
+      described.failures.join("; ") + ".";
+    status.className = "bad";
+  }
+  await Promise.all(pending);
+}
+main();
+</script>
+</body>
+</html>

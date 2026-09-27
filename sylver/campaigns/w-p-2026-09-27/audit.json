@@ -1,0 +1,401 @@
+{
+  "position": [
+    16,
+    26,
+    62,
+    98
+  ],
+  "gcd": 2,
+  "tail": "quiet-end-v1",
+  "complete": true,
+  "half_frobenius": 67,
+  "obligations": {
+    "2": {
+      "destination_of_move": "2",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/b1093dce4841c31f24bda60b40fec081b55c27b18ba5cc8212c699d776b7b5cb.json",
+      "C": 128,
+      "states": 1
+    },
+    "3": {
+      "destination_of_move": "3,16,26",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/9b828853618c8002f7b83e929865eb24860b6827575b513bbc1e69f78f9ff250.json",
+      "C": 81,
+      "states": 2
+    },
+    "4": {
+      "destination_of_move": "4,26",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/740b892697f5eedf6ad05834283171dde4c4d4b298e0b200a82e6b81f423186a.json",
+      "C": 286,
+      "states": 1
+    },
+    "5": {
+      "destination_of_move": "5,16",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/ab7adc6e516738848c65abdc44f8f3bc44f7b9d6bfdf2b6eca02eb62e92c69ee.json",
+      "C": 75,
+      "states": 62
+    },
+    "6": {
+      "destination_of_move": "6,16,26",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/900a244a55814f2ef77a305f3e27628df351dc79be7b436668ec41435b0e045a.json",
+      "C": 146,
+      "states": 21
+    },
+    "7": {
+      "destination_of_move": "7,16,26",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/8cab55be11456601f7d2508bd358dd9d3397e3ae98e7c61cf8fb91ab7ce6cfda.json",
+      "C": 81,
+      "states": 31
+    },
+    "8": {
+      "destination_of_move": "8,26,62",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/62da5195f521061296e3e005a1e43013adbd83357aecd4c004268f4825a177e0.json",
+      "C": 155,
+      "states": 18604
+    },
+    "9": {
+      "destination_of_move": "9,16,26",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/b8a601fd7f58683017ed71998d8e813f205aa76e1ecd161f5e17b6c3dea772b2.json",
+      "C": 81,
+      "states": 340
+    },
+    "10": {
+      "destination_of_move": "10,16",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/051018b08de4030de03bd8a7dd303322b0356ceef11934bc38b10ef5dc15386b.json",
+      "C": 144,
+      "states": 213
+    },
+    "11": {
+      "destination_of_move": "11,16,26,62",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/b1770c6a93bfa277d74825e95d41e1bc9a278c8bd7b350284d590c09adb8e737.json",
+      "C": 89,
+      "states": 4089
+    },
+    "12": {
+      "destination_of_move": "12,16,26",
+      "evidence": "certified-node",
+      "reply": 14,
+      "destination": "12,14,16",
+      "certificate": "short cover in the September 5 release certificate",
+      "source": "sylver/publication/plan2-2026-09-05/evidence/certificate.json"
+    },
+    "14": {
+      "destination_of_move": "14,16,26",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/e8fd927cdd49635e15da8328a442f367fb993e8624cf97554fda80cf23044b74.json",
+      "C": 159,
+      "states": 5559
+    },
+    "15": {
+      "destination_of_move": "15,16,26",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/ade764fb184b370b56b40124c8ed9e4a49854df8fb6fc22b90d0a4461de7259e.json",
+      "C": 83,
+      "states": 10911
+    },
+    "17": {
+      "destination_of_move": "16,17,26,62",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/3a5fee3edd25d10240d1bb245a041772e7a27c829ec53d8684b137345240cd59.json",
+      "C": 89,
+      "states": 49212
+    },
+    "18": {
+      "destination_of_move": "16,18,26",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/8d9b089d396675410817186b207e274fd7af8a997d6ca9272796f095e4d4115a.json",
+      "C": 150,
+      "states": 50
+    },
+    "19": {
+      "destination_of_move": "16,19,26,62,98",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/8354a594bdc1385fa0f945cbe723d89c58c48211f38f3219a4b46dc941401246.json",
+      "C": 95,
+      "states": 67254
+    },
+    "20": {
+      "destination_of_move": "16,20,26",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/c4c7badab6907ab40b1bcc4c729584282ed5bc50c4f4d39b17a822a8ff72fe5f.json",
+      "C": 2181,
+      "states": 11114
+    },
+    "22": {
+      "destination_of_move": "16,22,26,62",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/d4d1a89d4b02b65963d5f4900b4215722254609f2474598a60551ab10b53bfc9.json",
+      "C": 165,
+      "states": 5956
+    },
+    "23": {
+      "destination_of_move": "16,23,26",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/2e89fd1748499eddbd04082ab5eccf195359d1629ec7b4f0a3a4147a6f674fa0.json",
+      "C": 83,
+      "states": 10306
+    },
+    "24": {
+      "destination_of_move": "16,24,26,62",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/32d5c7f20c2c06b17c9a492ee4fb3926d6be5b561f692c29cef2c0dbe87b40cc.json",
+      "C": 165,
+      "states": 7377
+    },
+    "25": {
+      "destination_of_move": "16,25,26,62",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/a770b106a0117c8a83c88af667cb7eefc23489ffc968e50e1136b0d3ec8d05f4.json",
+      "C": 89,
+      "states": 186709
+    },
+    "27": {
+      "destination_of_move": "16,26,27,62,98",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/eaeace65116ca19b932a63bd3332bf5453b62abb2f014add633e1e4a2974ac63.json",
+      "C": 95,
+      "states": 61349
+    },
+    "28": {
+      "destination_of_move": "16,26,28,62",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/67f4486c909efd0a6005732b8ac82b72dc00d04457e3f055698e4b2f2bb0f0a0.json",
+      "C": 171,
+      "states": 105133
+    },
+    "30": {
+      "destination_of_move": "16,26,30",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/128c55504303c65fb5ad38790628958f1ed624360d03e04c27195ec65b6b0ef0.json",
+      "C": 159,
+      "states": 2378741
+    },
+    "33": {
+      "destination_of_move": "16,26,33,62",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/63b884ae379f96cfee4348ef1ff1a2d014d7fdb805994f04da87642fd8062bf1.json",
+      "C": 89,
+      "states": 1533942
+    },
+    "34": {
+      "destination_of_move": "16,26,34,62",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/ab71122ee8646ce095a8af158ed39dfe111379558d9f89c7cd03946d052a4c38.json",
+      "C": 171,
+      "states": 800890
+    },
+    "35": {
+      "destination_of_move": "16,26,35,62,98",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/999fc16a5482b054c574782a8edf71db98fd3303ac06d59e45e0bfa8cbd22ca6.json",
+      "C": 177,
+      "states": 209885
+    },
+    "36": {
+      "destination_of_move": "16,26,36",
+      "evidence": "certified-node",
+      "reply": 56,
+      "destination": "16,26,36,56",
+      "certificate": "node V of sylver/short_certificates.py",
+      "source": "sylver/short_certificates.py"
+    },
+    "38": {
+      "destination_of_move": "16,26,38,62,98",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/cba5a4ef888819aa842c51f41c70e89e8e620d9f4d1d3dbd5993e077b7928b70.json",
+      "C": 183,
+      "states": 3240895
+    },
+    "40": {
+      "destination_of_move": "16,26,40,62",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/92612485991de21611a51c9d54dc5c25ccbae1e39d59f082c1e3465246aae5c5.json",
+      "C": 165,
+      "states": 3740
+    },
+    "41": {
+      "destination_of_move": "16,26,41,62",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/bab485ad11e98b501da8e30a370de5979b0a5951eaf0a5f511f294064406c52b.json",
+      "C": 89,
+      "states": 45905
+    },
+    "43": {
+      "destination_of_move": "16,26,43,62,98",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/2816fdfd1e63988201ba023d8abb887dc9a691bdf7c598e18d5745406995419b.json",
+      "C": 95,
+      "states": 4571992
+    },
+    "44": {
+      "destination_of_move": "16,26,44,62,98",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/20d2816d44368ae517f6db5d3142fc41cd19461372497196215c58708984a1a4.json",
+      "C": 177,
+      "states": 112852
+    },
+    "46": {
+      "destination_of_move": "16,26,46",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/bea222562a17411781569f8df3f32cebc72f55cbeddac17d7ecf83e6642c4c36.json",
+      "C": 159,
+      "states": 47285
+    },
+    "50": {
+      "destination_of_move": "16,26,50,62",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/a04c075ab8480eb871a21a0c38541c1dca983bc0a750e9103956dfe312e74405.json",
+      "C": 171,
+      "states": 833424
+    },
+    "51": {
+      "destination_of_move": "16,26,51,62,98",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/765b38f17c6a7f6cf98fc3a0247b3fad88eabcfad867b601cb1caf16fedcc310.json",
+      "C": 95,
+      "states": 9164251
+    },
+    "54": {
+      "destination_of_move": "16,26,54,62,98",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/0c0885bd076bbf65cc87f9a9557c5fc072d203887d882d4ab2247a1caa9e0b0d.json",
+      "C": 177,
+      "states": 1191332
+    },
+    "56": {
+      "destination_of_move": "16,26,56,62",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/89945972a3b8b256f239b3d4f1c7dbc38eaca3a77f6d73695360829ab5d2bd1d.json",
+      "C": 171,
+      "states": 25236025
+    },
+    "59": {
+      "destination_of_move": "16,26,59,62,98",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/82802f7af4ff26dd239c677e35f4e51863d77c817bb7ed1509a7c60dac0c8314.json",
+      "C": 183,
+      "states": 4458041
+    },
+    "60": {
+      "destination_of_move": "16,26,60,62,98",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/03b601ce6a59d30bac98a22d2c8a6d6bb85e142edea2f0056e44149db4ed88a8.json",
+      "C": 183,
+      "states": 611082
+    },
+    "66": {
+      "destination_of_move": "16,26,62,66",
+      "evidence": "finite-witness",
+      "reply": 263,
+      "destination": "16,26,62,66,263",
+      "certificate": "sylver/campaigns/w-p-2026-09-27/w66-certificate.json",
+      "receipt": "sylver/campaigns/w-p-2026-09-27/verification/w66/receipt.json",
+      "states": 103189655
+    },
+    "67": {
+      "destination_of_move": "16,26,62,67,98",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/6ce7f9bb166c55cb6af7187f728afab808b53dcfc244a67969e7250cf5eeb460.json",
+      "C": 95,
+      "states": 2049906
+    },
+    "70": {
+      "destination_of_move": "16,26,62,70,98",
+      "evidence": "finite-witness",
+      "reply": 169,
+      "destination": "16,26,62,70,98,169",
+      "certificate": "sylver/campaigns/w-two-2026-09-27/w70-certificate.json",
+      "receipt": "sylver/campaigns/w-two-2026-09-27/verification/w70/receipt.json",
+      "states": 79594540
+    },
+    "72": {
+      "destination_of_move": "16,26,62,72",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/9540bf1fb03453b3161108fc0a25dc615ffed7f84bd0cf64c5d76de8e8cee25b.json",
+      "C": 174,
+      "states": 50192273
+    },
+    "76": {
+      "destination_of_move": "16,26,62,76,98",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/0929477a1cdc7589b9248722fa4beb23a91e700d2bb9fb29f6b9c4bdc17d76e5.json",
+      "C": 183,
+      "states": 4294839
+    },
+    "82": {
+      "destination_of_move": "16,26,62,82",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/416d75e96f58bee98a741c1a62bea26344cfb0133ab2050cc2f29db180cacc2b.json",
+      "C": 171,
+      "states": 732964
+    },
+    "86": {
+      "destination_of_move": "16,26,62,86,98",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/c2324dac84a5a0ef86d9ea6f002eaf8e5249ee033e99554fb40bd21f9e6e0bf3.json",
+      "C": 186,
+      "states": 68758240
+    },
+    "92": {
+      "destination_of_move": "16,26,62,92,98",
+      "evidence": "finite-witness",
+      "reply": 139,
+      "destination": "16,26,62,92,98,139",
+      "certificate": "sylver/campaigns/w-three-2026-09-27/w92-certificate.json",
+      "receipt": "sylver/campaigns/w-three-2026-09-27/verification/w92/receipt.json",
+      "states": 80500948
+    },
+    "102": {
+      "destination_of_move": "16,26,62,98,102",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/9bf4298ea0a4dc6adc2dbe4de8a433661d3a3dde45a3f4f41e5a0bc338856de2.json",
+      "C": 187,
+      "states": 44985582
+    },
+    "108": {
+      "destination_of_move": "16,26,62,98,108",
+      "evidence": "finite-witness",
+      "reply": 213,
+      "destination": "16,26,62,98,108,213",
+      "certificate": "sylver/campaigns/w-p-2026-09-27/w108-certificate.json",
+      "receipt": "sylver/campaigns/w-p-2026-09-27/verification/w108/receipt.json",
+      "states": 156823029
+    },
+    "118": {
+      "destination_of_move": "16,26,62,98,118",
+      "evidence": "finite-witness",
+      "reply": 167,
+      "destination": "16,26,62,98,118,167",
+      "certificate": "sylver/campaigns/w-one-2026-09-27/w118-certificate.json",
+      "receipt": "sylver/campaigns/w-one-2026-09-27/verification/w118/receipt.json",
+      "states": 115933058
+    },
+    "134": {
+      "destination_of_move": "16,26,62,98,134",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/9b60246be187ba55809909fe11977be059831e816ca98adc7a868b229ed4d4bd.json",
+      "C": 187,
+      "states": 37192385
+    }
+  },
+  "failures": [],
+  "summary": {
+    "obligations": 52,
+    "covered": 52,
+    "by_evidence": {
+      "book": 45,
+      "certified-node": 2,
+      "finite-witness": 5
+    }
+  },
+  "outcome": "P"
+}
