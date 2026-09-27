@@ -22,12 +22,15 @@ from pathlib import Path
 import reprlib
 import resource
 import select
+import shutil
 import signal
 import subprocess
+import tempfile
 import threading
 import time
 import traceback
 
+from . import sandbox
 from .common import canonical, sha, write
 from .game import Position
 
@@ -180,6 +183,7 @@ class Seat:
     """One player process: its cgroup or session, clock, and stderr tail."""
     def __init__(self, name, player, clock, max_move, cgroups=None):
         self.name, self.player, self.proc, self.cgroups, self.cgroup = name, player, None, cgroups, None
+        self.scratch = None
         self.accounting = 'session'
         self.remaining, self.last, self.total = clock['cpu_base'], 0.0, 0.0
         self.outside, self.tail, self.stopping = set(), b'', False
@@ -192,6 +196,14 @@ class Seat:
         """Start the player and complete the handshake; setup CPU is capped
         separately, and the game clock starts from the CPU used by ready."""
         start, command = time.monotonic(), [str(c) for c in self.player['command']]
+        box = self.player.get('sandbox')
+        if box is not None:
+            # Inside the cgroup wrapper, so the move into the cgroup happens
+            # before the sandbox closes the filesystem. A missing backend is
+            # the referee's failure, never the player's loss.
+            self.scratch = tempfile.mkdtemp(prefix='sylver-player-')
+            command = sandbox.wrap(command, [str(x) for x in box.get('read', ())], bool(box.get('network')), self.scratch)
+            self.setup['sandbox'] = sandbox.backend()
         if self.cgroups is not None:
             cgroup = self.cgroups / f'sylver-game-{os.getpid()}-{time.monotonic_ns()}-{self.name}'
             try:
@@ -275,6 +287,9 @@ class Seat:
         if self.cgroup is not None:
             remove_cgroup(self.cgroup)
             self.cgroup = None
+        if self.scratch is not None:
+            shutil.rmtree(self.scratch, ignore_errors=True)
+            self.scratch = None
 
     def alive(self):
         """Raise EOFError once the player has exited, even if a child still

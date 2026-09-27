@@ -361,13 +361,17 @@ Programs also play Sylver Coinage against each other under CPU clocks.
 the outcome of any position. Nothing here changes the proof referee, the
 episode accountant, or any file pinned by a recorded profile.
 
-> **Only run trusted players.** Players are not isolated from each other or
-> from the referee: each runs as this user without a sandbox, so a hostile
-> player can write into its opponent's stdout pipe through
-> `/proc/PID/fd/1` (the referee then records the opponent as naming 1),
-> signal or trace it, move itself out of its cgroup, or read and change
-> files, including other games' records. Running players under the arena's
-> sandbox launcher (`sandbox.py`) is the planned fix.
+> **Players run sandboxed by default.** Each player runs under the arena's
+> sandbox launcher (`sandbox.py`: Bubblewrap, or Landlock plus seccomp where
+> user namespaces are unavailable) with a minimal environment. It can read only
+> its own files (built-ins: the checkout, the interpreter, and the solver) and
+> write only a scratch directory, and it cannot read other processes' `/proc`
+> entries, signal or trace them, or leave its cgroup. A hostile player could
+> otherwise write into its opponent's stdout pipe through `/proc/PID/fd/1`
+> and have the referee record the opponent naming 1; a regression test runs
+> exactly that attack and checks it fails. `--no-sandbox` restores unsandboxed
+> play for trusted local programs, and reports then carry an isolation
+> warning.
 
 ```sh
 python -m sylver.arena play exact book --start 5,7 --games 2 --output /tmp/game
@@ -449,10 +453,13 @@ or closing its pipes (`crashed`), or failing setup (`setup-failed`,
 (`opponent-must-name-1`). An exception in the referee voids the game; void
 games are listed and excluded from ratings.
 
-**Limitations.** A same-user process can move itself out of its cgroup (by
-writing its pid to an ancestor's `cgroup.procs`) and so escape both the
-clock and the final kill; under the `/proc` fallback, the escapes described
-above apply. See the isolation warning above: every player is trusted.
+**Limitations.** Without the sandbox (`--no-sandbox`), a same-user process
+can move itself out of its cgroup (by writing its pid to an ancestor's
+`cgroup.procs`) and so escape both the clock and the final kill, and under
+the `/proc` fallback the escapes described above apply; such runs are for
+trusted programs only. Sandboxed players cannot write cgroup files. Under the
+Landlock backend, path existence and metadata stay visible (see the sandbox
+section above).
 
 ### Built-in players
 

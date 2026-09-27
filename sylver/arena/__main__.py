@@ -55,10 +55,12 @@ def main():
     p=commands.add_parser('admit');p.add_argument('episode',type=Path);p.add_argument('--output',type=Path,required=True)
     p=commands.add_parser('serve');p.add_argument('bundle',type=Path);p.add_argument('--output',type=Path,required=True)
     p=commands.add_parser('_serve_worker',help=argparse.SUPPRESS);p.add_argument('bundle',type=Path);p.add_argument('output',type=Path);p.add_argument('binary',type=Path);p.add_argument('hints',nargs='?')
-    trusted=('Players run as this user without a sandbox and can interfere with each other (for example, '
-             "write into the opponent's pipes through /proc); run only trusted programs. Game results are not proofs.")
+    trusted=('Players run sandboxed by default (sylver/arena/sandbox.py), so they cannot reach each other or the '
+             "referee through /proc, signals, or ptrace. --no-sandbox runs them as this user with no such isolation "
+             '(a player could then write into its opponent\'s pipes); use it only for trusted programs. Game results are not proofs.')
     for name in ('play','league'):
-        p=commands.add_parser(name,description=trusted,help=f'{name} Sylver Coinage games between trusted programs')
+        p=commands.add_parser(name,description=trusted,help=f'{name} Sylver Coinage games between sandboxed programs')
+        p.add_argument('--no-sandbox',action='store_true',help='run players unsandboxed (trusted programs only)')
         if name=='play':
             p.add_argument('first');p.add_argument('second');p.add_argument('--start',default='');p.add_argument('--games',type=int,default=2)
         else:
@@ -164,7 +166,8 @@ def main():
         from .referee import game_clock, play_game
         clock=game_clock({'cpu_base':args.cpu,'cpu_increment':args.increment})
         start=[int(v) for v in args.start.split(',') if v];args.output.mkdir()
-        seat=lambda spec,seed:resolve(Path(spec).name if '/' in spec else spec,args.output.parent/'arena-tools',spec if '/' in spec else None,seed)
+        seat=lambda spec,seed:resolve(Path(spec).name if '/' in spec else spec,args.output.parent/'arena-tools',spec if '/' in spec else None,seed,
+                                      sandboxed=not args.no_sandbox)
         for i in range(args.games):
             first,second=(args.first,args.second)[::1 if i%2==0 else -1]
             r=play_game(seat(first,args.seed+i),seat(second,args.seed+i),args.output/f'game-{i:02d}',start,args.max_move,clock,f'game-{i:02d}')
@@ -175,11 +178,11 @@ def main():
         import shlex
         from .league import resolve, run_league, suite
         from .referee import game_clock
-        tools=args.output.parent/'arena-tools';players={n:resolve(n,tools) for n in args.players.split(',') if n}
+        tools=args.output.parent/'arena-tools';players={n:resolve(n,tools,sandboxed=not args.no_sandbox) for n in args.players.split(',') if n}
         for item in args.external:
             name,_,path=item.partition('=')
             if name in players:raise SystemExit(f'duplicate player {name}')
-            players[name]=resolve(name,tools,path)
+            players[name]=resolve(name,tools,path,sandboxed=not args.no_sandbox)
         openings=[o for s in args.suites.split(',') if s for o in suite(s,args.seed,args.per_band)]
         run_league(players,openings,args.output,args.max_move,game_clock({'cpu_base':args.cpu,'cpu_increment':args.increment}),
                    args.workers,args.seed,args.analyze_bound,command='python -m sylver.arena '+shlex.join(sys.argv[1:]))
