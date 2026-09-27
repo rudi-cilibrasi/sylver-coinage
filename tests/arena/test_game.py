@@ -10,11 +10,12 @@ import textwrap
 import time
 import unittest
 
+from sylver.arena.common import read
 from sylver.arena.exact import build_tools
 from sylver.arena.game import IllegalMove, Position, minimal_generators
 from sylver.arena.league import ENDERS, bradley_terry, render, run_league, suite
 from sylver.arena.players import PLAYERS, builtin_command, load_book
-from sylver.arena.referee import play_game
+from sylver.arena.referee import clean, play_game, text
 from sylver.solver import FiniteSolver, solve_position
 
 
@@ -144,9 +145,11 @@ SCRIPT = textwrap.dedent('''
     for line in sys.stdin:
         msg = json.loads(line)
         if msg["type"] == "hello":
-            print(json.dumps({"type": "ready", "name": MODE}), flush=True)
+            if MODE == "surrogate": print(json.dumps({"type": "ready", "name": "\\ud800", "version": "\\udfff"}), flush=True)
+            else: print(json.dumps({"type": "ready", "name": MODE}), flush=True)
         elif msg["type"] == "move":
             if MODE == "one": print(json.dumps({"move": 1}), flush=True)
+            elif MODE == "surrogate": print(json.dumps({"move": 2, "note": "a\\ud800b", "claim": "\\ud800"}), flush=True)
             elif MODE == "illegal": print(json.dumps({"move": msg["generators"][0]}), flush=True)
             elif MODE == "garbage": print("not json", flush=True)
             elif MODE == "float": print(json.dumps({"move": 2.0}), flush=True)
@@ -230,6 +233,23 @@ class RefereeTests(unittest.TestCase):
             out = subprocess.run(['pgrep', '-f', str(self.dir / 'p.py')], capture_output=True, text=True)
             self.assertEqual(out.stdout.strip(), '', mode)
 
+    def test_player_text_is_sanitized_and_recorded(self):
+        # Lone surrogates survive json.loads but not UTF-8 encoding; the loss must still be recorded.
+        r = self.game(self.scripted('surrogate'), self.smallest(), name='s')
+        self.assertEqual((r['result']['loser'], r['result']['reason']), ('first', 'opponent-must-name-1'))
+        saved = read(self.dir / 's/record.json')
+        self.assertEqual(saved, r)
+        self.assertEqual(saved['setup']['first']['ready'], {'name': '?', 'version': '?'})
+        self.assertEqual((saved['moves'][0]['note'], saved['moves'][0]['claim']), ('a?b', None))
+
+    def test_text_and_clean(self):
+        self.assertEqual(text('a\ud800b' * 3, 5), 'a?ba?')
+        deep = []
+        for _ in range(100000):
+            deep = [deep]
+        self.assertLessEqual(len(text(deep, 20)), 20)   # bounded, never a RecursionError
+        self.assertEqual(clean({'x': ('\udfff', float('nan'), 1.5), '\ud800': 2}), {'x': ['?', None, 1.5], '?': 2})
+
     def test_malformed_replies_lose(self):
         r = self.game(self.scripted('garbage'), self.smallest(), name='m')
         self.assertEqual(r['result']['reason'], 'malformed-move')
@@ -277,6 +297,15 @@ class LeagueTests(unittest.TestCase):
             self.assertEqual(sum(v['games'] for v in standings['players'].values()), 8)
             with self.assertRaises(FileExistsError):
                 run_league(players, suite('enders')[:1], out)
+
+    def test_hostile_text_cannot_void_a_loss(self):
+        with tempfile.TemporaryDirectory() as d:
+            (Path(d) / 'p.py').write_text(SCRIPT)
+            players = {'smallest': {'name': 'smallest', 'command': builtin_command('smallest')},
+                       'poison': {'name': 'poison', 'command': [sys.executable, str(Path(d) / 'p.py'), 'surrogate']}}
+            st = run_league(players, suite('enders')[:1], Path(d) / 'league', workers=2)
+            self.assertEqual((st['decided'], st['void']), (2, []))
+            self.assertEqual((st['players']['poison']['wins'], st['players']['poison']['losses']), (0, 2))
 
     def test_interrupted_league_keeps_finished_games(self):
         with tempfile.TemporaryDirectory() as d:

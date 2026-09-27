@@ -22,13 +22,33 @@ import threading
 import time
 import traceback
 
-from .common import sha, write
+from .common import canonical, sha, write
 from .game import Position
 
 CLOCK = {'cpu_base': 2.0, 'cpu_increment': 0.1, 'setup_cpu': 10.0, 'setup_wall': 60.0}
 SEATS = ('first', 'second')
 OTHER = {'first': 'second', 'second': 'first'}
 STDERR_TAIL = 1 << 16
+
+
+def text(value, limit):
+    """Player-supplied text as valid UTF-8, truncated: json.loads accepts lone
+    surrogates such as \\ud800, which cannot be encoded, so they become '?'."""
+    value = value if isinstance(value, str) else reprlib.repr(value)
+    return value.encode('utf-8', 'replace').decode('utf-8')[:limit]
+
+
+def clean(value):
+    """A copy that canonical JSON accepts: valid UTF-8 text, finite numbers."""
+    if isinstance(value, str):
+        return value.encode('utf-8', 'replace').decode('utf-8')
+    if isinstance(value, float) and not math.isfinite(value):
+        return None
+    if isinstance(value, dict):
+        return {clean(k): clean(v) for k, v in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [clean(v) for v in value]
+    return value
 
 
 def session_cpu(sid, outside):
@@ -81,7 +101,7 @@ class Lost(Exception):
     """The player being served loses for ``reason``."""
     def __init__(self, reason, detail=''):
         super().__init__(reason)
-        self.reason, self.detail = reason, str(detail)[:500]
+        self.reason, self.detail = reason, text(str(detail), 500)
 
 
 class OutOfTime(Exception):
@@ -135,7 +155,7 @@ class Seat:
             if not isinstance(ready, dict) or ready.get('type') != 'ready':
                 failure = Lost('setup-failed', 'expected a ready message')
             else:
-                self.setup['ready'] = {k: str(ready[k])[:100] for k in ('name', 'version') if k in ready}
+                self.setup['ready'] = {k: text(ready[k], 100) for k in ('name', 'version') if k in ready}
         except OutOfTime:
             pass
         except TimeoutError:
@@ -213,7 +233,7 @@ class Seat:
         note = reply.get('note')
         return move, {'ply': request['ply'], 'seat': self.name, 'move': move, 'cpu': round(used, 6),
                       'wall': round(wall, 6), 'claim': reply.get('claim') if reply.get('claim') in ('win', 'loss', 'unknown') else None,
-                      'note': note[:200] if isinstance(note, str) else None}
+                      'note': text(note, 200) if isinstance(note, str) else None}
 
     def close(self, end):
         """Send ``end``, kill the whole session, and reap the player."""
@@ -253,8 +273,9 @@ def play_game(first, second, output, start=(), max_move=1000, clock=None, game_i
     if any(type(v) not in (int, float) or not math.isfinite(v) or v < 0 for v in clock.values()) or not clock['cpu_base'] > 0:
         raise ValueError('clock values must be finite, non-negative numbers with cpu_base > 0')
     initial = position = Position(start, max_move=max_move)
-    output.mkdir()
     players = dict(zip(SEATS, (first, second)))
+    digests = {s: sha([str(c) for c in p['command']]) for s, p in players.items()}   # commands must be UTF-8
+    output.mkdir()
     seats = {s: Seat(s, players[s], clock, max_move) for s in SEATS}
     moves, result, current = [], None, 'first'
     try:
@@ -280,7 +301,7 @@ def play_game(first, second, output, start=(), max_move=1000, clock=None, game_i
         except Lost as lost:
             result = {'winner': OTHER[current], 'loser': current, 'reason': lost.reason, 'detail': lost.detail}
     except Exception:
-        result = {'winner': None, 'loser': None, 'reason': 'void', 'detail': traceback.format_exc()[-4000:]}
+        result = {'winner': None, 'loser': None, 'reason': 'void', 'detail': text(traceback.format_exc()[-4000:], 4000)}
     finally:
         end = {'type': 'end', 'winner': result and result['winner'], 'reason': result['reason'] if result else 'void'}
         try:
@@ -291,10 +312,13 @@ def play_game(first, second, output, start=(), max_move=1000, clock=None, game_i
         (output / f'{s}.stderr').write_bytes(seats[s].tail)
     record = {'schema': 1, 'game': game_id, 'rules': {'max_move': max_move, 'loser': 'names-1'},
               'start': list(initial.start),
-              'players': {s: {'name': p['name'], 'command_sha256': sha([str(c) for c in p['command']])}
-                          for s, p in players.items()},
+              'players': {s: {'name': p['name'], 'command_sha256': digests[s]} for s, p in players.items()},
               'clock': clock, 'setup': {s: seats[s].setup for s in SEATS}, 'moves': moves, 'result': result,
               'final': {'generators': list(position.generators), 'capped': position.capped(), 'over': position.over()},
               'cpu_totals': {s: round(seats[s].total, 6) for s in SEATS}}
+    try:
+        canonical(record)
+    except (UnicodeError, ValueError):
+        record = clean(record)        # a result is never lost to unencodable text
     write(output / 'record.json', record)
     return record
