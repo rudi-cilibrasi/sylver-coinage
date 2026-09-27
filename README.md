@@ -113,6 +113,7 @@ experiment; no new live discovery or real-LLM performance advantage is claimed.
 | `sylver/arena/` | frozen challenges, canonical proof referee, accounted episodes, policy evolution, and CLI tournaments |
 | `sylver/solver.py` | exact finite evaluator (Python reference) |
 | `sylver/native_solver.cpp` | the same recurrence in C++ (differentially tested) |
+| `sylver/fast_solver.cpp` | discovery engine: the native recurrence with a flat memo, 1.7–1.9x faster, byte-identical output (differentially tested) |
 | `sylver/periodicity_engine.cpp` | g=2 ultimate-periodicity engine: checkpointed, parallel exact fallbacks, compact v2 representation |
 | `sylver/short_certificates.py` | the certified P-node graph and opening-16 table |
 | `sylver/publication/plan2-2026-09-05/` | verification report, public certificate, source snapshot, and reproduction instructions |
