@@ -91,7 +91,7 @@ g++ -std=c++20 -O2 -Wall -Wextra -pedantic -pthread \
 The deep-certificate suite recomputes every claimed P-position; state
 counts are deterministic and must match the run records exactly.
 
-## Proof-search arena
+## Arenas
 
 Run a local tournament with frozen fixtures, independently checked proof
 certificates, and CPU-based scores:
@@ -106,11 +106,19 @@ and held-out results separately. See the [arena instructions](sylver/arena/READM
 and [recorded pilot](sylver/arena/data/pilot/REPORT.md). This is an engineering
 experiment; no new live discovery or real-LLM performance advantage is claimed.
 
+Programs can also play the game itself. `python -m sylver.arena league --output
+/tmp/league-pilot` runs a round robin of player programs (built-in `random`,
+`smallest`, `exact`, and `book` players, or external executables speaking a
+JSON Lines protocol) under CPU clocks, and reports Bradley–Terry ratings, loss
+reasons, and how often the perfect-play winner won openings of known outcome.
+Game results are not proofs. See the [game arena instructions](sylver/arena/README.md#game-arena)
+and the [recorded pilot league](sylver/arena/data/league/REPORT.md).
+
 ## Repository map
 
 | Path | Contents |
 | --- | --- |
-| `sylver/arena/` | frozen challenges, canonical proof referee, accounted episodes, policy evolution, and CLI tournaments |
+| `sylver/arena/` | frozen challenges, canonical proof referee, accounted episodes, policy evolution, CLI tournaments, and game-playing leagues |
 | `sylver/solver.py` | exact finite evaluator (Python reference) |
 | `sylver/native_solver.cpp` | the same recurrence in C++ (differentially tested) |
 | `sylver/periodicity_engine.cpp` | g=2 ultimate-periodicity engine: checkpointed, parallel exact fallbacks, compact v2 representation |

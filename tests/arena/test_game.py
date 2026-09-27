@@ -124,6 +124,8 @@ class PlayerTests(unittest.TestCase):
         self.assertEqual(load_book(1000)['5'], 'P')
         p = Position([16, 26, 62, 98, 102])
         self.assertEqual(book.choose(p, request(p)), 95)   # {16,26,62,95,98,102} is P
+        p = Position([16, 26, 34])
+        self.assertEqual(book.choose(p, request(p)), 151)  # {16,26,34,151} is P in the exact cache
 
     def test_host_protocol_round_trip(self):
         p = Position([4, 5])
@@ -271,6 +273,7 @@ class LeagueTests(unittest.TestCase):
             lines = (out / 'games.jsonl').read_text().splitlines()
             self.assertEqual(len(lines), 4)
             self.assertTrue((out / 'plan.json').exists() and (out / 'REPORT.md').exists())
+            self.assertIn('Game results are not proofs', (out / 'REPORT.md').read_text())
             self.assertEqual(sum(v['games'] for v in standings['players'].values()), 8)
             with self.assertRaises(FileExistsError):
                 run_league(players, suite('enders')[:1], out)
@@ -299,6 +302,15 @@ class LeagueTests(unittest.TestCase):
             self.assertEqual(len(lines), len(list((out / 'games').glob('*/record.json'))))
             self.assertNotEqual(league.returncode, 0)
             self.assertFalse((out / 'REPORT.md').exists())
+
+
+class CliTests(unittest.TestCase):
+    def test_play_smoke(self):
+        with tempfile.TemporaryDirectory() as d:
+            d = Path(d)
+            subprocess.run([sys.executable, '-m', 'sylver.arena', 'play', 'smallest', 'random', '--start', '4,5',
+                            '--games', '2', '--output', str(d / 'p')], check=True, capture_output=True)
+            self.assertEqual(len(list((d / 'p').glob('*/record.json'))), 2)
 
 
 if __name__ == '__main__':

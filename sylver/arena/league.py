@@ -11,8 +11,11 @@ from collections import Counter, defaultdict
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
 from functools import reduce
 import math
+import os
 from pathlib import Path
+import platform
 import random
+import re
 import resource
 import statistics
 import subprocess
@@ -90,9 +93,11 @@ def bradley_terry(results, players, prior=0.5, iterations=5000):
     return {p: elo[p] - mean for p in players}
 
 
-def resolve(name, tools, executable=None):
-    """A league player: a built-in by name (exact and book get the native
-    solver from ``tools``) or an external program at an absolute path."""
+def resolve(name, tools, executable=None, seed=0):
+    """A player: a built-in by name (exact and book get the native solver
+    built in ``tools``) or an external program at an absolute path."""
+    if not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_.+-]*', name):
+        raise ValueError(f'player name {name!r} must be letters, digits, and _.+-')
     if executable is not None:
         if not Path(executable).is_absolute():
             raise ValueError(f'external player {name} needs an absolute executable path')
@@ -100,7 +105,7 @@ def resolve(name, tools, executable=None):
     if name not in PLAYERS:
         raise ValueError(f'unknown built-in player {name!r}')
     options = {'binary': str(build_tools(tools))} if name in ('exact', 'book') else {}
-    return {'name': name, 'builtin': name, 'options': options, 'command': builtin_command(name, 0, options), 'cwd': str(ROOT)}
+    return {'name': name, 'builtin': name, 'options': options, 'command': builtin_command(name, seed, options), 'cwd': str(ROOT)}
 
 
 def _seat(name, player, seed):
@@ -141,7 +146,8 @@ def run_league(players, openings, output, max_move=1000, clock=None, workers=4, 
                         'options_sha256': sha(p.get('options', {})) if 'builtin' in p else None}
     plan = {'schema': 1, 'players': described, 'openings': openings, 'rules': {'max_move': max_move, 'loser': 'names-1'},
             'clock': clock, 'seed': seed, 'workers': workers, 'analyze_bound': analyze_bound, 'schedule': schedule,
-            'command': command}
+            'command': command, 'host': {'python': platform.python_version(), 'platform': platform.platform(),
+                                         'cpus': os.cpu_count()}}
     write(output / 'plan.json', plan)
     (output / 'games').mkdir()
     records, futures, pool = [], {}, ProcessPoolExecutor(workers)
@@ -315,7 +321,9 @@ def render(plan, games, standings):
     lines += ['', '## Loss reasons', '']
     lines += _table(['Player', *reasons], [(n, *(s['loss_reasons'][n].get(k, 0) for k in reasons)) for n in names])
     lines += ['', '## Openings with a known outcome', '', 'Outcome is for the player to move under perfect play '
-              '(N: the first player should win; P: the second). Capped play is exact here.', '']
+              '(N: the first player should win; P: the second). Capped play is exact here. Each outcome comes from '
+              "the source in the opening's note in `plan.json`: the Python reference solver for enders, the frozen "
+              'exact cache for database openings.', '']
     lines += _table(['Opening', 'Start', 'Outcome', 'Frobenius', 'Perfect-play winner won'], [
         (n, '{' + ','.join(map(str, o['start'])) + '}', o['outcome'], o['frobenius'], f"{o['perfect_winner_wins']}/{o['games']}")
         for n, o in known.items()], left=3)
