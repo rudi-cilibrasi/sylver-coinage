@@ -420,7 +420,10 @@ outcomes unknown). Outputs:
   each game finishes, so an interrupted league keeps its completed games;
   `games/ID/` also keeps each record and both players' stderr;
 - `standings.json` and `REPORT.md`: scores, Bradley–Terry ratings on the Elo
-  scale with bootstrap intervals, head-to-head results, loss reasons, how
+  scale with bootstrap intervals (when the win graph is not strongly
+  connected, Ford's condition fails: the report groups the players, says
+  that gaps between groups are set by the prior, and gives intervals only
+  for differences within a group), head-to-head results, loss reasons, how
   often the perfect-play winner won each opening with a known outcome, CPU
   per move, void games, and the reproduction command.
 

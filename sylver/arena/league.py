@@ -74,28 +74,98 @@ def suite(name, seed=0, per_band=1):
     raise ValueError(f'unknown suite {name!r}')
 
 
-def bradley_terry(results, players, prior=0.5, iterations=5000):
-    """MM iterations (Hunter 2004) with `prior` virtual wins and losses
-    against a fixed anchor of strength 1, so undefeated or winless players
-    get finite ratings. Returned on the Elo scale with mean zero."""
-    wins = {p: prior for p in players}; pairs = {}
+def _sigmoid(x):
+    return 1 / (1 + math.exp(-x)) if x >= 0 else math.exp(x) / (1 + math.exp(x))
+
+
+def _logaddexp(a, b):
+    return max(a, b) + math.log1p(math.exp(-abs(a - b)))
+
+
+def _solve(a, b):
+    """x with a x = b, by Gaussian elimination with partial pivoting."""
+    n = len(b); m = [row[:] + [v] for row, v in zip(a, b)]
+    for c in range(n):
+        r = max(range(c, n), key=lambda i: abs(m[i][c])); m[c], m[r] = m[r], m[c]
+        for i in range(c + 1, n):
+            f = m[i][c] / m[c][c]
+            for k in range(c, n + 1):
+                m[i][k] -= f * m[c][k]
+    x = [0.0] * n
+    for i in reversed(range(n)):
+        x[i] = (m[i][n] - sum(m[i][k] * x[k] for k in range(i + 1, n))) / m[i][i]
+    return x
+
+
+def _fit(results, players, prior, iterations):
+    """Log-strengths maximizing the Bradley-Terry posterior with ``prior``
+    virtual wins and losses per player against an anchor of strength 1 (the
+    fixed point of Hunter's 2004 MM iterations), and the number of damped
+    Newton steps taken. The posterior is strictly concave, so a few steps
+    suffice where MM converges linearly and needed thousands of iterations."""
+    n, index = len(players), {p: i for i, p in enumerate(players)}
+    wins, games = [prior] * n, [[0] * n for _ in range(n)]
     for w, l in results:
-        wins[w] += 1; k = tuple(sorted((w, l))); pairs[k] = pairs.get(k, 0) + 1
-    s = {p: 1.0 for p in players}
-    for _ in range(iterations):
-        new = {}
-        for p in players:
-            d = 2 * prior / (s[p] + 1.0)
-            for q in players:
-                if q != p:
-                    n = pairs.get(tuple(sorted((p, q))), 0)
-                    if n: d += n / (s[p] + s[q])
-            new[p] = wins[p] / d
-        done = max(abs(new[p] - s[p]) for p in players) < 1e-12; s = new
-        if done: break
-    elo = {p: 400 * math.log10(s[p]) for p in players}
+        wins[index[w]] += 1; games[index[w]][index[l]] += 1; games[index[l]][index[w]] += 1
+
+    def posterior(t):
+        return (sum(w * x - 2 * prior * _logaddexp(x, 0.0) for w, x in zip(wins, t))
+                - sum(games[i][j] * _logaddexp(t[i], t[j]) for i in range(n) for j in range(i + 1, n)))
+    theta, used = [0.0] * n, 0
+    for used in range(1, iterations + 1):
+        grad, curve = wins[:], [[0.0] * n for _ in range(n)]     # gradient, minus the Hessian
+        for i in range(n):
+            a = _sigmoid(theta[i])
+            grad[i] -= 2 * prior * a; curve[i][i] += 2 * prior * a * (1 - a)
+            for j in range(n):
+                if j != i and games[i][j]:
+                    q = _sigmoid(theta[i] - theta[j])
+                    grad[i] -= games[i][j] * q; curve[i][i] += games[i][j] * q * (1 - q)
+                    curve[i][j] -= games[i][j] * q * (1 - q)
+        step, scale, base = _solve(curve, grad), 1.0, posterior(theta)
+        while True:
+            trial = [x + scale * d for x, d in zip(theta, step)]
+            if posterior(trial) >= base - 1e-12 * (1 + abs(base)) or scale < 1e-9:
+                break
+            scale /= 2
+        theta = trial
+        if max(abs(scale * d) for d in step) < 1e-12:
+            break
+    return theta, used
+
+
+def bradley_terry(results, players, prior=0.5, iterations=100):
+    """Bradley-Terry ratings with `prior` virtual wins and losses against a
+    fixed anchor of strength 1, so undefeated or winless players get finite
+    ratings: the MM fixed point (Hunter 2004), reached by Newton steps.
+    Returned on the Elo scale with mean zero."""
+    players = list(players)
+    theta = _fit(results, players, prior, iterations)[0]
+    elo = {p: 400 / math.log(10) * t for p, t in zip(players, theta)}
     mean = sum(elo.values()) / len(elo)
     return {p: elo[p] - mean for p in players}
+
+
+def win_groups(results, players):
+    """Strongly connected components of the win graph (w -> l when w beat l),
+    highest first, so every game between two groups was won by the higher
+    one. Without a prior, Bradley-Terry ratings exist only when there is one
+    group (Ford 1957); between groups, the rating gap is set by the prior."""
+    beat, reach = {p: set() for p in players}, {}
+    for w, l in results:
+        beat[w].add(l)
+    for p in players:
+        seen, todo = {p}, [p]
+        while todo:
+            for q in beat[todo.pop()] - seen:
+                seen.add(q); todo.append(q)
+        reach[p] = seen
+    groups = []
+    for p in players:
+        if all(p not in g for g in groups):
+            groups.append([q for q in players if q in reach[p] and p in reach[q]])
+    # A group reaches every group below it, so it reaches more players.
+    return sorted(groups, key=lambda g: -len(reach[g[0]]))
 
 
 def resolve(name, tools, executable=None, seed=0):
@@ -251,6 +321,19 @@ def standings(plan, records, analysis=None):
     players, h2h, reasons = {}, {a: {b: 0 for b in names if b != a} for a in names}, {n: Counter() for n in names}
     for w, l in pairs:
         h2h[w][l] += 1
+    groups, within = [sorted(g, key=lambda n: -elo[n]) for g in win_groups(pairs, names)], []
+    for g in groups:
+        for i, a in enumerate(g):
+            for b in g[i + 1:]:
+                cut = (statistics.quantiles([x - y for x, y in zip(samples[a], samples[b])], n=40, method='inclusive')
+                       if samples[a] else None)
+                within.append({'pair': [a, b], 'score': [h2h[a][b], h2h[b][a]], 'elo_difference': round(elo[a] - elo[b], 3),
+                               'interval': [round(cut[0], 3), round(cut[-1], 3)] if cut else None})
+    # Gaps between adjacent groups, which the prior alone sets: a smaller prior widens them.
+    weak = bradley_terry(pairs, names, prior=.05) if len(groups) > 1 else None
+    gaps = [{'groups': [i + 1, i + 2], **{f'prior_{prior}': round(min(r[p] for p in hi) - max(r[p] for p in lo), 3)
+                                          for prior, r in ((0.5, elo), (0.05, weak))}}
+            for i, (hi, lo) in enumerate(zip(groups, groups[1:]))]
     for r in decided:
         reasons[games[r['game']][r['result']['loser']]][r['result']['reason']] += 1
     for n in names:
@@ -281,6 +364,7 @@ def standings(plan, records, analysis=None):
                   'max': max(used, default=None), 'setup_mean': round(statistics.fmean(setup), 6) if setup else None}
     accounting = Counter(m for r in records for m in r['accounting'].values() if m)
     return {'schema': 1, 'games': len(records), 'decided': len(decided), 'accounting': dict(sorted(accounting.items())),
+            'groups': groups, 'within_groups': within, 'group_gaps': gaps,
             'void': [{'game': r['game'], 'detail': r['result']['detail'][-300:]} for r in records if not r['result']['winner']],
             'players': players, 'head_to_head': h2h, 'loss_reasons': {n: dict(c) for n, c in reasons.items()},
             'openings': table, 'adjudication': {n: dict(c) for n, c in verdicts.items()}, 'cpu': cpu, 'analysis': analysis}
@@ -317,13 +401,36 @@ def render(plan, games, standings):
              f"- CPU accounting: {accounting}.",
              f"- Games: {s['games']} ({s['decided']} decided, {len(s['void'])} void); seed {plan['seed']}; "
              f"{plan['workers']} parallel games.", '', '## Standings', '']
-    lines += _table(['Player', 'Games', 'W', 'L', 'Score', 'Elo', '95% interval'], [
-        (n, p['games'], p['wins'], p['losses'], '—' if p['score'] is None else f"{100 * p['score']:.1f}%", f"{p['elo']:+.0f}",
-         '—' if not p['interval'] else f"[{p['interval'][0]:+.0f}, {p['interval'][1]:+.0f}]")
-        for n, p in ((n, s['players'][n]) for n in names)])
-    lines += ['', f'Elo is a Bradley–Terry rating (MM, 0.5 virtual wins and losses against a fixed anchor) with '
-              f'mean zero; the interval holds the 2.5–97.5 percentiles of {BOOTSTRAP} bootstrap resamples of the '
-              'decided games.', '', '## Head to head', '', 'Wins–losses of the row player against the column player, '
+    group = {n: i + 1 for i, g in enumerate(s['groups']) for n in g}
+    score = lambda p: '—' if p['score'] is None else f"{100 * p['score']:.1f}%"
+    interval = lambda v: '—' if not v else f'[{v[0]:+.0f}, {v[1]:+.0f}]'
+    if len(s['groups']) == 1:
+        lines += _table(['Player', 'Games', 'W', 'L', 'Score', 'Elo', '95% interval'], [
+            (n, p['games'], p['wins'], p['losses'], score(p), f"{p['elo']:+.0f}", interval(p['interval']))
+            for n, p in ((n, s['players'][n]) for n in names)])
+        lines += ['', f'Elo is a Bradley–Terry rating (0.5 virtual wins and losses per player against a fixed anchor) '
+                  f'with mean zero; the interval holds the 2.5–97.5 percentiles of {BOOTSTRAP} bootstrap resamples of the '
+                  'decided games.']
+    else:
+        lines += _table(['Player', 'Group', 'Games', 'W', 'L', 'Score', 'Elo'], [
+            (n, group[n], p['games'], p['wins'], p['losses'], score(p), f"{p['elo']:+.0f}")
+            for n, p in ((n, s['players'][n]) for n in names)])
+        lines += ['', 'Elo is a Bradley–Terry rating (0.5 virtual wins and losses per player against a fixed anchor) '
+                  'with mean zero. **Rating gaps between groups are set by the prior, not by the games.** The win graph is '
+                  "not strongly connected (Ford's condition fails): every game between two groups was won by the higher "
+                  'group, so without the prior the gap between groups would be infinite, and it widens without bound '
+                  'as the prior shrinks. Only the order of the groups is data. A gap below is the lowest rating in the '
+                  'higher group minus the highest in the lower group.', '']
+        lines += _table(['Groups', 'Gap at prior 0.5', 'Gap at prior 0.05'], [
+            (f"{g['groups'][0]} over {g['groups'][1]}", f"{g['prior_0.5']:+.0f}", f"{g['prior_0.05']:+.0f}")
+            for g in s['group_gaps']])
+        if s['within_groups']:
+            lines += ['', 'Within a group the games determine the differences; intervals hold the 2.5–97.5 percentiles '
+                      f'of {BOOTSTRAP} bootstrap resamples of the decided games.', '']
+            lines += _table(['Pair in one group', 'Score', 'Elo difference', '95% interval'], [
+                (f"{w['pair'][0]} − {w['pair'][1]}", f"{w['score'][0]}–{w['score'][1]}", f"{w['elo_difference']:+.0f}",
+                 interval(w['interval'])) for w in s['within_groups']])
+    lines += ['', '## Head to head', '', 'Wins–losses of the row player against the column player, '
               'over both seats and all openings.', '']
     lines += _table(['', *names], [(a, *('—' if a == b else f"{s['head_to_head'][a][b]}–{s['head_to_head'][b][a]}" for b in names))
                                    for a in names])

@@ -17,9 +17,9 @@ from unittest import mock
 from sylver.arena.common import read
 from sylver.arena.exact import build_tools
 from sylver.arena.game import IllegalMove, Position, minimal_generators
-from sylver.arena.league import ENDERS, bradley_terry, render, run_league, suite
+from sylver.arena.league import ENDERS, _fit, bradley_terry, render, run_league, standings, suite, win_groups
 from sylver.arena.players import PLAYERS, builtin_command, load_book
-from sylver.arena.referee import Seat, clean, own_cgroup, play_game, session_cpu, text
+from sylver.arena.referee import CLOCK, OTHER, Seat, clean, own_cgroup, play_game, session_cpu, text
 from sylver.solver import FiniteSolver, solve_position
 
 
@@ -354,6 +354,22 @@ class RefereeTests(unittest.TestCase):
             self.assertEqual((r['result']['loser'], r['result']['reason']), ('first', reason), reply[:40])
 
 
+def fake_league(games):
+    """A plan and records for decided games (first, second, winner) from {4,5}."""
+    names = sorted({n for g in games for n in g[:2]})
+    plan = {'players': {n: {} for n in names}, 'rules': {'max_move': 1000}, 'clock': CLOCK, 'seed': 0,
+            'workers': 1, 'command': None, 'schedule': [],
+            'openings': [{'name': 'o', 'start': [4, 5], 'outcome': 'N', 'note': ''}]}
+    records = []
+    for i, (a, b, winner) in enumerate(games):
+        plan['schedule'].append({'id': f'{i:04d}', 'first': a, 'second': b, 'opening': 'o', 'seed': i})
+        seat = 'first' if winner == a else 'second'
+        records.append({'game': f'{i:04d}', 'start': [4, 5], 'moves': [], 'setup': {'first': None, 'second': None},
+                        'accounting': {'first': 'cgroup', 'second': 'cgroup'},
+                        'result': {'winner': seat, 'loser': OTHER[seat], 'reason': 'opponent-must-name-1', 'detail': ''}})
+    return plan, records
+
+
 class LeagueTests(unittest.TestCase):
     def test_bradley_terry_orders_players(self):
         results = [('a', 'b')] * 8 + [('b', 'a')] * 2 + [('b', 'c')] * 8 + [('c', 'b')] * 2 + [('a', 'c')] * 9 + [('c', 'a')]
@@ -362,6 +378,48 @@ class LeagueTests(unittest.TestCase):
         self.assertAlmostEqual(sum(r.values()), 0, places=6)
         r = bradley_terry([('a', 'b')] * 5, ['a', 'b'])
         self.assertTrue(all(math.isfinite(v) for v in r.values()))
+
+    def test_bradley_terry_reaches_the_mm_fixed_point(self):
+        # The plan's MM iterations, run until strengths stop moving, define the
+        # ratings; MM needed thousands of iterations on skewed or split data.
+        def mm(results, players, prior=0.5):
+            wins = {p: prior for p in players}; pairs = {}
+            for w, l in results:
+                wins[w] += 1; k = tuple(sorted((w, l))); pairs[k] = pairs.get(k, 0) + 1
+            s = {p: 1.0 for p in players}
+            for _ in range(10 ** 6):
+                new = {p: wins[p] / (2 * prior / (s[p] + 1.0) + sum(pairs.get(tuple(sorted((p, q))), 0) / (s[p] + s[q])
+                                                                    for q in players if q != p)) for p in players}
+                done = max(abs(new[p] - s[p]) / new[p] for p in players) < 1e-15; s = new
+                if done: break
+            elo = {p: 400 * math.log10(s[p]) for p in players}
+            return {p: elo[p] - sum(elo.values()) / len(elo) for p in players}
+        skewed = [('a', 'b')] * 40 + [('b', 'a')] + [('b', 'c')] * 40 + [('c', 'b')] + [('a', 'c')] * 40 + [('c', 'a')]
+        split = [('a', 'b')] * 17 + [('b', 'a')] * 13 + [('c', 'd')] * 20 + [('d', 'c')] * 10 + [(w, l) for w in 'ab' for l in 'cd'] * 30
+        for results, players in ((skewed, 'abc'), (split, 'abcd'), ([], 'ab'), ([('a', 'b')] * 5, 'abc')):
+            want, got = mm(results, players), bradley_terry(results, players)
+            self.assertLess(max(abs(want[p] - got[p]) for p in players), 1e-6, results[:1])
+            self.assertLess(_fit(results, list(players), .5, 100)[1], 30)
+
+    def test_split_win_graph_gaps_are_prior_determined(self):
+        # Ford's condition: without a prior the ratings exist only if the
+        # directed win graph is strongly connected.
+        split = ([('a', 'b', 'a')] * 17 + [('a', 'b', 'b')] * 13 + [('c', 'd', 'c')] * 20 + [('c', 'd', 'd')] * 10
+                 + [(w, l, w) for w in 'ab' for l in 'cd'] * 30)
+        self.assertEqual(win_groups([(g[2], g[1] if g[2] == g[0] else g[0]) for g in split], 'abcd'),
+                         [['a', 'b'], ['c', 'd']])
+        plan, records = fake_league(split)
+        st = standings(plan, records)
+        self.assertEqual(st['groups'], [['a', 'b'], ['c', 'd']])
+        self.assertEqual([w['pair'] for w in st['within_groups']], [['a', 'b'], ['c', 'd']])
+        self.assertGreater(st['group_gaps'][0]['prior_0.05'], st['group_gaps'][0]['prior_0.5'])
+        report = render(plan, records, st)
+        self.assertIn('set by the prior', report)
+        self.assertIn('| Player | Group | Games | W | L | Score | Elo |', report)
+        plan, records = fake_league(split + [('c', 'a', 'c')])     # one upset joins the groups
+        st = standings(plan, records)
+        self.assertEqual((st['groups'], st['group_gaps']), ([['a', 'b', 'c', 'd']], []))
+        self.assertNotIn('set by the prior', render(plan, records, st))
 
     def test_suites(self):
         self.assertEqual(suite('empty')[0]['start'], [])
