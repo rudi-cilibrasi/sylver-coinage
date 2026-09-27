@@ -15,6 +15,13 @@ exceeds 10^12 states.
 
 ## Headline results
 
+- **W frontier reduced to three moves (September 27):** after move 86 from
+  `W={16,26,62,98}`, reply **129** reaches the finite P-position
+  `{16,26,62,86,98,129}`; after move 92, reply **139** reaches
+  `{16,26,62,92,98,139}`. Fresh native and Python replays agree on P and
+  on exactly **68,758,240** and **80,500,948 states**. W now has **49 of
+  52 obligations covered**, with **70,108,118** remaining. See the
+  [result and reproducible certificates](sylver/campaigns/w-three-2026-09-27/RESULT.md).
 - **W frontier reduced to five moves:** after move 102 from
   `W={16,26,62,98}`, reply **95** reaches the finite P-position
   `{16,26,62,95,98,102}`. Fresh native and Python replays agree on P,
@@ -91,7 +98,7 @@ g++ -std=c++20 -O2 -Wall -Wextra -pedantic -pthread \
 The deep-certificate suite recomputes every claimed P-position; state
 counts are deterministic and must match the run records exactly.
 
-## Proof-search arena
+## Arenas
 
 Run a local tournament with frozen fixtures, independently checked proof
 certificates, and CPU-based scores:
@@ -123,13 +130,22 @@ python -m sylver.arena golf-pilot --output /tmp/golf-pilot --workers 3
 python -m sylver.arena book verify
 ```
 
+Programs can also play the game itself. `python -m sylver.arena league --output
+/tmp/league-pilot` runs a round robin of player programs (built-in `random`,
+`smallest`, `exact`, and `book` players, or external executables speaking a
+JSON Lines protocol) under CPU clocks, and reports Bradley–Terry ratings, loss
+reasons, and how often the perfect-play winner won openings of known outcome.
+Game results are not proofs. See the [game arena instructions](sylver/arena/README.md#game-arena)
+and the [recorded pilot league](sylver/arena/data/league/REPORT.md).
+
 ## Repository map
 
 | Path | Contents |
 | --- | --- |
-| `sylver/arena/` | frozen challenges, canonical proof referee, accounted episodes, policy evolution, CLI tournaments, certificate golf, and The Book (`book/`) |
+| `sylver/arena/` | frozen challenges, canonical proof referee, accounted episodes, policy evolution, CLI tournaments, certificate golf and The Book (`book/`), and game-playing leagues |
 | `sylver/solver.py` | exact finite evaluator (Python reference) |
 | `sylver/native_solver.cpp` | the same recurrence in C++ (differentially tested) |
+| `sylver/fast_solver.cpp` | discovery engine: the native recurrence with a flat memo, 1.7–1.9x faster, byte-identical output (differentially tested) |
 | `sylver/periodicity_engine.cpp` | g=2 ultimate-periodicity engine: checkpointed, parallel exact fallbacks, compact v2 representation |
 | `sylver/short_certificates.py` | the certified P-node graph and opening-16 table |
 | `sylver/publication/plan2-2026-09-05/` | verification report, public certificate, source snapshot, and reproduction instructions |

@@ -1,9 +1,9 @@
 # Recorded arena evidence
 
 This directory records the first offline arena pilot, its regression
-checks, and the certificate golf pilot. Neither uses network access or paid
-API calls; the first pilot's model arm is a scripted test double. No live
-mathematical discovery is claimed by either.
+checks, the certificate golf pilot, and the game league pilot. None uses
+network access or paid API calls; the first pilot's model arm is a scripted
+test double. None claims a new mathematical discovery.
 
 | Artifact | Contents |
 | --- | --- |
@@ -40,6 +40,17 @@ plus the post-PR13 evidence graph), inside the archive at
 [../book/BOOK.md](../book/BOOK.md). Replay any archived golf episode as
 described above, passing the extracted episode directory to
 `python -m sylver.arena verify`.
+
+## Game league pilot (#17)
+
+| Artifact | Contents |
+| --- | --- |
+| [league/REPORT.md](league/REPORT.md) | Standings, Bradley–Terry ratings with the prior-set gaps flagged, head to head, loss reasons, adjudicated openings, per-move CPU, and blunder analysis. |
+| [league/standings.json](league/standings.json), [league/plan.json](league/plan.json) | Machine-readable standings; the predeclared plan with player commands, code digests, and the commit. |
+| `league/games.jsonl.gz` | Every game: moves with per-move CPU and wall time, claims, results, and accounting method. |
+
+Game results are games, not proofs; the league report re-renders exactly
+from these files.
 
 ## Replay an archived pilot episode
 
