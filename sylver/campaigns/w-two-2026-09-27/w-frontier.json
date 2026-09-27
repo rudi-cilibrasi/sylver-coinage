@@ -1,0 +1,34 @@
+{
+  "position": [
+    16,
+    26,
+    62,
+    98
+  ],
+  "outcome": "unknown",
+  "open_moves": [
+    108,
+    118
+  ],
+  "covered_obligations": 50,
+  "total_obligations": 52,
+  "new_reply": {
+    "opponent_move": 70,
+    "reply": 169,
+    "P_destination": [
+      16,
+      26,
+      62,
+      70,
+      98,
+      169
+    ],
+    "certificate_sha256": "9b2c90f2b10858f5fb21ddfda9b0ce254875a8d299c246035918480013faae7a",
+    "verification_receipt": "verification/w70/receipt.json",
+    "verification_sha256": "995200e3094ed1e4371a3e5ef2183067653994cda2ddbe6ac3d0e9a741c3a2d0",
+    "states": 79594540
+  },
+  "previous_frontier": "sylver/campaigns/w-three-2026-09-27/w-frontier.json",
+  "pending": "The scan also found {16,26,62,98,118,167} P (115,933,058 states, one discovery run); its independent replay was in progress when this record was made, so move 118 stays open here.",
+  "scope": "W remains unresolved. Move 70 is refuted by reply 169. The finite witness was independently replayed with native and Python solvers using empty memos and no inherited outcome cache. Other W obligations retain their existing dependencies."
+}
