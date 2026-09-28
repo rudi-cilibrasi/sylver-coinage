@@ -57,11 +57,14 @@ X_LEDGER = HERE / 'scan/ledger-x.jsonl'
 
 def x_status():
     """X's odd replies classified N (cache and verified sweep rows); P rows would refute X."""
-    cache = {}
+    cache, problems = {}, []
     for line in X_CACHE.read_text().splitlines():
         k, v = line.split()
+        if v not in ('0', '1'):
+            problems.append(f'cache row {k}: value {v!r}')
+            continue
         cache[k] = 'P' if v == '1' else 'N'
-    classified, problems = {}, []
+    classified = {}
     for r in range(3, 2001, 2):
         k = key(minimal_generators((*X, r)))
         if k in cache:
@@ -74,9 +77,16 @@ def x_status():
             continue
         if row['status'] != 'ok' or not row.get('memo_verified'):
             continue
+        if row['outcome'] not in ('N', 'P'):
+            problems.append(f"ledger row {row['r']}: outcome {row['outcome']!r}")
+            continue
         w = row.get('winning_move')
         if row['outcome'] == 'N' and (w is None or w < 2 or is_generated(p, w)):
             problems.append(f"ledger row {row['r']}: illegal winning move")
+            continue
+        earlier = classified.get(row['r'])
+        if earlier is not None and earlier[1] != row['outcome']:
+            problems.append(f"reply {row['r']}: {earlier[0]} says {earlier[1]}, the sweep says {row['outcome']}")
             continue
         classified.setdefault(row['r'], ('verified sweep', row['outcome']))
     first = next(r for r in range(3, 10 ** 6, 2) if r not in classified)
@@ -115,6 +125,8 @@ def book_entry(target, index, verifier):
     proof = json.loads(path.read_text())
     if proof.get('root') != target or proof['nodes'][target]['outcome'] != 'N':
         return None
+    if any(node.get('rule') == 'baseline' for node in proof['nodes'].values()):
+        return None   # cites a baseline fact: not self-contained
     return {'evidence': 'book', 'certificate': str(path.relative_to(ROOT)), 'C': entry['C'], 'states': entry['states']}
 
 
@@ -171,7 +183,11 @@ def main():
     index = json.loads((BOOK / 'index.json').read_text())
     verifier = sha(verifier_profile())
     w_run = subprocess.run([sys.executable, str(W_AUDIT)], capture_output=True, text=True)
-    w_outcome = json.loads(w_run.stdout)['outcome'] if w_run.returncode == 0 else 'unknown'
+    w_report = json.loads(w_run.stdout) if w_run.stdout.strip() else {}
+    w_outcome = 'unknown'
+    if (w_run.returncode == 0 and w_report.get('position') == list(W) and w_report.get('outcome') == 'P'
+            and w_report['summary']['covered'] == w_report['summary']['obligations'] == 52):
+        w_outcome = 'P'
     report = {'position': list(U), 'gcd': info['gcd'], 'tail': info['tail'], 'complete': info['complete'],
               'half_frobenius': info['half_frobenius'], 'W_audit_outcome': w_outcome,
               'obligations': {}, 'open': {}, 'failures': []}
@@ -197,6 +213,8 @@ def main():
         kinds[row['evidence']] = kinds.get(row['evidence'], 0) + 1
     report['summary'] = {'obligations': len(info['moves']), 'covered': len(report['obligations']),
                          'open': sorted(map(int, report['open'])), 'by_evidence': kinds}
+    if sorted(map(int, report['open'])) != sorted(OPEN) or position((*U, 82)) != X:
+        report['failures'].append('the open obligations are not exactly move 82 to X')
     report['outcome'] = 'P if and only if X is N' if not report['failures'] else 'unknown'
     print(json.dumps(report, indent=2))
     return 0 if not report['failures'] else 1

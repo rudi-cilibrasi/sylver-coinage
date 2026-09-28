@@ -52,8 +52,10 @@ function describeOpen(move, row) {
   const name = row.position.split("=")[0];
   return {
     move: Number(move), position: "{" + row.destination_of_move + "}", evidence: "open",
-    answer: name + (row.first_unclassified_odd_reply
-      ? ": every odd reply below " + row.first_unclassified_odd_reply + " is N" : " is open"),
+    answer: name + ((row.P_replies || []).length
+      ? ": P replies found: " + row.P_replies.join(", ")
+      : row.first_unclassified_odd_reply ? ": every odd reply below " + row.first_unclassified_odd_reply + " is N"
+      : " is open"),
     title: row.position + " — " + counts, states: null, link: null, checkable: false,
   };
 }

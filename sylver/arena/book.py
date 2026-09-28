@@ -26,7 +26,8 @@ BOOK = ROOT / 'sylver/arena/book'
 RATE = 100_000
 # The fixed verifier holds each state in 16 words (about 170 bytes with its
 # hash-map overhead), so 32 GB admits finite leaves up to about 190 million
-# states, which covers the campaign's largest witnesses. verify_book compares
+# states: all of W's witnesses (up to 157 million), though not U's move-70
+# leaf (about 202 million). verify_book compares
 # certificate, C, states and outcome, not this execution profile, so entries
 # admitted under the earlier 16 GB limit replay unchanged.
 LIMITS = dict(DEFAULT_LIMITS, cpu_seconds=7200., wall_seconds=14400., memory_mb=32768,

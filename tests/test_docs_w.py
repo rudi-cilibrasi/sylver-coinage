@@ -43,22 +43,14 @@ class WPageTests(unittest.TestCase):
 
     def test_the_committed_audit_is_reproducible(self):
         # audit.py re-derives the obligations and re-checks every certificate,
-        # receipt and transcript. Its verdict must match the committed file:
-        # outcome P, every obligation covered, certified nodes exactly for 12
-        # and 36, and the same evidence wherever the committed file has Book
-        # evidence. A finite witness may since have entered The Book, which
-        # the audit prefers.
+        # receipt and transcript; its output must equal the committed file
+        # (regenerate audit.json whenever The Book changes).
         result = subprocess.run([sys.executable, str(AUDIT.parent / 'audit.py')], capture_output=True, text=True,
                                 timeout=600)
         self.assertEqual(result.returncode, 0, result.stdout[-2000:])
         fresh, committed = json.loads(result.stdout), json.loads(AUDIT.read_text())
         self.assertEqual((fresh['outcome'], fresh['failures']), ('P', []))
-        self.assertEqual(sorted(fresh['obligations']), sorted(committed['obligations']))
-        for m, row in committed['obligations'].items():
-            if row['evidence'] == 'finite-witness':
-                self.assertIn(fresh['obligations'][m]['evidence'], ('finite-witness', 'book'), m)
-            else:
-                self.assertEqual(fresh['obligations'][m], row, m)
+        self.assertEqual(fresh, committed)   # the audit is deterministic for a given Book
         nodes = sorted(int(m) for m, row in fresh['obligations'].items() if row['evidence'] == 'certified-node')
         self.assertEqual(nodes, [12, 36])
 
@@ -98,9 +90,7 @@ class UPageTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stdout[-2000:])
         fresh, committed = json.loads(result.stdout), json.loads(U_AUDIT.read_text())
         self.assertEqual((fresh['outcome'], fresh['failures']), ('P if and only if X is N', []))
-        self.assertEqual({m: r['evidence'] for m, r in fresh['obligations'].items()},
-                         {m: r['evidence'] for m, r in committed['obligations'].items()})
-        self.assertEqual(fresh['open'], committed['open'])
+        self.assertEqual(fresh, committed)
         self.assertEqual(sorted(int(m) for m in fresh['open']), [82])
         self.assertEqual(fresh['open']['82']['P_replies'], [])
 

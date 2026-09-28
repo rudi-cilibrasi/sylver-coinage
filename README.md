@@ -18,12 +18,13 @@ exceeds 10^12 states.
 - **U={16,26,88} is P if and only if X={16,26,82,88} is N (September 27):**
   every one of U's 59 Quiet End obligations except the move to X is now
   certified: 52 by Book certificates replayed by the fixed verifier (U's odd
-  moves and the July audit's odd witnesses, up to `{16,26,38,88,371}`), move
+  moves, the July audit's odd witnesses up to `{16,26,38,88,371}`, the reply
+  15 to move 24, and positions U shares with W), move
   70 by a finite witness (261; 200 million states) replayed natively and in
   Python, four through the certified nodes G, F and V, and move 98 through
   W. This makes the September 5 reduction checkable. X is N exactly when
   some odd reply reaches a P-position; verified shared-memo sweeps extend
-  X's refuted odd replies from 407 to **601**, with none P. See the
+  X's refuted odd replies from 407 to **665**, with none P. See the
   [result](sylver/campaigns/u-2026-09-27/RESULT.md) and the [obligation
   table](https://rudi-cilibrasi.github.io/sylver-coinage/u.html).
 - **W={16,26,62,98} is P (September 27):** W's last open move, 108, is

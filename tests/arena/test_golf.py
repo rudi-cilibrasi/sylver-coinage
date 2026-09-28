@@ -292,6 +292,7 @@ class BookOfWTests(unittest.TestCase):
             self.assertTrue((Path(d) / 'book' / 'BOOK.md').exists())
             refused = admit(bad)
             self.assertNotEqual(refused.returncode, 0)
+            self.assertIn('certificate failed re-verification', refused.stderr)
             self.assertNotIn('4,6,9,11', read(Path(d) / 'book' / 'index.json')['targets'])
 
     def test_short_prover_certificates_pass_the_referee(self):

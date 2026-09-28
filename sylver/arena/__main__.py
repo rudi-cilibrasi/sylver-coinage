@@ -119,13 +119,16 @@ def main():
             (args.book/'BOOK.md').write_text(render_book(args.book))
         elif args.action=='admit':
             from .book import admit_proof
+            if args.repeats<1:raise SystemExit('--repeats must be at least 1')
             build_tools(args.tools)
-            for path in args.episodes:
-                entry=admit_proof(args.book,read(path),args.tools,args.competitor or 'curator certificate',
-                                  path.name,args.repeats)
-                print(json.dumps({'file':path.name,'root':read(path)['root'],'outcome':entry['outcome'],
-                                  'C':entry['C'],'states':entry['states']}),flush=True)
-            (args.book/'BOOK.md').write_text(render_book(args.book))
+            try:
+                for path in args.episodes:
+                    entry=admit_proof(args.book,read(path),args.tools,args.competitor or 'curator certificate',
+                                      path.name,args.repeats)
+                    print(json.dumps({'file':path.name,'root':read(path)['root'],'outcome':entry['outcome'],
+                                      'C':entry['C'],'states':entry['states']}),flush=True)
+            finally:
+                if (args.book/'index.json').exists():(args.book/'BOOK.md').write_text(render_book(args.book))
         elif args.action=='verify':
             report=verify_book(args.book,args.tools);print(json.dumps(report,indent=2))
             if not all(r['ok'] for r in report):raise SystemExit(1)
