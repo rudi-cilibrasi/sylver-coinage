@@ -429,11 +429,11 @@
       "position": "X={16,26,82,88}",
       "odd_replies_classified": {
         "cache N": 203,
-        "verified sweep N": 137
+        "verified sweep N": 140
       },
       "P_replies": [],
-      "first_unclassified_odd_reply": 683,
-      "ledger_rows": 137,
+      "first_unclassified_odd_reply": 689,
+      "ledger_rows": 140,
       "problems": []
     }
   },

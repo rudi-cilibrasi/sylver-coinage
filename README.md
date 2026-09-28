@@ -24,7 +24,7 @@ exceeds 10^12 states.
   Python, four through the certified nodes G, F and V, and move 98 through
   W. This makes the September 5 reduction checkable. X is N exactly when
   some odd reply reaches a P-position; verified shared-memo sweeps extend
-  X's refuted odd replies from 407 to **681**, with none P. See the
+  X's refuted odd replies from 407 to **687**, with none P. See the
   [result](sylver/campaigns/u-2026-09-27/RESULT.md) and the [obligation
   table](https://rudi-cilibrasi.github.io/sylver-coinage/u.html).
 - **W={16,26,62,98} is P (September 27):** W's last open move, 108, is

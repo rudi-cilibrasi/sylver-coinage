@@ -70,8 +70,8 @@ X's 32 even replies were all refuted in Attempt 20, so X is N exactly when
 some odd reply r makes X+r a P-position. X is long (its half {8,13,41,44}
 is not a quiet ender), so the Quiet End Theorem gives no finite cover of
 X. The audit reports X's classified odd replies: 203 from the exact cache
-(every odd reply up to 407) and 137 memo-verified sweep rows, all N; no
-odd reply is P, and the first unclassified one is **683**.
+(every odd reply up to 407) and 140 memo-verified sweep rows, all N; no
+odd reply is P, and the first unclassified one is **689**.
 
 The new rows come from shared-memo sweeps of `sylver/parallel_solver.cpp`
 on ten threads with `--verify-memo` ([scan/ledger-x.jsonl](scan/ledger-x.jsonl)):
@@ -87,14 +87,16 @@ others cost seconds.
 | 603–649 (24) | 603: 546,512,584, 851 | 599,363,424 | 1,041 |
 | 651–665 (8) | 651: 578,719,126, 952 | 614,517,665 | 1,129 |
 | 667–681 (8) | 667: 603,766,693, 996 | 628,686,315 | 1,169 |
+| 683–687 (3) | 683: 620,080,435, 1,040 | 630,722,566 | 1,180 |
 
 The first two batches ran on the engine of PR #26; beyond reply 457 the
 batches needed PR #30's leaner memo (fingerprinted shards filled to 7/8
 that grow by half), since a doubling table would have needed about 45 GB.
-The 667–681 batch ended at 628.7 million states, just below the 636
-million that 13-word keys fit in about 48 GB; the next growth step would
-need about 72 GB, more than this 62 GB host, so replies beyond about 700
-need a leaner memo or a larger machine.
+The last batches ended at 628.7 and 630.7 million states, just below the
+636 million that 13-word keys fit in about 48 GB, and reply 683 alone
+needed 620 million; the next growth step would need about 72 GB, more
+than this 62 GB host, so further replies need a leaner memo or a larger
+machine.
 Every row is N and each is an engine result whose memo passed its
 certificate check, not an independent replay; only a P row would need one,
 and there is none.
