@@ -15,6 +15,8 @@ exceeds 10^12 states.
 
 ## Headline results
 
+For the week of September 21–27, see the [progress summary](docs/progress/2026-09-28-week.md).
+
 - **U={16,26,88} is P if and only if X={16,26,82,88} is N (September 27):**
   every one of U's 59 Quiet End obligations except the move to X is now
   certified: 52 by Book certificates replayed by the fixed verifier (U's odd
