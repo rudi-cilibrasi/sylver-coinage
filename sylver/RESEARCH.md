@@ -4,7 +4,7 @@
 U={16,26,88} except the move to X={16,26,82,88} is now certified (Book
 certificates, a replayed finite witness for move 70, the certified nodes
 G, F and V, and W for Q), so **U is P if and only if X is N**. Verified
-sweeps of X's odd replies reach 665, all N. See [the campaign
+sweeps of X's odd replies reach 681, all N. See [the campaign
 result](campaigns/u-2026-09-27/RESULT.md).
 
 **September 27, W is P:** a shared-memo sweep of the new parallel engine
@@ -1436,11 +1436,11 @@ assumptions as W (the Quiet End Theorem and three published P-positions).
 
 X's 32 even children are N (Attempt 20), so X is N exactly when some odd
 reply reaches a P-position. The parallel engine's shared-memo sweeps with
-`--verify-memo` now classify every odd reply from 409 to 665 as N: the
-first reply of a batch costs 380–580 million states and 7–16 minutes on ten
+`--verify-memo` now classify every odd reply from 409 to 681 as N: the
+first reply of a batch costs 380–600 million states and 7–17 minutes on ten
 threads, the others seconds, and every batch's memo passed its certificate
-check. With the 203 July rows, all odd replies up to 665 are N; X's
-first unclassified odd reply is 667. Crossing reply 457 needed a leaner
+check. With the 203 July rows, all odd replies up to 681 are N; X's
+first unclassified odd reply is 683. Crossing reply 457 needed a leaner
 memo (PR #30): fingerprinted shards filled to 7/8 that grow by half.
 
 ### Sources
