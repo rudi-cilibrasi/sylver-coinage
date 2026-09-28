@@ -126,3 +126,13 @@ python -m sylver.verify_finite_reply \
 
 The move-108 Python replay needs about three hours on a busy host and up
 to 24 GB.
+
+## Later the same day
+
+The Book raised its verification profile to 32 GB and admitted W's large
+finite witnesses (moves 66, 70, 92, 108, 118) after one fresh replay each
+by its fixed verifier; the replay counts equal the native and Python
+counts of the campaign receipts (66: 103,189,655; 70: 79,594,540; 92:
+80,500,948; 108: 156,823,029; 118: 115,933,058 states). The audit now
+finds 50 obligations in The Book and the two certified nodes; the table
+above records the evidence when W was first shown P.

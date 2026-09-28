@@ -233,14 +233,11 @@ def w_book(output, book, workers=1, seed=0, strategies=('golf-witness', 'golf-ro
     from .policies import GOLF
     from .tournament import run_tournament
     out = Path(output); out.mkdir()
-    from .book import admit, measure
+    from .book import admit, admit_proof, measure
     from .exact import build_tools
     build_tools(out / 'tools')
     for path in sorted(Path(certificates).glob('*.json')) if certificates else ():
-        proof = read(path)
-        entry = measure(proof, out / 'tools', repeats=2)
-        entry['source'] = {'competitor': 'curator certificate', 'file': path.name}
-        admit(book, proof, entry)
+        admit_proof(book, read(path), out / 'tools', 'curator certificate', path.name, repeats=2)
     index = read(Path(book) / 'index.json') if (Path(book) / 'index.json').exists() else {'targets': {}}
     from .common import position
     skip = {key(position((*W, m))) for m in exclude}  # e.g. leaves too large to replay alongside other work
@@ -333,8 +330,8 @@ def render_w(book):
     header = lines.index('| Move | Position | Status | Proof of record | C | States | V (s) |')
     pending = 52 - len(W_OPEN) - certified - depends
     lines[header:header] = [f'**{certified} of {52 - len(W_OPEN)} covered obligations** are certified here by self-contained '
-                            f'certificates; {pending} more have finite witnesses not yet in the Book; {depends} depend on '
-                            f'infinite P positions outside the proof language (named in each row); '
+                            'certificates; ' + (f'{pending} more have finite witnesses not yet in the Book; ' if pending else '')
+                            + f'{depends} depend on infinite P positions outside the proof language (named in each row); '
                             + (f'{len(W_OPEN)} are open: {", ".join(map(str, W_OPEN))}.' if W_OPEN else 'none is open.'), '']
     return '\n'.join(lines) + '\n'
 

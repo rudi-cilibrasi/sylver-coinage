@@ -78,6 +78,8 @@ def book_entry(target, index, verifier):
     proof = json.loads(path.read_text())
     if proof.get('root') != target or proof['nodes'][target]['outcome'] != 'N':
         return None
+    if any(node.get('rule') == 'baseline' for node in proof['nodes'].values()):
+        return None   # cites a baseline fact: not self-contained
     return {'evidence': 'book', 'certificate': str(path.relative_to(ROOT)), 'C': entry['C'], 'states': entry['states']}
 
 

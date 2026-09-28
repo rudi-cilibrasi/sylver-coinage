@@ -1,0 +1,455 @@
+{
+  "position": [
+    16,
+    26,
+    88
+  ],
+  "gcd": 2,
+  "tail": "quiet-end-v1",
+  "complete": true,
+  "half_frobenius": 75,
+  "W_audit_outcome": "P",
+  "obligations": {
+    "2": {
+      "destination_of_move": "2",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/b1093dce4841c31f24bda60b40fec081b55c27b18ba5cc8212c699d776b7b5cb.json",
+      "C": 128,
+      "states": 1
+    },
+    "3": {
+      "destination_of_move": "3,16,26",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/9b828853618c8002f7b83e929865eb24860b6827575b513bbc1e69f78f9ff250.json",
+      "C": 81,
+      "states": 2
+    },
+    "4": {
+      "destination_of_move": "4,26",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/740b892697f5eedf6ad05834283171dde4c4d4b298e0b200a82e6b81f423186a.json",
+      "C": 286,
+      "states": 1
+    },
+    "5": {
+      "destination_of_move": "5,16",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/ab7adc6e516738848c65abdc44f8f3bc44f7b9d6bfdf2b6eca02eb62e92c69ee.json",
+      "C": 75,
+      "states": 62
+    },
+    "6": {
+      "destination_of_move": "6,16,26",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/900a244a55814f2ef77a305f3e27628df351dc79be7b436668ec41435b0e045a.json",
+      "C": 146,
+      "states": 21
+    },
+    "7": {
+      "destination_of_move": "7,16,26",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/8cab55be11456601f7d2508bd358dd9d3397e3ae98e7c61cf8fb91ab7ce6cfda.json",
+      "C": 81,
+      "states": 31
+    },
+    "8": {
+      "destination_of_move": "8,26",
+      "evidence": "certified-node",
+      "reply": 20,
+      "destination": "8,20,26",
+      "certificate": "node G of sylver/short_certificates.py",
+      "source": "sylver/short_certificates.py"
+    },
+    "9": {
+      "destination_of_move": "9,16,26",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/b8a601fd7f58683017ed71998d8e813f205aa76e1ecd161f5e17b6c3dea772b2.json",
+      "C": 81,
+      "states": 340
+    },
+    "10": {
+      "destination_of_move": "10,16",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/051018b08de4030de03bd8a7dd303322b0356ceef11934bc38b10ef5dc15386b.json",
+      "C": 144,
+      "states": 213
+    },
+    "11": {
+      "destination_of_move": "11,16,26",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/0fe8e11ec2f75f67c650bbcb8c6d7122c78e1d724b7c4c46384fd32d5370b88d.json",
+      "C": 83,
+      "states": 4089
+    },
+    "12": {
+      "destination_of_move": "12,16,26",
+      "evidence": "certified-node",
+      "reply": 14,
+      "destination": "12,14,16",
+      "certificate": "node F of sylver/short_certificates.py",
+      "source": "sylver/short_certificates.py"
+    },
+    "14": {
+      "destination_of_move": "14,16,26",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/e8fd927cdd49635e15da8328a442f367fb993e8624cf97554fda80cf23044b74.json",
+      "C": 159,
+      "states": 5559
+    },
+    "15": {
+      "destination_of_move": "15,16,26",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/ade764fb184b370b56b40124c8ed9e4a49854df8fb6fc22b90d0a4461de7259e.json",
+      "C": 83,
+      "states": 10911
+    },
+    "17": {
+      "destination_of_move": "16,17,26,88",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/50c063fb5b939903ad8a72b63588f40a82aa4c48a4206355134639e0ff84abcc.json",
+      "C": 89,
+      "states": 17671
+    },
+    "18": {
+      "destination_of_move": "16,18,26",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/8d9b089d396675410817186b207e274fd7af8a997d6ca9272796f095e4d4115a.json",
+      "C": 150,
+      "states": 50
+    },
+    "19": {
+      "destination_of_move": "16,19,26,88",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/74edef0c84e8311ae96382134a389840b50309dd21e78a674d3eb2d064407e2f.json",
+      "C": 89,
+      "states": 65379
+    },
+    "20": {
+      "destination_of_move": "16,20,26",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/c4c7badab6907ab40b1bcc4c729584282ed5bc50c4f4d39b17a822a8ff72fe5f.json",
+      "C": 2181,
+      "states": 11114
+    },
+    "22": {
+      "destination_of_move": "16,22,26",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/2691613c5bb3a82cb056001d4c57bd79dc1408365f3cf7c7e7ff1fa337ec0a27.json",
+      "C": 159,
+      "states": 5956
+    },
+    "23": {
+      "destination_of_move": "16,23,26",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/2e89fd1748499eddbd04082ab5eccf195359d1629ec7b4f0a3a4147a6f674fa0.json",
+      "C": 83,
+      "states": 10306
+    },
+    "24": {
+      "destination_of_move": "16,24,26",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/a25e8d3403c118130367ac9085d2080e652a8b2685fa7c766279fdbdf342403c.json",
+      "C": 159,
+      "states": 7377
+    },
+    "25": {
+      "destination_of_move": "16,25,26,88",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/2a4e47308b7d2619f1a313fa43e5f1ca62827b7394c1cacd8c23c3bdd7b169dd.json",
+      "C": 89,
+      "states": 282515
+    },
+    "27": {
+      "destination_of_move": "16,26,27,88",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/95617f306cc37c0e1c196a3bede8a7ca0a4466008be95a82916ec670ce955169.json",
+      "C": 89,
+      "states": 61349
+    },
+    "28": {
+      "destination_of_move": "16,26,28",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/9def17446d4bd5bf56fec0e8037984c7141e91281e234e5d6b1db0a4ca41eb7a.json",
+      "C": 159,
+      "states": 1416879
+    },
+    "30": {
+      "destination_of_move": "16,26,30",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/128c55504303c65fb5ad38790628958f1ed624360d03e04c27195ec65b6b0ef0.json",
+      "C": 159,
+      "states": 2378741
+    },
+    "31": {
+      "destination_of_move": "16,26,31",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/1e6e45078d49ee68a7c65850056f5e764afd6947f8a4574ddf67ffc683bec7ff.json",
+      "C": 83,
+      "states": 1249169
+    },
+    "33": {
+      "destination_of_move": "16,26,33,88",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/8d6db0bdcf0e131c297281cb2ff8778709fd98b3978a2df4a65d02398e31d05c.json",
+      "C": 89,
+      "states": 342584
+    },
+    "34": {
+      "destination_of_move": "16,26,34,88",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/7bfdc14bc087f588f86604d1115428d8293c351c32c9199efa988b32128017f3.json",
+      "C": 171,
+      "states": 532681
+    },
+    "35": {
+      "destination_of_move": "16,26,35,88",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/417867c9af0b09432b3b4828080692159a7a44d4614e93ffd728e90411986336.json",
+      "C": 89,
+      "states": 2775211
+    },
+    "36": {
+      "destination_of_move": "16,26,36",
+      "evidence": "certified-node",
+      "reply": 56,
+      "destination": "16,26,36,56",
+      "certificate": "node V of sylver/short_certificates.py",
+      "source": "sylver/short_certificates.py"
+    },
+    "38": {
+      "destination_of_move": "16,26,38,88",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/42e9073f0adecee06fce33254d394e0853befe64681ec085e619be1872b3a3d3.json",
+      "C": 174,
+      "states": 61504135
+    },
+    "40": {
+      "destination_of_move": "16,26,40",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/0323b51034af98f8982b5a5eb50228f6853e5e2afc1e04fa151a08de9bb0bd86.json",
+      "C": 159,
+      "states": 3740
+    },
+    "41": {
+      "destination_of_move": "16,26,41,88",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/7401cb8aaa749d8b377c99521091765a5cfe164dcfb09507cfb74577d1b35223.json",
+      "C": 89,
+      "states": 4627256
+    },
+    "43": {
+      "destination_of_move": "16,26,43,88",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/37b5400b71f5ceb2f8687492df6dc3ce899e1d9eac59c2e844e614adb776dc45.json",
+      "C": 89,
+      "states": 1277119
+    },
+    "44": {
+      "destination_of_move": "16,26,44",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/cda297d714b295f227674c8bd4286811a3e028830bbe9ff709b0d293788d48a3.json",
+      "C": 159,
+      "states": 304243
+    },
+    "46": {
+      "destination_of_move": "16,26,46",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/bea222562a17411781569f8df3f32cebc72f55cbeddac17d7ecf83e6642c4c36.json",
+      "C": 159,
+      "states": 47285
+    },
+    "49": {
+      "destination_of_move": "16,26,49,88",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/e1fdf377e6f87e0bcdb78e98b08c1875049037ba4e4f0c4a576ef2f7454bcfcc.json",
+      "C": 89,
+      "states": 9884239
+    },
+    "50": {
+      "destination_of_move": "16,26,50,88",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/b40f87bae6e6428a48ae8ca8339adb194f641698c55c610e5877078aaac977c2.json",
+      "C": 165,
+      "states": 1057057
+    },
+    "51": {
+      "destination_of_move": "16,26,51,88",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/5191773c40887f3a3de85e74279d82f2b39e5020be09be70c8a93ec07d74f874.json",
+      "C": 89,
+      "states": 7206163
+    },
+    "54": {
+      "destination_of_move": "16,26,54,88",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/51b4ce9a1916dbb337c4f34041bbecfc034981814b2b883e63ff493c0beb1827.json",
+      "C": 165,
+      "states": 1217944
+    },
+    "56": {
+      "destination_of_move": "16,26,56",
+      "evidence": "certified-node",
+      "reply": 36,
+      "destination": "16,26,36,56",
+      "certificate": "node V of sylver/short_certificates.py",
+      "source": "sylver/short_certificates.py"
+    },
+    "59": {
+      "destination_of_move": "16,26,59,88",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/d36af1be8327d44574b687832f71a6294b0836177f6eab8e18facea211e65748.json",
+      "C": 89,
+      "states": 17420497
+    },
+    "60": {
+      "destination_of_move": "16,26,60,88",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/f6a9561ee9cbc32cd1872903b2b053e2856b89841f173f67b6945ac7216052d9.json",
+      "C": 171,
+      "states": 672938
+    },
+    "62": {
+      "destination_of_move": "16,26,62",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/aa89ecb2993fb9a40faaf1b81162f62de52d70c80f93a5d021f0ef7ebd01d078.json",
+      "C": 159,
+      "states": 14143113
+    },
+    "66": {
+      "destination_of_move": "16,26,66,88",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/093cb5b66bb628eb3eef4de433c66945c27ff7455dce04b6bf79e63caade349d.json",
+      "C": 171,
+      "states": 8512431
+    },
+    "67": {
+      "destination_of_move": "16,26,67,88",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/64b0aeb014632f338835a572bb0898bfd6c23e91d85e103a8a68a201b9855e5b.json",
+      "C": 89,
+      "states": 4301265
+    },
+    "70": {
+      "destination_of_move": "16,26,70,88",
+      "evidence": "finite-witness",
+      "reply": 261,
+      "destination": "16,26,70,88,261",
+      "certificate": "sylver/campaigns/u-2026-09-27/u70-certificate.json",
+      "receipt": "sylver/campaigns/u-2026-09-27/verification/u70/receipt.json",
+      "states": 201555961
+    },
+    "72": {
+      "destination_of_move": "16,26,72",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/a85b89647bbea2a40e828df8e342a8180e25b57de7f6b64b7021e77a002dc7bc.json",
+      "C": 159,
+      "states": 5195580
+    },
+    "75": {
+      "destination_of_move": "16,26,75,88",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/7293295b6f30674024be45455fd0e24e67bbbf1d41e9bea0a7f7a281c3355439.json",
+      "C": 89,
+      "states": 2470585
+    },
+    "76": {
+      "destination_of_move": "16,26,76,88",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/bcfb7335fd8f6ccdc4717a158958cf6ed3f0dad5c8061db9e7d8641b384b7892.json",
+      "C": 174,
+      "states": 85002794
+    },
+    "86": {
+      "destination_of_move": "16,26,86,88",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/f7527df06b230884394db5f7f5b710fd76988779ddd71e617e9b75ca7cc12051.json",
+      "C": 171,
+      "states": 9983695
+    },
+    "92": {
+      "destination_of_move": "16,26,88,92",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/cb72a1b34e8c4fa3db91619f0cbf671d470859186ef9e54b2374c41ffed8feed.json",
+      "C": 171,
+      "states": 57309624
+    },
+    "98": {
+      "destination_of_move": "16,26,88,98",
+      "evidence": "w-is-p",
+      "reply": 62,
+      "destination": "16,26,62,98",
+      "certificate": "sylver/campaigns/w-p-2026-09-27/audit.json"
+    },
+    "102": {
+      "destination_of_move": "16,26,88,102",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/cbbcd1c4ee69fc3a90cc4cc5463e68215caad25f152cb888b9e9414a2a887600.json",
+      "C": 175,
+      "states": 25964834
+    },
+    "108": {
+      "destination_of_move": "16,26,88,108",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/399d4fab3f68878d748620d26bffbc431122968b951a72625f8871b15862518b.json",
+      "C": 178,
+      "states": 154986293
+    },
+    "118": {
+      "destination_of_move": "16,26,88,118",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/de8de1bd944deb9771f01582eaf33493c979f6a991dd8bd33f89a5ac7b03357d.json",
+      "C": 178,
+      "states": 130622589
+    },
+    "124": {
+      "destination_of_move": "16,26,88,124",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/81f73a659fb546d80272b74068e62db2d0d5b9d33af2c980a504b2e0777a6381.json",
+      "C": 175,
+      "states": 62403662
+    },
+    "134": {
+      "destination_of_move": "16,26,88,134",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/37ed99f490323bb2ea9fe486fc00e70ecdc61de9b746b9bc40c7410419bf92cc.json",
+      "C": 175,
+      "states": 14780519
+    },
+    "150": {
+      "destination_of_move": "16,26,88,150",
+      "evidence": "book",
+      "certificate": "sylver/arena/book/certificates/7da2e06df5cc505cc35f723fa0112fdab46b491eec82fca81d1b5c67d980405c.json",
+      "C": 175,
+      "states": 5829106
+    }
+  },
+  "open": {
+    "82": {
+      "destination_of_move": "16,26,82,88",
+      "position": "X={16,26,82,88}",
+      "odd_replies_classified": {
+        "cache N": 203,
+        "verified sweep N": 129
+      },
+      "P_replies": [],
+      "first_unclassified_odd_reply": 667,
+      "ledger_rows": 129,
+      "problems": []
+    }
+  },
+  "failures": [],
+  "summary": {
+    "obligations": 59,
+    "covered": 58,
+    "open": [
+      82
+    ],
+    "by_evidence": {
+      "book": 52,
+      "certified-node": 4,
+      "finite-witness": 1,
+      "w-is-p": 1
+    }
+  },
+  "outcome": "P if and only if X is N"
+}

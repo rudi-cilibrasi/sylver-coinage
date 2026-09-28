@@ -6,7 +6,7 @@ half's 18 odd gaps above 1; all 52 are covered, so **W is P** ([campaign record]
 self-contained certificates in The Book, replayed by the fixed verifier with a fresh memo and
 no inherited cache.
 
-**45 of 52 covered obligations** are certified here by self-contained certificates; 5 more have finite witnesses not yet in the Book; 2 depend on infinite P positions outside the proof language (named in each row); none is open.
+**50 of 52 covered obligations** are certified here by self-contained certificates; 2 depend on infinite P positions outside the proof language (named in each row); none is open.
 
 | Move | Position | Status | Proof of record | C | States | V (s) |
 | ---: | --- | --- | --- | ---: | ---: | ---: |
@@ -50,15 +50,15 @@ no inherited cache.
 | 56 | `{16,26,56,62}` | **Book** | reply 97 → `{16,26,56,62,97}` | 171 | 25,236,025 | 280.739 |
 | 59 | `{16,26,59,62,98}` | **Book** | reply 47 → `{16,26,47,59,62,98}` | 183 | 4,458,041 | 32.691 |
 | 60 | `{16,26,60,62,98}` | **Book** | reply 27 → `{16,26,27,60,62,98}` | 183 | 611,082 | 3.678 |
-| 66 | `{16,26,62,66}` | finite witness, not yet in the Book | reply 263 → `{16,26,62,66,263}` | | | |
+| 66 | `{16,26,62,66}` | **Book** | reply 263 → `{16,26,62,66,263}` | 174 | 103,189,655 | 1327.514 |
 | 67 | `{16,26,62,67,98}` | **Book** | finite leaf | 95 | 2,049,906 | 14.132 |
-| 70 | `{16,26,62,70,98}` | finite witness, not yet in the Book | reply 169 → `{16,26,62,70,98,169}` | | | |
+| 70 | `{16,26,62,70,98}` | **Book** | reply 169 → `{16,26,62,70,98,169}` | 186 | 79,594,540 | 914.282 |
 | 72 | `{16,26,62,72}` | **Book** | reply 107 → `{16,26,62,72,107}` | 174 | 50,192,273 | 612.178 |
 | 76 | `{16,26,62,76,98}` | **Book** | reply 43 → `{16,26,43,62,76,98}` | 183 | 4,294,839 | 30.759 |
 | 82 | `{16,26,62,82}` | **Book** | reply 27 → `{16,26,27,62,82}` | 171 | 732,964 | 4.346 |
 | 86 | `{16,26,62,86,98}` | **Book** | reply 129 → `{16,26,62,86,98,129}` | 186 | 68,758,240 | 813.610 |
-| 92 | `{16,26,62,92,98}` | finite witness, not yet in the Book | reply 139 → `{16,26,62,92,98,139}` | | | |
+| 92 | `{16,26,62,92,98}` | **Book** | reply 139 → `{16,26,62,92,98,139}` | 186 | 80,500,948 | 963.901 |
 | 102 | `{16,26,62,98,102}` | **Book** | reply 95 → `{16,26,62,95,98,102}` | 187 | 44,985,582 | 549.594 |
-| 108 | `{16,26,62,98,108}` | finite witness, not yet in the Book | reply 213 → `{16,26,62,98,108,213}` | | | |
-| 118 | `{16,26,62,98,118}` | finite witness, not yet in the Book | reply 167 → `{16,26,62,98,118,167}` | | | |
+| 108 | `{16,26,62,98,108}` | **Book** | reply 213 → `{16,26,62,98,108,213}` | 190 | 156,823,029 | 2083.051 |
+| 118 | `{16,26,62,98,118}` | **Book** | reply 167 → `{16,26,62,98,118,167}` | 190 | 115,933,058 | 1451.347 |
 | 134 | `{16,26,62,98,134}` | **Book** | reply 85 → `{16,26,62,85,98,134}` | 187 | 37,192,385 | 417.194 |

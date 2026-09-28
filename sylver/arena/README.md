@@ -343,7 +343,10 @@ against 1,721,485 for the hinted witness 33. Tier C needs a 16 GiB profile.
 **The Book** (`sylver/arena/book/`) keeps, for each target, every admitted
 certificate. `book add EPISODE` re-verifies it from scratch (never trusting
 the episode's receipt) and records `C`, the verifier's evaluated-state count,
-which must agree across runs, and each run's CPU. The entry of record
+which must agree across runs, and each run's CPU. `book admit PROOF...`
+does the same for a curator's proof files (`--repeats`, default 2). The
+Book's verification profile allows 32 GB, enough for finite leaves of about
+190 million states in the verifier's 16-word representation. The entry of record
 minimizes the deterministic checking cost `(C+100)*(states/RATE+1)`, the
 agreed score's shape with verification time replaced by the verifier's own
 work at a fixed `RATE` (100,000 states per second, recorded in the index), so

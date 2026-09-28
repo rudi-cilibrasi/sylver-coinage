@@ -24,7 +24,13 @@ BOOK = ROOT / 'sylver/arena/book'
 # measured median (7.6e4-1.2e5 for this Book's first entries). Fixed per Book
 # version so the record depends only on C and the deterministic state count.
 RATE = 100_000
-LIMITS = dict(DEFAULT_LIMITS, cpu_seconds=7200., wall_seconds=14400., memory_mb=16384,
+# The fixed verifier holds each state in 16 words (about 170 bytes with its
+# hash-map overhead), so 32 GB admits finite leaves up to about 190 million
+# states: all of W's witnesses (up to 157 million), though not U's move-70
+# leaf (about 202 million). verify_book compares
+# certificate, C, states and outcome, not this execution profile, so entries
+# admitted under the earlier 16 GB limit replay unchanged.
+LIMITS = dict(DEFAULT_LIMITS, cpu_seconds=7200., wall_seconds=14400., memory_mb=32768,
               query_wall_seconds=7200.)
 
 
@@ -83,6 +89,13 @@ def admit(book, proof, entry):
     target['record'] = record(target['entries'])
     write(book / 'index.json', index)
     return entry
+
+
+def admit_proof(book, proof, tools, competitor, file, repeats=2):
+    """Admit a curator's proof file after the Book's own fresh replays."""
+    entry = measure(proof, tools, repeats)
+    entry['source'] = {'competitor': competitor, 'file': file}
+    return admit(book, proof, entry)
 
 
 def add_certificate(book, episode, tools, competitor=None, repeats=3):
