@@ -45,9 +45,11 @@ def main():
     p.add_argument('--book',type=Path,default=ROOT/'sylver/arena/book');p.add_argument('--workers',type=int,default=1)
     p.add_argument('--certificates',type=Path,help='directory of curator proof files to replay and admit')
     p.add_argument('--exclude',default='',help='W moves to leave out of this run, e.g. 70,86,92')
-    p=commands.add_parser('book');p.add_argument('action',choices=('add','verify','render'))
-    p.add_argument('episodes',type=Path,nargs='*');p.add_argument('--book',type=Path,default=ROOT/'sylver/arena/book')
+    p=commands.add_parser('book');p.add_argument('action',choices=('add','admit','verify','render'))
+    p.add_argument('episodes',type=Path,nargs='*',help='golf episodes (add) or curator proof files (admit)')
+    p.add_argument('--book',type=Path,default=ROOT/'sylver/arena/book')
     p.add_argument('--competitor');p.add_argument('--tools',type=Path,default=Path('/tmp/sylver-arena-tools'))
+    p.add_argument('--repeats',type=int,default=2,help='admit: verifier replays per certificate')
     p=commands.add_parser('report');p.add_argument('tournament',type=Path)
     p=commands.add_parser('pilot');p.add_argument('--output',type=Path,required=True);p.add_argument('--repeats',type=int,default=3);p.add_argument('--seed',type=int,default=0)
     p=commands.add_parser('evolve');p.add_argument('bundles',type=Path,nargs='+');p.add_argument('--output',type=Path,required=True)
@@ -114,6 +116,15 @@ def main():
         if args.action=='add':
             for episode in args.episodes:
                 print(json.dumps(add_certificate(args.book,episode,args.tools,args.competitor),indent=2))
+            (args.book/'BOOK.md').write_text(render_book(args.book))
+        elif args.action=='admit':
+            from .book import admit_proof
+            build_tools(args.tools)
+            for path in args.episodes:
+                entry=admit_proof(args.book,read(path),args.tools,args.competitor or 'curator certificate',
+                                  path.name,args.repeats)
+                print(json.dumps({'file':path.name,'root':read(path)['root'],'outcome':entry['outcome'],
+                                  'C':entry['C'],'states':entry['states']}),flush=True)
             (args.book/'BOOK.md').write_text(render_book(args.book))
         elif args.action=='verify':
             report=verify_book(args.book,args.tools);print(json.dumps(report,indent=2))

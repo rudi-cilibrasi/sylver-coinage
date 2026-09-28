@@ -83,96 +83,19 @@
 <script src="solver.js"></script>
 <script src="book.js"></script>
 <script src="w.js"></script>
+<script src="audit-page.js"></script>
 <script>
 "use strict";
-const LOCAL = new URLSearchParams(location.search).has("local");   // serve the checkout: /docs/w.html?local
-const RAW = LOCAL ? "../" : "https://raw.githubusercontent.com/rudi-cilibrasi/sylver-coinage/main/";
-const BLOB = "https://github.com/rudi-cilibrasi/sylver-coinage/blob/main/";
-const BROWSER_LIMIT = 140;   // largest leaf Frobenius number the page will replay
-
-function solveInBrowser(gens) {
-  return new SylverSolver(gens, 6000000).solve().winningMove === null ? "P" : "N";
-}
-
-function cell(tr, cls, content) {
-  const td = document.createElement("td");
-  td.className = cls;
-  if (content instanceof Node) td.appendChild(content); else td.textContent = content;
-  tr.appendChild(td);
-  return td;
-}
-
-async function addCheck(check, r) {
-  try {
-    const proof = await (await fetch(RAW + r.link)).json();
-    const leaf = largestLeaf(proof);
-    if (leaf > BROWSER_LIMIT) {
-      check.className = "muted"; check.textContent = "leaf too large (F=" + leaf + ")";
-      return;
-    }
-    const button = document.createElement("button");
-    button.textContent = "Check";
-    button.addEventListener("click", () => {
-      button.disabled = true; button.textContent = "checking…";
-      setTimeout(() => {
-        const label = checkLabel(checkCertificate(proof, solveInBrowser));
-        const span = document.createElement("span");
-        span.className = label.cls; span.textContent = label.text;
-        check.textContent = ""; check.appendChild(span);
-      }, 20);
-    });
-    check.className = ""; check.textContent = ""; check.appendChild(button);
-  } catch (e) {
-    check.className = "muted"; check.textContent = "could not load the certificate";
-  }
-}
-
-async function main() {
-  const status = document.getElementById("status");
-  let described;
-  try {
-    const audit = await (await fetch(RAW + "sylver/campaigns/w-p-2026-09-27/audit.json")).json();
-    described = describeAudit(audit);
-  } catch (e) {
-    status.textContent = "Could not load the audit: " + e.message +
-      ". The page reads sylver/campaigns/w-p-2026-09-27/audit.json from GitHub; try again later.";
-    return;
-  }
-  const body = document.querySelector("#w tbody");
-  const pending = [];
-  for (const r of described.rows) {
-    const tr = document.createElement("tr");
-    cell(tr, "num", String(r.move));
-    cell(tr, "pos", r.position);
-    cell(tr, "", r.evidence);
-    const answer = r.link ? document.createElement("a") : document.createElement("span");
-    if (r.link) answer.href = BLOB + r.link;
-    answer.textContent = r.answer;
-    if (r.title) answer.title = r.title;
-    cell(tr, "", answer);
-    cell(tr, "num", r.states === null ? "" : r.states.toLocaleString("en-US"));
-    const check = cell(tr, "muted", "");
-    if (r.checkable) {
-      check.textContent = "loading…";
-      pending.push(addCheck(check, r));
-    } else {
-      check.textContent = r.evidence === "finite witness" ? "native + Python" : "repository";
-    }
-    body.appendChild(tr);
-  }
-  document.getElementById("w").hidden = false;
-  const counts = Object.entries(described.counts).map(([k, n]) => n + " by " + k).join(", ");
-  if (described.outcome === "P" && described.failures.length === 0 && described.rows.length === described.total) {
-    status.textContent = described.total + " obligations, all covered (audit outcome P): " + counts + ".";
-  } else {
-    status.textContent = "The audit does not currently report P (outcome " + described.outcome + "): " +
-      described.rows.length + " of " + described.total + " obligations covered; " +
-      described.failures.join("; ") + ".";
-    status.className = "bad";
-  }
-  await Promise.all(pending);
-}
-main();
+renderAuditPage({
+  campaign: "w-p-2026-09-27", table: "w", status: "status",
+  verdict: (d) => {
+    const counts = Object.entries(d.counts).map(([k, n]) => n + " by " + k).join(", ");
+    return d.outcome === "P" && d.failures.length === 0 && d.rows.length === d.total
+      ? { ok: true, text: d.total + " obligations, all covered (audit outcome P): " + counts + "." }
+      : { ok: false, text: "The audit does not currently report P (outcome " + d.outcome + "): " + d.rows.length +
+          " of " + d.total + " obligations covered; " + d.failures.join("; ") + "." };
+  },
+});
 </script>
 </body>
 </html>

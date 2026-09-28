@@ -1,5 +1,11 @@
 # Sylver Coinage after 16: research log
 
+**September 27, U reduced to X:** every Quiet End obligation of
+U={16,26,88} except the move to X={16,26,82,88} is now certified (Book
+certificates, the certified nodes G, F, K and V, and W for Q), so **U is P
+if and only if X is N**. Verified sweeps of X's odd replies reach 601, all
+N. See [the campaign result](campaigns/u-2026-09-27/RESULT.md).
+
 **September 27, W is P:** a shared-memo sweep of the new parallel engine
 answers W's last open move, 108, with **213**: {16,26,62,98,108,213} is P,
 confirmed by fresh native and Python replays with a matching exact state
@@ -1399,6 +1405,40 @@ moves 56 and 66 by finite witnesses instead of through V and B (V is still
 used for move 36). Move 12 has no odd witness up to 977 and
 move 36 none up to 401. See the
 [campaign result](campaigns/w-p-2026-09-27/RESULT.md).
+
+### Attempt 32 — U is P if and only if X is N (2026-09-27)
+
+The September 5 report reduced U={16,26,88} P to X N and Q N, resting on
+the July audit of U's other branches, which its bundle did not repackage.
+W P settled Q N; this record checks the rest. U is short: its half
+{8,13,44} is a quiet ender, so its obligations are 59 moves (38 even, 21
+odd). `campaigns/u-2026-09-27/audit.py` accepts only Book certificates,
+finite witnesses with native and Python replays, winning replies to
+certified nodes, and W's own audit. The Book now holds 52 of U's
+obligations, each replayed by the fixed verifier with a fresh memo: its 21
+odd moves as finite leaves, 21 of the July audit's 22 odd witnesses (up to
+38→371, whose destination {16,26,38,88,371} has Frobenius number 469), the
+reply 15 to move 24 (reaching {15,16,24,26}, which also answers W's move
+24, so K is not needed), and the positions U shares with W. Where the July
+record kept Python reproductions, the counts agree exactly (for example
+57,309,624 states for {16,26,88,92,93} and 62,403,662 for
+{16,26,88,91,124}). The remaining July witness, 70→261, reaches
+{16,26,70,88,261}, which needs about 200 million states, beyond The Book's
+32 GB profile, so like W's large witnesses it has native and Python
+replays. The certified nodes G, F and V cover moves 8, 12, 36 and 56 (no
+odd witness exists up to 601 for {8,26} and {16,26,36}, or up to 393 for
+{16,26,56}), and move 98 reaches Q, answered by 62 into W. Only move 82,
+reaching X, remains: **U is P if and only if X is N**, under the same
+assumptions as W (the Quiet End Theorem and three published P-positions).
+
+X's 32 even children are N (Attempt 20), so X is N exactly when some odd
+reply reaches a P-position. The parallel engine's shared-memo sweeps with
+`--verify-memo` now classify every odd reply from 409 to 601 as N: the
+first reply of a batch costs 380–450 million states and 7–12 minutes on ten
+threads, the others seconds, and every batch's memo passed its certificate
+check. With the 203 July rows, all odd replies up to 601 are N; X's
+first unclassified odd reply is 603. Crossing reply 457 needed a leaner
+memo (PR #30): fingerprinted shards filled to 7/8 that grow by half.
 
 ### Sources
 

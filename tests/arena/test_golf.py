@@ -273,6 +273,27 @@ class BookOfWTests(unittest.TestCase):
         for m in W_WITNESSED:
             self.assertIn(audit['obligations'][str(m)]['evidence'], ('book', 'finite-witness'), m)
 
+    def test_book_admit_command_replays_curator_proofs(self):
+        # `book admit` admits a curator's proof file only after the Book's own
+        # replay, and refuses a false one.
+        import json, subprocess, sys
+        root = Path(__file__).resolve().parents[2]
+        with tempfile.TemporaryDirectory() as d:
+            good, bad = Path(d) / 'good.json', Path(d) / 'bad.json'
+            good.write_text(json.dumps({'schema': 1, 'root': '3,16,26', 'nodes': {'3,16,26': {'rule': 'finite', 'outcome': 'N'}}}))
+            bad.write_text(json.dumps({'schema': 1, 'root': '4,6,9,11', 'nodes': {'4,6,9,11': {'rule': 'finite', 'outcome': 'N'}}}))
+            def admit(proof):
+                return subprocess.run([sys.executable, '-m', 'sylver.arena', 'book', 'admit', str(proof), '--book',
+                                       str(Path(d) / 'book'), '--repeats', '1'], capture_output=True, text=True, cwd=root)
+            ok = admit(good)
+            self.assertEqual(ok.returncode, 0, ok.stderr[-1500:])
+            index = read(Path(d) / 'book' / 'index.json')
+            self.assertEqual(index['targets']['3,16,26']['outcome'], 'N')
+            self.assertTrue((Path(d) / 'book' / 'BOOK.md').exists())
+            refused = admit(bad)
+            self.assertNotEqual(refused.returncode, 0)
+            self.assertNotIn('4,6,9,11', read(Path(d) / 'book' / 'index.json')['targets'])
+
     def test_short_prover_certificates_pass_the_referee(self):
         from sylver.arena.golf import ShortProver
         from sylver.arena.proof import verify

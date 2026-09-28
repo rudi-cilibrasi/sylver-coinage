@@ -15,6 +15,17 @@ exceeds 10^12 states.
 
 ## Headline results
 
+- **U={16,26,88} is P if and only if X={16,26,82,88} is N (September 27):**
+  every one of U's 59 Quiet End obligations except the move to X is now
+  certified: 52 by Book certificates replayed by the fixed verifier (U's odd
+  moves and the July audit's odd witnesses, up to `{16,26,38,88,371}`), move
+  70 by a finite witness (261; 200 million states) replayed natively and in
+  Python, four through the certified nodes G, F and V, and move 98 through
+  W. This makes the September 5 reduction checkable. X is N exactly when
+  some odd reply reaches a P-position; verified shared-memo sweeps extend
+  X's refuted odd replies from 407 to **601**, with none P. See the
+  [result](sylver/campaigns/u-2026-09-27/RESULT.md) and the [obligation
+  table](https://rudi-cilibrasi.github.io/sylver-coinage/u.html).
 - **W={16,26,62,98} is P (September 27):** W's last open move, 108, is
   answered by **213**: `{16,26,62,98,108,213}` is P, and fresh native and
   Python replays agree on exactly **156,823,029 states**. All **52** of W's
@@ -28,15 +39,15 @@ exceeds 10^12 states.
   parallel engine's shared-memo sweeps. See the
   [result](sylver/campaigns/w-p-2026-09-27/RESULT.md) and the
   [obligation table](https://rudi-cilibrasi.github.io/sylver-coinage/w.html).
-- **The Book of W (September 27):** 45 of W's 52 obligations have
+- **The Book of W (September 27):** 50 of W's 52 obligations have
   self-contained certificates in [The Book](sylver/arena/book/W.md), each
-  replayed by the fixed verifier with a fresh memo and no inherited cache.
-  Searching for finite witnesses removed the dependence of W's moves 8, 10,
-  14, 20, 24, 56, 66, and 72 on theorem-backed or published positions (for
-  example, 8 is answered by 49 and 20 by 14, reaching the Quiet End node
-  `{14,16,20,26}`). Five more moves are covered by replayed finite
-  witnesses whose large leaves await their Book replay; moves 12 and 36
-  still rest on theorem-backed positions.
+  replayed by the fixed verifier with a fresh memo and no inherited cache;
+  for the large finite witnesses the replay counts equal the campaigns'
+  native and Python counts. Searching for finite witnesses removed the
+  dependence of W's moves 8, 10, 14, 20, 24, 56, 66, and 72 on
+  theorem-backed or published positions (for example, 8 is answered by 49
+  and 20 by 14, reaching the Quiet End node `{14,16,20,26}`); moves 12 and
+  36 still rest on theorem-backed positions.
 - **W frontier reduced to one move (September 27):** after move 118 from
   `W={16,26,62,98}`, reply **167** reaches the finite P-position
   `{16,26,62,98,118,167}`. Fresh native and Python replays agree on P and on
