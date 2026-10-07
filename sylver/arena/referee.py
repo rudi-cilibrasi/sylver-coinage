@@ -165,7 +165,49 @@ class Channel:
             if len(self.buffer) > 1 << 20:
                 raise ValueError('oversized reply')
         line, self.buffer = self.buffer.split(b'\n', 1)
-        return json.loads(line)
+        # Decode as UTF-8 first (as json.loads would for UTF-8, a leading
+        # byte-order mark included): given bytes, json.loads also accepts
+        # UTF-16 and UTF-32, whose brackets a check of the text would not
+        # see. A str skips that detection.
+        reply = line.decode('utf-8-sig', 'surrogatepass')
+        if nested_too_deeply(reply):
+            raise ValueError('reply nested too deeply')
+        return json.loads(reply)
+
+
+MAX_REPLY_DEPTH = 32   # a reply is one flat object; anything deeper is malformed
+
+
+def nested_too_deeply(text, limit=MAX_REPLY_DEPTH):
+    """True when JSON brackets in ``text`` (a str) nest deeper than ``limit``.
+
+    json.loads recurses once per level and relies on the interpreter's
+    recursion limit to stop: in a process that raised it (sylver.periodicity
+    sets 100,000 on import), a hostile reply such as 100,000 '[' would
+    exhaust the C stack and crash the referee instead of losing the game.
+    Strings are skipped, so brackets inside them do not count; past an
+    unterminated string json.loads fails before recursing.
+    """
+    if text.count('[') + text.count('{') <= limit:
+        return False
+    depth, in_string, escaped = 0, False, False
+    for char in text:
+        if in_string:
+            if escaped:
+                escaped = False
+            elif char == '\\':
+                escaped = True
+            elif char == '"':
+                in_string = False
+        elif char == '"':
+            in_string = True
+        elif char in '[{':
+            depth += 1
+            if depth > limit:
+                return True
+        elif char in ']}':
+            depth -= 1
+    return False
 
 
 class Lost(Exception):

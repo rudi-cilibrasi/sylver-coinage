@@ -450,7 +450,8 @@ JSON Lines over stdin/stdout, one fresh process per player per game:
 
 `generators` are the canonical minimal generators of the current semigroup;
 `history` is every number named since `start`. Stdout carries protocol lines
-only; players log to stderr, whose last 64 KiB the referee keeps. Claims are
+only, in UTF-8; a reply nested more than 32 brackets deep is malformed.
+Players log to stderr, whose last 64 KiB the referee keeps. Claims are
 recorded, never trusted. Player text (ready name and version, notes) is
 stored as valid UTF-8, with unencodable characters such as lone surrogates
 replaced by `?`, and truncated.
