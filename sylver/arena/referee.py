@@ -165,10 +165,11 @@ class Channel:
             if len(self.buffer) > 1 << 20:
                 raise ValueError('oversized reply')
         line, self.buffer = self.buffer.split(b'\n', 1)
-        # Decode as UTF-8 first (as json.loads would for UTF-8): given bytes,
-        # json.loads also accepts UTF-16 and UTF-32, whose brackets a check of
-        # the text would not see. A str skips that detection.
-        reply = line.decode('utf-8', 'surrogatepass')
+        # Decode as UTF-8 first (as json.loads would for UTF-8, a leading
+        # byte-order mark included): given bytes, json.loads also accepts
+        # UTF-16 and UTF-32, whose brackets a check of the text would not
+        # see. A str skips that detection.
+        reply = line.decode('utf-8-sig', 'surrogatepass')
         if nested_too_deeply(reply):
             raise ValueError('reply nested too deeply')
         return json.loads(reply)
@@ -207,6 +208,7 @@ def nested_too_deeply(text, limit=MAX_REPLY_DEPTH):
         elif char in ']}':
             depth -= 1
     return False
+
 
 class Lost(Exception):
     """The player being served loses for ``reason``."""

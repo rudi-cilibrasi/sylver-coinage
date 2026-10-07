@@ -12,6 +12,7 @@ import subprocess
 import sys
 import tempfile
 import textwrap
+import types
 import time
 import unittest
 from unittest import mock
@@ -22,8 +23,8 @@ from sylver.arena.game import IllegalMove, Position, minimal_generators
 from sylver.arena.league import (ENDERS, _fit, _native, analyze, bradley_terry, render, resolve, run_league, standings,
                                  suite, win_groups)
 from sylver.arena.players import PLAYERS, builtin_command, load_book
-from sylver.arena.referee import (CLOCK, OTHER, Seat, clean, nested_too_deeply, own_cgroup, play_game, session_cpu,
-                                  text)
+from sylver.arena.referee import (CLOCK, OTHER, Channel, Seat, clean, nested_too_deeply, own_cgroup, play_game,
+                                  session_cpu, text)
 from sylver.solver import FiniteSolver, solve_position
 
 
@@ -431,13 +432,20 @@ class RefereeTests(unittest.TestCase):
             json.loads('{"a": "' + '[' * 100)
 
     def test_replies_are_utf8(self):
+        def receive(raw):   # Channel.receive on a pipe holding one reply line
+            read, write = os.pipe()
+            os.write(write, raw + b'\n')
+            os.close(write)
+            with os.fdopen(read, 'rb') as stdout:
+                return Channel(types.SimpleNamespace(stdout=stdout)).receive(5)
         # json.loads(bytes) would also decode UTF-16; a UTF-16 reply whose
         # bytes hide a quote must not slip deep nesting past the check.
-        hidden = ('["\u4e22",' + '[' * 1000).encode('utf-16-le')
         with self.assertRaises(ValueError):
-            reply = hidden.decode('utf-8', 'surrogatepass')
-            if not nested_too_deeply(reply):
-                json.loads(reply)
+            receive(('["\u4e22",' + '[' * 1000).encode('utf-16-le'))
+        with self.assertRaisesRegex(ValueError, 'nested too deeply'):
+            receive(b'[' * 1000)
+        # A UTF-8 byte-order mark is accepted, as json.loads(bytes) accepted it.
+        self.assertEqual(receive(b'\xef\xbb\xbf{"move": 5}'), {'move': 5})
 
 
 def fake_league(games):
