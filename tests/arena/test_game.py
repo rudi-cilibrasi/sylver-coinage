@@ -22,7 +22,8 @@ from sylver.arena.game import IllegalMove, Position, minimal_generators
 from sylver.arena.league import (ENDERS, _fit, _native, analyze, bradley_terry, render, resolve, run_league, standings,
                                  suite, win_groups)
 from sylver.arena.players import PLAYERS, builtin_command, load_book
-from sylver.arena.referee import CLOCK, OTHER, Seat, clean, own_cgroup, play_game, session_cpu, text
+from sylver.arena.referee import (CLOCK, OTHER, Seat, clean, nested_too_deeply, own_cgroup, play_game, session_cpu,
+                                  text)
 from sylver.solver import FiniteSolver, solve_position
 
 
@@ -400,6 +401,28 @@ class RefereeTests(unittest.TestCase):
             player = {'name': 'raw', 'command': [sys.executable, str(self.dir / 'raw.py'), reply]}
             r = self.game(player, self.smallest(), name=f'raw{i}')
             self.assertEqual((r['result']['loser'], r['result']['reason']), ('first', reason), reply[:40])
+
+    def test_deep_nesting_loses_even_with_a_raised_recursion_limit(self):
+        # sylver.periodicity raises the limit to 100,000 on import; json.loads
+        # would then recurse through 100,000 '[' and overflow the C stack.
+        (self.dir / 'raw.py').write_text(RAW)
+        limit = sys.getrecursionlimit()
+        sys.setrecursionlimit(100_000)
+        try:
+            player = {'name': 'raw', 'command': [sys.executable, str(self.dir / 'raw.py'), "b'[' * 100000 + b'\\n'"]}
+            r = self.game(player, self.smallest(), name='deep')
+        finally:
+            sys.setrecursionlimit(limit)
+        self.assertEqual((r['result']['loser'], r['result']['reason']), ('first', 'malformed-move'))
+        self.assertIn('nested too deeply', r['result']['detail'])
+
+    def test_nesting_depth_check(self):
+        self.assertFalse(nested_too_deeply(b'{"move": 12}'))
+        self.assertFalse(nested_too_deeply(b'[' * 32 + b']' * 32))
+        self.assertTrue(nested_too_deeply(b'[' * 33))
+        self.assertTrue(nested_too_deeply(b'{"a": ' * 40 + b'1' + b'}' * 40))
+        # Brackets inside strings, escaped quotes included, do not nest.
+        self.assertFalse(nested_too_deeply(b'{"move": 3, "note": "' + b'[' * 100 + b'\\"' + b'{' * 100 + b'"}'))
 
 
 def fake_league(games):

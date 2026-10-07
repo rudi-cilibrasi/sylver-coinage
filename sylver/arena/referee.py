@@ -165,7 +165,42 @@ class Channel:
             if len(self.buffer) > 1 << 20:
                 raise ValueError('oversized reply')
         line, self.buffer = self.buffer.split(b'\n', 1)
+        if nested_too_deeply(line):
+            raise ValueError('reply nested too deeply')
         return json.loads(line)
+
+
+MAX_REPLY_DEPTH = 32   # a reply is one flat object; anything deeper is malformed
+
+
+def nested_too_deeply(line, limit=MAX_REPLY_DEPTH):
+    """True when JSON brackets in ``line`` (bytes) nest deeper than ``limit``.
+
+    json.loads recurses once per level and relies on the interpreter's
+    recursion limit to stop: in a process that raised it (sylver.periodicity
+    sets 100,000 on import), a hostile reply such as 100,000 '[' would
+    exhaust the C stack and crash the referee instead of losing the game.
+    Strings are skipped, so brackets inside them do not count."""
+    if line.count(b'[') + line.count(b'{') <= limit:
+        return False
+    depth, in_string, escaped = 0, False, False
+    for byte in line:
+        if in_string:
+            if escaped:
+                escaped = False
+            elif byte == 0x5C:   # backslash
+                escaped = True
+            elif byte == 0x22:   # closing quote
+                in_string = False
+        elif byte == 0x22:
+            in_string = True
+        elif byte in (0x5B, 0x7B):
+            depth += 1
+            if depth > limit:
+                return True
+        elif byte in (0x5D, 0x7D):
+            depth -= 1
+    return False
 
 
 class Lost(Exception):
