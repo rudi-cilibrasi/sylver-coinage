@@ -41,14 +41,13 @@
 </style>
 </head>
 <body>
-<h1>U = {16,26,88} is P if and only if X = {16,26,82,88} is N</h1>
+<h1>U = {16,26,88} is P</h1>
 <p>
-  After the opening 16 and the reply 26, naming 88 reaches U. If U is a
-  P-position, 88 answers 26 and the reply 26 to the opening 16 loses. U is
+  After the opening 16 and the reply 26, naming 88 reaches U. U is a
+  P-position, so 88 answers 26 and the reply 26 to the opening 16 loses. U is
   <i>short</i>, so by the Quiet End Theorem it is P exactly when each of its
   59 <i>obligations</i>, the moves listed below, leads to an N-position.
-  Every one of them is covered except move 82, which reaches X: so U is P if
-  and only if X is N.
+  Every one of them is covered; the last, move 82, reaches X, which is N.
 </p>
 <p>
   <b>What it rests on.</b> Most obligations are Book certificates; move 70's
@@ -62,9 +61,13 @@
   lists everything.
 </p>
 <p>
-  <b>X.</b> Every even reply to X is N, so X is N exactly when some odd reply
-  reaches a P-position. The row for move 82 shows how far the odd replies
-  have been searched; none has been P so far.
+  <b>X.</b> X = {16,26,82,88} is N: its reply 701 reaches {16,26,82,88,701},
+  a P-position with Frobenius number 819. That is a finite computation of
+  about 634 million states. Two engines with independent move code replayed
+  it sequentially, in place of native and Python replays, which would not fit
+  the host. They agree on the exact state count, and each certifies its whole
+  memo. Every smaller odd reply is N
+  (<a href="https://github.com/rudi-cilibrasi/sylver-coinage/blob/main/sylver/campaigns/x-2026-10-06/RESULT.md">X's record</a>).
 </p>
 <p id="status">Loading the audit from the repository&hellip;</p>
 <div class="tablewrap">
@@ -89,11 +92,10 @@ renderAuditPage({
   campaign: "u-2026-09-27", table: "u", status: "status",
   verdict: (d) => {
     const open = d.rows.filter((r) => r.evidence === "open").map((r) => r.move);
-    const covered = d.rows.length - open.length;
-    const counts = Object.entries(d.counts).filter(([k]) => k !== "open").map(([k, n]) => n + " by " + k).join(", ");
-    return d.failures.length === 0 && d.rows.length === d.total && open.length === 1 && open[0] === 82
-      ? { ok: true, text: d.total + " obligations: " + covered + " covered (" + counts + "), move 82 open. Audit verdict: U is " + d.outcome + "." }
-      : { ok: false, text: "The audit does not currently cover every obligation but 82: " + d.failures.join("; ") + "." };
+    const counts = Object.entries(d.counts).map(([k, n]) => n + " by " + k).join(", ");
+    return d.failures.length === 0 && d.rows.length === d.total && open.length === 0 && d.outcome === "P"
+      ? { ok: true, text: "All " + d.total + " obligations covered (" + counts + "). Audit verdict: U is P." }
+      : { ok: false, text: "The audit does not currently cover every obligation: " + d.failures.join("; ") + "." };
   },
 });
 </script>

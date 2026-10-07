@@ -1,11 +1,15 @@
-# U={16,26,88} is P if and only if X={16,26,82,88} is N
+# U={16,26,88} is P
 
-U is the position after 16, 26 and 88 have been named. If U is P, then 88
-answers 26 and the reply 26 to the opening 16 loses. The September 5
-verification report reduced U P to X N and Q N (Q={16,26,88,98}), resting
-on the project's July audit of U's other branches
-([RUN_MOVE_26_U_SUBTREE.txt](../../RUN_MOVE_26_U_SUBTREE.txt)), which it did
-not repackage. This record checks that premise obligation by obligation.
+U is the position after 16, 26 and 88 have been named. **U is P**, so 88
+answers 26, and the reply 26 to the opening 16 loses.
+
+The September 5 verification report reduced U P to X N and Q N
+(Q={16,26,88,98}). That reduction rested on the project's July audit of
+U's other branches ([RUN_MOVE_26_U_SUBTREE.txt](../../RUN_MOVE_26_U_SUBTREE.txt)),
+which the report did not repackage. This record checks the premise
+obligation by obligation. On September 27 every obligation except move 82,
+to X={16,26,82,88}, was covered. On October 6 X was found N
+([X record](../x-2026-10-06/RESULT.md)).
 
 U has gcd two, and its half {8,13,44} is a quiet ender, so U is short: by
 the Quiet End Theorem, U is P exactly when each of its **59 obligations**
@@ -20,7 +24,7 @@ accepts only these kinds of evidence ([audit.json](audit.json)):
 | finite witness, native and Python replays | 1 | 70 |
 | winning reply to a certified infinite P-position | 4 | 8, 12, 36, 56 |
 | reply 62 into W, which is P | 1 | 98 |
-| open: X={16,26,82,88} | 1 | 82 |
+| X is N: its reply 701 reaches a P-position | 1 | 82 |
 | **total** | **59** | |
 
 - **Book certificate:** a certificate in The Book for the obligation's
@@ -43,6 +47,13 @@ accepts only these kinds of evidence ([audit.json](audit.json)):
 - **W is P:** move 98 reaches Q, and Q + 62 = W={16,26,62,98}, which is P
   ([w-p-2026-09-27](../w-p-2026-09-27/RESULT.md)); the audit re-runs W's own
   audit and requires outcome P.
+- **X is N:** move 82 reaches X, which 701 answers.
+  - {16,26,82,88,701} is P: two sequential replays with independent move
+    code agree on the exact state count, and each certifies its whole memo
+    ([x-2026-10-06](../x-2026-10-06/RESULT.md)).
+  - These are not the native and Python replays used for move 70: at about
+    634 million states, those would not fit this host.
+  - The audit re-runs X's own audit and requires outcome N.
 
 The Book's replay counts agree exactly with both Python reproductions the
 July record kept: 57,309,624 states for {16,26,88,92,93}
@@ -57,23 +68,25 @@ and, by W's record, up to 977 for {12,16,26} (move 12), counting replies
 the cache already classified ([scan/](scan/), `ledger-u*.jsonl`; a few rows
 of out-of-memory batches lack the memo check and are not counted).
 
-Every obligation except move 82 is covered, so **U is P if and only if X
-is N**, and U N if and only if X is P. The claim rests on the Quiet End
-Theorem, the finite solvers and The Book's replays, and, through the
-certified nodes G, F, V and through W, on the three published
-P-positions the repository explicitly assumes: {8,10,12,14} and
-{8,12,26,30} from Blok's pairing family, and Sicherman's {8,10,22}.
+Every obligation is covered, so **U is P**. The claim rests on:
+- the Quiet End Theorem;
+- the finite solvers, The Book's replays and X's replays;
+- through the certified nodes G, F and V and through W, the three published
+  P-positions the repository explicitly assumes: {8,10,12,14} and
+  {8,12,26,30} from Blok's pairing family, and Sicherman's {8,10,22}.
 
 ## X, the last obligation
 
 X's 32 even replies were all refuted in Attempt 20, so X is N exactly when
 some odd reply r makes X+r a P-position. X is long (its half {8,13,41,44}
 is not a quiet ender), so the Quiet End Theorem gives no finite cover of
-X. The audit reports X's classified odd replies: 203 from the exact cache
-(every odd reply up to 407) and 140 memo-verified sweep rows, all N; no
-odd reply is P, and the first unclassified one is **689**.
+X. By September 27, 203 odd replies from the exact cache (every odd reply
+up to 407) and 140 memo-verified sweep rows were classified, all N. The
+first unclassified reply was 689. On October 6 the sweep continued with a
+leaner engine and found {16,26,82,88,701} P
+([X record](../x-2026-10-06/RESULT.md)).
 
-The new rows come from shared-memo sweeps of `sylver/parallel_solver.cpp`
+The September rows come from shared-memo sweeps of `sylver/parallel_solver.cpp`
 on ten threads with `--verify-memo` ([scan/ledger-x.jsonl](scan/ledger-x.jsonl)):
 one memo for a batch of replies, so after the first reply of a batch the
 others cost seconds.
@@ -97,9 +110,9 @@ The last batches ended at 628.7 and 630.7 million states, just below the
 needed 620 million; the next growth step would need about 72 GB, more
 than this 62 GB host, so further replies need a leaner memo or a larger
 machine.
-Every row is N and each is an engine result whose memo passed its
-certificate check, not an independent replay; only a P row would need one,
-and there is none.
+Every row is N. Each is an engine result whose memo passed its
+certificate check, not an independent replay; only a P row needs one. The
+P row for 701 came later. Its two sequential replays are in the X record.
 
 No mathematical priority claim is made.
 

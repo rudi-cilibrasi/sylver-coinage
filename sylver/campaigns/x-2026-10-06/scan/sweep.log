@@ -1,0 +1,14 @@
+21:39:08 queue 616 first [683, 685, 687, 689, 691]
+21:39:08 start m0-sweep-683-1913 bound 2031 engine kunz-cfae8a6
+21:46:03 done m0-r683 ok N 727 620108668 414.2s
+21:46:13 done m0-r685 ok N 777 630645935 10.6s
+21:46:13 done m0-r687 ok N 611 630799559 0.2s
+21:46:19 done m0-r689 ok N 711 636023599 5.4s
+21:46:19 done m0-r691 ok N 637 636190686 0.3s
+21:46:19 done m0-r693 ok N 649 636459976 0.3s
+21:46:23 done m0-r695 ok N 697 639468164 3.2s
+21:46:23 done m0-r697 ok N 695 639651233 0.2s
+21:46:23 done m0-r699 ok N 613 639716533 0.1s
+21:46:26 done m0-r701 ok P None 642846174 2.8s
+21:48:12 batch m0-sweep-683-1913 exit 0 543.4s wall children cpu 5080s
+!!! FOUND P {'m': 0, 'r': 701, 'position': [16, 26, 82, 88, 701], 'frobenius': 819, 'wall': 2.7638868088833988, 'returncode': 0, 'mem_gib': 40.0, 'engine': 'kunz-cfae8a6', 'engine_args': '--threads 10 --max-states 1300000000 --odd-list (shared memo, batch m0-sweep-683-1913)', 'status': 'ok', 'outcome': 'P', 'winning_move': None, 'states': 642846174, 'states_are': 'cumulative over the batch', 'memo_verified': True}

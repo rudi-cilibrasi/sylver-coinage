@@ -128,11 +128,14 @@
 </div>
 
 <div class="card">
-  <h2 style="margin-top:0">U = {16,26,88} waits only on X</h2>
-  <p>After 16 and 26, naming 88 reaches U. Every one of U's 59 Quiet End
-     obligations is now certified except the move to X = {16,26,82,88}, so U
-     is P if and only if X is N. <a href="u.html">See U's obligations</a> and
-     how far X's odd replies have been searched.</p>
+  <h2 style="margin-top:0">U = {16,26,88} is P: the reply 26 to 16 loses</h2>
+  <p>After 16 and 26, naming 88 reaches U. The last of U's 59 Quiet End
+     obligations, the move to X = {16,26,82,88}, is covered: X's reply 701
+     reaches a P-position, confirmed by two sequential runs of engines with
+     independent move code that agree on the exact state count (in place of
+     native and Python replays, which would not fit the host). So U is P and
+     88 answers 26.
+     <a href="u.html">See U's obligations</a>.</p>
 </div>
 <p class="small">Rudi Cilibrasi, with Claude (Anthropic) and GPT 5.6 Sol
 (OpenAI); AI subscriptions by Metagood.com.  MIT licensed.</p>

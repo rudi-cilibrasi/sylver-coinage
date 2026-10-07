@@ -1,0 +1,2 @@
+P winning_move=none frobenius=819 states=633734956
+verified entries=633734956

@@ -1,0 +1,126 @@
+{
+  "position": [
+    16,
+    26,
+    82,
+    88,
+    701
+  ],
+  "frobenius": 819,
+  "runs": {
+    "kunz": {
+      "source": "sylver/kunz_solver.cpp",
+      "commit": "bc5460d779e731397cbf22a6d673078e75fd7dc5",
+      "source_sha256": "679b077e604f5d35bad577d738e62d8d5f5d4a37c03889d980eba02895d0ccb9",
+      "build": "g++ -std=c++20 -O3 -Wall -Wextra -pedantic -Werror -pthread -march=native",
+      "binary_sha256": "9d430d41ade49e4cdc86edcdf6d1d159acb867b52e762528f389060b1dcd8edc",
+      "command": [
+        "kunz-bc5460d",
+        "--threads",
+        "1",
+        "--verify-memo",
+        "--verify-threads",
+        "6",
+        "--memo-stats",
+        "16",
+        "26",
+        "82",
+        "88",
+        "701"
+      ],
+      "elapsed_seconds": 5847.0,
+      "max_rss_kib": 14845656,
+      "returncode": 0,
+      "source_snapshot": "sources/kunz_solver-bc5460d.cpp",
+      "stdout_sha256": "d400307d558791a4ea90655d305a31506418e57f67acbabe03681d1cf01cf37b",
+      "stderr_sha256": "338d26af7416581b46165d056c803ae52ab794f66b9dc627c037aeaad10ecb9e",
+      "outcome": "P",
+      "frobenius": 819,
+      "states": 633734956
+    },
+    "bitset": {
+      "source": "sylver/parallel_solver.cpp",
+      "commit": "16a3e54a85f73a1fa641d1d530f4b3b481a251aa",
+      "source_sha256": "cc354d156ee0f7a53b43400e7b89cc44268d3282d0b2390fc62ddafee2d895dc",
+      "build": "g++ -std=c++20 -O3 -Wall -Wextra -pedantic -Werror -pthread -march=native -DSYLVER_NATIVE_WORDS=13 -DSYLVER_PARALLEL_KUNZ_KEYS",
+      "binary_sha256": "4f8c06ada0ebe4aafb477c1c40e1029e82a107e23f4746aef87985b4d1e9e361",
+      "command": [
+        "pk13-16a3e54",
+        "--threads",
+        "1",
+        "--verify-memo",
+        "16",
+        "26",
+        "82",
+        "88",
+        "701"
+      ],
+      "elapsed_seconds": 10941.0,
+      "max_rss_kib": 15794724,
+      "returncode": 0,
+      "source_snapshot": "sources/parallel_solver-16a3e54.cpp",
+      "stdout_sha256": "d400307d558791a4ea90655d305a31506418e57f67acbabe03681d1cf01cf37b",
+      "stderr_sha256": "45724e898f380c157deca10619380e3194e34aa1767adddf5b30f42519dae061",
+      "outcome": "P",
+      "frobenius": 819,
+      "states": 633734956
+    }
+  },
+  "supplementary": {
+    "kunz-threaded": {
+      "source": "sylver/kunz_solver.cpp",
+      "commit": "cfae8a6189076f6fc573bf55841e7b147720f9cb",
+      "source_sha256": "f5a4ce746163498aaa323684e02247cd32e694538875883f1a728ac55e5c2650",
+      "build": "g++ -std=c++20 -O3 -Wall -Wextra -pedantic -Werror -pthread -march=native",
+      "binary_sha256": "83a2489c8a0a11471aba685a5a4d791a49aaf520ddf961046ad9bf1d726dd9c7",
+      "command": [
+        "kunz-cfae8a6",
+        "--threads",
+        "10",
+        "--verify-memo",
+        "--memo-stats",
+        "16",
+        "26",
+        "82",
+        "88",
+        "701"
+      ],
+      "elapsed_seconds": 674.18,
+      "max_rss_kib": 14863100,
+      "returncode": 0,
+      "stdout_sha256": "3691b968f5157e0d4600c5dddbce48a9ba535b87ed9928f17713d95c72f4a5ef",
+      "stderr_sha256": "d75ec08e527f6681577ae4164c4830d9a50c0cd60d892f5e9ff8eb2d4e854726",
+      "outcome": "P",
+      "frobenius": 819,
+      "states": 633744224
+    },
+    "bitset-threaded": {
+      "source": "sylver/parallel_solver.cpp",
+      "commit": "working copy of 6d2377f323cc56d38b1437f50b8b29773821f86c differing only in a comment",
+      "source_sha256": "2ad0cc07a6f7446751e179623b7ae3acfc0d1cf555b58c5658debdd1e829d6b9",
+      "build": "g++ -std=c++20 -O3 -Wall -Wextra -pedantic -Werror -pthread -march=native -DSYLVER_NATIVE_WORDS=13 -DSYLVER_PARALLEL_KUNZ_KEYS",
+      "binary_sha256": "d03c50a72363efc169e4c81a4b292ff50af63bc8f6154ce649eaf045cfd56334",
+      "command": [
+        "pk13",
+        "--threads",
+        "10",
+        "--verify-memo",
+        "16",
+        "26",
+        "82",
+        "88",
+        "701"
+      ],
+      "elapsed_seconds": 2425.61,
+      "max_rss_kib": 15801972,
+      "returncode": 0,
+      "stdout_sha256": "58e262fce42019549e5b8054279b37fb4aa0afe126014b541026c828a7925b8e",
+      "stderr_sha256": "1f3eeee44ba534cd150fc27be9cb452fc202ce9d9a3f7e160625c720516049bf",
+      "outcome": "P",
+      "frobenius": 819,
+      "states": 633750099
+    }
+  },
+  "host": "12 logical CPUs (Intel i7-10710U), 62 GB, shared",
+  "scope": "Fresh standalone memos and no inherited outcomes. The two runs under \"runs\" are sequential (--threads 1): each follows native_solver.cpp's recurrence, so its state count should equal native_solver.cpp's, which was not run on this position (its memo, and the Python reference evaluator's, would not fit this 62 GB host; see RESULT.md). Their move code is independent (Kunz byte-vector min-plus updates against bitset shift closures), each certifies its whole memo with --verify-memo (kunz_solver with its scalar reference moves, parallel_solver with its bitset moves), and sources/ holds the exact source each was built from. The supplementary runs used ten threads, so their state counts vary with thread timing."
+}

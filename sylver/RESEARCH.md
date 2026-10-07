@@ -1,5 +1,11 @@
 # Sylver Coinage after 16: research log
 
+**October 6, X is N and U is P:** X={16,26,82,88}'s reply 701 reaches
+{16,26,82,88,701}, which is P. Two sequential replays with independent move
+code agree on exactly 633,734,956 states, and each certifies its memo; native
+and Python replays would not fit this host. That covers U's last obligation:
+**U={16,26,88} is P**, and the reply 26 to the opening 16 loses. See Attempt 33 and [the X record](campaigns/x-2026-10-06/RESULT.md).
+
 **September 27, U reduced to X:** every Quiet End obligation of
 U={16,26,88} except the move to X={16,26,82,88} is now certified (Book
 certificates, a replayed finite witness for move 70, the certified nodes
@@ -1442,6 +1448,58 @@ threads, the others seconds, and every batch's memo passed its certificate
 check. With the 203 July rows, all odd replies up to 687 are N; X's
 first unclassified odd reply is 689. Crossing reply 457 needed a leaner
 memo (PR #30): fingerprinted shards filled to 7/8 that grow by half.
+
+### Attempt 33 — X is N: 701 answers it, so U is P (2026-10-06)
+
+Attempt 32 stopped at a memory wall. At reply 683, the parallel engine's
+13-word build packed each state's gap bits into 8-word keys: 66 bytes a memo
+slot, with the tag. A change of representation removed it.
+
+**The representation.** Every position the sweep searches (X plus an odd
+reply, and every position below it) contains 16. So it is closed under
+adding 16, and its gaps in each residue class mod 16 form a finite prefix.
+The position is therefore determined by its 15 Kunz coordinates, the gap
+counts per class. `sylver/kunz_solver.cpp` (PR #35) keeps them in a
+16-byte vector:
+- a move n is a gap when n/16 < k[n mod 16];
+- adjoining n is a min-plus update of the Apéry set by n, 2n, 4n and 8n, a
+  byte shuffle, an add and a min each;
+- the vector itself is the memo key, so a slot takes 17 bytes.
+
+With one thread its output equals `native_solver.cpp`'s, state counts
+included. `--verify-memo` checks the memo with a scalar reference move, not
+with the vector moves. A build of the parallel engine with Kunz-coordinate
+keys (`-DSYLVER_PARALLEL_KUNZ_KEYS`) keeps its bitset moves and serves as an
+independent cross-check.
+
+**The sweep.** The first sweep (`kunz_solver.cpp` at cfae8a6, whose memo
+check still used the search's vector moves) started at reply 683. Reply 683
+took 414 s; the old engine had needed 1,040 s, and its memo filled about
+48 GB near 636 million states. The sweep refuted 683 to 699 and then found
+**{16,26,82,88,701} P**; the batch memo, 642,846,174 entries, verified.
+
+**The replays.** Two sequential replays from fresh memos, one per engine,
+agree: P with exactly 633,734,956 states, each certifying its whole memo.
+They take the place of the usual native and Python replays.
+`native_solver.cpp` built for 13 words used 142 bytes per state on a
+45-million-state position, so D would need about 90 GB. The Python
+evaluator used about 125 bytes per state on a far smaller position, so it
+would need at least 79 GB. With one thread both engines follow
+`native_solver.cpp`'s recurrence, so their shared count should equal its
+count, though it was not run.
+
+Every odd reply below 701 is N (the cache, Attempt 32's sweeps and this
+sweep), so 701 is X's least winning odd reply. Attempt 20's refutations of
+the even replies go through certified nodes, so 701 is X's least winning
+move under those nodes' assumptions.
+
+**The consequence.** X N covers U's move 82, so **U={16,26,88} is P**: 88
+answers 26, and the reply 26 to the opening 16 loses. This holds under the
+assumptions of Attempts 31–32: the Quiet End Theorem, and three published
+P-positions through the certified nodes and W. With the certified table's
+answers for 2 through 24, every reply to the opening 16 up to 26 now has an
+answer. The lowest unanswered reply is 28, and opening 16 remains
+unresolved.
 
 ### Sources
 

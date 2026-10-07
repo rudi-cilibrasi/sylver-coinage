@@ -1,0 +1,72 @@
+{
+  "position": [
+    16,
+    26,
+    82,
+    88
+  ],
+  "reply": 701,
+  "destination": "16,26,82,88,701",
+  "destination_frobenius": 819,
+  "destination_outcome": "P",
+  "replays": {
+    "kunz": {
+      "engine": "sylver/kunz_solver.cpp",
+      "commit": "bc5460d779e731397cbf22a6d673078e75fd7dc5",
+      "states": 633734956,
+      "verified_entries": 633734956,
+      "elapsed_seconds": 5847.0,
+      "max_rss_kib": 14845656
+    },
+    "bitset": {
+      "engine": "sylver/parallel_solver.cpp (-DSYLVER_PARALLEL_KUNZ_KEYS)",
+      "commit": "16a3e54a85f73a1fa641d1d530f4b3b481a251aa",
+      "states": 633734956,
+      "verified_entries": 633734956,
+      "elapsed_seconds": 10941.0,
+      "max_rss_kib": 15794724
+    }
+  },
+  "sweep": {
+    "ledger": "sylver/campaigns/x-2026-10-06/scan/ledger.jsonl",
+    "engine": "kunz-cfae8a6",
+    "replies": [
+      683,
+      685,
+      687,
+      689,
+      691,
+      693,
+      695,
+      697,
+      699,
+      701
+    ],
+    "refuted_N": [
+      683,
+      685,
+      687,
+      689,
+      691,
+      693,
+      695,
+      697,
+      699
+    ],
+    "P_reply": 701,
+    "batch_states_at_P": 642846174
+  },
+  "odd_replies_below_701": {
+    "classified": {
+      "cache N": 203,
+      "U record sweep N": 140,
+      "this sweep N": 6
+    },
+    "unclassified": [],
+    "P_replies": [],
+    "all_N": true
+  },
+  "least_winning_odd_reply": 701,
+  "failures": [],
+  "outcome": "N"
+}
