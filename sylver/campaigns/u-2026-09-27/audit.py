@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Coverage audit of U={16,26,88}: every Quiet End obligation except X is N.
+"""Coverage audit of U={16,26,88}: every Quiet End obligation leads to N, so U is P.
 
 U has gcd two and a short (quiet ender) half, so by the Quiet End Theorem it
 is P exactly when each of its obligations leads to an N-position: the even
@@ -19,14 +19,16 @@ an independent coin-sum count, and accepts exactly these kinds of evidence:
    in ``sylver.short_certificates.NODES`` (legality and identity checked);
 4. ``w-is-p``: move 98 reaches Q={16,26,88,98}, answered by 62 because
    Q+62 = W={16,26,62,98}, whose own audit
-   (``campaigns/w-p-2026-09-27/audit.py``, re-run here) reports P.
+   (``campaigns/w-p-2026-09-27/audit.py``, re-run here) reports P;
+5. ``x-is-n``: move 82 reaches X={16,26,82,88}, answered by 701, whose own
+   audit (``campaigns/x-2026-10-06/audit.py``, re-run here) reports X N:
+   {16,26,82,88,701} is P by two sequential replays with independent move
+   code that agree on the exact state count.
 
-The one obligation left is move 82, reaching X={16,26,82,88}. The audit
-fails unless every other obligation is covered, in which case U is P if and
-only if X is N. For X it reports the odd replies classified N: those in the
-audited exact cache (``move26_data/periodicity_x.cache``) and the rows of
-``scan/ledger-x.jsonl`` whose memo passed the engine's certificate check,
-with their legality and Frobenius numbers checked. Output:
+Until October 6 move 82 was open and this audit concluded only that U is P
+if and only if X is N; ``scan/ledger-x.jsonl`` keeps the sweeps that
+refuted X's odd replies up to 687, which X's audit now counts. The audit
+fails unless every obligation is covered. Output:
 ``python audit.py > audit.json``.
 """
 import hashlib
@@ -41,61 +43,16 @@ ROOT = HERE.parents[2]
 sys.path.insert(0, str(ROOT))
 from sylver.arena.common import key, legal, position, profile, sha  # noqa: E402
 from sylver.arena.proof import verifier_profile  # noqa: E402
-from sylver.short_certificates import NODES, is_generated, minimal_generators  # noqa: E402
+from sylver.short_certificates import NODES  # noqa: E402
 from sylver.solver import frobenius_number  # noqa: E402
 
 U = (16, 26, 88)
 W = (16, 26, 62, 98)
-OPEN = {82: 'X={16,26,82,88}'}
+X = (16, 26, 82, 88)
 ROUTES = {8: (20, 'G'), 12: (14, 'F'), 36: (56, 'V'), 56: (36, 'V')}
 BOOK = ROOT / 'sylver/arena/book'
 W_AUDIT = ROOT / 'sylver/campaigns/w-p-2026-09-27/audit.py'
-X = (16, 26, 82, 88)
-X_CACHE = ROOT / 'sylver/move26_data/periodicity_x.cache'
-X_LEDGER = HERE / 'scan/ledger-x.jsonl'
-
-
-def x_status():
-    """X's odd replies classified N (cache and verified sweep rows); P rows would refute X."""
-    cache, problems = {}, []
-    for line in X_CACHE.read_text().splitlines():
-        k, v = line.split()
-        if v not in ('0', '1'):
-            problems.append(f'cache row {k}: value {v!r}')
-            continue
-        cache[k] = 'P' if v == '1' else 'N'
-    classified = {}
-    for r in range(3, 2001, 2):
-        k = key(minimal_generators((*X, r)))
-        if k in cache:
-            classified[r] = ('cache', cache[k])
-    rows = [json.loads(line) for line in X_LEDGER.read_text().splitlines()] if X_LEDGER.exists() else []
-    for row in rows:
-        p = minimal_generators((*X, row['r']))
-        if list(p) != row['position'] or frobenius_number(p) != row['frobenius']:
-            problems.append(f"ledger row {row['r']}: position or Frobenius mismatch")
-            continue
-        if row['status'] != 'ok' or not row.get('memo_verified'):
-            continue
-        if row['outcome'] not in ('N', 'P'):
-            problems.append(f"ledger row {row['r']}: outcome {row['outcome']!r}")
-            continue
-        w = row.get('winning_move')
-        if row['outcome'] == 'N' and (w is None or w < 2 or is_generated(p, w)):
-            problems.append(f"ledger row {row['r']}: illegal winning move")
-            continue
-        earlier = classified.get(row['r'])
-        if earlier is not None and earlier[1] != row['outcome']:
-            problems.append(f"reply {row['r']}: {earlier[0]} says {earlier[1]}, the sweep says {row['outcome']}")
-            continue
-        classified.setdefault(row['r'], ('verified sweep', row['outcome']))
-    first = next(r for r in range(3, 10 ** 6, 2) if r not in classified)
-    by_source = {}
-    for source, outcome in classified.values():
-        by_source[f'{source} {outcome}'] = by_source.get(f'{source} {outcome}', 0) + 1
-    return {'position': 'X={16,26,82,88}', 'odd_replies_classified': by_source,
-            'P_replies': sorted(r for r, (_, o) in classified.items() if o == 'P'),
-            'first_unclassified_odd_reply': first, 'ledger_rows': len(rows), 'problems': problems}
+X_AUDIT = ROOT / 'sylver/campaigns/x-2026-10-06/audit.py'
 
 
 def coin_sum_obligations(p):
@@ -177,6 +134,19 @@ def w_is_p(m, w_outcome):
             'certificate': 'sylver/campaigns/w-p-2026-09-27/audit.json'}
 
 
+def x_is_n(m, x_report):
+    p = position((*U, m))
+    if (p != X or x_report.get('position') != list(X) or x_report.get('outcome') != 'N'
+            or x_report.get('failures') != [] or x_report.get('destination_outcome') != 'P'):
+        return None
+    reply = x_report.get('reply')
+    if not isinstance(reply, int) or not legal(p, reply) or x_report.get('destination') != key((*p, reply)):
+        return None
+    states = {run['states'] for run in x_report['replays'].values()}
+    return {'evidence': 'x-is-n', 'reply': reply, 'destination': x_report['destination'],
+            'certificate': 'sylver/campaigns/x-2026-10-06/audit.json', 'states': states.pop()}
+
+
 def main():
     info = profile(U)
     quiet, recount = coin_sum_obligations(U)
@@ -188,22 +158,19 @@ def main():
     if (w_run.returncode == 0 and w_report.get('position') == list(W) and w_report.get('outcome') == 'P'
             and w_report['summary']['covered'] == w_report['summary']['obligations'] == 52):
         w_outcome = 'P'
+    x_run = subprocess.run([sys.executable, str(X_AUDIT)], capture_output=True, text=True)
+    x_report = json.loads(x_run.stdout) if x_run.returncode == 0 and x_run.stdout.strip() else {}
     report = {'position': list(U), 'gcd': info['gcd'], 'tail': info['tail'], 'complete': info['complete'],
               'half_frobenius': info['half_frobenius'], 'W_audit_outcome': w_outcome,
-              'obligations': {}, 'open': {}, 'failures': []}
+              'X_audit_outcome': x_report.get('outcome', 'unknown'), 'obligations': {}, 'failures': []}
     if not (info['complete'] and info['tail'] == 'quiet-end-v1' and quiet):
         report['failures'].append('U is not a short gcd-two position')
     if info['moves'] != recount:
         report['failures'].append('the referee profile and the coin-sum recount disagree')
     for m in info['moves']:
         target = key((*U, m))
-        if m in OPEN:
-            status = x_status()
-            report['open'][str(m)] = {'destination_of_move': target, **status}
-            report['failures'].extend(status['problems'])
-            continue
         row = (book_entry(target, index, verifier) or finite_witness(m) or certified_node(m)
-               or w_is_p(m, w_outcome))
+               or w_is_p(m, w_outcome) or x_is_n(m, x_report))
         if row is None:
             report['failures'].append(f'move {m} has no accepted evidence')
             continue
@@ -212,10 +179,10 @@ def main():
     for row in report['obligations'].values():
         kinds[row['evidence']] = kinds.get(row['evidence'], 0) + 1
     report['summary'] = {'obligations': len(info['moves']), 'covered': len(report['obligations']),
-                         'open': sorted(map(int, report['open'])), 'by_evidence': kinds}
-    if sorted(map(int, report['open'])) != sorted(OPEN) or position((*U, 82)) != X:
-        report['failures'].append('the open obligations are not exactly move 82 to X')
-    report['outcome'] = 'P if and only if X is N' if not report['failures'] else 'unknown'
+                         'by_evidence': kinds}
+    if len(report['obligations']) != len(info['moves']):
+        report['failures'].append('not every obligation is covered')
+    report['outcome'] = 'P' if not report['failures'] else 'unknown'
     print(json.dumps(report, indent=2))
     return 0 if not report['failures'] else 1
 

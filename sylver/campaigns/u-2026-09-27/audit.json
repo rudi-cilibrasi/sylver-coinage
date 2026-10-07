@@ -9,6 +9,7 @@
   "complete": true,
   "half_frobenius": 75,
   "W_audit_outcome": "P",
+  "X_audit_outcome": "N",
   "obligations": {
     "2": {
       "destination_of_move": "2",
@@ -359,6 +360,14 @@
       "C": 174,
       "states": 85002794
     },
+    "82": {
+      "destination_of_move": "16,26,82,88",
+      "evidence": "x-is-n",
+      "reply": 701,
+      "destination": "16,26,82,88,701",
+      "certificate": "sylver/campaigns/x-2026-10-06/audit.json",
+      "states": 633734956
+    },
     "86": {
       "destination_of_move": "16,26,86,88",
       "evidence": "book",
@@ -423,33 +432,17 @@
       "states": 5829106
     }
   },
-  "open": {
-    "82": {
-      "destination_of_move": "16,26,82,88",
-      "position": "X={16,26,82,88}",
-      "odd_replies_classified": {
-        "cache N": 203,
-        "verified sweep N": 140
-      },
-      "P_replies": [],
-      "first_unclassified_odd_reply": 689,
-      "ledger_rows": 140,
-      "problems": []
-    }
-  },
   "failures": [],
   "summary": {
     "obligations": 59,
-    "covered": 58,
-    "open": [
-      82
-    ],
+    "covered": 59,
     "by_evidence": {
       "book": 52,
       "certified-node": 4,
       "finite-witness": 1,
+      "x-is-n": 1,
       "w-is-p": 1
     }
   },
-  "outcome": "P if and only if X is N"
+  "outcome": "P"
 }

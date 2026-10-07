@@ -28,9 +28,7 @@
 // the output ends with `verified entries=N` only if the check passed, and
 // output without that line is unverified.
 // Discovery only: published replays and the arena verifier keep using
-// native_solver.cpp, except where a position's memo is too large for it.
-// X+701's sequential replays (campaigns/x-2026-10-06) used this engine's
-// Kunz-key build and kunz_solver.cpp.
+// native_solver.cpp.
 #include <algorithm>
 #include <array>
 #include <atomic>

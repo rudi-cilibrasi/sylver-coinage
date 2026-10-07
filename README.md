@@ -17,6 +17,27 @@ exceeds 10^12 states.
 
 For the week of September 21–27, see the [progress summary](docs/progress/2026-09-28-week.md).
 
+- **X={16,26,82,88} is N, so U={16,26,88} is P and the reply 26 to the
+  opening 16 loses (October 6).**
+  - **X+701.** X's odd reply **701** reaches `{16,26,82,88,701}`, a
+    P-position with Frobenius number 819. Two engines with independent move
+    code replayed it sequentially. They agree on exactly **633,734,956
+    states**, and each certifies its whole memo. These take the place of the
+    usual `native_solver` and Python replays, whose memos would not fit this
+    62 GB host.
+  - **X's least winning odd reply.** Every smaller odd reply of X is N.
+  - **U is P.** That covers U's last open obligation, so 88 answers 26. As
+    before, U's coverage rests on the Quiet End Theorem and three published
+    P-positions.
+  - **Opening 16.** With the certified answers to the even replies 2–24,
+    every reply to the opening 16 up to 26 is now answered. Opening 16
+    remains unresolved; the lowest unanswered reply is 28.
+  - **The engine.** The new Kunz-coordinate engine (`sylver/kunz_solver.cpp`,
+    PR #35) carried the sweep past this host's memory limit; its memo slots
+    take 17 bytes.
+
+  See the [X record](sylver/campaigns/x-2026-10-06/RESULT.md) and the
+  [U obligation table](https://rudi-cilibrasi.github.io/sylver-coinage/u.html).
 - **U={16,26,88} is P if and only if X={16,26,82,88} is N (September 27):**
   every one of U's 59 Quiet End obligations except the move to X is now
   certified: 52 by Book certificates replayed by the fixed verifier (U's odd
