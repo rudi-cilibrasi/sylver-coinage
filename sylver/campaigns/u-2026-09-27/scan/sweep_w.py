@@ -125,9 +125,9 @@ def main():
             if 'memo verification failed' in stderr:   # an engine error, not a resource limit: stop
                 print('memo verification failed; stopping', flush=True)
                 return
-            if not finished:
-                print('batch made no progress; stopping', flush=True)
-                return
+        if not finished:   # failed, or ended early before its first row (--max-states): retrying would loop
+            print('batch made no progress; stopping', flush=True)
+            return
         if unfinished:   # a failed batch, or one the engine ended early (--max-states, --stop-file)
             queue = sorted(unfinished + queue)
 
