@@ -22,8 +22,13 @@
 //
 // Threads, --odd-range/--odd-list sweeps, --stop-at-p and --verify-memo work
 // as in parallel_solver.cpp, and with --threads 1 the output is
-// native_solver.cpp's, state count included. A sweep can also end early at a
-// row boundary (--max-states, --stop-file) and still verify its memo. --verify-memo also checks that
+// native_solver.cpp's, state count included. A sweep can also end early
+// (--stop-file, at a row boundary; --max-states, abandoning the row in
+// progress once the memo holds about N states) and still verify its memo.
+// --verify-memo makes its moves with a scalar reference move, not the
+// search's vector moves; each row's root is checked against that reference
+// and an independently computed Frobenius number; and --self-check tests
+// the vector moves against the reference and a bitset closure. --verify-memo also checks that
 // every key is the Kunz vector of a numerical semigroup containing the root.
 // The root's smallest generator must be at most 16 and every coordinate at
 // most 127, so the Frobenius bound is below 127m (2031 for m = 16) and at most
@@ -63,6 +68,7 @@ constexpr int kLanes = 16;               // residues mod m, one byte each
 constexpr int kMaximumCoordinate = 127;  // a coordinate byte's top bit may hold memo value bits
 constexpr int kMaximumBound = 2047;      // moves fit 15 value bits; paired-loser sets hold 2048 bits
 constexpr int kAborted = -2;             // the root was decided elsewhere; nothing below is recorded
+constexpr int kStopped = -3;             // a sweep row abandoned at --max-states; its memo entries stay exact
 
 using Lanes = std::uint8_t __attribute__((vector_size(kLanes)));
 
@@ -250,21 +256,22 @@ class ShardedMemo {
             return (slots[slot].low & kKeyBitsLow) == key.low && slots[slot].high == key.high;
         }
 
+        // Allocates the larger table before touching this one, so a failed
+        // allocation leaves the shard intact.
         void grow() {
-            std::vector<Slot> old_slots;
-            std::vector<std::uint8_t> old_tags;
-            old_slots.swap(slots);
-            old_tags.swap(tags);
-            const std::size_t capacity = old_tags.size() + old_tags.size() / 2;
-            resize(capacity);
-            for (std::size_t i = 0; i < old_tags.size(); ++i) {
-                if (old_tags[i] == kEmpty) continue;
-                const Key key{old_slots[i].low & kKeyBitsLow, old_slots[i].high};
+            const std::size_t capacity = tags.size() + tags.size() / 2;
+            std::vector<Slot> new_slots(capacity, Slot{0, 0});
+            std::vector<std::uint8_t> new_tags(capacity, kEmpty);
+            for (std::size_t i = 0; i < tags.size(); ++i) {
+                if (tags[i] == kEmpty) continue;
+                const Key key{slots[i].low & kKeyBitsLow, slots[i].high};
                 std::size_t slot = home(hash_key(key), capacity);
-                while (tags[slot] != kEmpty) slot = next(slot, capacity);
-                slots[slot] = old_slots[i];
-                tags[slot] = old_tags[i];   // the fingerprint depends only on the key's hash
+                while (new_tags[slot] != kEmpty) slot = next(slot, capacity);
+                new_slots[slot] = slots[i];
+                new_tags[slot] = tags[i];   // the fingerprint depends only on the key's hash
             }
+            slots.swap(new_slots);
+            tags.swap(new_tags);
         }
     };
 
@@ -380,10 +387,31 @@ class Solver {
             }
             root_.k[lane] = static_cast<std::uint8_t>(gaps);
         }
+        State reference = root_;
         for (const int generator : generators) {
             root_ = adjoin(root_, generator);
+            reference = reference_adjoin(reference, generator);
+        }
+        if (key_of(root_) != key_of(reference)) throw std::logic_error("the root's vector moves disagree with the reference");
+    }
+
+    // Before solving the root with ``move`` adjoined: the vector move must
+    // agree with the reference move, and the child's largest gap with its
+    // Frobenius number computed independently (``frobenius``).
+    void check_row(int move, int frobenius) const {
+        const State child = adjoin(root_, move);
+        if (key_of(child) != key_of(reference_adjoin(root_, move)) || largest_gap(child) != frobenius) {
+            throw std::logic_error("move " + std::to_string(move) + ": the vector move disagrees with the reference");
         }
     }
+
+    // The same for an unswept root with Frobenius number ``frobenius``.
+    void check_root(int frobenius) const {
+        if (largest_gap(root_) != frobenius) throw std::logic_error("the root's largest gap is not its Frobenius number");
+    }
+
+    // A sweep row is abandoned (kStopped) once about ``limit`` states have been stored.
+    void limit_states(std::size_t limit) { state_limit_ = limit; }
 
     // Winning move of the root, or 0 when it is a P-position.
     [[nodiscard]] int solve() { return solve_from(root_); }
@@ -408,16 +436,88 @@ class Solver {
 #endif
 
 #ifdef SYLVER_KUNZ_TEST_FORGE_KEY
-    // Test-only forgery that --verify-memo must reject: a P entry whose key is
-    // not the Kunz vector of a semigroup (the root's, with 1 made an element
-    // though 1 + 1 = 2 is not).
+    // Test-only forgeries that --verify-memo must reject: a P entry whose key
+    // is (1) not the Kunz vector of a semigroup (the root's, with 1 made an
+    // element though 1 + 1 = 2 is not), (2) a state missing an element of the
+    // root, or (3) a vector with a lane beyond the modulus set.
     void forge_key() {
         State forged = root_;
-        forged.k[1] = 0;
+        if (SYLVER_KUNZ_TEST_FORGE_KEY == 2) {
+            forged.k[1] = static_cast<std::uint8_t>(forged.k[1] + 1);
+        } else if (SYLVER_KUNZ_TEST_FORGE_KEY == 3) {
+            forged.k[kLanes - 1] = 1;
+        } else {
+            forged.k[1] = 0;
+        }
         const Key key = key_of(forged);
         memo_.insert(key, hash_key(key), 0);
     }
 #endif
+
+    // --self-check: on random roots and random walks of moves for every
+    // modulus from 2 to 16 (bounds up to the coordinate limit, moves that
+    // are gaps, elements, or above the bound), the vector move must equal
+    // the reference move and the semigroup a bitset closure computes, and
+    // contains() and largest_gap() must agree with that bitset. Returns the
+    // number of moves checked; throws on the first disagreement.
+    [[nodiscard]] static std::size_t self_check(std::uint64_t seed, int rounds) {
+        std::uint64_t random = seed;
+        auto next_int = [&random](int low, int high) {   // uniform enough in [low, high]
+            random = mix(random);
+            return low + static_cast<int>(random % static_cast<std::uint64_t>(high - low + 1));
+        };
+        std::size_t checked = 0;
+        for (int round = 0; round < rounds; ++round) {
+            const int modulus = 2 + round % (kLanes - 1);
+            const int bound = next_int(modulus, std::min(kMaximumBound, kMaximumCoordinate * modulus - modulus));
+            std::vector<int> generators{modulus};
+            for (int extra = next_int(0, 3); extra > 0; --extra) generators.push_back(next_int(modulus + 1, bound + 64));
+            std::sort(generators.begin(), generators.end());
+            const Solver solver(generators, bound, 1, 0);
+            // The bitset closure of a set closed under addition with every number above the bound.
+            auto closure = [bound](std::vector<char> set, int move) {
+                for (int n = move; n <= bound; ++n) {
+                    if (!set[static_cast<std::size_t>(n)] && set[static_cast<std::size_t>(n - move)]) set[static_cast<std::size_t>(n)] = 1;
+                }
+                return set;
+            };
+            std::vector<char> bits(static_cast<std::size_t>(bound) + 1, 0);
+            bits[0] = 1;
+            for (const int generator : generators) {
+                if (generator <= bound) bits = closure(bits, generator);
+            }
+            State state = solver.root_;
+            for (int step = 0; step < 40; ++step) {
+                std::vector<int> gaps;
+                for (int n = 2; n <= bound; ++n) {
+                    if (!bits[static_cast<std::size_t>(n)]) gaps.push_back(n);
+                }
+                for (int n = 0; n <= bound; ++n) {
+                    if (solver.contains(state, n) != (bits[static_cast<std::size_t>(n)] != 0)) {
+                        throw std::logic_error("self-check: contains() disagrees with the bitset");
+                    }
+                }
+                if (!gaps.empty() && solver.largest_gap(state) != gaps.back()) {   // gaps ascend
+                    throw std::logic_error("self-check: largest_gap() disagrees with the bitset");
+                }
+                if (gaps.empty()) break;
+                // Mostly gaps, sometimes an element or a number above the bound.
+                const int kind = next_int(0, 9);
+                const int move = kind < 8 ? gaps[static_cast<std::size_t>(next_int(0, static_cast<int>(gaps.size()) - 1))]
+                                          : next_int(2, bound + 2 * modulus * kMaximumCoordinate);
+                const State vector_child = solver.adjoin(state, move);
+                const State reference_child = solver.reference_adjoin(state, move);
+                if (key_of(vector_child) != key_of(reference_child)) {
+                    throw std::logic_error("self-check: modulus " + std::to_string(modulus) + ", move " +
+                                           std::to_string(move) + ": the vector move disagrees with the reference");
+                }
+                if (move <= bound) bits = closure(bits, move);
+                state = vector_child;
+                ++checked;
+            }
+        }
+        return checked;
+    }
 
     // Checks the finished memo as a certificate: every key must be the Kunz
     // vector of a numerical semigroup containing the root; an N entry must
@@ -425,8 +525,10 @@ class Solver {
     // a P entry S must lead to a child memoized N or be a paired loser (a
     // smaller legal move m' with S+m'+m memoized P: m' answers m). By
     // induction on the number of gaps, every entry, and so every reported
-    // root, is then exact, whatever order the threads searched in. Returns
-    // the number of entries checked; throws on the first inconsistency.
+    // root, is then exact, whatever order the threads searched in. The check
+    // makes its moves with reference_adjoin, not the search's vector moves,
+    // so an error in those cannot certify itself. Returns the number of
+    // entries checked; throws on the first inconsistency.
     [[nodiscard]] std::size_t verify_memo() {
         std::atomic<std::size_t> checked{0};
         std::atomic<bool> failed{false};
@@ -509,6 +611,23 @@ class Solver {
         return adjoin(state, move / modulus_, move % modulus_);
     }
 
+    // The same move from the definition, in plain integers: the least
+    // element of S + Nn congruent to i is the least w_{(i - jn) mod m} + jn
+    // over j < m (m*n is already in S).
+    [[nodiscard]] State reference_adjoin(const State& state, int move) const {
+        State result = state;
+        for (int residue = 1; residue < modulus_; ++residue) {
+            std::int64_t least = apery(state, residue);
+            for (int multiple = 1; multiple < modulus_; ++multiple) {
+                const std::int64_t shift = static_cast<std::int64_t>(multiple) * move;
+                const auto source = static_cast<int>(((residue - shift) % modulus_ + modulus_) % modulus_);
+                least = std::min(least, apery(state, source) + shift);
+            }
+            result.k[residue] = static_cast<std::uint8_t>((least - residue) / modulus_);
+        }
+        return result;
+    }
+
     // nullptr when ``state`` is the Kunz vector of a numerical semigroup that
     // contains the root: k_0 = 0, lanes from m on 0, every coordinate at most
     // the root's, and w_i + w_j >= w_{(i+j) mod m} for all residues i, j
@@ -543,17 +662,17 @@ class Solver {
         if (contains(state, 1)) return "an entry for a state containing 1";
         if (value > 0) {
             if (value < 2 || value > bound_ || contains(state, value)) return "an N entry names an illegal move";
-            if (memoized(adjoin(state, value)) != 0) return "an N entry's move does not reach a memoized P child";
+            if (memoized(reference_adjoin(state, value)) != 0) return "an N entry's move does not reach a memoized P child";
             return nullptr;
         }
         const int last = largest_gap(state);
         for (int move = 2; move <= last; ++move) {
             if (contains(state, move)) continue;
-            const State child = adjoin(state, move);
+            const State child = reference_adjoin(state, move);
             if (memoized(child) > 0) continue;
             bool answered = false;
             for (int smaller = 2; smaller < move && !answered; ++smaller) {
-                answered = !contains(state, smaller) && memoized(adjoin(child, smaller)) == 0;
+                answered = !contains(state, smaller) && memoized(reference_adjoin(child, smaller)) == 0;
             }
             if (!answered) return "a P entry has a move to a child that is neither memoized N nor paired";
         }
@@ -590,8 +709,21 @@ class Solver {
         }
         const Key key = key_of(root);
         const int result = memo_.lookup(key, hash_key(key));
-        if (result < 0) throw std::logic_error("the root was not decided");
-        return result;
+        if (result >= 0) return result;
+        if (full_.load()) return kStopped;
+        throw std::logic_error("the root was not decided");
+    }
+
+    // Counts stored states in batches per thread; past the limit, every
+    // search thread stops (as if the root were decided elsewhere).
+    void count_insert() {
+        thread_local std::size_t pending = 0;
+        if (++pending < kCountBatch) return;
+        pending = 0;
+        if (inserted_.fetch_add(kCountBatch, std::memory_order_relaxed) + kCountBatch >= state_limit_) {
+            full_.store(true, std::memory_order_relaxed);
+            done_.store(true, std::memory_order_relaxed);
+        }
     }
 
     // Winning move of ``state`` (0 when it is a P-position), or kAborted.
@@ -627,6 +759,7 @@ class Solver {
                 if (response < 0) return kAborted;
                 if (response == 0) {
                     memo_.insert(key, hash, move);
+                    count_insert();
                     return move;
                 }
                 if (response > move) {
@@ -634,6 +767,7 @@ class Solver {
                 }
             }
             memo_.insert(key, hash, 0);
+            count_insert();
             return 0;
         }
         // Near the root: the same recurrence in two passes. The first defers
@@ -672,6 +806,7 @@ class Solver {
                 if (response < 0) return kAborted;
                 if (response == 0) {
                     memo_.insert(key, hash, move);
+                    count_insert();
                     return move;
                 }
                 if (response > move) {
@@ -683,8 +818,11 @@ class Solver {
             }
         }
         memo_.insert(key, hash, 0);
+        count_insert();
         return 0;
     }
+
+    static constexpr std::size_t kCountBatch = 4096;
 
     int modulus_;
     int bound_;
@@ -698,6 +836,9 @@ class Solver {
     ShardedMemo memo_;
     BusyTable busy_;
     std::atomic<bool> done_{false};
+    std::size_t state_limit_ = std::numeric_limits<std::size_t>::max();
+    std::atomic<std::size_t> inserted_{0};
+    std::atomic<bool> full_{false};
 };
 
 [[nodiscard]] int parse_int_option(const std::string& name, const std::string& text, int low, int high) {
@@ -754,13 +895,18 @@ int main(int argc, char** argv) {
                 first += 1;
             } else if (option == "--max-states") {
                 const std::string text = value_of(1);
-                std::size_t used = 0;
-                const unsigned long long value = std::stoull(text, &used);
-                if (used != text.size() || text.front() == '-' || value == 0) {
+                if (text.empty() || text.size() > 18 ||
+                    !std::all_of(text.begin(), text.end(), [](char c) { return c >= '0' && c <= '9'; }) ||
+                    std::stoull(text) == 0) {
                     throw std::invalid_argument("--max-states must be a positive integer");
                 }
-                max_states = static_cast<std::size_t>(value);
+                max_states = static_cast<std::size_t>(std::stoull(text));
                 first += 2;
+            } else if (option == "--self-check") {
+                if (first + 1 != argc) throw std::invalid_argument("--self-check takes no other arguments");
+                const std::size_t moves_checked = Solver::self_check(20261006, 900);
+                std::cout << "self-check passed: " << moves_checked << " moves" << std::endl;
+                return EXIT_SUCCESS;
             } else if (option == "--stop-file") {
                 stop_file = value_of(1);
                 first += 2;
@@ -790,7 +936,7 @@ int main(int argc, char** argv) {
             throw std::invalid_argument(
                 "usage: kunz_solver [--threads N] [--split-depth D] [--verify-memo] [--memo-stats] "
                 "[--odd-range START END | --odd-list MOVES [--stop-at-p] [--max-states N] [--stop-file PATH]] "
-                "GENERATOR...");
+                "GENERATOR... | kunz_solver --self-check");
         }
         if (threads > 1 && split_depth == 0) {
             throw std::invalid_argument("--split-depth 0 would make every thread repeat the same search");
@@ -862,6 +1008,7 @@ int main(int argc, char** argv) {
                 bound = std::max(bound, frobenius.back());
             }
             Solver solver(generators, bound, threads, split_depth);
+            solver.limit_states(max_states);
             for (std::size_t i = 0; i < moves.size(); ++i) {
                 // A long sweep can end early at a row boundary, with its
                 // finished rows still verified below: once the memo holds
@@ -876,7 +1023,13 @@ int main(int argc, char** argv) {
                         break;
                     }
                 }
+                solver.check_row(moves[i], frobenius[i]);
                 const int response = solver.solve_after_adjoining(moves[i]);
+                if (response == kStopped) {
+                    std::cerr << "kunz_solver: sweep stopped during move=" << moves[i] << " (memo holds "
+                              << solver.states_evaluated() << " states)\n";
+                    break;
+                }
                 std::cout << "move=" << moves[i] << ' ' << (response == 0 ? "P" : "N") << " winning_move=";
                 if (response == 0) {
                     std::cout << "none";
@@ -900,6 +1053,7 @@ int main(int argc, char** argv) {
                                         std::to_string(kMaximumBound));
         }
         Solver solver(generators, static_cast<int>(frobenius), threads, split_depth);
+        solver.check_root(static_cast<int>(frobenius));
         const int move = solver.solve();
         std::cout << (move == 0 ? "P" : "N") << " winning_move=";
         if (move == 0) {

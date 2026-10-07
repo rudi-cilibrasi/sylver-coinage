@@ -39,17 +39,19 @@ class KunzSolverTests(unittest.TestCase):
                             *flags, str(ROOT / 'sylver' / f'{name}.cpp'), '-o', str(binary)], check=True)
             return binary
         cls.native = {words: build('native_solver', f'-DSYLVER_NATIVE_WORDS={words}', label=f'native-{words}')
-                      for words in (2, 4)}
+                      for words in (2, 4, 8)}
         cls.parallel = build('parallel_solver', '-DSYLVER_NATIVE_WORDS=4', label='parallel-4')
         cls.kunz = build('kunz_solver', label='kunz')
         # The SIMD byte shuffles that discovery builds use.
         cls.kunz_arch = build('kunz_solver', '-march=native', label='kunz-native-arch')
         # Deliberately broken builds that --verify-memo must reject: one never
         # tries move 7 (a missed child); one forges a root "winning" by naming
-        # 1; one stores a key that is not the Kunz vector of a semigroup.
+        # 1; three store a key that is not the Kunz vector of a semigroup
+        # containing the root.
         cls.faulty = build('kunz_solver', '-DSYLVER_KUNZ_TEST_SKIP_MOVE=7', label='faulty')
         cls.forged = build('kunz_solver', '-DSYLVER_KUNZ_TEST_FORGE_MOVE_ONE', label='forged')
-        cls.bad_key = build('kunz_solver', '-DSYLVER_KUNZ_TEST_FORGE_KEY', label='bad-key')
+        cls.bad_keys = {mode: build('kunz_solver', f'-DSYLVER_KUNZ_TEST_FORGE_KEY={mode}', label=f'bad-key-{mode}')
+                        for mode in (1, 2, 3)}
 
     @classmethod
     def tearDownClass(cls):
@@ -141,12 +143,16 @@ class KunzSolverTests(unittest.TestCase):
                          ['--threads', '1', '--verify-memo', '--odd-list', '3', '4', '6']):
                 self.assert_verification_fails(self.forged, args, '')
 
-    def test_verify_memo_rejects_a_key_that_is_not_a_semigroup(self):
-        # The forged key is the root's vector with residue 1's coordinate set
-        # to 0: 1 would be an element, but 1 + 1 = 2 would not.
-        for args in (['--threads', '1', '--verify-memo', 9, 11, 13], ['--threads', '3', '--verify-memo', 5, 8],
-                     ['--threads', '2', '--verify-memo', '--odd-range', 3, 21, 16, 26]):
-            self.assert_verification_fails(self.bad_key, args, 'a key is not the Kunz vector of a semigroup')
+    def test_verify_memo_rejects_keys_that_are_not_states(self):
+        # Mode 1 sets residue 1's coordinate to 0 (1 would be an element but
+        # 1 + 1 = 2 would not); mode 2 adds a gap the root does not have; mode
+        # 3 sets the last lane, beyond every modulus below 16.
+        reasons = {1: 'a key is not the Kunz vector of a semigroup', 2: "a key's state does not contain the root",
+                   3: 'a key uses a lane beyond the modulus'}
+        for mode, reason in reasons.items():
+            for args in (['--threads', '1', '--verify-memo', 9, 11, 13], ['--threads', '3', '--verify-memo', 5, 8],
+                         ['--threads', '2', '--verify-memo', '--odd-range', 3, 21, 12, 14]):
+                self.assert_verification_fails(self.bad_keys[mode], args, reason)
 
     def test_repeated_runs_on_larger_positions(self):
         # Larger searches give threads time to interleave; every repetition
@@ -192,6 +198,47 @@ class KunzSolverTests(unittest.TestCase):
                                    '--odd-list', '5,11,7', 4, 6, 9).splitlines()
             self.assertEqual([row.split()[:2] for row in rows], [['move=5', 'N'], ['move=11', 'P']])
 
+    def test_self_check(self):
+        # The vector moves against the reference move and a bitset closure,
+        # for every modulus from 2 to 16 up to the coordinate limit.
+        for binary in (self.kunz, self.kunz_arch):
+            out = self.run_binary(binary, '--self-check').split()
+            self.assertEqual(out[:2], ['self-check', 'passed:'])
+            self.assertGreater(int(out[2]), 10000)
+
+    def test_positions_at_the_coordinate_limit(self):
+        # {2,255} (F=253) and {3,191} (F=379) have a coordinate of 127, the
+        # largest a key holds, and small game trees.
+        for gens in ((2, 255), (2, 253), (3, 191), (3, 190, 191)):
+            native = self.run_binary(self.native[8], *gens)
+            self.assertEqual(self.run_binary(self.kunz, '--threads', 1, *gens), native, gens)
+            self.assertEqual(self.run_binary(self.kunz_arch, '--threads', 1, *gens), native, gens)
+            threaded = self.run_binary(self.kunz_arch, '--threads', 3, '--verify-memo', *gens).split()
+            self.assertEqual(threaded[0], native.split()[0], gens)
+
+    def test_max_states_and_stop_file_end_a_sweep_that_still_verifies(self):
+        args = ['--odd-range', 3, 41, 16, 26, 82, 88]
+        full = self.run_binary(self.kunz, '--threads', 1, *args).splitlines()
+        for limit in (100, 5000, 200000):
+            result = subprocess.run([str(self.kunz), '--threads', '1', '--verify-memo', '--max-states', str(limit),
+                                     *map(str, args)], capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, (limit, result.stderr))
+            *rows, last = result.stdout.splitlines()
+            self.assertLess(len(rows), len(full), limit)
+            self.assertEqual(rows, full[:len(rows)], limit)   # finished rows are the sweep's own rows
+            self.assertIn('kunz_solver: sweep stopped', result.stderr, limit)
+            self.assertTrue(last.startswith('verified entries='), limit)
+        with tempfile.TemporaryDirectory() as tmp:
+            stop = Path(tmp) / 'STOP'
+            stop.write_text('')
+            result = subprocess.run([str(self.kunz), '--threads', '2', '--verify-memo', '--stop-file', str(stop),
+                                     *map(str, args)], capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            rows = result.stdout.splitlines()
+            self.assertEqual([row.split()[0] for row in rows[:-1]], ['move=3'])   # stops before the second row
+            self.assertTrue(rows[-1].startswith('verified entries='))
+            self.assertIn('sweep stopped before move=5 (stop file)', result.stderr)
+
     def test_memo_stats(self):
         result = subprocess.run([str(self.kunz), '--memo-stats', '--threads', '2', '16', '26', '33', '62', '89'],
                                 capture_output=True, text=True, check=True)
@@ -214,7 +261,11 @@ class KunzSolverTests(unittest.TestCase):
                      ['--odd-list', '5,13', '4', '6', '9'], ['2000000000', '2000000001'],
                      # Outside the Kunz engine: a smallest generator above 16, and
                      # a bound whose coordinates exceed 127 (3 * 127 < 1997).
-                     ['17', '19'], ['3', '1000'], ['--odd-range', '3', '9', '18', '20']):
+                     ['17', '19'], ['3', '1000'], ['--odd-range', '3', '9', '18', '20'],
+                     ['--max-states', ' -1', '--odd-list', '5', '4', '6', '9'],
+                     ['--max-states', '0', '--odd-list', '5', '4', '6', '9'],
+                     ['--max-states', '12x', '--odd-list', '5', '4', '6', '9'], ['--max-states', '100', '4', '5'],
+                     ['--stop-file', 'STOP', '4', '5'], ['--self-check', '4', '5']):
             result = subprocess.run([str(self.kunz), *args], capture_output=True, text=True)
             self.assertEqual(result.returncode, 1, args)
             self.assertEqual(result.stdout, '', args)

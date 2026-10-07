@@ -120,7 +120,11 @@ def main():
             return
         unfinished = [item for item in batch if item[1] not in finished]
         if code != 0:
-            print('stderr:', (args.out / f'{tag}.err').read_text()[-300:], flush=True)
+            stderr = (args.out / f'{tag}.err').read_text()
+            print('stderr:', stderr[-300:], flush=True)
+            if 'memo verification failed' in stderr:   # an engine error, not a resource limit: stop
+                print('memo verification failed; stopping', flush=True)
+                return
             if not finished:
                 print('batch made no progress; stopping', flush=True)
                 return
