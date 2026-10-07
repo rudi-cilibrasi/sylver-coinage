@@ -417,12 +417,27 @@ class RefereeTests(unittest.TestCase):
         self.assertIn('nested too deeply', r['result']['detail'])
 
     def test_nesting_depth_check(self):
-        self.assertFalse(nested_too_deeply(b'{"move": 12}'))
-        self.assertFalse(nested_too_deeply(b'[' * 32 + b']' * 32))
-        self.assertTrue(nested_too_deeply(b'[' * 33))
-        self.assertTrue(nested_too_deeply(b'{"a": ' * 40 + b'1' + b'}' * 40))
-        # Brackets inside strings, escaped quotes included, do not nest.
-        self.assertFalse(nested_too_deeply(b'{"move": 3, "note": "' + b'[' * 100 + b'\\"' + b'{' * 100 + b'"}'))
+        self.assertFalse(nested_too_deeply('{"move": 12}'))
+        self.assertFalse(nested_too_deeply('[' * 32 + ']' * 32))
+        self.assertTrue(nested_too_deeply('[' * 33))
+        self.assertTrue(nested_too_deeply('{"a": ' * 40 + '1' + '}' * 40))
+        # Brackets inside strings, escaped quotes included, do not nest...
+        self.assertFalse(nested_too_deeply('{"move": 3, "note": "' + '[' * 100 + '\\"' + '{' * 100 + '"}'))
+        # ...but an escaped backslash ends with the string, and what follows does.
+        self.assertTrue(nested_too_deeply('{"a": "\\\\", "b": ' + '[' * 40))
+        # Past an unterminated string nothing counts, and json.loads fails first.
+        self.assertFalse(nested_too_deeply('{"a": "' + '[' * 100))
+        with self.assertRaises(ValueError):
+            json.loads('{"a": "' + '[' * 100)
+
+    def test_replies_are_utf8(self):
+        # json.loads(bytes) would also decode UTF-16; a UTF-16 reply whose
+        # bytes hide a quote must not slip deep nesting past the check.
+        hidden = ('["\u4e22",' + '[' * 1000).encode('utf-16-le')
+        with self.assertRaises(ValueError):
+            reply = hidden.decode('utf-8', 'surrogatepass')
+            if not nested_too_deeply(reply):
+                json.loads(reply)
 
 
 def fake_league(games):
