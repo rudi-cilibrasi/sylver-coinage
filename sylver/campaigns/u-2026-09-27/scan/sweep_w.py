@@ -28,6 +28,8 @@ def main():
     ap.add_argument('--mem-gib', type=float, default=24)
     ap.add_argument('--rmax', type=int, default=401)
     ap.add_argument('--verify', action='store_true', help='--verify-memo: rows are written after the check')
+    ap.add_argument('--extra-args', default='', help='more engine options, e.g. "--max-states 1200000000" '
+                    '(kunz_solver): a batch the engine ends early requeues its unfinished replies')
     args = ap.parse_args()
     ledger = args.out / 'ledger.jsonl'
     parent = tuple(int(x) for x in args.parent.split(','))
@@ -67,7 +69,7 @@ def main():
         binary = args.binary_pattern.format(words=bound // 64 + 1)
         replies = [r for _, r, _ in batch]
         argv = [binary, '--threads', str(args.threads), '--stop-at-p', *(['--verify-memo'] if args.verify else []),
-                '--odd-list', ','.join(map(str, replies)), *map(str, base)]
+                *args.extra_args.split(), '--odd-list', ','.join(map(str, replies)), *map(str, base)]
         tag = f'm{m}-sweep-{replies[0]}-{replies[-1]}'
         err = open(args.out / f'{tag}.err', 'w')
         start = last = time.monotonic()
@@ -84,7 +86,8 @@ def main():
             now = time.monotonic()
             row = dict(m=m, r=r, position=list(p), frobenius=f, wall=now - last, returncode=None,
                        mem_gib=args.mem_gib, engine=Path(binary).name,
-                       engine_args=f'--threads {args.threads} --odd-list (shared memo, batch {tag})',
+                       engine_args=' '.join([f'--threads {args.threads}', *args.extra_args.split(),
+                                             f'--odd-list (shared memo, batch {tag})']),
                        status='ok', outcome=parts[1],
                        winning_move=None if parts[2] == 'winning_move=none' else int(parts[2].split('=')[1]),
                        states=int(parts[4].split('=')[1]), states_are='cumulative over the batch')
@@ -115,12 +118,13 @@ def main():
             (args.out / f'FOUND-m{m}-r{found["r"]}').write_text(json.dumps(found) + '\n')
             print('!!! FOUND P', found, flush=True)
             return
+        unfinished = [item for item in batch if item[1] not in finished]
         if code != 0:
             print('stderr:', (args.out / f'{tag}.err').read_text()[-300:], flush=True)
-            unfinished = [item for item in batch if item[1] not in finished]
             if not finished:
                 print('batch made no progress; stopping', flush=True)
                 return
+        if unfinished:   # a failed batch, or one the engine ended early (--max-states, --stop-file)
             queue = sorted(unfinished + queue)
 
 
