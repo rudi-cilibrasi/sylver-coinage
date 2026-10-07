@@ -48,6 +48,8 @@ class ParallelSolverTests(unittest.TestCase):
         # tries move 7 (a missed child); one forges a root "winning" by naming 1.
         cls.faulty = build('parallel_solver', 2, '-DSYLVER_PARALLEL_TEST_SKIP_MOVE=7', label='faulty')
         cls.forged = build('parallel_solver', 2, '-DSYLVER_PARALLEL_TEST_FORGE_MOVE_ONE', label='forged')
+        # The cross-check build with Kunz-coordinate memo keys.
+        cls.kunz_keys = build('parallel_solver', 4, '-DSYLVER_PARALLEL_KUNZ_KEYS', label='kunz-keys')
 
     @classmethod
     def tearDownClass(cls):
@@ -191,6 +193,33 @@ class ParallelSolverTests(unittest.TestCase):
             rows = self.run_solver('parallel_solver', 2, '--threads', threads, '--stop-at-p',
                                    '--odd-list', '5,11,7', 4, 6, 9).splitlines()
             self.assertEqual([row.split()[:2] for row in rows], [['move=5', 'N'], ['move=11', 'P']])
+
+    def test_kunz_keys_build_decides_like_native(self):
+        # Roots whose smallest element is 2, 4, 8 or 16; with one thread the
+        # output, state count included, is native_solver's.
+        rng = random.Random(701)
+        positions = [(2, 255), (4, 5, 6, 7, 17), (16, 26, 33, 62, 89, 102)]
+        while len(positions) < 80:
+            gens = sorted(rng.sample(range(3, 45), rng.randint(2, 5)))
+            if gens[0] in (4, 8, 16) and reduce(gcd, gens) == 1 and frobenius_number(gens) <= 110:
+                positions.append(tuple(gens))
+        for index, gens in enumerate(positions):
+            native = self.run_solver('native_solver', 4, *gens)
+            exact = subprocess.run([str(self.kunz_keys), '--threads', '1', *map(str, gens)],
+                                   capture_output=True, text=True, check=True).stdout
+            self.assertEqual(exact, native, gens)
+            threaded = subprocess.run([str(self.kunz_keys), '--threads', str(2 + index % 3), '--verify-memo',
+                                       *map(str, gens)], capture_output=True, text=True, check=True).stdout.split()
+            self.assertEqual(threaded[0], native.split()[0], gens)
+            self.assertTrue(threaded[-1].startswith('entries='), gens)
+        for args in (['--odd-range', 3, 31, 16, 26, 82, 88], ['--odd-range', 3, 41, 16, 26]):
+            self.assertEqual(subprocess.run([str(self.kunz_keys), '--threads', '1', *map(str, args)],
+                                            capture_output=True, text=True, check=True).stdout,
+                             self.run_solver('native_solver', 4, *args), args)
+        # Other smallest elements are outside this build.
+        result = subprocess.run([str(self.kunz_keys), '5', '7'], capture_output=True, text=True)
+        self.assertEqual(result.returncode, 1)
+        self.assertIn('Kunz keys need a smallest root element of 2, 4, 8 or 16', result.stderr)
 
     def test_rejects_bad_arguments(self):
         binary = str(self.binaries['parallel_solver', 2])
