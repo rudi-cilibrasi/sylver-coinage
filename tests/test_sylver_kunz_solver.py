@@ -165,6 +165,10 @@ class KunzSolverTests(unittest.TestCase):
         # {16,26,33,62,89,102} is P with exactly 1,721,485 states (PR #13).
         self.assertEqual(self.run_binary(self.kunz, '--threads', 1, 16, 26, 33, 62, 89, 102).strip(),
                          'P winning_move=none frobenius=119 states=1721485')
+        # A sequential search whose memo is verified by several threads.
+        self.assertEqual(self.run_binary(self.kunz, '--threads', 1, '--verify-memo', '--verify-threads', 4,
+                                         16, 26, 33, 62, 89, 102).split(),
+                         ['P', 'winning_move=none', 'frobenius=119', 'states=1721485', 'verified', 'entries=1721485'])
         for _ in range(3):
             out = self.run_binary(self.kunz, '--threads', 6, '--verify-memo', 16, 26, 33, 62, 89, 102).split()
             self.assertEqual(out[:3], ['P', 'winning_move=none', 'frobenius=119'])
@@ -265,7 +269,8 @@ class KunzSolverTests(unittest.TestCase):
                      ['--max-states', ' -1', '--odd-list', '5', '4', '6', '9'],
                      ['--max-states', '0', '--odd-list', '5', '4', '6', '9'],
                      ['--max-states', '12x', '--odd-list', '5', '4', '6', '9'], ['--max-states', '100', '4', '5'],
-                     ['--stop-file', 'STOP', '4', '5'], ['--self-check', '4', '5']):
+                     ['--stop-file', 'STOP', '4', '5'], ['--self-check', '4', '5'],
+                     ['--verify-threads', '2', '4', '5'], ['--verify-memo', '--verify-threads', '0', '4', '5']):
             result = subprocess.run([str(self.kunz), *args], capture_output=True, text=True)
             self.assertEqual(result.returncode, 1, args)
             self.assertEqual(result.stdout, '', args)

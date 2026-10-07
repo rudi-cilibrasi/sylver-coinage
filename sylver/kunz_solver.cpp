@@ -22,7 +22,8 @@
 //
 // Threads, --odd-range/--odd-list sweeps, --stop-at-p and --verify-memo work
 // as in parallel_solver.cpp, and with --threads 1 the output is
-// native_solver.cpp's, state count included. A sweep can also end early
+// native_solver.cpp's, state count included (--verify-threads lets such a
+// sequential search verify its memo in parallel). A sweep can also end early
 // (--stop-file, at a row boundary; --max-states, abandoning the row in
 // progress once the memo holds about N states) and still verify its memo.
 // --verify-memo makes its moves with a scalar reference move, not the
@@ -529,14 +530,14 @@ class Solver {
     // makes its moves with reference_adjoin, not the search's vector moves,
     // so an error in those cannot certify itself. Returns the number of
     // entries checked; throws on the first inconsistency.
-    [[nodiscard]] std::size_t verify_memo() {
+    [[nodiscard]] std::size_t verify_memo(int threads) {
         std::atomic<std::size_t> checked{0};
         std::atomic<bool> failed{false};
         std::mutex error_mutex;
         std::string first_error;
         auto work = [&](int index) {
             for (auto shard = static_cast<std::size_t>(index); shard < ShardedMemo::kShards;
-                 shard += static_cast<std::size_t>(threads_)) {
+                 shard += static_cast<std::size_t>(threads)) {
                 if (failed.load(std::memory_order_relaxed)) return;
                 std::size_t local = 0;
                 memo_.for_each_in_shard(shard, [&](const Key& key, int value) {
@@ -555,9 +556,9 @@ class Solver {
             }
         };
         std::vector<std::thread> helpers;
-        helpers.reserve(static_cast<std::size_t>(threads_));
+        helpers.reserve(static_cast<std::size_t>(threads));
         try {
-            for (int index = 1; index < threads_; ++index) helpers.emplace_back(work, index);
+            for (int index = 1; index < threads; ++index) helpers.emplace_back(work, index);
         } catch (const std::system_error& error) {
             failed.store(true);
             for (std::thread& helper : helpers) helper.join();
@@ -864,6 +865,7 @@ int main(int argc, char** argv) {
 #endif
     try {
         int threads = 1;
+        int verify_threads = 0;   // 0: as many as --threads
         int split_depth = 6;
         bool stop_at_p = false;
         bool verify = false;
@@ -880,6 +882,9 @@ int main(int argc, char** argv) {
             const std::string option = argv[first];
             if (option == "--threads") {
                 threads = parse_int_option(option, value_of(1), 1, 1024);
+                first += 2;
+            } else if (option == "--verify-threads") {
+                verify_threads = parse_int_option(option, value_of(1), 1, 1024);
                 first += 2;
             } else if (option == "--split-depth") {
                 split_depth = parse_int_option(option, value_of(1), 0, 1000);
@@ -934,10 +939,11 @@ int main(int argc, char** argv) {
         }
         if (argc <= first) {
             throw std::invalid_argument(
-                "usage: kunz_solver [--threads N] [--split-depth D] [--verify-memo] [--memo-stats] "
+                "usage: kunz_solver [--threads N] [--split-depth D] [--verify-memo [--verify-threads N]] [--memo-stats] "
                 "[--odd-range START END | --odd-list MOVES [--stop-at-p] [--max-states N] [--stop-file PATH]] "
                 "GENERATOR... | kunz_solver --self-check");
         }
+        if (verify_threads > 0 && !verify) throw std::invalid_argument("--verify-threads applies only with --verify-memo");
         if (threads > 1 && split_depth == 0) {
             throw std::invalid_argument("--split-depth 0 would make every thread repeat the same search");
         }
@@ -964,7 +970,7 @@ int main(int argc, char** argv) {
 #ifdef SYLVER_KUNZ_TEST_FORGE_KEY
                 solver.forge_key();
 #endif
-                const std::size_t entries = solver.verify_memo();
+                const std::size_t entries = solver.verify_memo(verify_threads > 0 ? verify_threads : threads);
                 std::cerr << "kunz_solver: memo verified (" << entries << " entries)\n";
                 std::cout << "verified entries=" << entries << std::endl;
             }
