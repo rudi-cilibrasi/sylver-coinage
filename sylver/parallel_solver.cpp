@@ -100,7 +100,7 @@ using Key = std::array<std::uint64_t, kWords>;
 }
 
 // The bits of ``value`` selected by ``mask``, packed into the low bits.
-[[nodiscard]] std::uint64_t extract_bits(std::uint64_t value, std::uint64_t mask) noexcept {
+[[nodiscard, maybe_unused]] std::uint64_t extract_bits(std::uint64_t value, std::uint64_t mask) noexcept {
 #if defined(__BMI2__)
     return _pext_u64(value, mask);
 #else
@@ -113,7 +113,7 @@ using Key = std::array<std::uint64_t, kWords>;
 }
 
 // Deposits the low bits of ``value`` at the positions of ``mask``.
-[[nodiscard]] std::uint64_t deposit_bits(std::uint64_t value, std::uint64_t mask) noexcept {
+[[nodiscard, maybe_unused]] std::uint64_t deposit_bits(std::uint64_t value, std::uint64_t mask) noexcept {
 #if defined(__BMI2__)
     return _pdep_u64(value, mask);
 #else
@@ -125,6 +125,80 @@ using Key = std::array<std::uint64_t, kWords>;
 #endif
 }
 
+#ifdef SYLVER_PARALLEL_KUNZ_KEYS
+// Kunz-coordinate keys, for roots whose smallest element m is 2, 4, 8 or 16
+// (so a bit's residue mod m does not depend on its word): byte i - 1 of a key
+// is the number of the state's gaps congruent to i mod m. Every state
+// contains the root, hence m, so its gaps in each residue class form a
+// prefix and these counts determine it; a key takes ceil((m - 1) / 8) words.
+// Only the memo's encoding changes: moves, search and --verify-memo are this
+// engine's bitset code, which makes this build an independent cross-check of
+// kunz_solver.cpp's byte-vector moves with keys of the same size (18-byte
+// slots for m = 16). Build with -DSYLVER_PARALLEL_KUNZ_KEYS.
+class KeyPacker {
+  public:
+    KeyPacker() = default;
+    KeyPacker(const State& root, int frobenius) {
+        for (int n = 1; n <= frobenius && modulus_ == 0; ++n) {
+            if (root.test(n)) modulus_ = n;
+        }
+        if (modulus_ == 0) modulus_ = frobenius + 1;   // states hold no bits above F, all of them elements
+        if (modulus_ != 2 && modulus_ != 4 && modulus_ != 8 && modulus_ != 16) {
+            throw std::invalid_argument("Kunz keys need a smallest root element of 2, 4, 8 or 16");
+        }
+        if (frobenius / modulus_ + 1 > 255) throw std::invalid_argument("a Kunz key count would exceed a byte");
+        for (int bit = 0; bit <= frobenius; ++bit) limit_.set(bit);
+        for (int residue = 0; residue < modulus_; ++residue) {
+            for (int bit = residue; bit < 64; bit += modulus_) classes_[static_cast<std::size_t>(residue)] |= std::uint64_t{1} << bit;
+        }
+        words_ = (modulus_ - 1 + 7) / 8;
+    }
+    [[nodiscard]] int words() const { return words_; }
+    [[nodiscard]] Key pack(const State& state) const {
+        Key key{};
+        for (int residue = 1; residue < modulus_; ++residue) {
+            std::uint64_t count = 0;
+            for (int word = 0; word < kWords; ++word) {
+                const auto index = static_cast<std::size_t>(word);
+                count += static_cast<std::uint64_t>(std::popcount(~state.words[index] & limit_.words[index] &
+                                                                  classes_[static_cast<std::size_t>(residue)]));
+            }
+            key[static_cast<std::size_t>((residue - 1) / 8)] |= count << (8 * ((residue - 1) % 8));
+        }
+        return key;
+    }
+
+    // The state with Kunz key ``key``: n in [0, F] is an element exactly when
+    // n / m is at least the count of n's residue class.
+    [[nodiscard]] State unpack(const Key& key, const State&) const {
+        State state;
+        for (int word = 0; word < kWords; ++word) {
+            std::uint64_t bits = classes_[0];   // the multiples of m
+            for (int residue = 1; residue < modulus_; ++residue) {
+                const auto count = static_cast<int>(
+                    (key[static_cast<std::size_t>((residue - 1) / 8)] >> (8 * ((residue - 1) % 8))) & 0xFFU);
+                // This word's bits of the class are 64*word + residue + t*m, with
+                // quotient 64*word/m + t: elements once t reaches ``skip``.
+                const int skip = count - 64 * word / modulus_;
+                const std::uint64_t members = classes_[static_cast<std::size_t>(residue)];
+                if (skip <= 0) {
+                    bits |= members;
+                } else if (skip < 64 / modulus_) {
+                    bits |= members & ~((std::uint64_t{1} << (residue + skip * modulus_)) - 1);
+                }
+            }
+            state.words[static_cast<std::size_t>(word)] = bits & limit_.words[static_cast<std::size_t>(word)];
+        }
+        return state;
+    }
+
+  private:
+    int modulus_ = 0;
+    int words_ = 1;
+    State limit_;
+    std::array<std::uint64_t, 16> classes_{};
+};
+#else
 class KeyPacker {
   public:
     KeyPacker() = default;
@@ -177,6 +251,7 @@ class KeyPacker {
     State gaps_;
     int words_ = kWords;
 };
+#endif
 
 class SpinLock {
   public:
