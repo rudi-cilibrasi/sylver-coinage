@@ -1,5 +1,11 @@
 # Sylver Coinage after 16: research log
 
+**October 7, the reply 28 loses:** Y={16,28,58} is P. All 54 of its Quiet
+End obligations are covered: 48 by finite witnesses with native and Python
+replays (711,534,629 states), and six by certified nodes. Every reply to the
+opening 16 up to 28 now has an answer. See Attempt 34 and
+[the Y record](campaigns/y-2026-10-07/RESULT.md).
+
 **October 6, X is N and U is P:** X={16,26,82,88}'s reply 701 reaches
 {16,26,82,88,701}, which is P. Two sequential replays with independent move
 code agree on exactly 633,734,956 states, and each certifies its memo; native
@@ -1500,6 +1506,54 @@ P-positions through the certified nodes and W. With the certified table's
 answers for 2 through 24, every reply to the opening 16 up to 26 now has an
 answer. The lowest unanswered reply is 28, and opening 16 remains
 unresolved.
+
+### Attempt 34 — 58 answers the reply 28 (2026-10-07)
+
+With 26 answered (Attempt 33), the lowest open reply to the opening 16 was
+28. {16,28} is 4·{4,7}, and the search ran in three stages.
+
+**Odd replies.** Its odd replies 3, 5, 9, 13 and 17, the odd gaps of
+{4,7}, all lose.
+
+**Short even candidates.** For r ≡ 2 (mod 4) with r/2 in {4,7}, the half
+{8,14,r/2} is a gluing of the symmetric {4,7}. So {16,28,r} is short. For
+r ≥ 10 this holds for r = 22, 30 and every such r from 38 on. Using the
+Kunz engine, in unverified search sweeps:
+- sweeps of each candidate's odd obligations left 19 odd-complete
+  candidates up to r = 142;
+- for r = 38, 50 and 58, a resolver then gave each even obligation a reply
+  to a known P-position, or a finite odd witness.
+
+**Results.**
+- r = 22 falls to 12 (into P0).
+- r = 38 is left with one short child, {16,28,38,40}. That child is N only
+  through an even reply to a P-position. None was found among the six
+  short positions it reaches; the other 17 are long and were not examined.
+- r = 50 closes after a deep sweep: its child {16,28,50,118} is answered
+  by 461 ({16,28,50,118,461} is P in a verified 273-million-state batch).
+  Its other sweeps were not verified, though, and via node M a certificate
+  would rest on Sicherman's {8,10,22}.
+- **r = 58 closes directly.**
+
+**The certificate.** Y={16,28,58} has half {8,14,29}, with Frobenius
+number 63, and 54 obligations:
+- six reach the certified nodes C, E, F and P0;
+- each of the other 48 has a finite witness, replayed from empty memos by
+  `native_solver.cpp` and the Python evaluator with equal state counts.
+  There are 38 distinct destinations, 711,534,629 states over the 48
+  replays; the largest is {16,28,58,98,181}, with 160,339,405. The Kunz
+  engine's sequential counts match all 48.
+
+`campaigns/y-2026-10-07/audit.py` checks the obligations two ways and
+every receipt, and concludes **Y is P**.
+
+**What it rests on.** Y rests on the Quiet End Theorem and, through E, F
+and P0, on Blok's pairing family ({8,10,12,14} and {8,12,18,22}). It does
+not use Sicherman's {8,10,22}. The search also indicates {16,28,50} P,
+recorded in the Y record's scan as unverified discovery output.
+
+**Opening 16.** Every reply to the opening 16 up to 28 is now answered. The
+lowest unanswered reply is 30.
 
 ### Sources
 

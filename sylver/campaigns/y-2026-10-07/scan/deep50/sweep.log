@@ -1,0 +1,34 @@
+14:48:45 queue 764 first [403, 405, 407, 409, 411]
+14:48:45 start m118-sweep-403-1929 bound 2031 engine kunz-c1eb16f
+14:54:19 done m118-r403 ok N 351 223473089 333.3s
+14:54:20 done m118-r405 ok N 351 224522487 1.4s
+14:54:40 done m118-r407 ok N 361 230411924 20.3s
+14:55:21 done m118-r409 ok N 431 240257538 40.4s
+14:55:21 done m118-r411 ok N 343 240415226 0.2s
+14:55:28 done m118-r413 ok N 449 245091847 6.5s
+14:55:28 done m118-r415 ok N 329 245118689 0.0s
+14:55:33 done m118-r417 ok N 459 248716047 5.3s
+14:55:33 done m118-r419 ok N 361 248789113 0.1s
+14:55:38 done m118-r421 ok N 507 251403873 4.7s
+14:55:38 done m118-r423 ok N 377 251520245 0.1s
+14:55:46 done m118-r425 ok N 471 253785445 8.1s
+14:55:50 done m118-r427 ok N 441 256085407 3.8s
+14:55:52 done m118-r429 ok N 431 257288276 2.0s
+14:55:52 done m118-r431 ok N 409 257341387 0.1s
+14:55:52 done m118-r433 ok N 391 257415777 0.1s
+14:55:52 done m118-r435 ok N 429 257653343 0.3s
+14:55:52 done m118-r437 ok N 391 257813598 0.2s
+14:55:52 done m118-r439 ok N 365 257937315 0.1s
+14:55:53 done m118-r441 ok N 427 258000086 0.1s
+14:55:56 done m118-r443 ok N 435 260469906 3.6s
+14:55:57 done m118-r445 ok N 443 261159832 1.0s
+14:56:02 done m118-r447 ok N 441 263595661 4.6s
+14:56:02 done m118-r449 ok N 413 263612371 0.0s
+14:56:05 done m118-r451 ok N 441 265759084 3.4s
+14:56:05 done m118-r453 ok N 395 265822995 0.1s
+14:56:08 done m118-r455 ok N 469 268546306 2.9s
+14:56:11 done m118-r457 ok N 463 270853632 2.8s
+14:56:11 done m118-r459 ok N 417 270871998 0.0s
+14:56:14 done m118-r461 ok P None 273426772 3.3s
+15:17:24 batch m118-sweep-403-1929 exit 0 1718.4s wall children cpu 10096s
+!!! FOUND P {'m': 118, 'r': 461, 'position': [16, 28, 50, 118, 461], 'frobenius': 563, 'wall': 3.2667160781566054, 'returncode': 0, 'mem_gib': 30.0, 'engine': 'kunz-c1eb16f', 'engine_args': '--threads 8 --max-states 900000000 --odd-list (shared memo, batch m118-sweep-403-1929)', 'status': 'ok', 'outcome': 'P', 'winning_move': None, 'states': 273426772, 'states_are': 'cumulative over the batch', 'memo_verified': True}
