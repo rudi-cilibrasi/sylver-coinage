@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Y is P</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='13' font-size='13'%3E%E2%9A%92%3C/text%3E%3C/svg%3E">
+<style>
+  /* The Book's print-like typography: black on white in every color scheme. */
+  body {
+    margin: 0 auto; max-width: 58rem; padding: 2.2rem 1.4rem 4rem;
+    background: #ffffff; color: #000000;
+    font-family: "Latin Modern Roman", "CMU Serif", "Computer Modern",
+                 Georgia, "Times New Roman", serif;
+    font-size: 17px; line-height: 1.45;
+  }
+  h1 { font-size: 1.9rem; font-weight: normal; margin: 0 0 1rem; text-wrap: balance; }
+  h2 { font-size: 1.2rem; font-weight: normal; font-style: italic; margin: 1.6rem 0 .4rem; }
+  p, li { max-width: 42rem; }
+  p { margin: .5rem 0; }
+  a { color: #000; }
+  .tablewrap { overflow-x: auto; margin: 1.2rem 0; }
+  table { border-collapse: collapse; margin: 0 auto; font-variant-numeric: tabular-nums; border: 1.5px solid #000; }
+  td, th { border: 1px solid #000; padding: .26rem .5rem; font-size: .86rem; white-space: nowrap; }
+  th { font-weight: bold; text-align: center; }
+  td.num { text-align: right; }
+  td.pos { font-family: "Latin Modern Mono", "CMU Typewriter Text", Menlo, monospace; font-size: .8rem; }
+  button {
+    font: inherit; font-size: .82rem; padding: .05rem .55rem; border: 1px solid #000;
+    border-radius: 0; background: #fff; color: #000; cursor: pointer;
+  }
+  button:hover, button:focus-visible { background: #000; color: #fff; }
+  button:disabled { cursor: default; background: #fff; color: #000; opacity: .5; }
+  .ok { font-weight: bold; }
+  .bad { font-weight: bold; text-decoration: underline; }
+  .muted { font-style: italic; }
+  #status { font-style: italic; }
+  tr.open td { font-weight: bold; }
+  .footnote { font-size: .85rem; margin-top: 2.2rem; border-top: 1px solid #000; padding-top: .6rem; }
+  code { font-size: .9em; }
+</style>
+</head>
+<body>
+<h1>Y = {16,28,58} is P: 58 answers the reply 28 to 16</h1>
+<p>
+  After the opening 16 and the reply 28, naming 58 reaches Y. Y is
+  <i>short</i>, so by the Quiet End Theorem it is P exactly when each of its
+  54 <i>obligations</i>, the moves listed below, leads to an N-position. Every
+  one is covered, so the reply 28 to the opening 16 loses. With the certified
+  answers for 2–24, <a href="u.html">U for 26</a>, and Hutchings' theorem
+  for the odd replies, every reply to 16 up to 28 now has an answer.
+</p>
+<p>
+  <b>What it rests on.</b> 48 obligations have finite witnesses, each replayed
+  from empty memos by the native and the Python solver with equal state
+  counts. Six reach repository certificates of P-positions (C, E, F and P0),
+  which through E, F and P0 rest on Blok's pairing family. The
+  <a href="https://github.com/rudi-cilibrasi/sylver-coinage/blob/main/sylver/campaigns/y-2026-10-07/RESULT.md">result</a>
+  lists everything, including how Y was found.
+</p>
+<p id="status">Loading the audit from the repository&hellip;</p>
+<div class="tablewrap">
+  <table id="y" hidden>
+    <thead><tr><th>Move</th><th>Position</th><th>Evidence</th><th>Answer</th><th>States</th><th>Check</th></tr></thead>
+    <tbody></tbody>
+  </table>
+</div>
+<p class="footnote">
+  Source: <a href="https://github.com/rudi-cilibrasi/sylver-coinage/blob/main/sylver/campaigns/y-2026-10-07/RESULT.md">the campaign result</a>
+  and its <code>audit.json</code>, produced by <code>python sylver/campaigns/y-2026-10-07/audit.py</code>.
+  Back to <a href="u.html">U</a>, <a href="w.html">W</a>, <a href="book.html">The Book</a>, or the
+  <a href="index.html">solver demo</a>.
+</p>
+<script src="solver.js"></script>
+<script src="book.js"></script>
+<script src="w.js"></script>
+<script src="audit-page.js"></script>
+<script>
+"use strict";
+renderAuditPage({
+  campaign: "y-2026-10-07", table: "y", status: "status",
+  verdict: (d) => {
+    const open = d.rows.filter((r) => r.evidence === "open").map((r) => r.move);
+    const counts = Object.entries(d.counts).map(([k, n]) => n + " by " + k).join(", ");
+    return d.failures.length === 0 && d.rows.length === d.total && open.length === 0 && d.outcome === "P"
+      ? { ok: true, text: "All " + d.total + " obligations covered (" + counts + "). Audit verdict: Y is P." }
+      : { ok: false, text: "The audit does not currently cover every obligation: " + d.failures.join("; ") + "." };
+  },
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,1 @@
+{"position": [16, 28, 34, 51, 58], "outcome": "P", "frobenius": 121, "states": 2061357}

@@ -17,6 +17,22 @@ exceeds 10^12 states.
 
 For the week of September 21–27, see the [progress summary](docs/progress/2026-09-28-week.md).
 
+- **Y={16,28,58} is P, so the reply 28 to the opening 16 loses (October 7).**
+  - **The certificate.** Y is short: its half {8,14,29} is a quiet ender.
+    All 54 of its Quiet End obligations are covered. Six reach certified
+    P-positions (C, E, F, P0). The other 48 have finite witnesses, each
+    replayed from empty memos by `native_solver` and the Python evaluator
+    with equal state counts, **711,534,629 states** in all; the
+    Kunz-coordinate engine's sequential counts match them too.
+  - **The search.** A search of 28's even replies found Y. It also indicates
+    {16,28,50} P, recorded as unverified discovery output.
+  - **Opening 16.** Every reply to the opening 16 up to 28 now has an answer;
+    the lowest unanswered reply is 30. Opening 16 remains unresolved.
+  - **What it rests on.** The Quiet End Theorem and, through E, F and P0,
+    Blok's pairing family; Y does not use Sicherman's {8,10,22}.
+
+  See the [Y record](sylver/campaigns/y-2026-10-07/RESULT.md) and the
+  [Y obligation table](https://rudi-cilibrasi.github.io/sylver-coinage/y.html).
 - **X={16,26,82,88} is N, so U={16,26,88} is P and the reply 26 to the
   opening 16 loses (October 6).**
   - **X+701.** X's odd reply **701** reaches `{16,26,82,88,701}`, a

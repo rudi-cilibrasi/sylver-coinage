@@ -102,6 +102,53 @@ class UPageTests(unittest.TestCase):
                          {'evidence': 'x-is-n', 'reply': 701, 'destination': '16,26,82,88,701'})
 
 
+Y_AUDIT = ROOT / 'sylver/campaigns/y-2026-10-07/audit.json'
+
+Y_SCRIPT = U_SCRIPT.replace('u-2026-09-27', 'y-2026-10-07')
+
+
+class YPageTests(unittest.TestCase):
+    """docs/y.html shows all 54 obligations of Y={16,28,58}, each covered: 58 answers 28."""
+
+    def test_every_obligation_has_a_row(self):
+        node = shutil.which('node')
+        if node is None:
+            self.skipTest('node is not installed')
+        out = subprocess.run([node, '-e', Y_SCRIPT, str(ROOT)], capture_output=True, text=True, timeout=60, check=True)
+        described = json.loads(out.stdout)
+        self.assertEqual((len(described['rows']), described['failures'], described['outcome']), (54, [], 'P'))
+        self.assertEqual(described['counts'], {'finite witness': 48, 'certified infinite P-position': 6})
+        for row in described['rows']:
+            self.assertNotEqual(row['answer'], 'unrecognized evidence', row)
+            self.assertTrue(row['link'] and (ROOT / row['link']).exists(), row)
+
+    def test_the_committed_y_audit_is_reproducible(self):
+        result = subprocess.run([sys.executable, str(Y_AUDIT.parent / 'audit.py')], capture_output=True, text=True,
+                                timeout=900)
+        self.assertEqual(result.returncode, 0, result.stdout[-2000:])
+        fresh, committed = json.loads(result.stdout), json.loads(Y_AUDIT.read_text())
+        self.assertEqual((fresh['outcome'], fresh['failures']), ('P', []))
+        self.assertEqual(fresh, committed)
+        self.assertEqual(fresh['summary']['by_evidence'], {'finite-witness': 48, 'certified-node': 6})
+
+    def test_a_transcript_that_says_n_is_rejected_even_when_rehashed(self):
+        spec = importlib.util.spec_from_file_location('y_audit', Y_AUDIT.parent / 'audit.py')
+        audit = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(audit)
+        self.assertEqual(audit.finite_witness(9)['evidence'], 'finite-witness')
+        with tempfile.TemporaryDirectory() as tmp:
+            shutil.copy(Y_AUDIT.parent / 'y9-certificate.json', tmp)
+            shutil.copytree(Y_AUDIT.parent / 'verification/y9', Path(tmp) / 'verification/y9')
+            stdout = Path(tmp) / 'verification/y9/native-stdout.txt'
+            stdout.write_text(stdout.read_text().replace('P winning_move=none', 'N winning_move=2'))
+            receipt = Path(tmp) / 'verification/y9/receipt.json'
+            data = json.loads(receipt.read_text())
+            data['runs']['native']['stdout_sha256'] = hashlib.sha256(stdout.read_bytes()).hexdigest()
+            receipt.write_text(json.dumps(data))
+            audit.HERE = Path(tmp)
+            self.assertIsNone(audit.finite_witness(9))
+
+
 X_AUDIT = ROOT / 'sylver/campaigns/x-2026-10-06/audit.json'
 
 
