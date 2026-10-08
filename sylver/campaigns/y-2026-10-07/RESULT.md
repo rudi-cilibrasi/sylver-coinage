@@ -89,8 +89,8 @@ search for a winning reply to 28 ran in three stages. The scripts are kept in
      short positions it reaches; the other 17 are long and were not examined
      ([scan/pair_38_40.log](scan/pair_38_40.log)).
 
-Y was certified because it needs no deep witness and no published long
-position.
+Y was certified because it needs no deep witness and does not rest on
+Sicherman's {8,10,22}.
 
 No mathematical priority claim is made.
 

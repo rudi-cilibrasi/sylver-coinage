@@ -1529,7 +1529,7 @@ Kunz engine, in unverified search sweeps:
 - r = 38 is left with one short child, {16,28,38,40}. That child is N only
   through an even reply to a P-position. None was found among the six
   short positions it reaches; the other 17 are long and were not examined.
-- r = 50 closes after a deep sweep: its child {16,28,50,118} is answered
+- r = 50 appears to close after a deep sweep: its child {16,28,50,118} is answered
   by 461 ({16,28,50,118,461} is P in a verified 273-million-state batch).
   Its other sweeps were not verified, though, and via node M a certificate
   would rest on Sicherman's {8,10,22}.
