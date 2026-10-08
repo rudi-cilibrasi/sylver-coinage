@@ -17,6 +17,24 @@ exceeds 10^12 states.
 
 For the week of September 21–27, see the [progress summary](docs/progress/2026-09-28-week.md).
 
+- **Z={16,30,56} is P, so the reply 30 to the opening 16 loses (October 8).**
+  - **The certificate.** All 52 of Z's Quiet End obligations are covered.
+    - Move 44 is answered by 40 into a second new short P-position,
+      Z′={16,30,40,44}, whose 40 obligations the same audit covers.
+    - The finite witnesses are replayed by `native_solver` and the Python
+      evaluator with equal state counts: 896,749,503 states.
+    - The two largest, at 297 and 262 million states, are too large for
+      Python on this host. They are replayed by `native_solver` and a
+      sequential Kunz run instead, with equal counts.
+  - **Opening 16.** Every reply to the opening 16 up to 30 now has an
+    answer. 32 is not a legal reply (a multiple of 16), and 34 is answered
+    by 20, through the certified node T={16,20,34}, so the lowest
+    unanswered reply is 36. Opening 16 remains unresolved.
+  - **What it rests on.** The Quiet End Theorem, Blok's pairing family, and,
+    through the nodes O and K, Sicherman's {8,10,22}.
+
+  See the [Z record](sylver/campaigns/z-2026-10-08/RESULT.md) and the
+  [Z obligation table](https://rudi-cilibrasi.github.io/sylver-coinage/z.html).
 - **Y={16,28,58} is P, so the reply 28 to the opening 16 loses (October 7).**
   - **The certificate.** Y is short: its half {8,14,29} is a quiet ender.
     All 54 of its Quiet End obligations are covered. Six reach certified

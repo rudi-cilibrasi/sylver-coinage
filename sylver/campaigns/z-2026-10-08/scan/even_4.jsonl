@@ -1,0 +1,2 @@
+{"e": 2, "child": "2", "status": "resolved", "reply": 3, "via": "finite odd witness", "odd_tried": 1, "states": 1, "child_short": false, "child_even_obligations": null, "seconds": 0.0}
+{"e": 6, "child": "4,6", "status": "REFUTES r", "via": "node C", "seconds": 0.0}

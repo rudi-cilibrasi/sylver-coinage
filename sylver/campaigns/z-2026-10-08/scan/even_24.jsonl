@@ -1,0 +1,5 @@
+{"e": 2, "child": "2", "status": "resolved", "reply": 3, "via": "finite odd witness", "odd_tried": 1, "states": 1, "child_short": false, "child_even_obligations": null, "seconds": 0.0}
+{"e": 4, "child": "4,30", "status": "resolved", "reply": 6, "via": "node C", "seconds": 0.0}
+{"e": 6, "child": "6,16", "status": "resolved", "reply": 4, "via": "node C", "seconds": 0.0}
+{"e": 8, "child": "8,30", "status": "resolved", "reply": 14, "via": "node E", "seconds": 0.0}
+{"e": 10, "child": "10,16,24", "status": "REFUTES r", "via": "node K", "seconds": 0.0}

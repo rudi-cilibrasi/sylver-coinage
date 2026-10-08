@@ -1,0 +1,6 @@
+{"e": 2, "child": "2", "status": "resolved", "reply": 3, "via": "finite odd witness", "odd_tried": 1, "states": 1, "child_short": false, "child_even_obligations": null, "seconds": 0.0}
+{"e": 4, "child": "4,30", "status": "resolved", "reply": 6, "via": "node C", "seconds": 0.0}
+{"e": 6, "child": "6,16", "status": "resolved", "reply": 4, "via": "node C", "seconds": 0.0}
+{"e": 8, "child": "8,12,30", "status": "short: needs even", "reply": null, "via": null, "odd_tried": 7, "states": null, "child_short": true, "child_even_obligations": [2, 4, 6, 10, 14, 18, 22, 26, 34], "seconds": 0.0}
+{"e": 10, "child": "10,12,16", "status": "resolved", "reply": 31, "via": "finite odd witness", "odd_tried": 15, "states": 787, "child_short": false, "child_even_obligations": null, "seconds": 0.0}
+{"e": 14, "child": "12,14,16", "status": "REFUTES r", "via": "node F", "seconds": 0.0}

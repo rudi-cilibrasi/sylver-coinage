@@ -1,0 +1,73 @@
+{
+  "status": "verified",
+  "certificate_sha256": "299e4ee63808d9f1876332750815ee8a5577b9c86548b3d94309952eba5803a2",
+  "verifier_sha256": "420ebc11625188e51923e67953a3948b21fc3dcda8ef42ae7d01dd53a3c0fc06",
+  "native_words": 4,
+  "native_source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+  "binary_sha256": "62b51d342748810778fd454aed03e6e412c179f49eff5d578a8cbba3795ccfb3",
+  "python_source_sha256": "fe17c5fbb77b036131250af033b0bae7fa200daca4cadb01ceccb12fa6434a3d",
+  "semigroup_source_sha256": "7675fe927be6704ca7c60389061c61e82e5c3761b7086a1e5691b3bd9a5c5fd9",
+  "position": [
+    16,
+    30,
+    36,
+    40,
+    44,
+    137
+  ],
+  "frobenius": 195,
+  "seconds_limit_per_solver": 3600.0,
+  "memory_gib": 3,
+  "structural_edges_checked": 2,
+  "runs": {
+    "native": {
+      "command": [
+        "/tmp/claude-1001/-home-ruclaw-src-sylver-coinage/cd9b0cdd-5710-4000-902b-0c5c9cdc90cc/scratchpad/r30/zp30/verification/zp36/build/native",
+        "16",
+        "30",
+        "36",
+        "40",
+        "44",
+        "137"
+      ],
+      "elapsed_seconds": 40.08777850912884,
+      "returncode": 0,
+      "timed_out": false,
+      "stdout_sha256": "c7fa5219cd5b43125dd13814f208a6961c9dfb4797e0005d7fc28c273f63be10",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outcome": "P",
+      "frobenius": 195,
+      "states": 6778884
+    },
+    "python": {
+      "command": [
+        "/home/ruclaw/OpenGauss/venv/bin/python3",
+        "/home/ruclaw/src/sylver-coinage/sylver/verify_finite_reply.py",
+        "--python-worker",
+        "16",
+        "30",
+        "36",
+        "40",
+        "44",
+        "137"
+      ],
+      "elapsed_seconds": 326.50961385294795,
+      "returncode": 0,
+      "timed_out": false,
+      "stdout_sha256": "4fa44f45fc4e6665a244e200ca602bf8cb23c04d39b3fdba4bf950cdd5173c02",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "position": [
+        16,
+        30,
+        36,
+        40,
+        44,
+        137
+      ],
+      "outcome": "P",
+      "frobenius": 195,
+      "states": 6778884
+    }
+  },
+  "scope": "Fresh standalone memos, no cache or inherited outcome assumptions. Both moves are legal and their canonical destination matches the certificate."
+}

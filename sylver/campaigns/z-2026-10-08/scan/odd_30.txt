@@ -1,0 +1,53 @@
+$ kunz --threads 4 --verify-memo --odd-list 3,5,7,9,11,13,17,19,21,25,27,29,33,35,37,41,43,49,51,57,59,65,67,73,81,89,97 16 30
+move=3 N winning_move=2 frobenius=29 cumulative_states=2
+move=5 N winning_move=18 frobenius=59 cumulative_states=82
+move=7 N winning_move=6 frobenius=89 cumulative_states=112
+move=9 N winning_move=10 frobenius=83 cumulative_states=623
+move=11 N winning_move=39 frobenius=83 cumulative_states=6257
+move=13 N winning_move=49 frobenius=83 cumulative_states=25118
+move=17 N winning_move=40 frobenius=121 cumulative_states=118685
+move=19 N winning_move=88 frobenius=123 cumulative_states=355611
+move=21 N winning_move=31 frobenius=119 cumulative_states=571760
+move=25 N winning_move=28 frobenius=159 cumulative_states=989392
+move=27 N winning_move=85 frobenius=131 cumulative_states=2161385
+move=29 N winning_move=8 frobenius=159 cumulative_states=2170184
+move=33 N winning_move=9 frobenius=167 cumulative_states=2170189
+move=35 N winning_move=82 frobenius=149 cumulative_states=7578383
+move=37 N winning_move=77 frobenius=199 cumulative_states=15702282
+move=41 N winning_move=42 frobenius=189 cumulative_states=20240653
+move=43 N winning_move=100 frobenius=173 cumulative_states=30871795
+move=49 N winning_move=13 frobenius=213 cumulative_states=30871813
+move=51 N winning_move=57 frobenius=197 cumulative_states=45295765
+move=57 N winning_move=51 frobenius=221 cumulative_states=45840630
+move=59 N winning_move=130 frobenius=221 cumulative_states=78086316
+move=65 N winning_move=45 frobenius=229 cumulative_states=87742676
+move=67 N winning_move=13 frobenius=245 cumulative_states=87742684
+move=73 N winning_move=26 frobenius=237 cumulative_states=89036883
+move=81 N winning_move=133 frobenius=245 cumulative_states=177348557
+move=89 N winning_move=65 frobenius=253 cumulative_states=189958003
+move=97 N winning_move=215 frobenius=275 cumulative_states=271657062
+kunz_solver: memo verified (271657062 entries)
+verified entries=271657062
+	Command being timed: "/tmp/claude-1001/-home-ruclaw-src-sylver-coinage/cd9b0cdd-5710-4000-902b-0c5c9cdc90cc/scratchpad/r30/kunz --threads 4 --verify-memo --odd-list 3,5,7,9,11,13,17,19,21,25,27,29,33,35,37,41,43,49,51,57,59,65,67,73,81,89,97 16 30"
+	User time (seconds): 10541.57
+	System time (seconds): 9.08
+	Percent of CPU this job got: 398%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 44:06.14
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 6441644
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 4274009
+	Voluntary context switches: 2156
+	Involuntary context switches: 112637
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 32
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

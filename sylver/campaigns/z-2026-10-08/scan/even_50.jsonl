@@ -1,0 +1,34 @@
+{"e": 2, "child": "2", "status": "resolved", "reply": 3, "via": "finite odd witness", "odd_tried": 1, "states": 1, "child_short": false, "child_even_obligations": null, "seconds": 0.0}
+{"e": 4, "child": "4,30", "status": "resolved", "reply": 6, "via": "node C", "seconds": 0.0}
+{"e": 6, "child": "6,16", "status": "resolved", "reply": 4, "via": "node C", "seconds": 0.0}
+{"e": 8, "child": "8,30,50", "status": "resolved", "reply": 14, "via": "node E", "seconds": 0.0}
+{"e": 10, "child": "10,16", "status": "resolved", "reply": 24, "via": "node K", "seconds": 0.0}
+{"e": 12, "child": "12,16,30,50", "status": "resolved", "reply": 14, "via": "node F", "seconds": 0.0}
+{"e": 14, "child": "14,16,50", "status": "resolved", "reply": 8, "via": "node E", "seconds": 0.0}
+{"e": 18, "child": "16,18,30", "status": "resolved", "reply": 5, "via": "finite odd witness", "odd_tried": 2, "states": 54, "child_short": true, "child_even_obligations": [2, 4, 6, 8, 10, 12, 14, 20, 22, 24, 26, 28, 38, 40, 42, 44, 56, 58, 74], "seconds": 0.0}
+{"e": 20, "child": "16,20,30", "status": "resolved", "reply": 8, "via": "node O", "seconds": 0.0}
+{"e": 22, "child": "16,22,30,50", "status": "resolved", "reply": 27, "via": "finite odd witness", "odd_tried": 13, "states": 169799, "child_short": false, "child_even_obligations": null, "seconds": 0.1}
+{"e": 24, "child": "16,24,30,50", "status": "resolved", "reply": 10, "via": "node K", "seconds": 0.0}
+{"e": 26, "child": "16,26,30,50", "status": "open", "reply": null, "via": null, "odd_tried": 200, "states": null, "child_short": false, "child_even_obligations": null, "seconds": 12.8}
+{"e": 28, "child": "16,28,30,50", "status": "resolved", "reply": 25, "via": "finite odd witness", "odd_tried": 12, "states": 242353, "child_short": false, "child_even_obligations": null, "seconds": 0.1}
+{"e": 34, "child": "16,30,34", "status": "resolved", "reply": 139, "via": "finite odd witness", "odd_tried": 69, "states": 29637114, "child_short": false, "child_even_obligations": null, "seconds": 21.1}
+{"e": 36, "child": "16,30,36,50", "status": "resolved", "reply": 77, "via": "finite odd witness", "odd_tried": 38, "states": 8696747, "child_short": false, "child_even_obligations": null, "seconds": 2.6}
+{"e": 38, "child": "16,30,38,50", "status": "resolved", "reply": 35, "via": "finite odd witness", "odd_tried": 17, "states": 1962507, "child_short": false, "child_even_obligations": null, "seconds": 0.5}
+{"e": 40, "child": "16,30,40,50", "status": "resolved", "reply": 17, "via": "finite odd witness", "odd_tried": 7, "states": 73338, "child_short": false, "child_even_obligations": null, "seconds": 0.0}
+{"e": 42, "child": "16,30,42,50", "status": "resolved", "reply": 71, "via": "finite odd witness", "odd_tried": 35, "states": 10286798, "child_short": false, "child_even_obligations": null, "seconds": 3.3}
+{"e": 44, "child": "16,30,44,50", "status": "resolved", "reply": 93, "via": "finite odd witness", "odd_tried": 46, "states": 29549766, "child_short": false, "child_even_obligations": null, "seconds": 11.5}
+{"e": 52, "child": "16,30,50,52", "status": "resolved", "reply": 177, "via": "finite odd witness", "odd_tried": 88, "states": 72809514, "child_short": false, "child_even_obligations": null, "seconds": 48.7}
+{"e": 54, "child": "16,30,50,54", "status": "resolved", "reply": 65, "via": "finite odd witness", "odd_tried": 32, "states": 17522989, "child_short": false, "child_even_obligations": null, "seconds": 5.6}
+{"e": 56, "child": "16,30,50,56", "status": "resolved", "reply": 97, "via": "finite odd witness", "odd_tried": 48, "states": 32751038, "child_short": false, "child_even_obligations": null, "seconds": 12.2}
+{"e": 58, "child": "16,30,50,58", "status": "resolved", "reply": 139, "via": "finite odd witness", "odd_tried": 69, "states": 61386742, "child_short": false, "child_even_obligations": null, "seconds": 45.7}
+{"e": 68, "child": "16,30,50,68", "status": "resolved", "reply": 55, "via": "finite odd witness", "odd_tried": 27, "states": 21852831, "child_short": false, "child_even_obligations": null, "seconds": 7.0}
+{"e": 70, "child": "16,30,50,70", "status": "resolved", "reply": 77, "via": "finite odd witness", "odd_tried": 38, "states": 36196636, "child_short": false, "child_even_obligations": null, "seconds": 13.3}
+{"e": 72, "child": "16,30,50,72", "status": "resolved", "reply": 35, "via": "finite odd witness", "odd_tried": 17, "states": 4503003, "child_short": false, "child_even_obligations": null, "seconds": 1.2}
+{"e": 74, "child": "16,30,50,74", "status": "open", "reply": null, "via": null, "odd_tried": 200, "states": null, "child_short": false, "child_even_obligations": null, "seconds": 597.5}
+{"e": 84, "child": "16,30,50,84", "status": "resolved", "reply": 251, "via": "finite odd witness", "odd_tried": 125, "states": 256251864, "child_short": false, "child_even_obligations": null, "seconds": 397.7}
+{"e": 86, "child": "16,30,50,86", "status": "resolved", "reply": 73, "via": "finite odd witness", "odd_tried": 36, "states": 43098798, "child_short": false, "child_even_obligations": null, "seconds": 17.1}
+{"e": 88, "child": "16,30,50,88", "status": "resolved", "reply": 323, "via": "finite odd witness", "odd_tried": 161, "states": 315580303, "child_short": false, "child_even_obligations": null, "seconds": 490.8}
+{"e": 102, "child": "16,30,50,102", "status": "resolved", "reply": 47, "via": "finite odd witness", "odd_tried": 23, "states": 16913984, "child_short": false, "child_even_obligations": null, "seconds": 6.1}
+{"e": 104, "child": "16,30,50,104", "status": "resolved", "reply": 59, "via": "finite odd witness", "odd_tried": 23, "states": 26343914, "child_short": false, "child_even_obligations": null, "seconds": 9.9}
+{"e": 118, "child": "16,30,50,118", "status": "resolved", "reply": 109, "via": "finite odd witness", "odd_tried": 54, "states": 97722488, "child_short": false, "child_even_obligations": null, "seconds": 48.6}
+{"e": 134, "child": "16,30,50,134", "status": "resolved", "reply": 209, "via": "finite odd witness", "odd_tried": 104, "states": 237484490, "child_short": false, "child_even_obligations": null, "seconds": 235.0}

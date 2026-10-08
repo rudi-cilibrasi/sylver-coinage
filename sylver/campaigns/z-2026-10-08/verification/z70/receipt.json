@@ -1,0 +1,42 @@
+{
+  "status": "verified",
+  "certificate_sha256": "076fb547713b6b2489e00807770943c4f7dfe78bc28b21181f03e1f50f43905a",
+  "verifier_sha256": "420ebc11625188e51923e67953a3948b21fc3dcda8ef42ae7d01dd53a3c0fc06",
+  "native_words": 7,
+  "native_source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+  "binary_sha256": "2c1bb5abe8297772ba5c780aa3da801ff1db3c260d738d871c1cd5524a564315",
+  "python_source_sha256": "fe17c5fbb77b036131250af033b0bae7fa200daca4cadb01ceccb12fa6434a3d",
+  "semigroup_source_sha256": "7675fe927be6704ca7c60389061c61e82e5c3761b7086a1e5691b3bd9a5c5fd9",
+  "position": [
+    16,
+    30,
+    56,
+    70,
+    311
+  ],
+  "frobenius": 425,
+  "seconds_limit_per_solver": 37138.0,
+  "memory_gib": 62,
+  "structural_edges_checked": 2,
+  "runs": {
+    "native": {
+      "command": [
+        "/tmp/claude-1001/-home-ruclaw-src-sylver-coinage/cd9b0cdd-5710-4000-902b-0c5c9cdc90cc/scratchpad/r30/z30/verification/z70/build/native",
+        "16",
+        "30",
+        "56",
+        "70",
+        "311"
+      ],
+      "elapsed_seconds": 2531.8387557729147,
+      "returncode": 0,
+      "timed_out": false,
+      "stdout_sha256": "6c8fda44d0bdf3f0bdf568bf3a6adcacd4400e33f29dd9ad435a91a4886d054a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outcome": "P",
+      "frobenius": 425,
+      "states": 297106878
+    }
+  },
+  "scope": "Fresh standalone memos, no cache or inherited outcome assumptions. Both moves are legal and their canonical destination matches the certificate."
+}
