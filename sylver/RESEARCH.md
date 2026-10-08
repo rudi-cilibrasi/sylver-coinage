@@ -1591,8 +1591,8 @@ obligations, then Z's 52.
   exceed the Python evaluator's memory here, so each was replayed by
   `native_solver.cpp` and by a sequential `kunz_solver.cpp` run with its
   memo checked by reference moves, with equal counts.
-- The positions Z+20 = {16,20,30} and Z+24 = {16,24,30} have no odd answer,
-  so Z keeps the routes through O and K, and with them Sicherman's
+- In an unverified sweep, the positions Z+20 = {16,20,30} and
+  Z+24 = {16,24,30} have no odd answer, so Z keeps the routes through O and K, and with them Sicherman's
   {8,10,22}.
 
 **Opening 16.** Every reply to the opening 16 up to 30 is now answered. 32 is

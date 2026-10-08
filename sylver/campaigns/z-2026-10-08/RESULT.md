@@ -96,7 +96,7 @@ The scripts and outputs are in [scan/](scan/).
    - **104's** sweeps stopped early. It is refuted outright anyway: 104 lies
      in {16,56}, so {16,30,104} + 56 = Z, which is P.
    - These search sweeps ran without `--verify-memo`. Only the {16,30} odd
-     sweep below and the certificate's own replays are verified.
+     sweep above and the certificate's own replays are verified.
 
 No mathematical priority claim is made.
 
