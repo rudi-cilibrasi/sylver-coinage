@@ -46,13 +46,15 @@ async function addCheck(check, r) {
 }
 
 // options: campaign (directory under sylver/campaigns), table and status
-// element ids, and verdict(described) -> {ok, text} for the status line.
+// element ids, verdict(described) -> {ok, text} for the status line, and an
+// optional section (a key of a nested audit, such as "Z" in the Z record).
 async function renderAuditPage(options) {
   const status = document.getElementById(options.status);
   const path = "sylver/campaigns/" + options.campaign + "/audit.json";
   let described;
   try {
-    described = describeAudit(await (await fetch(RAW + path)).json());
+    const audit = await (await fetch(RAW + path)).json();
+    described = describeAudit(options.section ? audit[options.section] : audit);
   } catch (e) {
     status.textContent = "Could not load the audit: " + e.message + ". The page reads " + path +
       " from GitHub; try again later.";
@@ -78,6 +80,7 @@ async function renderAuditPage(options) {
       pending.push(addCheck(check, r));
     } else {
       check.textContent = r.evidence === "finite witness" ? "native + Python"
+        : r.evidence === "finite witness (native + Kunz)" ? "native + Kunz"
         : r.evidence === "open" ? "" : "repository";
     }
     body.appendChild(tr);

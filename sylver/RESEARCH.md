@@ -1,5 +1,9 @@
 # Sylver Coinage after 16: research log
 
+**October 8, the reply 30 loses:** Z={16,30,56} is P, through a second new
+short P-position, Z′={16,30,40,44}. Every reply to the opening 16 up to 30
+now has an answer. See Attempt 35 and [the Z record](campaigns/z-2026-10-08/RESULT.md).
+
 **October 7, the reply 28 loses:** Y={16,28,58} is P. All 54 of its Quiet
 End obligations are covered: 48 by finite witnesses with native and Python
 replays (711,534,629 states), and six by certified nodes. Every reply to the
@@ -1554,6 +1558,47 @@ recorded in the Y record's scan as unverified discovery output.
 
 **Opening 16.** Every reply to the opening 16 up to 28 is now answered. The
 lowest unanswered reply is 30.
+
+### Attempt 35 — 56 answers the reply 30, through Z′ (2026-10-08)
+
+{16,30} is short: its half {8,15} has Frobenius number 97. All 27 of its odd
+obligations are N, so the reply 30 has no odd answer.
+
+**The candidates.** 17 of its 49 even obligations e give a short {16,30,e}.
+Filtering on their odd obligations left 9.
+- Certified nodes refute 4, 12, 14, 20 and 24.
+- 50 keeps long children with no odd witness up to 401.
+- 104 is refuted outright, because {16,30,104} + 56 = Z.
+- **56** keeps one obligation, 44. Its child {16,30,44,56} is short and
+  needs an even reply. Candidate 44 has the same position as its child after
+  56.
+- {16,30,44,56} resolves except for its move 40. That move reaches
+  **Z′={16,30,40,44}**, which resolves completely, so Z′ is P.
+- Hence 40 wins from {16,30,44,56}, which makes that position N, and
+  **Z={16,30,56}** P. The same move refutes 44.
+
+**The certificate.** `campaigns/z-2026-10-08/audit.py` audits Z′'s 40
+obligations, then Z's 52.
+- **Z′'s** are covered by 35 finite witnesses, replayed natively and in
+  Python (83,555,568 states), and by the nodes C, E and F. Four of Z′'s node
+  routes were swapped for finite witnesses, so Z′ avoids the nodes that
+  rest on {8,10,22}.
+- **Z's** are covered by 42 finite witnesses replayed natively and in
+  Python, the nodes C, E, F, O and K, and the reply 40 into Z′.
+- **Z's two giants.** In an unverified sweep, the obligations 70 and 130
+  have exactly one odd answer each up to 601: 311 (297,106,878 states) and
+  225 (262,076,190). These
+  exceed the Python evaluator's memory here, so each was replayed by
+  `native_solver.cpp` and by a sequential `kunz_solver.cpp` run with its
+  memo checked by reference moves, with equal counts.
+- The positions Z+20 = {16,20,30} and Z+24 = {16,24,30} have no odd answer,
+  so Z keeps the routes through O and K, and with them Sicherman's
+  {8,10,22}.
+
+**Opening 16.** Every reply to the opening 16 up to 30 is now answered. 32 is
+not a legal reply (it is a multiple of 16). 34 is answered by 20, since the
+certified node T={16,20,34} works both ways. So the lowest unanswered reply
+is 36.
 
 ### Sources
 

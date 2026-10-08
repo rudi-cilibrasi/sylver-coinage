@@ -1,0 +1,37 @@
+{
+  "position": [
+    16,
+    30,
+    56,
+    130,
+    225
+  ],
+  "frobenius": 339,
+  "source": "sylver/kunz_solver.cpp",
+  "commit": "48c1968cc80c57c287122c2949b3fdd9132f6be0",
+  "source_snapshot": "../sources/kunz_solver-48c1968.cpp",
+  "source_sha256": "4b6221788c1e76805bbf7d680a493e7c21c9664a2ef3274ff50487302cd2c672",
+  "build": "g++ -std=c++20 -O3 -Wall -Wextra -pedantic -Werror -pthread -march=native",
+  "binary_sha256": "34161d1db72b8e12be60603649be7b8d559a6d5408a68f3b8ea704c5e1e27d85",
+  "command": [
+    "kunz-48c1968",
+    "--threads",
+    "1",
+    "--verify-memo",
+    "--verify-threads",
+    "6",
+    "--memo-stats",
+    "16",
+    "30",
+    "56",
+    "130",
+    "225"
+  ],
+  "returncode": 0,
+  "elapsed_seconds": 1851.78,
+  "max_rss_kib": 6199996,
+  "stdout_sha256": "f862c8de2b03ae8ed5dc300c04539f2379d04fbcd4aee7f3b295f17a7e6f6fad",
+  "stderr_sha256": "e6515b2ee7ec4b6ac0554b85e59613d8e18e8d52fca25083c2b80c4f73d6df96",
+  "outcome": "P",
+  "states": 262076190
+}

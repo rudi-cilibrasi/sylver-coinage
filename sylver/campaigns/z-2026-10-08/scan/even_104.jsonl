@@ -1,0 +1,45 @@
+{"e": 2, "child": "2", "status": "resolved", "reply": 3, "via": "finite odd witness", "odd_tried": 1, "states": 1, "child_short": false, "child_even_obligations": null, "seconds": 0.0}
+{"e": 4, "child": "4,30", "status": "resolved", "reply": 6, "via": "node C", "seconds": 0.0}
+{"e": 6, "child": "6,16", "status": "resolved", "reply": 4, "via": "node C", "seconds": 0.0}
+{"e": 8, "child": "8,30", "status": "resolved", "reply": 14, "via": "node E", "seconds": 0.0}
+{"e": 10, "child": "10,16", "status": "resolved", "reply": 24, "via": "node K", "seconds": 0.0}
+{"e": 12, "child": "12,16,30", "status": "resolved", "reply": 14, "via": "node F", "seconds": 0.0}
+{"e": 14, "child": "14,16", "status": "resolved", "reply": 8, "via": "node E", "seconds": 0.0}
+{"e": 18, "child": "16,18,30", "status": "resolved", "reply": 5, "via": "finite odd witness", "odd_tried": 2, "states": 55, "child_short": true, "child_even_obligations": [2, 4, 6, 8, 10, 12, 14, 20, 22, 24, 26, 28, 38, 40, 42, 44, 56, 58, 74], "seconds": 0.0}
+{"e": 20, "child": "16,20,30", "status": "resolved", "reply": 8, "via": "node O", "seconds": 0.0}
+{"e": 22, "child": "16,22,30", "status": "resolved", "reply": 177, "via": "finite odd witness", "odd_tried": 88, "states": 3301525, "child_short": false, "child_even_obligations": null, "seconds": 2.2}
+{"e": 24, "child": "16,24,30", "status": "resolved", "reply": 10, "via": "node K", "seconds": 0.0}
+{"e": 26, "child": "16,26,30", "status": "resolved", "reply": 73, "via": "finite odd witness", "odd_tried": 36, "states": 2739085, "child_short": false, "child_even_obligations": null, "seconds": 1.2}
+{"e": 28, "child": "16,28,30", "status": "resolved", "reply": 25, "via": "finite odd witness", "odd_tried": 9, "states": 205030, "child_short": true, "child_even_obligations": [2, 4, 6, 8, 10, 12, 14, 18, 20, 22, 24, 26, 34, 36, 38, 40, 42, 50, 52, 54, 66, 68, 70, 82, 98], "seconds": 0.1}
+{"e": 34, "child": "16,30,34,104", "status": "resolved", "reply": 341, "via": "finite odd witness", "odd_tried": 170, "states": 64670102, "child_short": false, "child_even_obligations": null, "seconds": 102.9}
+{"e": 36, "child": "16,30,36", "status": "resolved", "reply": 69, "via": "finite odd witness", "odd_tried": 34, "states": 11211808, "child_short": false, "child_even_obligations": null, "seconds": 6.4}
+{"e": 38, "child": "16,30,38,104", "status": "resolved", "reply": 47, "via": "finite odd witness", "odd_tried": 23, "states": 7243389, "child_short": false, "child_even_obligations": null, "seconds": 3.3}
+{"e": 40, "child": "16,30,40", "status": "resolved", "reply": 17, "via": "finite odd witness", "odd_tried": 7, "states": 76448, "child_short": true, "child_even_obligations": [2, 4, 6, 8, 10, 12, 14, 18, 20, 22, 24, 26, 28, 34, 36, 38, 42, 44, 50, 52, 54, 58, 66, 68, 74, 82, 84, 98, 114], "seconds": 0.0}
+{"e": 42, "child": "16,30,42", "status": "resolved", "reply": 41, "via": "finite odd witness", "odd_tried": 16, "states": 4022762, "child_short": false, "child_even_obligations": null, "seconds": 1.7}
+{"e": 44, "child": "16,30,44", "status": "short: needs even", "reply": null, "via": null, "odd_tried": 21, "states": null, "child_short": true, "child_even_obligations": [2, 4, 6, 8, 10, 12, 14, 18, 20, 22, 24, 26, 28, 34, 36, 38, 40, 42, 50, 52, 54, 56, 58, 66, 68, 70, 72, 82, 84, 86, 98, 100, 102, 114, 116, 130, 146], "seconds": 21.6}
+{"e": 50, "child": "16,30,50,104", "status": "resolved", "reply": 59, "via": "finite odd witness", "odd_tried": 23, "states": 26327270, "child_short": false, "child_even_obligations": null, "seconds": 11.3}
+{"e": 52, "child": "16,30,52", "status": "resolved", "reply": 331, "via": "finite odd witness", "odd_tried": 165, "states": 319388986, "child_short": false, "child_even_obligations": null, "seconds": 457.9}
+{"e": 54, "child": "16,30,54,104", "status": "resolved", "reply": 81, "via": "finite odd witness", "odd_tried": 40, "states": 59926027, "child_short": false, "child_even_obligations": null, "seconds": 26.6}
+{"e": 56, "child": "16,30,56", "status": "short: needs even", "reply": null, "via": null, "odd_tried": 19, "states": null, "child_short": true, "child_even_obligations": [2, 4, 6, 8, 10, 12, 14, 18, 20, 22, 24, 26, 28, 34, 36, 38, 40, 42, 44, 50, 52, 54, 58, 66, 68, 70, 74, 82, 84, 98, 100, 114, 130], "seconds": 12.7}
+{"e": 58, "child": "16,30,58", "status": "resolved", "reply": 135, "via": "finite odd witness", "odd_tried": 67, "states": 173781792, "child_short": false, "child_even_obligations": null, "seconds": 177.7}
+{"e": 66, "child": "16,30,66,104", "status": "resolved", "reply": 21, "via": "finite odd witness", "odd_tried": 9, "states": 646714, "child_short": false, "child_even_obligations": null, "seconds": 0.2}
+{"e": 68, "child": "16,30,68,104", "status": "resolved", "reply": 249, "via": "finite odd witness", "odd_tried": 124, "states": 517049399, "child_short": false, "child_even_obligations": null, "seconds": 800.0}
+{"e": 70, "child": "16,30,70,104", "status": "resolved", "reply": 69, "via": "finite odd witness", "odd_tried": 34, "states": 81579015, "child_short": false, "child_even_obligations": null, "seconds": 65.2}
+{"e": 72, "child": "16,30,72", "status": "resolved", "reply": 57, "via": "finite odd witness", "odd_tried": 19, "states": 40443683, "child_short": true, "child_even_obligations": [2, 4, 6, 8, 10, 12, 14, 18, 20, 22, 24, 26, 28, 34, 36, 38, 40, 42, 44, 50, 52, 54, 56, 58, 66, 68, 70, 74, 82, 84, 86, 98, 100, 114, 116, 130, 146], "seconds": 20.6}
+{"e": 74, "child": "16,30,74", "status": "open", "reply": null, "via": null, "odd_tried": 85, "states": null, "child_short": false, "child_even_obligations": null, "seconds": 1044.2}
+{"e": 82, "child": "16,30,82,104", "status": "open", "reply": null, "via": null, "odd_tried": 97, "states": null, "child_short": false, "child_even_obligations": null, "seconds": 871.8}
+{"e": 84, "child": "16,30,84,104", "status": "open", "reply": null, "via": null, "odd_tried": 98, "states": null, "child_short": false, "child_even_obligations": null, "seconds": 1109.4}
+{"e": 86, "child": "16,30,86,104", "status": "resolved", "reply": 165, "via": "finite odd witness", "odd_tried": 82, "states": 480299620, "child_short": false, "child_even_obligations": null, "seconds": 724.6}
+{"e": 88, "child": "16,30,88", "status": "resolved", "reply": 19, "via": "finite odd witness", "odd_tried": 7, "states": 274747, "child_short": true, "child_even_obligations": [2, 4, 6, 8, 10, 12, 14, 18, 20, 22, 24, 26, 28, 34, 36, 38, 40, 42, 44, 50, 52, 54, 56, 58, 66, 68, 70, 72, 74, 82, 84, 86, 98, 100, 102, 114, 116, 130, 132, 146, 162], "seconds": 0.1}
+{"e": 98, "child": "16,30,98,104", "status": "resolved", "reply": 43, "via": "finite odd witness", "odd_tried": 14, "states": 20077521, "child_short": false, "child_even_obligations": null, "seconds": 8.9}
+{"e": 100, "child": "16,30,100,104", "status": "resolved", "reply": 79, "via": "finite odd witness", "odd_tried": 39, "states": 172641396, "child_short": false, "child_even_obligations": null, "seconds": 106.3}
+{"e": 102, "child": "16,30,102,104", "status": "open", "reply": null, "via": null, "odd_tried": 81, "states": null, "child_short": false, "child_even_obligations": null, "seconds": 1528.1}
+{"e": 114, "child": "16,30,104,114", "status": "open", "reply": null, "via": null, "odd_tried": 75, "states": null, "child_short": false, "child_even_obligations": null, "seconds": 2505.1}
+{"e": 116, "child": "16,30,104,116", "status": "resolved", "reply": 45, "via": "finite odd witness", "odd_tried": 23, "states": 44748195, "child_short": false, "child_even_obligations": null, "seconds": 78.4}
+{"e": 118, "child": "16,30,104,118", "status": "open", "reply": null, "via": null, "odd_tried": 74, "states": null, "child_short": false, "child_even_obligations": null, "seconds": 1220.6}
+{"e": 130, "child": "16,30,104,130", "status": "open", "reply": null, "via": null, "odd_tried": 71, "states": null, "child_short": false, "child_even_obligations": null, "seconds": 845.2}
+{"e": 132, "child": "16,30,104,132", "status": "open", "reply": null, "via": null, "odd_tried": 72, "states": null, "child_short": false, "child_even_obligations": null, "seconds": 727.0}
+{"e": 146, "child": "16,30,104,146", "status": "open", "reply": null, "via": null, "odd_tried": 68, "states": null, "child_short": false, "child_even_obligations": null, "seconds": 753.1}
+{"e": 148, "child": "16,30,104,148", "status": "open", "reply": null, "via": null, "odd_tried": 68, "states": null, "child_short": false, "child_even_obligations": null, "seconds": 716.6}
+{"e": 162, "child": "16,30,104,162", "status": "resolved", "reply": 127, "via": "finite odd witness", "odd_tried": 63, "states": 418469820, "child_short": false, "child_even_obligations": null, "seconds": 539.1}
+{"e": 178, "child": "16,30,104,178", "status": "open", "reply": null, "via": null, "odd_tried": 67, "states": null, "child_short": false, "child_even_obligations": null, "seconds": 789.0}

@@ -9,6 +9,8 @@ const EVIDENCE_LABELS = {
   "certified-node": "certified infinite P-position",
   "w-is-p": "W is P",
   "x-is-n": "X is N",
+  "finite-witness-native-kunz": "finite witness (native + Kunz)",
+  "z-prime-is-p": "Z′ is P",
   "open": "open",
 };
 
@@ -41,6 +43,15 @@ function describeObligation(move, row) {
     out.answer = "reply " + row.reply + " → W={" + row.destination + "}";
     out.title = "W is P: its own audit covers all 52 of its obligations";
     out.link = row.certificate;
+  } else if (row.evidence === "finite-witness-native-kunz") {
+    out.answer = "reply " + row.reply + ": replay receipts";
+    out.title = "{" + row.destination + "} is P: native and sequential Kunz replays agree";
+    out.states = row.states;
+    out.link = row.receipt;
+  } else if (row.evidence === "z-prime-is-p") {
+    out.answer = "reply " + row.reply + " → Z′={" + row.destination + "}";
+    out.title = "Z′ is P: the same audit covers all 40 of its obligations";
+    out.link = "sylver/campaigns/z-2026-10-08/RESULT.md";
   } else if (row.evidence === "x-is-n") {
     out.answer = "X is N: its reply " + row.reply + " → {" + row.destination + "}";
     out.title = "{" + row.destination + "} is P: two sequential replays with independent move code, equal state counts";

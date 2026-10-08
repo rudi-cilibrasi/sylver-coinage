@@ -1,0 +1,51 @@
+{
+ "16-30-40-44+10": {
+  "child": "10,16,44",
+  "short": false,
+  "witness": 9,
+  "tried": 3,
+  "states": 213
+ },
+ "16-30-40-44+20": {
+  "child": "16,20,30,44",
+  "short": false,
+  "witness": 61,
+  "tried": 30,
+  "states": 413154
+ },
+ "16-30-40-44+24": {
+  "child": "16,24,30,44",
+  "short": true,
+  "witness": 13,
+  "tried": 4,
+  "states": 5978
+ },
+ "16-30-40-44+34": {
+  "child": "16,30,34,40,44",
+  "short": false,
+  "witness": 67,
+  "tried": 33,
+  "states": 1801398
+ },
+ "16-30-56+10": {
+  "child": "10,16",
+  "short": true,
+  "witness": 9,
+  "tried": 3,
+  "states": 213
+ },
+ "16-30-56+20": {
+  "child": "16,20,30",
+  "short": true,
+  "witness": null,
+  "tried": 12,
+  "states": null
+ },
+ "16-30-56+24": {
+  "child": "16,24,30",
+  "short": true,
+  "witness": null,
+  "tried": 15,
+  "states": null
+ }
+}

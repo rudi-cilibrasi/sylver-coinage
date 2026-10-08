@@ -149,6 +149,71 @@ class YPageTests(unittest.TestCase):
             self.assertIsNone(audit.finite_witness(9))
 
 
+Z_AUDIT = ROOT / 'sylver/campaigns/z-2026-10-08/audit.json'
+
+Z_SCRIPT = r'''
+const fs = require("fs");
+const root = process.argv[process.argv.length - 1];
+const { describeAudit } = require(root + "/docs/w.js");
+const audit = JSON.parse(fs.readFileSync(root + "/sylver/campaigns/z-2026-10-08/audit.json"));
+console.log(JSON.stringify({Z: describeAudit(audit.Z), Zp: describeAudit(audit["Z'"])}));
+'''
+
+
+class ZPageTests(unittest.TestCase):
+    """docs/z.html shows all 52 obligations of Z={16,30,56}, each covered: 56 answers 30."""
+
+    def test_every_obligation_has_a_row(self):
+        node = shutil.which('node')
+        if node is None:
+            self.skipTest('node is not installed')
+        out = subprocess.run([node, '-e', Z_SCRIPT, str(ROOT)], capture_output=True, text=True, timeout=60, check=True)
+        described = json.loads(out.stdout)
+        for name, total in (('Z', 52), ('Zp', 40)):
+            d = described[name]
+            self.assertEqual((len(d['rows']), d['failures'], d['outcome']), (total, [], 'P'), name)
+            for row in d['rows']:
+                self.assertNotEqual(row['answer'], 'unrecognized evidence', row)
+                self.assertTrue(row['link'] and (ROOT / row['link']).exists(), row)
+        self.assertEqual([r['move'] for r in described['Z']['rows'] if r['evidence'] == 'Z′ is P'], [44])
+        self.assertEqual(sorted(r['move'] for r in described['Z']['rows']
+                                if r['evidence'] == 'finite witness (native + Kunz)'), [70, 130])
+
+    def test_the_committed_z_audit_is_reproducible(self):
+        result = subprocess.run([sys.executable, str(Z_AUDIT.parent / 'audit.py')], capture_output=True, text=True,
+                                timeout=900)
+        self.assertEqual(result.returncode, 0, result.stdout[-2000:])
+        fresh, committed = json.loads(result.stdout), json.loads(Z_AUDIT.read_text())
+        self.assertEqual((fresh['outcome'], fresh['failures']), ('P', []))
+        self.assertEqual(fresh, committed)
+        self.assertEqual(fresh['Z']['obligations']['44']['evidence'], 'z-prime-is-p')
+
+    def test_a_kunz_transcript_with_another_count_is_rejected(self):
+        spec = importlib.util.spec_from_file_location('z_audit', Z_AUDIT.parent / 'audit.py')
+        audit = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(audit)
+        self.assertEqual(audit.finite_witness(audit.Z, 'z', 70)['evidence'], 'finite-witness-native-kunz')
+        with tempfile.TemporaryDirectory() as tmp:
+            shutil.copy(Z_AUDIT.parent / 'z70-certificate.json', tmp)
+            shutil.copytree(Z_AUDIT.parent / 'verification/z70', Path(tmp) / 'verification/z70')
+            shutil.copytree(Z_AUDIT.parent / 'verification/sources', Path(tmp) / 'verification/sources')
+            # A fully consistent forgery of the Kunz replay (its stdout, stderr and
+            # receipt all say states - 1): only the tie to the native count rejects it.
+            receipt = Path(tmp) / 'verification/z70/kunz-receipt.json'
+            data = json.loads(receipt.read_text())
+            for stream in ('stdout', 'stderr'):
+                path = Path(tmp) / f'verification/z70/kunz-{stream}.txt'
+                path.write_text(path.read_text().replace(str(data['states']), str(data['states'] - 1)))
+                data[f'{stream}_sha256'] = hashlib.sha256(path.read_bytes()).hexdigest()
+            data['states'] -= 1
+            receipt.write_text(json.dumps(data))
+            audit.KUNZ_SNAPSHOT = Path(tmp) / 'verification/sources' / audit.KUNZ_SNAPSHOT.name
+            self.assertEqual(audit.kunz_states(Path(tmp) / 'verification/z70', audit.position((*audit.Z, 70, 311)),
+                                               data['frobenius']), data['states'])   # the forgery is self-consistent
+            audit.HERE = Path(tmp)
+            self.assertIsNone(audit.finite_witness(audit.Z, 'z', 70))
+
+
 X_AUDIT = ROOT / 'sylver/campaigns/x-2026-10-06/audit.json'
 
 
