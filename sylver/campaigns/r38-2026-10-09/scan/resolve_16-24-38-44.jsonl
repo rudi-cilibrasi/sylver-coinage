@@ -1,0 +1,23 @@
+{"e": 2, "child": "2", "status": "resolved", "reply": 3, "via": "finite odd witness", "odd_tried": 1, "states": 1, "child_short": false, "child_even_obligations": null, "seconds": 0.1}
+{"e": 4, "child": "4,38", "status": "resolved", "reply": 6, "via": "node C", "seconds": 0.0}
+{"e": 6, "child": "6,16", "status": "resolved", "reply": 4, "via": "node C", "seconds": 0.0}
+{"e": 8, "child": "8,38,44", "status": "resolved", "reply": 14, "via": "node E", "seconds": 0.0}
+{"e": 10, "child": "10,16,24,38", "status": "resolved", "reply": 47, "via": "finite odd witness", "odd_tried": 23, "states": 3717, "child_short": false, "child_even_obligations": null, "seconds": 0.1}
+{"e": 12, "child": "12,16,38", "status": "resolved", "reply": 14, "via": "node F", "seconds": 0.0}
+{"e": 14, "child": "14,16,24", "status": "resolved", "reply": 8, "via": "node E", "seconds": 0.0}
+{"e": 18, "child": "16,18,24,38,44", "status": "resolved", "reply": 25, "via": "finite odd witness", "odd_tried": 12, "states": 23977, "child_short": false, "child_even_obligations": null, "seconds": 0.1}
+{"e": 20, "child": "16,20,24,38", "status": "resolved", "reply": 22, "via": "search: P candidate (pair search of {16,20,24,38})", "seconds": 0.0}
+{"e": 22, "child": "16,22,24", "status": "resolved", "reply": 12, "via": "node P0", "seconds": 0.0}
+{"e": 26, "child": "16,24,26,38,44", "status": "resolved", "reply": 73, "via": "finite odd witness", "odd_tried": 36, "states": 358316, "child_short": false, "child_even_obligations": null, "seconds": 0.7}
+{"e": 28, "child": "16,24,28,38", "status": "resolved", "reply": 5, "via": "finite odd witness", "odd_tried": 1, "states": 55, "child_short": true, "child_even_obligations": [2, 4, 6, 8, 10, 12, 14, 18, 20, 22, 26, 30, 34, 36, 42, 46, 50, 58, 74], "seconds": 0.1}
+{"e": 30, "child": "16,24,30,38,44", "status": "resolved", "reply": 23, "via": "finite odd witness", "odd_tried": 12, "states": 99106, "child_short": false, "child_even_obligations": null, "seconds": 0.2}
+{"e": 34, "child": "16,24,34,38,44", "status": "resolved", "reply": 15, "via": "finite odd witness", "odd_tried": 7, "states": 13077, "child_short": false, "child_even_obligations": null, "seconds": 0.2}
+{"e": 36, "child": "16,24,36,38,44", "status": "resolved", "reply": 127, "via": "finite odd witness", "odd_tried": 63, "states": 2530314, "child_short": false, "child_even_obligations": null, "seconds": 10.2}
+{"e": 42, "child": "16,24,38,42,44", "status": "resolved", "reply": 87, "via": "finite odd witness", "odd_tried": 43, "states": 1719607, "child_short": false, "child_even_obligations": null, "seconds": 3.0}
+{"e": 46, "child": "16,24,38,44,46", "status": "resolved", "reply": 71, "via": "finite odd witness", "odd_tried": 35, "states": 2333887, "child_short": false, "child_even_obligations": null, "seconds": 4.1}
+{"e": 50, "child": "16,24,38,44,50", "status": "resolved", "reply": 91, "via": "finite odd witness", "odd_tried": 45, "states": 2732401, "child_short": false, "child_even_obligations": null, "seconds": 6.0}
+{"e": 52, "child": "16,24,38,44,52", "status": "resolved", "reply": 39, "via": "finite odd witness", "odd_tried": 19, "states": 755033, "child_short": false, "child_even_obligations": null, "seconds": 1.2}
+{"e": 58, "child": "16,24,38,44,58", "status": "resolved", "reply": 51, "via": "finite odd witness", "odd_tried": 25, "states": 1467174, "child_short": false, "child_even_obligations": null, "seconds": 2.1}
+{"e": 66, "child": "16,24,38,44,66", "status": "resolved", "reply": 53, "via": "finite odd witness", "odd_tried": 26, "states": 1811425, "child_short": false, "child_even_obligations": null, "seconds": 1.7}
+{"e": 74, "child": "16,24,38,44,74", "status": "resolved", "reply": 89, "via": "finite odd witness", "odd_tried": 44, "states": 4642013, "child_short": false, "child_even_obligations": null, "seconds": 5.2}
+{"e": 90, "child": "16,24,38,44,90", "status": "resolved", "reply": 241, "via": "finite odd witness", "odd_tried": 120, "states": 15875384, "child_short": false, "child_even_obligations": null, "seconds": 47.7}

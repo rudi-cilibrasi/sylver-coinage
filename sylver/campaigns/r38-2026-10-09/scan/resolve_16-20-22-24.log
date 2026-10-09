@@ -1,0 +1,14 @@
+r=16-20-22-24 e=   2 resolved  reply=3 via=finite odd witness tried=1 0.1s
+r=16-20-22-24 e=   4 resolved  reply=6 via=node C tried=- 0.0s
+r=16-20-22-24 e=   6 resolved  reply=4 via=node C tried=- 0.0s
+r=16-20-22-24 e=   8 resolved  reply=10 via=node H (Sicherman, published) tried=- 0.0s
+r=16-20-22-24 e=  10 resolved  reply=8 via=node H (Sicherman, published) tried=- 0.0s
+r=16-20-22-24 e=  12 resolved  reply=26 via=node D tried=- 0.0s
+r=16-20-22-24 e=  14 resolved  reply=25 via=finite odd witness tried=12 0.1s
+r=16-20-22-24 e=  18 resolved  reply=5 via=finite odd witness tried=2 0.2s
+r=16-20-22-24 e=  26 resolved  reply=12 via=node D tried=- 0.0s
+r=16-20-22-24 e=  28 resolved  reply=11 via=finite odd witness tried=5 0.2s
+r=16-20-22-24 e=  30 resolved  reply=83 via=finite odd witness tried=41 0.4s
+r=16-20-22-24 e=  34 resolved  reply=45 via=finite odd witness tried=22 0.4s
+r=16-20-22-24 e=  50 resolved  reply=41 via=finite odd witness tried=20 0.4s
+summary: {'resolved': 13, 'short: needs even': 0, 'open': 0, 'REFUTES r': 0} of 13

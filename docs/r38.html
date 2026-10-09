@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reply 38 blockers</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='13' font-size='13'%3E%E2%9A%92%3C/text%3E%3C/svg%3E">
+<style>
+  /* The Book's print-like typography: black on white in every color scheme. */
+  body {
+    margin: 0 auto; max-width: 58rem; padding: 2.2rem 1.4rem 4rem;
+    background: #ffffff; color: #000000;
+    font-family: "Latin Modern Roman", "CMU Serif", "Computer Modern",
+                 Georgia, "Times New Roman", serif;
+    font-size: 17px; line-height: 1.45;
+  }
+  h1 { font-size: 1.9rem; font-weight: normal; margin: 0 0 1rem; text-wrap: balance; }
+  h2 { font-size: 1.2rem; font-weight: normal; font-style: italic; margin: 1.6rem 0 .4rem; }
+  p, li { max-width: 42rem; }
+  p { margin: .5rem 0; }
+  a { color: #000; }
+  .tablewrap { overflow-x: auto; margin: 1.2rem 0; }
+  table { border-collapse: collapse; margin: 0 auto; font-variant-numeric: tabular-nums; border: 1.5px solid #000; }
+  td, th { border: 1px solid #000; padding: .26rem .5rem; font-size: .86rem; white-space: nowrap; }
+  th { font-weight: bold; text-align: center; }
+  td.num { text-align: right; }
+  td.pos { font-family: "Latin Modern Mono", "CMU Typewriter Text", Menlo, monospace; font-size: .8rem; }
+  button {
+    font: inherit; font-size: .82rem; padding: .05rem .55rem; border: 1px solid #000;
+    border-radius: 0; background: #fff; color: #000; cursor: pointer;
+  }
+  button:hover, button:focus-visible { background: #000; color: #fff; }
+  button:disabled { cursor: default; background: #fff; color: #000; opacity: .5; }
+  .ok { font-weight: bold; }
+  .bad { font-weight: bold; text-decoration: underline; }
+  .muted { font-style: italic; }
+  #status { font-style: italic; }
+  tr.open td { font-weight: bold; }
+  .footnote { font-size: .85rem; margin-top: 2.2rem; border-top: 1px solid #000; padding-top: .6rem; }
+  code { font-size: .9em; }
+</style>
+</head>
+<body>
+<h1>Reply 38 after 16: three new P-positions refute four answers</h1>
+<p>
+  After the opening 16, the lowest reply with no known answer is 38. {16,38}
+  is <i>short</i>, so by the Quiet End Theorem a move answers 38 only if it is
+  one of its 98 <i>obligations</i>. This record certifies three new short
+  P-positions, I = {16,20,22,24}, B28 = {16,28,38,40} and B24 = {16,24,38,44}.
+  Each is P because every one of its obligations, listed below, leads to an
+  N-position. They show that 24, 28, 40 and 44 do not answer 38; with the
+  certified nodes C, E, F and P0, the audit also rules out 4, 6, 8, 12, 14
+  and 22.
+  <a href="https://github.com/rudi-cilibrasi/sylver-coinage/blob/main/sylver/campaigns/r38-2026-10-09/RESULT.md">The result</a>
+  records the search, which has found no answer to 38 yet.
+</p>
+<p>
+  <b>What it rests on.</b> Finite witnesses are replayed natively and in
+  Python. The certified nodes C, D, E, F, J and P0 bring in Blok's pairing
+  family, as in <a href="y.html">Y</a>; nothing here rests on Sicherman's
+  {8,10,22}.
+</p>
+<h2>The answers to 38 the audit refutes</h2>
+<p id="status-ref">Loading the audit from the repository&hellip;</p>
+<div class="tablewrap">
+  <table id="ref" hidden>
+    <thead><tr><th>Answer</th><th>Position</th><th>Its move</th><th>Reaches</th><th>Outcome</th></tr></thead>
+    <tbody></tbody>
+  </table>
+</div>
+<h2>B24 = {16,24,38,44}</h2>
+<p id="status-b24">Loading the audit from the repository&hellip;</p>
+<div class="tablewrap">
+  <table id="b24" hidden>
+    <thead><tr><th>Move</th><th>Position</th><th>Evidence</th><th>Answer</th><th>States</th><th>Check</th></tr></thead>
+    <tbody></tbody>
+  </table>
+</div>
+<h2>B28 = {16,28,38,40}</h2>
+<p id="status-b28">Loading the audit from the repository&hellip;</p>
+<div class="tablewrap">
+  <table id="b28" hidden>
+    <thead><tr><th>Move</th><th>Position</th><th>Evidence</th><th>Answer</th><th>States</th><th>Check</th></tr></thead>
+    <tbody></tbody>
+  </table>
+</div>
+<h2>I = {16,20,22,24}, which answers B24's move 20</h2>
+<p id="status-i">Loading the audit from the repository&hellip;</p>
+<div class="tablewrap">
+  <table id="i" hidden>
+    <thead><tr><th>Move</th><th>Position</th><th>Evidence</th><th>Answer</th><th>States</th><th>Check</th></tr></thead>
+    <tbody></tbody>
+  </table>
+</div>
+<p class="footnote">
+  Source: <a href="https://github.com/rudi-cilibrasi/sylver-coinage/blob/main/sylver/campaigns/r38-2026-10-09/RESULT.md">the campaign result</a>
+  and its <code>audit.json</code>, produced by <code>python sylver/campaigns/r38-2026-10-09/audit.py</code>.
+  Back to <a href="z.html">Z</a>, <a href="y.html">Y</a>, <a href="u.html">U</a>, <a href="book.html">The Book</a>, or the
+  <a href="index.html">solver demo</a>.
+</p>
+<script src="solver.js"></script>
+<script src="book.js"></script>
+<script src="w.js"></script>
+<script src="audit-page.js"></script>
+<script>
+"use strict";
+for (const [name, table, status] of [["B24", "b24", "status-b24"], ["B28", "b28", "status-b28"], ["I", "i", "status-i"]]) {
+  renderAuditPage({
+    campaign: "r38-2026-10-09", table, status, section: name,
+    verdict: (d) => d.failures.length === 0 && d.rows.length === d.total && d.outcome === "P"
+      ? { ok: true, text: "All " + d.total + " obligations of " + name + " covered. Audit verdict: " + name + " is P." }
+      : { ok: false, text: "The audit does not currently cover every obligation of " + name + ": " + d.failures.join("; ") + "." },
+  });
+}
+(async () => {
+  const status = document.getElementById("status-ref");
+  try {
+    const audit = await (await fetch(RAW + "sylver/campaigns/r38-2026-10-09/audit.json")).json();
+    const rows = Object.entries(audit.refuted_answers_to_38);
+    const body = document.querySelector("#ref tbody");
+    for (const [answer, r] of rows) {
+      const tr = document.createElement("tr");
+      cell(tr, "num", answer);
+      cell(tr, "pos", "{" + r.position + "}");
+      cell(tr, "num", String(r.move));
+      cell(tr, "pos", r.reaches + "={" + r.destination + "}");
+      cell(tr, r.outcome === "N" ? "ok" : "bad", r.outcome);
+      body.appendChild(tr);
+    }
+    document.getElementById("ref").hidden = false;
+    const refuted = rows.filter(([, r]) => r.outcome === "N").map(([a]) => a);
+    status.textContent = refuted.length === rows.length
+      ? "Each of " + refuted.join(", ") + " moves {16,38} to an N-position, so none of them answers 38."
+      : "The audit does not currently support every refutation.";
+    if (refuted.length !== rows.length) status.className = "bad";
+  } catch (e) {
+    status.textContent = "Could not load the audit: " + e.message + ".";
+  }
+})();
+</script>
+</body>
+</html>

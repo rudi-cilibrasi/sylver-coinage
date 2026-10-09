@@ -1,0 +1,9 @@
+r=16-38 e=   2 resolved  reply=3 via=finite odd witness tried=1 0.1s
+r=16-38 e=  10 resolved  reply=9 via=finite odd witness tried=3 0.2s
+r=16-38 e=  14 resolved  reply=8 via=node E tried=- 0.0s
+r=16-38 e=  18 resolved  reply=5 via=finite odd witness tried=2 0.2s
+r=16-38 e=  26 resolved  reply=97 via=finite odd witness tried=48 30.2s
+r=16-38 e=  30 resolved  reply=271 via=finite odd witness tried=135 610.7s
+r=16-38 e=  34 resolved  reply=53 via=finite odd witness tried=26 29.4s
+r=16-38 e=  36 resolved  reply=123 via=finite odd witness tried=61 413.1s
+r=16-38 e=  42 open      reply=None via=None tried=106 7214.7s

@@ -1,0 +1,31 @@
+{"e": 2, "child": "2", "status": "resolved", "reply": 3, "via": "finite odd witness", "odd_tried": 1, "states": 1, "child_short": false, "child_even_obligations": null, "seconds": 0.1}
+{"e": 4, "child": "4,38", "status": "resolved", "reply": 6, "via": "node C", "seconds": 0.0}
+{"e": 6, "child": "6,16", "status": "resolved", "reply": 4, "via": "node C", "seconds": 0.0}
+{"e": 8, "child": "8,38", "status": "resolved", "reply": 14, "via": "node E", "seconds": 0.0}
+{"e": 10, "child": "10,16,24,38", "status": "resolved", "reply": 47, "via": "finite odd witness", "odd_tried": 23, "states": 3780, "child_short": false, "child_even_obligations": null, "seconds": 0.1}
+{"e": 12, "child": "12,16,38", "status": "resolved", "reply": 14, "via": "node F", "seconds": 0.0}
+{"e": 14, "child": "14,16,24", "status": "resolved", "reply": 8, "via": "node E", "seconds": 0.0}
+{"e": 18, "child": "16,18,24,38", "status": "resolved", "reply": 19, "via": "finite odd witness", "odd_tried": 9, "states": 11323, "child_short": false, "child_even_obligations": null, "seconds": 0.1}
+{"e": 20, "child": "16,20,24,38", "status": "short: needs even", "reply": null, "via": null, "odd_tried": 12, "states": null, "child_short": true, "child_even_obligations": [2, 4, 6, 8, 10, 12, 14, 18, 22, 26, 28, 30, 34, 42, 46, 50, 66], "seconds": 0.1}
+{"e": 22, "child": "16,22,24", "status": "resolved", "reply": 12, "via": "node P0", "seconds": 0.0}
+{"e": 26, "child": "16,24,26,38", "status": "resolved", "reply": 113, "via": "finite odd witness", "odd_tried": 56, "states": 703290, "child_short": false, "child_even_obligations": null, "seconds": 0.8}
+{"e": 28, "child": "16,24,28,38", "status": "resolved", "reply": 5, "via": "finite odd witness", "odd_tried": 1, "states": 60, "child_short": true, "child_even_obligations": [2, 4, 6, 8, 10, 12, 14, 18, 20, 22, 26, 30, 34, 36, 42, 46, 50, 58, 74], "seconds": 0.1}
+{"e": 30, "child": "16,24,30,38", "status": "resolved", "reply": 261, "via": "finite odd witness", "odd_tried": 130, "states": 8318289, "child_short": false, "child_even_obligations": null, "seconds": 27.0}
+{"e": 34, "child": "16,24,34,38", "status": "resolved", "reply": 127, "via": "finite odd witness", "odd_tried": 63, "states": 2676192, "child_short": false, "child_even_obligations": null, "seconds": 5.4}
+{"e": 36, "child": "16,24,36,38", "status": "resolved", "reply": 41, "via": "finite odd witness", "odd_tried": 14, "states": 571665, "child_short": true, "child_even_obligations": [2, 4, 6, 8, 10, 12, 14, 18, 20, 22, 26, 28, 30, 34, 42, 44, 46, 50, 58, 66, 82], "seconds": 0.4}
+{"e": 42, "child": "16,24,38,42", "status": "resolved", "reply": 97, "via": "finite odd witness", "odd_tried": 48, "states": 4292476, "child_short": false, "child_even_obligations": null, "seconds": 4.2}
+{"e": 44, "child": "16,24,38,44", "status": "short: needs even", "reply": null, "via": null, "odd_tried": 15, "states": null, "child_short": true, "child_even_obligations": [2, 4, 6, 8, 10, 12, 14, 18, 20, 22, 26, 28, 30, 34, 36, 42, 46, 50, 52, 58, 66, 74, 90], "seconds": 0.4}
+{"e": 46, "child": "16,24,38,46", "status": "resolved", "reply": 51, "via": "finite odd witness", "odd_tried": 26, "states": 3597180, "child_short": false, "child_even_obligations": null, "seconds": 3.4}
+{"e": 50, "child": "16,24,38,50", "status": "resolved", "reply": 99, "via": "finite odd witness", "odd_tried": 49, "states": 7261405, "child_short": false, "child_even_obligations": null, "seconds": 7.2}
+{"e": 52, "child": "16,24,38,52", "status": "short: needs even", "reply": null, "via": null, "odd_tried": 16, "states": null, "child_short": true, "child_even_obligations": [2, 4, 6, 8, 10, 12, 14, 18, 20, 22, 26, 28, 30, 34, 36, 42, 44, 46, 50, 58, 60, 66, 74, 82, 98], "seconds": 1.0}
+{"e": 58, "child": "16,24,38,58", "status": "resolved", "reply": 55, "via": "finite odd witness", "odd_tried": 27, "states": 3882263, "child_short": false, "child_even_obligations": null, "seconds": 2.9}
+{"e": 60, "child": "16,24,38,60", "status": "short: needs even", "reply": null, "via": null, "odd_tried": 17, "states": null, "child_short": true, "child_even_obligations": [2, 4, 6, 8, 10, 12, 14, 18, 20, 22, 26, 28, 30, 34, 36, 42, 44, 46, 50, 52, 58, 66, 68, 74, 82, 90, 106], "seconds": 1.1}
+{"e": 66, "child": "16,24,38,66", "status": "resolved", "reply": 51, "via": "finite odd witness", "odd_tried": 25, "states": 4249077, "child_short": false, "child_even_obligations": null, "seconds": 3.1}
+{"e": 68, "child": "16,24,38,68", "status": "resolved", "reply": 71, "via": "finite odd witness", "odd_tried": 35, "states": 9266005, "child_short": false, "child_even_obligations": null, "seconds": 8.6}
+{"e": 74, "child": "16,24,38,74", "status": "resolved", "reply": 31, "via": "finite odd witness", "odd_tried": 15, "states": 722737, "child_short": false, "child_even_obligations": null, "seconds": 0.5}
+{"e": 82, "child": "16,24,38,82", "status": "resolved", "reply": 39, "via": "finite odd witness", "odd_tried": 19, "states": 2483551, "child_short": false, "child_even_obligations": null, "seconds": 1.8}
+{"e": 84, "child": "16,24,38,84", "status": "resolved", "reply": 35, "via": "finite odd witness", "odd_tried": 19, "states": 2363546, "child_short": false, "child_even_obligations": null, "seconds": 1.9}
+{"e": 90, "child": "16,24,38,90", "status": "resolved", "reply": 91, "via": "finite odd witness", "odd_tried": 45, "states": 17280850, "child_short": false, "child_even_obligations": null, "seconds": 17.4}
+{"e": 98, "child": "16,24,38,98", "status": "resolved", "reply": 157, "via": "finite odd witness", "odd_tried": 78, "states": 37245259, "child_short": false, "child_even_obligations": null, "seconds": 75.5}
+{"e": 106, "child": "16,24,38,106", "status": "resolved", "reply": 111, "via": "finite odd witness", "odd_tried": 55, "states": 25065400, "child_short": false, "child_even_obligations": null, "seconds": 27.9}
+{"e": 122, "child": "16,24,38,122", "status": "resolved", "reply": 59, "via": "finite odd witness", "odd_tried": 29, "states": 8452124, "child_short": false, "child_even_obligations": null, "seconds": 7.0}

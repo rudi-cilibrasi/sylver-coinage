@@ -1,0 +1,24 @@
+r=16-28-38-40 e=   2 resolved  reply=3 via=finite odd witness tried=1 0.1s
+r=16-28-38-40 e=   4 resolved  reply=6 via=node C tried=- 0.0s
+r=16-28-38-40 e=   6 resolved  reply=4 via=node C tried=- 0.0s
+r=16-28-38-40 e=   8 resolved  reply=14 via=node E tried=- 0.0s
+r=16-28-38-40 e=  10 resolved  reply=9 via=finite odd witness tried=3 0.1s
+r=16-28-38-40 e=  12 resolved  reply=14 via=node F tried=- 0.0s
+r=16-28-38-40 e=  14 resolved  reply=8 via=node E tried=- 0.0s
+r=16-28-38-40 e=  18 resolved  reply=5 via=finite odd witness tried=2 0.1s
+r=16-28-38-40 e=  20 resolved  reply=26 via=node J tried=- 0.0s
+r=16-28-38-40 e=  22 resolved  reply=12 via=node P0 tried=- 0.0s
+r=16-28-38-40 e=  24 resolved  reply=5 via=finite odd witness tried=1 0.1s
+r=16-28-38-40 e=  26 resolved  reply=20 via=node J tried=- 0.0s
+r=16-28-38-40 e=  30 resolved  reply=11 via=finite odd witness tried=4 0.1s
+r=16-28-38-40 e=  34 resolved  reply=33 via=finite odd witness tried=16 0.8s
+r=16-28-38-40 e=  36 resolved  reply=21 via=finite odd witness tried=11 0.2s
+r=16-28-38-40 e=  42 resolved  reply=31 via=finite odd witness tried=12 0.6s
+r=16-28-38-40 e=  46 resolved  reply=29 via=finite odd witness tried=12 0.7s
+r=16-28-38-40 e=  50 resolved  reply=20 via=node M tried=- 0.0s
+r=16-28-38-40 e=  52 resolved  reply=105 via=finite odd witness tried=52 11.4s
+r=16-28-38-40 e=  58 resolved  reply=131 via=finite odd witness tried=65 37.5s
+r=16-28-38-40 e=  62 resolved  reply=41 via=finite odd witness tried=20 4.3s
+r=16-28-38-40 e=  74 resolved  reply=71 via=finite odd witness tried=35 9.7s
+r=16-28-38-40 e=  90 resolved  reply=89 via=finite odd witness tried=44 14.7s
+summary: {'resolved': 23, 'short: needs even': 0, 'open': 0, 'REFUTES r': 0} of 23

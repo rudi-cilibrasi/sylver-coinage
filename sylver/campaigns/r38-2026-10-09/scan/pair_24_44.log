@@ -1,0 +1,24 @@
+C = (16, 24, 38, 44) even obligations: [2, 4, 6, 8, 10, 12, 14, 18, 20, 22, 26, 28, 30, 34, 36, 42, 46, 50, 52, 58, 66, 74, 90]
+e'=2: D=(2,) long; skipped
+e'=4: D=(4, 38) odd-complete (8); even 8/9 refuted; 1 open; open: [(6, 'is a known P-position')]
+e'=6: D=(6, 16) N (odd obligation 7 wins)
+e'=8: D=(8, 38, 44) odd-complete (13); even 17/19 refuted; 2 open; open: [(12, 'short, odd-complete'), (14, 'is a known P-position')]
+e'=10: D=(10, 16, 24, 38) long; skipped
+e'=12: D=(12, 16, 38) N (odd obligation 23 wins)
+e'=14: D=(14, 16, 24) N (odd obligation 25 wins)
+e'=18: D=(16, 18, 24, 38, 44) long; skipped
+e'=20: D=(16, 20, 24, 38) odd-complete (12); even 16/17 refuted; 1 open; open: [(22, 'short, odd-complete')]
+e'=22: D=(16, 22, 24) N (odd obligation 17 wins)
+e'=26: D=(16, 24, 26, 38, 44) long; skipped
+e'=28: D=(16, 24, 28, 38) N (odd obligation 5 wins)
+e'=30: D=(16, 24, 30, 38, 44) long; skipped
+e'=34: D=(16, 24, 34, 38, 44) long; skipped
+e'=36: D=(16, 24, 36, 38, 44) long; skipped
+e'=42: D=(16, 24, 38, 42, 44) long; skipped
+e'=46: D=(16, 24, 38, 44, 46) long; skipped
+e'=50: D=(16, 24, 38, 44, 50) long; skipped
+e'=52: D=(16, 24, 38, 44, 52) long; skipped
+e'=58: D=(16, 24, 38, 44, 58) long; skipped
+e'=66: D=(16, 24, 38, 44, 66) long; skipped
+e'=74: D=(16, 24, 38, 44, 74) long; skipped
+e'=90: D=(16, 24, 38, 44, 90) long; skipped

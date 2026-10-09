@@ -1,0 +1,32 @@
+r=24 e=   2 resolved  reply=3 via=finite odd witness tried=1 0.1s
+r=24 e=   4 resolved  reply=6 via=node C tried=- 0.0s
+r=24 e=   6 resolved  reply=4 via=node C tried=- 0.0s
+r=24 e=   8 resolved  reply=14 via=node E tried=- 0.0s
+r=24 e=  10 resolved  reply=47 via=finite odd witness tried=23 0.1s
+r=24 e=  12 resolved  reply=14 via=node F tried=- 0.0s
+r=24 e=  14 resolved  reply=8 via=node E tried=- 0.0s
+r=24 e=  18 resolved  reply=19 via=finite odd witness tried=9 0.1s
+r=24 e=  20 short: needs even reply=None via=None tried=12 0.1s
+r=24 e=  22 resolved  reply=12 via=node P0 tried=- 0.0s
+r=24 e=  26 resolved  reply=113 via=finite odd witness tried=56 0.8s
+r=24 e=  28 resolved  reply=5 via=finite odd witness tried=1 0.1s
+r=24 e=  30 resolved  reply=261 via=finite odd witness tried=130 27.0s
+r=24 e=  34 resolved  reply=127 via=finite odd witness tried=63 5.4s
+r=24 e=  36 resolved  reply=41 via=finite odd witness tried=14 0.4s
+r=24 e=  42 resolved  reply=97 via=finite odd witness tried=48 4.2s
+r=24 e=  44 short: needs even reply=None via=None tried=15 0.4s
+r=24 e=  46 resolved  reply=51 via=finite odd witness tried=26 3.4s
+r=24 e=  50 resolved  reply=99 via=finite odd witness tried=49 7.2s
+r=24 e=  52 short: needs even reply=None via=None tried=16 1.0s
+r=24 e=  58 resolved  reply=55 via=finite odd witness tried=27 2.9s
+r=24 e=  60 short: needs even reply=None via=None tried=17 1.1s
+r=24 e=  66 resolved  reply=51 via=finite odd witness tried=25 3.1s
+r=24 e=  68 resolved  reply=71 via=finite odd witness tried=35 8.6s
+r=24 e=  74 resolved  reply=31 via=finite odd witness tried=15 0.5s
+r=24 e=  82 resolved  reply=39 via=finite odd witness tried=19 1.8s
+r=24 e=  84 resolved  reply=35 via=finite odd witness tried=19 1.9s
+r=24 e=  90 resolved  reply=91 via=finite odd witness tried=45 17.4s
+r=24 e=  98 resolved  reply=157 via=finite odd witness tried=78 75.5s
+r=24 e= 106 resolved  reply=111 via=finite odd witness tried=55 27.9s
+r=24 e= 122 resolved  reply=59 via=finite odd witness tried=29 7.0s
+summary: {'resolved': 27, 'short: needs even': 4, 'open': 0, 'REFUTES r': 0} of 31
