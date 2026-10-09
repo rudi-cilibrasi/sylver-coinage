@@ -1,0 +1,7 @@
+r=8 e=   2 resolved  reply=3 via=finite odd witness tried=1 0.1s
+r=8 e=   4 resolved  reply=6 via=node C tried=- 0.0s
+r=8 e=   6 resolved  reply=4 via=node C tried=- 0.0s
+r=8 e=  10 resolved  reply=22 via=node H (Sicherman, published) tried=- 0.0s
+r=8 e=  12 short: needs even reply=None via=None tried=9 0.1s
+r=8 e=  14 REFUTES r reply=None via=node E tried=- 0.0s
+summary: {'resolved': 4, 'short: needs even': 1, 'open': 0, 'REFUTES r': 1} of 27

@@ -1,0 +1,35 @@
+09:12:06 start i30 (52,757 states, 0.2578614056110382 GiB cap)
+09:12:06 start i50 (35,181 states, 0.25524237751960754 GiB cap)
+09:12:46 i50 done rc=0 40s
+09:12:46 start i34 (28,874 states, 0.2543025612831116 GiB cap)
+09:12:56 i30 done rc=0 50s
+09:12:56 start i25 (1,906 states, 0.25028401613235474 GiB cap)
+09:13:01 i34 done rc=0 15s
+09:13:01 start i14 (1,906 states, 0.25028401613235474 GiB cap)
+09:13:16 i25 done rc=0 20s
+09:13:16 start i10 (1,494 states, 0.2502226233482361 GiB cap)
+09:13:21 i14 done rc=0 20s
+09:13:21 start i15 (1,370 states, 0.2502041459083557 GiB cap)
+09:13:36 i15 done rc=0 15s
+09:13:36 start i28 (1,029 states, 0.2501533329486847 GiB cap)
+09:13:41 i10 done rc=0 25s
+09:13:41 start i13 (285 states, 0.25004246830940247 GiB cap)
+09:13:56 i28 done rc=0 20s
+09:13:56 i13 done rc=0 15s
+09:13:56 start i8 (285 states, 0.25004246830940247 GiB cap)
+09:13:56 start i17 (108 states, 0.25001609325408936 GiB cap)
+09:14:22 i8 done rc=0 25s
+09:14:22 i17 done rc=0 25s
+09:14:22 start i18 (36 states, 0.2500053644180298 GiB cap)
+09:14:22 start i5 (36 states, 0.2500053644180298 GiB cap)
+09:14:37 i5 done rc=0 15s
+09:14:37 start i9 (35 states, 0.25000521540641785 GiB cap)
+09:14:42 i18 done rc=0 20s
+09:14:42 start i7 (21 states, 0.2500031292438507 GiB cap)
+09:14:57 i9 done rc=0 20s
+09:14:57 i7 done rc=0 15s
+09:14:57 start i3 (1 states, 0.25000014901161194 GiB cap)
+09:14:57 start i2 (1 states, 0.25000014901161194 GiB cap)
+09:15:07 i2 done rc=0 10s
+09:15:22 i3 done rc=0 25s
+finished: 17 failed: {}

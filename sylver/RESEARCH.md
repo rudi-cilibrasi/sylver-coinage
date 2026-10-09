@@ -1,5 +1,11 @@
 # Sylver Coinage after 16: research log
 
+**October 9, the reply 38:** three new short P-positions,
+I={16,20,22,24}, B28={16,28,38,40} and B24={16,24,38,44}, show that 24, 28,
+40 and 44 do not answer the reply 38. B28 also settles the Y record's open
+question: {16,28,38} is N. No answer to 38 is known yet. See Attempt 37 and
+[the record](campaigns/r38-2026-10-09/RESULT.md).
+
 **October 9, a ledger of answers:** every even reply to the opening 16 up to
 36 now has an answer. 36 is answered by 23, through the finite P-position
 {16,23,36}. The lowest open reply is 38. See Attempt 36 and
@@ -1643,6 +1649,58 @@ finite answers to 36 (23), 58 (11), 62 (37), 86 (33), 90 (17), 140 (13),
 
 **The frontier.** Every even reply up to 36 is now answered, and 38 is the
 lowest open one.
+
+### Attempt 37 — searching for an answer to 38 (2026-10-09)
+
+{16,38} has gcd two and the short half {8,19}. By the Quiet End Theorem, a
+move answers 38 only if it is one of {16,38}'s 98 obligations: the 35 odd
+gaps of {8,19} above 1, and the 63 even moves 2g for its gaps g. 17 of the
+even moves leave a short position, and 46 a long one.
+`campaigns/r38-2026-10-09/` records the search so far.
+
+**Three new P-positions, certified.** I={16,20,22,24}, B28={16,28,38,40}
+and B24={16,24,38,44} are short, and every obligation of each is covered
+(97 obligations, 78 finite witnesses replayed natively and in Python,
+58,116,949 states).
+- B24's move 20 is answered by 22, which makes 38 redundant (38 = 16 + 22)
+  and reaches I.
+- B24 refutes the candidates 24 and 44: each moves {16,38} to an
+  N-position.
+- B28 refutes 28 and 40 in the same way.
+- The audit also checks the refutations through certified nodes: 4 and 6
+  (to C), 8 and 14 (to E), 12 (to F) and 22 (to P0).
+- The certificate rests on the Quiet End Theorem and Blok's pairing family,
+  like Y's. The search first answered I's moves 8 and 10 and B28's move 50
+  through Sicherman's {8,10,22} (the last through the node M); finite
+  witnesses replace those routes.
+- {16,28,38} is N, through its move 40. That settles the question the Y
+  record left open: 38 does not answer the reply 28.
+
+**The search so far.** Only the refutations through certified positions
+(B24, B28 and the nodes) are certified; the rest is discovery output.
+- **Odd candidates.** The ledger's scan showed the 24 smallest of the 35
+  are N. A further shared-memo sweep showed 71, 69, 77 and 79 are N, then
+  stopped during 85 at its 1,400,000,000-state cap. Seven remain open:
+  85, 87, 93, 101, 109, 117 and 125.
+- **Short even candidates.**
+  - An odd obligation refutes 6, 12, 20, 60 and 136.
+  - Certified nodes refute 4, 6, 8, 12 and 22: 6 or 4 reaches C, 14
+    reaches E or F, and 12 reaches P0.
+  - B24 and B28 refute 24, 28, 40 and 44.
+  - 56, 72 and 88 are odd-complete: every odd obligation is N. Their even
+    obligations are being resolved.
+    - For 56, the short child {16,38,56,60} has no P child among its short
+      children, so it is probably P, which would refute 56.
+  - 104 and 120 have odd obligations too large for the sweeps so far.
+- **Long even candidates.** Each needs one winning reply to be N. So far
+  sweeps found a winning odd reply for 7 of the 46, and 14 moves to E. For
+  42, the 106 odd replies classified are all N, and four more were not
+  classified (a batch's state cap or timeout).
+
+**The pattern.** Each of 24, 28, 40 and 44 fell to a short position
+{16,38,a,e} whose odd obligations are all N and whose short children are all
+N. Such a position is P whenever its long children are N too. The search
+looks for these first.
 
 ### Sources
 

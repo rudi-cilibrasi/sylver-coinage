@@ -1,0 +1,40 @@
+r=56 e=   2 resolved  reply=3 via=finite odd witness tried=1 0.1s
+r=56 e=   4 resolved  reply=6 via=node C tried=- 0.0s
+r=56 e=   6 resolved  reply=4 via=node C tried=- 0.0s
+r=56 e=   8 resolved  reply=14 via=node E tried=- 0.0s
+r=56 e=  10 resolved  reply=9 via=finite odd witness tried=3 0.1s
+r=56 e=  12 resolved  reply=14 via=node F tried=- 0.0s
+r=56 e=  14 resolved  reply=8 via=node E tried=- 0.0s
+r=56 e=  18 resolved  reply=5 via=finite odd witness tried=2 0.1s
+r=56 e=  20 resolved  reply=13 via=finite odd witness tried=6 0.1s
+r=56 e=  22 resolved  reply=12 via=node P0 tried=- 0.0s
+r=56 e=  24 resolved  reply=44 via=search: P (resolve_16-24-38-44) tried=- 0.0s
+r=56 e=  26 resolved  reply=25 via=finite odd witness tried=11 0.5s
+r=56 e=  28 resolved  reply=40 via=search: P (resolve_16-28-38-40) tried=- 0.0s
+r=56 e=  30 resolved  reply=235 via=finite odd witness tried=117 198.6s
+r=56 e=  34 resolved  reply=39 via=finite odd witness tried=18 9.4s
+r=56 e=  36 resolved  reply=131 via=finite odd witness tried=65 367.7s
+r=56 e=  40 resolved  reply=28 via=search: P (resolve_16-28-38-40) tried=- 0.0s
+r=56 e=  42 resolved  reply=33 via=finite odd witness tried=15 7.2s
+r=56 e=  44 resolved  reply=24 via=search: P (resolve_16-24-38-44) tried=- 0.0s
+r=56 e=  46 resolved  reply=101 via=finite odd witness tried=50 242.4s
+r=56 e=  50 resolved  reply=61 via=finite odd witness tried=30 108.2s
+r=56 e=  52 resolved  reply=11 via=finite odd witness tried=4 0.2s
+r=56 e=  58 resolved  reply=51 via=finite odd witness tried=25 114.2s
+r=56 e=  60 short: needs even reply=None via=None tried=21 97.4s
+r=56 e=  62 resolved  reply=61 via=finite odd witness tried=24 211.1s
+r=56 e=  66 open      reply=None via=None tried=54 1061.3s
+r=56 e=  68 open      reply=None via=None tried=55 625.4s
+r=56 e=  74 resolved  reply=75 via=finite odd witness tried=37 185.1s
+r=56 e=  78 resolved  reply=17 via=finite odd witness tried=6 0.1s
+r=56 e=  82 resolved  reply=47 via=finite odd witness tried=23 77.0s
+r=56 e=  84 resolved  reply=37 via=finite odd witness tried=15 13.5s
+r=56 e=  90 open      reply=None via=None tried=47 582.2s
+r=56 e=  98 open      reply=None via=None tried=40 836.7s
+r=56 e= 100 resolved  reply=29 via=finite odd witness tried=11 10.3s
+r=56 e= 106 open      reply=None via=None tried=42 750.6s
+r=56 e= 116 open      reply=None via=None tried=42 675.6s
+r=56 e= 122 resolved  reply=27 via=finite odd witness tried=15 29.2s
+r=56 e= 138 open      reply=None via=None tried=40 721.5s
+r=56 e= 154 resolved  reply=19 via=finite odd witness tried=16 61.4s
+summary: {'resolved': 31, 'short: needs even': 1, 'open': 7, 'REFUTES r': 0} of 39

@@ -1,0 +1,17 @@
+r=   4 odd=  8 classified=  8 ODD-COMPLETE     states=          88      0.0s ok
+r=   6 odd=  3 classified=  2 REFUTED by 7     states=          28      0.0s ok
+r=   8 odd= 17 classified= 17 ODD-COMPLETE     states=     126,361      0.2s ok
+r=  12 odd= 11 classified= 10 REFUTED by 23    states=       7,514      0.0s ok
+r=  20 odd= 14 classified=  6 REFUTED by 13    states=       6,751      0.0s ok
+r=  22 odd= 19 classified= 19 ODD-COMPLETE     states=   7,944,303      7.1s ok
+r=  24 odd= 19 classified= 19 ODD-COMPLETE     states=   5,964,199      6.9s ok
+r=  28 odd= 17 classified= 17 ODD-COMPLETE     states=   5,672,416      4.2s ok
+r=  40 odd= 21 classified= 21 ODD-COMPLETE     states=  23,111,976     18.5s ok
+r=  44 odd= 23 classified= 23 ODD-COMPLETE     states= 135,436,753    415.0s ok
+r=  56 odd= 23 classified= 23 ODD-COMPLETE     states= 167,756,374    175.5s ok
+r=  60 odd= 29 classified=  8 REFUTED by 17    states=     210,603      0.1s ok
+r=  72 odd= 25 classified= 22 partial          states= 165,540,348    324.3s ok
+r=  88 odd= 27 classified= 27 ODD-COMPLETE     states= 243,019,135    229.3s ok
+r= 104 odd= 29 classified= 26 partial          states= 213,498,668    250.0s ok
+r= 120 odd= 31 classified= 19 partial          states= 185,521,966    365.2s ok
+r= 136 odd= 33 classified= 15 REFUTED by 37    states=  67,464,662     59.8s ok

@@ -1,0 +1,22 @@
+{"obligation": 3, "kind": "odd", "reply": 2, "via": "finite", "destination": "2,3", "seconds": 0.0, "frobenius": 1, "states": 1}
+{"obligation": 5, "kind": "odd", "reply": 18, "via": "finite", "destination": "5,16,18,22,24", "seconds": 0.0, "frobenius": 19, "states": 36}
+{"obligation": 7, "kind": "odd", "reply": 6, "via": "finite", "destination": "6,7,16", "seconds": 0.0, "frobenius": 17, "states": 21}
+{"obligation": 9, "kind": "odd", "reply": 6, "via": "finite", "destination": "6,9,16,20", "seconds": 0.0, "frobenius": 23, "states": 35}
+{"obligation": 13, "kind": "odd", "reply": 8, "via": "finite", "destination": "8,13,20,22", "seconds": 0.0, "frobenius": 31, "states": 285}
+{"obligation": 15, "kind": "odd", "reply": 27, "via": "finite", "destination": "15,16,20,22,24,27", "seconds": 0.0, "frobenius": 41, "states": 1370}
+{"obligation": 17, "kind": "odd", "reply": 6, "via": "finite", "destination": "6,16,17,20", "seconds": 0.0, "frobenius": 31, "states": 108}
+{"obligation": 25, "kind": "odd", "reply": 14, "via": "finite", "destination": "14,16,20,22,24,25", "seconds": 0.0, "frobenius": 51, "states": 1906}
+{"obligation": 2, "kind": "even", "reply": 3, "via": "finite", "destination": "2,3", "seconds": 0.0, "frobenius": 1, "states": 1}
+{"obligation": 4, "kind": "even", "reply": 6, "via": "C", "destination": "4,6"}
+{"obligation": 6, "kind": "even", "reply": 4, "via": "C", "destination": "4,6"}
+{"obligation": 8, "kind": "even", "reply": 13, "via": "finite", "destination": "8,13,20,22", "seconds": 0.0, "frobenius": 31, "states": 285}
+{"obligation": 10, "kind": "even", "reply": 33, "via": "finite", "destination": "10,16,22,24,33", "seconds": 0.0, "frobenius": 61, "states": 1494}
+{"obligation": 12, "kind": "even", "reply": 26, "via": "D", "destination": "12,16,20,22,26"}
+{"obligation": 14, "kind": "even", "reply": 25, "via": "finite", "destination": "14,16,20,22,24,25", "seconds": 0.0, "frobenius": 51, "states": 1906}
+{"obligation": 18, "kind": "even", "reply": 5, "via": "finite", "destination": "5,16,18,22,24", "seconds": 0.0, "frobenius": 19, "states": 36}
+{"obligation": 26, "kind": "even", "reply": 12, "via": "D", "destination": "12,16,20,22,26"}
+{"obligation": 28, "kind": "even", "reply": 11, "via": "finite", "destination": "11,16,20,24,28", "seconds": 0.0, "frobenius": 45, "states": 1029}
+{"obligation": 30, "kind": "even", "reply": 83, "via": "finite", "destination": "16,20,22,24,30,83", "seconds": 0.1, "frobenius": 117, "states": 52757}
+{"obligation": 34, "kind": "even", "reply": 45, "via": "finite", "destination": "16,20,22,24,34,45", "seconds": 0.0, "frobenius": 75, "states": 28874}
+{"obligation": 50, "kind": "even", "reply": 41, "via": "finite", "destination": "16,20,22,24,41,50", "seconds": 0.1, "frobenius": 75, "states": 35181}
+largest destinations: [(30, 83, '52,757'), (50, 41, '35,181'), (34, 45, '28,874'), (25, 14, '1,906'), (14, 25, '1,906'), (10, 33, '1,494'), (15, 27, '1,370'), (28, 11, '1,029')]

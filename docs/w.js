@@ -11,6 +11,7 @@ const EVIDENCE_LABELS = {
   "x-is-n": "X is N",
   "finite-witness-native-kunz": "finite witness (native + Kunz)",
   "z-prime-is-p": "Z′ is P",
+  "nested-p": "P by the same audit",
   "open": "open",
 };
 
@@ -52,6 +53,10 @@ function describeObligation(move, row) {
     out.answer = "reply " + row.reply + " → Z′={" + row.destination + "}";
     out.title = "Z′ is P: the same audit covers all 40 of its obligations";
     out.link = "sylver/campaigns/z-2026-10-08/RESULT.md";
+  } else if (row.evidence === "nested-p") {
+    out.answer = "reply " + row.reply + " → " + row.section + "={" + row.destination + "}";
+    out.title = row.section + " is P: the same audit covers all of its obligations";
+    out.link = row.certificate;
   } else if (row.evidence === "x-is-n") {
     out.answer = "X is N: its reply " + row.reply + " → {" + row.destination + "}";
     out.title = "{" + row.destination + "} is P: two sequential replays with independent move code, equal state counts";

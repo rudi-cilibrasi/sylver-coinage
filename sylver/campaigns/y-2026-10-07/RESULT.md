@@ -88,6 +88,8 @@ search for a winning reply to 28 ran in three stages. The scripts are kept in
      through an even reply to a P-position. None was found among the six
      short positions it reaches; the other 17 are long and were not examined
      ([scan/pair_38_40.log](scan/pair_38_40.log)).
+     - Settled later: {16,28,38,40} is P, so {16,28,38} is N
+       ([the reply-38 record](../r38-2026-10-09/RESULT.md)).
 
 Y was certified because it needs no deep witness and does not rest on
 Sicherman's {8,10,22}.

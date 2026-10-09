@@ -1,0 +1,13 @@
+{"e": 2, "child": "2", "status": "resolved", "reply": 3, "via": "finite odd witness", "odd_tried": 1, "skipped": [], "states": 1, "child_short": false, "child_even_obligations": null, "seconds": 0.1}
+{"e": 4, "child": "4,22", "status": "resolved", "reply": 6, "via": "node C", "seconds": 0.0}
+{"e": 6, "child": "6,16,20", "status": "resolved", "reply": 4, "via": "node C", "seconds": 0.0}
+{"e": 8, "child": "8,20,22", "status": "resolved", "reply": 10, "via": "node H (Sicherman, published)", "seconds": 0.0}
+{"e": 10, "child": "10,16,22,24", "status": "resolved", "reply": 8, "via": "node H (Sicherman, published)", "seconds": 0.0}
+{"e": 12, "child": "12,16,20,22", "status": "resolved", "reply": 26, "via": "node D", "seconds": 0.0}
+{"e": 14, "child": "14,16,20,22,24", "status": "resolved", "reply": 25, "via": "finite odd witness", "odd_tried": 12, "skipped": [], "states": 2028, "child_short": false, "child_even_obligations": null, "seconds": 0.1}
+{"e": 18, "child": "16,18,20,22,24", "status": "resolved", "reply": 5, "via": "finite odd witness", "odd_tried": 2, "skipped": [], "states": 37, "child_short": false, "child_even_obligations": null, "seconds": 0.2}
+{"e": 26, "child": "16,20,22,24,26", "status": "resolved", "reply": 12, "via": "node D", "seconds": 0.0}
+{"e": 28, "child": "16,20,22,24,28", "status": "resolved", "reply": 11, "via": "finite odd witness", "odd_tried": 5, "skipped": [], "states": 1104, "child_short": false, "child_even_obligations": null, "seconds": 0.2}
+{"e": 30, "child": "16,20,22,24,30", "status": "resolved", "reply": 83, "via": "finite odd witness", "odd_tried": 41, "skipped": [], "states": 55257, "child_short": false, "child_even_obligations": null, "seconds": 0.4}
+{"e": 34, "child": "16,20,22,24,34", "status": "resolved", "reply": 45, "via": "finite odd witness", "odd_tried": 22, "skipped": [], "states": 34434, "child_short": false, "child_even_obligations": null, "seconds": 0.4}
+{"e": 50, "child": "16,20,22,24,50", "status": "resolved", "reply": 41, "via": "finite odd witness", "odd_tried": 20, "skipped": [], "states": 41555, "child_short": false, "child_even_obligations": null, "seconds": 0.4}

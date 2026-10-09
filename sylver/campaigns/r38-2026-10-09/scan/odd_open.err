@@ -1,0 +1,25 @@
+kunz_solver: sweep stopped during move=85 (memo holds 1400053972 states)
+kunz_solver: memo entries=1400053972 slots=1978893912 bytes=33641196504
+	Command being timed: "./kunz --threads 6 --stop-at-p --max-states 1400000000 --stop-file /tmp/claude-1001/-home-ruclaw-src-sylver-coinage/cd9b0cdd-5710-4000-902b-0c5c9cdc90cc/scratchpad/r38/STOP-odd --memo-stats --odd-list 71,69,77,79,85,93,101,87,109,117,125 16 38"
+	User time (seconds): 11296.74
+	System time (seconds): 67.67
+	Percent of CPU this job got: 377%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 50:14.22
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 32962396
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 23947841
+	Voluntary context switches: 8269
+	Involuntary context switches: 4223013
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 24
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
