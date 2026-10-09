@@ -1,0 +1,9 @@
+36 -> 23: P winning_move=none frobenius=145 states=1179780
+58 -> 11: P winning_move=none frobenius=111 states=14775
+62 -> 37: P winning_move=none frobenius=231 states=314785111
+86 -> 33: P winning_move=none frobenius=255 states=382469318
+90 -> 17: P winning_move=none frobenius=159 states=1280911
+140 -> 13: P winning_move=none frobenius=163 states=129414
+150 -> 31: P winning_move=none frobenius=289 states=571026631
+156 -> 21: P winning_move=none frobenius=215 states=10740605
+

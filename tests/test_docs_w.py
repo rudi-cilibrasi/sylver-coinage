@@ -214,6 +214,98 @@ class ZPageTests(unittest.TestCase):
             self.assertIsNone(audit.finite_witness(audit.Z, 'z', 70))
 
 
+O16_AUDIT = ROOT / 'sylver/campaigns/o16-2026-10-09/audit.json'
+
+
+class OpeningLedgerTests(unittest.TestCase):
+    """The ledger of answers to the replies after 16 reproduces, with no failures."""
+
+    def test_the_committed_ledger_is_reproducible(self):
+        result = subprocess.run([sys.executable, str(O16_AUDIT.parent / 'audit.py')], capture_output=True, text=True,
+                                timeout=600)
+        self.assertEqual(result.returncode, 0, result.stdout[-2000:])
+        fresh, committed = json.loads(result.stdout), json.loads(O16_AUDIT.read_text())
+        self.assertEqual(fresh, committed)
+        self.assertEqual(fresh['failures'], [])
+        # Every even reply up to 36 is answered (32 is illegal); 38 is the first open one.
+        self.assertEqual([r for r in range(2, 37, 2) if r % 16 and str(r) not in fresh['answers']], [])
+        self.assertEqual(fresh['summary']['lowest_unanswered'], 38)
+
+    def test_a_wrong_answer_is_rejected(self):
+        spec = importlib.util.spec_from_file_location('o16_audit', O16_AUDIT.parent / 'audit.py')
+        audit = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(audit)
+        table = {m: (resp, dest) for m, resp, dest in audit.OPENING_16_EVEN_RESPONSES}
+        self.assertIsNotNone(audit.check(34, 20, 'certified-node', 'T', table))
+        self.assertIsNone(audit.check(34, 22, 'certified-node', 'T', table))     # another position
+        self.assertIsNone(audit.check(38, 88, 'campaign', 'u-2026-09-27', table))  # U is {16,26,88}, not {16,38,88}
+        self.assertIsNone(audit.check(36, 25, 'finite-witness', None, table))     # o36's certificate has reply 23
+        self.assertIsNone(audit.check(62, 37, 'finite-witness', None, table))     # o62 has Kunz, not Python
+        self.assertIsNotNone(audit.check(62, 37, 'finite-witness-native-kunz', None, table))
+        self.assertIsNone(audit.check(26, 88, 'campaign', 'no-such-campaign', table))
+
+    def test_a_failed_row_counts_as_unanswered(self):
+        spec = importlib.util.spec_from_file_location('o16_audit_failed', O16_AUDIT.parent / 'audit.py')
+        audit = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(audit)
+        audit.ANSWERS = {**audit.ANSWERS, 36: (25, 'finite-witness', None)}
+        with io.StringIO() as out, contextlib.redirect_stdout(out):
+            self.assertEqual(audit.main(), 1)
+            report = json.loads(out.getvalue())
+        self.assertEqual(report['summary']['lowest_unanswered'], 36)
+
+    def kunz_replay_copy(self, tmp):
+        """A scratch copy of o62's certificate, receipts and pinned Kunz source; its replay directory."""
+        shutil.copy(O16_AUDIT.parent / 'o62-certificate.json', tmp)
+        shutil.copytree(O16_AUDIT.parent / 'verification/o62', Path(tmp) / 'verification/o62')
+        shutil.copytree(O16_AUDIT.parent / 'verification/sources', Path(tmp) / 'verification/sources')
+        return Path(tmp) / 'verification/o62'
+
+    def test_a_kunz_replay_that_disagrees_or_is_incomplete_is_rejected(self):
+        spec = importlib.util.spec_from_file_location('o16_audit_kunz', O16_AUDIT.parent / 'audit.py')
+        audit = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(audit)
+        dest = audit.position((16, 62, 37))
+        self.assertIsNotNone(audit.finite_witness(62, 37, True))
+        with tempfile.TemporaryDirectory() as tmp:
+            # A fully consistent forgery of the Kunz replay (its stdout, stderr and
+            # receipt all say states - 1): only the tie to the native count rejects it.
+            replay = self.kunz_replay_copy(tmp)
+            audit.KUNZ_SNAPSHOT = Path(tmp) / 'verification/sources' / audit.KUNZ_SNAPSHOT.name
+            receipt = replay / 'kunz-receipt.json'
+            data = json.loads(receipt.read_text())
+            for stream in ('stdout', 'stderr'):
+                path = replay / f'kunz-{stream}.txt'
+                path.write_text(path.read_text().replace(str(data['states']), str(data['states'] - 1)))
+                data[f'{stream}_sha256'] = hashlib.sha256(path.read_bytes()).hexdigest()
+            data['states'] -= 1
+            receipt.write_text(json.dumps(data))
+            self.assertEqual(audit.kunz_states(replay, dest, data['frobenius']), data['states'])
+            audit.HERE = Path(tmp)
+            self.assertIsNone(audit.finite_witness(62, 37, True))
+        with tempfile.TemporaryDirectory() as tmp:
+            # A transcript without the memo check, re-hashed into its receipt.
+            replay = self.kunz_replay_copy(tmp)
+            audit.KUNZ_SNAPSHOT = Path(tmp) / 'verification/sources' / audit.KUNZ_SNAPSHOT.name
+            receipt = replay / 'kunz-receipt.json'
+            data = json.loads(receipt.read_text())
+            self.assertEqual(audit.kunz_states(replay, dest, data['frobenius']), data['states'])
+            stderr = replay / 'kunz-stderr.txt'
+            stderr.write_text(''.join(line for line in stderr.read_text().splitlines(keepends=True)
+                                      if 'memo verified' not in line))
+            data['stderr_sha256'] = hashlib.sha256(stderr.read_bytes()).hexdigest()
+            receipt.write_text(json.dumps(data))
+            self.assertIsNone(audit.kunz_states(replay, dest, data['frobenius']))
+        with tempfile.TemporaryDirectory() as tmp:
+            # A source snapshot that no longer matches the pinned hash.
+            replay = self.kunz_replay_copy(tmp)
+            audit.KUNZ_SNAPSHOT = Path(tmp) / 'verification/sources' / audit.KUNZ_SNAPSHOT.name
+            with audit.KUNZ_SNAPSHOT.open('a') as fh:
+                fh.write('// edited\n')
+            data = json.loads((replay / 'kunz-receipt.json').read_text())
+            self.assertIsNone(audit.kunz_states(replay, dest, data['frobenius']))
+
+
 X_AUDIT = ROOT / 'sylver/campaigns/x-2026-10-06/audit.json'
 
 

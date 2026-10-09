@@ -1,0 +1,53 @@
+{
+ "position": [
+  16
+ ],
+ "obligations": 5,
+ "rows": [
+  {
+   "obligation": 36,
+   "kind": "even",
+   "reply": 23,
+   "via": "finite",
+   "destination": "16,23,36",
+   "frobenius": 145,
+   "states": 1179780
+  },
+  {
+   "obligation": 58,
+   "kind": "even",
+   "reply": 11,
+   "via": "finite",
+   "destination": "11,16,58",
+   "frobenius": 111,
+   "states": 14775
+  },
+  {
+   "obligation": 90,
+   "kind": "even",
+   "reply": 17,
+   "via": "finite",
+   "destination": "16,17,90",
+   "frobenius": 159,
+   "states": 1280911
+  },
+  {
+   "obligation": 140,
+   "kind": "even",
+   "reply": 13,
+   "via": "finite",
+   "destination": "13,16,140",
+   "frobenius": 163,
+   "states": 129414
+  },
+  {
+   "obligation": 156,
+   "kind": "even",
+   "reply": 21,
+   "via": "finite",
+   "destination": "16,21,156",
+   "frobenius": 215,
+   "states": 10740605
+  }
+ ]
+}

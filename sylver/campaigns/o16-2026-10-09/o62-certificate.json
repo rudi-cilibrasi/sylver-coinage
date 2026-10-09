@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "parent": [
+    16
+  ],
+  "opponent_move": 62,
+  "reply": 37,
+  "destination": [
+    16,
+    37,
+    62
+  ],
+  "destination_outcome": "P",
+  "frobenius": 231,
+  "consequence": "{16}+62 is N by reply 37.",
+  "scope": "Finite exhaustive-evaluation certificate. Replaying the destination requires no inherited outcome cache, infinite-position certificate, or Quiet End Theorem."
+}
