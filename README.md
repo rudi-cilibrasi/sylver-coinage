@@ -17,6 +17,16 @@ exceeds 10^12 states.
 
 For the week of September 21–27, see the [progress summary](docs/progress/2026-09-28-week.md).
 
+- **Every reply to the opening 16 up to 36 now has an answer (October 9).**
+  - **The ledger.** A ledger of the answers to the even replies up to 200
+    collects the certified table, U, Y, Z and the node T. T answers 34 by
+    20.
+  - **Finite answers.** A scan added seven finite answers, each replayed
+    from empty memos: 36 → 23, 58 → 11, 62 → 37, 86 → 33, 90 → 17,
+    140 → 13 and 156 → 21. {16,23,36} closes 36.
+  - **The frontier.** The lowest unanswered reply is 38.
+
+  See the [ledger](sylver/campaigns/o16-2026-10-09/RESULT.md).
 - **Z={16,30,56} is P, so the reply 30 to the opening 16 loses (October 8).**
   - **The certificate.** All 52 of Z's Quiet End obligations are covered.
     - Move 44 is answered by 40 into a second new short P-position,

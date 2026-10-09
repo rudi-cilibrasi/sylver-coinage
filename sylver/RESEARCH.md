@@ -1,5 +1,10 @@
 # Sylver Coinage after 16: research log
 
+**October 9, a ledger of answers:** every even reply to the opening 16 up to
+36 now has an answer. 36 is answered by 23, through the finite P-position
+{16,23,36}. The lowest open reply is 38. See Attempt 36 and
+[the ledger](campaigns/o16-2026-10-09/RESULT.md).
+
 **October 8, the reply 30 loses:** Z={16,30,56} is P, through a second new
 short P-position, Z′={16,30,40,44}. Every reply to the opening 16 up to 30
 now has an answer. See Attempt 35 and [the Z record](campaigns/z-2026-10-08/RESULT.md).
@@ -1599,6 +1604,45 @@ obligations, then Z's 52.
 not a legal reply (it is a multiple of 16). 34 is answered by 20, since the
 certified node T={16,20,34} works both ways. So the lowest unanswered reply
 is 36.
+
+### Attempt 36 — a ledger of answers after the opening 16 (2026-10-09)
+
+The certified opening table stays as it is. `sylver/short_certificates.py` is
+one of the sources the arena's verifier profile hashes. Editing it would mean
+re-verifying all of The Book, about 5.6 CPU-hours, whose entries the W and U
+audits use.
+`campaigns/o16-2026-10-09/` instead keeps a ledger of the answers to the even
+replies up to 200. Its audit checks each answer's legality and evidence:
+- a row of the certified table;
+- a certified node;
+- a campaign audit that finds exactly that position P;
+- or a finite witness with replays.
+
+It reports the lowest even reply still open.
+
+**Answers the table missed.** Besides U (26), Y (28) and Z (30), the node T
+answers 34 by 20: T={16,20,34} is the table's answer to 20, used the other
+way. 56 and 88 are answered by 30 and 26 for the same reason, through Z and
+U. The ledger answers 58 by the finite 11, though 28 (through Y) works too.
+
+**The scan.** A scan of the replies 36 to 200 swept, for each reply r, the
+odd gaps of the reduced pair {16/d, r/d}, where d = gcd(16, r). It found
+finite answers to 36 (23), 58 (11), 62 (37), 86 (33), 90 (17), 140 (13),
+150 (31) and 156 (21).
+- All but 150 are in the ledger, replayed from empty memos.
+- 62 and 86, at 315 and 382 million states, use `native_solver.cpp` and a
+  sequential `kunz_solver.cpp` in place of the Python evaluator.
+- 150's destination, at 571 million states, was not replayed. At the 142
+  bytes per state that `native_solver.cpp` used for X, it would need about
+  75 GiB, more than this host's 62 GiB.
+- Most other sweeps hit the scan's 800,000,000-state memo cap. Even a
+  complete sweep tries only the reduced pair's odd gaps, so a reply without a
+  finite answer here stays open, not refuted. One sweep, for 198, failed
+  outright. Its candidate 685 needs a Kunz coordinate above the engine's
+  limit of 127, and the sweep's candidates share one memo.
+
+**The frontier.** Every even reply up to 36 is now answered, and 38 is the
+lowest open one.
 
 ### Sources
 
