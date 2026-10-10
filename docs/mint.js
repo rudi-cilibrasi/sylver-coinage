@@ -346,9 +346,9 @@ function lessonLong(root) {
     }
     quizMsg.className = "msg " + (ok ? "win" : "lose");
     quizMsg.textContent = ok ? (y === reply ? `Yes: the computer answers ${reply}.` : `Yes: ${y} also wins (the computer's first choice is ${reply}).`)
-                             : `No: the computer answers ${reply}.`;
+                             : `No: the computer answers ${reply}. Look at the differences in the table, then try a new number.`;
     if (ok && ++predicted >= 2) markDone("long");
-    if (ok) setTimeout(ask, 1600); else button.disabled = false;
+    setTimeout(ask, ok ? 1600 : 2600);   // a new number either way, so a revealed answer cannot be typed back
   }
   root.append(
     eyebrow("GEORGE SICHERMAN, 1990s"),
@@ -368,56 +368,73 @@ function lessonLong(root) {
 }
 
 // ---------------------------------------------------------------- lesson 6: Kunz's columns
-// With smallest coin m, a position is described by m column heights: in the column of the amounts
-// with remainder i (mod m), everything from the first paid amount w_i down is paid, so the column's
-// height k_i = (w_i - i) / m is its number of unpaid amounts (as in sylver/kunz_solver.cpp).
-function kunzColumns(gens) {
-  const m = Math.min(...gens), F = frobenius(gens), pay = paidUpTo(gens, F + m);
-  const w = Array.from({ length: m }, (_, i) => { let n = i; while (!pay[n]) n += m; return n; });
-  return { m, w, k: w.map((x, i) => (x - i) / m), F };
+// Columns of amounts by remainder modulo `mod`, which must be paid (it is the starting position's
+// smallest coin, which stays named). Going down a column adds mod, so everything below a column's
+// first paid amount w_i is paid, and the column is described by its height k_i = (w_i - i) / mod,
+// its count of unpaid amounts. With mod the smallest coin these are the Kunz coordinates;
+// sylver/kunz_solver.cpp keeps its starting position's columns, as this lesson does.
+function kunzColumns(gens, mod = Math.min(...gens)) {
+  const F = frobenius(gens), pay = paidUpTo(gens, F + mod);
+  const w = Array.from({ length: mod }, (_, i) => { let n = i; while (!pay[n]) n += mod; return n; });
+  return { m: mod, w, k: w.map((x, i) => (x - i) / mod), F };
 }
+// The 16 bytes kunz_solver.cpp keys a position by: one height per column, zeros in the unused lanes.
+const engineKey = (gens, mod) => [...kunzColumns(gens, mod).k, ...Array(16 - mod).fill(0)];
 const KUNZ_START = [[5, 7], [7, 9, 11], [6, 9, 20], [8, 11, 13]];
 function lessonKunz(root) {
-  let gens, asked = false;
+  let gens, mod, asked = false;
   const board = el("div", { class: "kunz" }), stats = el("p", { class: "note" }), key = el("p", { class: "formula small" });
+  const said = el("p", { class: "msg", "aria-live": "polite" });
   const quiz = el("div", { class: "row" }), quizMsg = el("p", { class: "msg", "aria-live": "polite" });
   const picks = el("div", { class: "row" });
-  function start(g) { gens = minimal(g); asked = false; quiz.replaceChildren(); quizMsg.textContent = ""; draw(); }
-  function name(x) {
-    if (x === 1) { quizMsg.className = "msg lose"; quizMsg.textContent = "Naming 1 would lose the game, so this lesson leaves it unpaid."; return; }
-    gens = minimal([...gens, x]);
+  function start(g) {
+    gens = minimal(g); mod = gens[0]; asked = false;
+    quiz.replaceChildren(); quizMsg.textContent = ""; said.className = "msg"; said.textContent = "";
     draw();
-    if (!asked) ask();
+  }
+  function name(x) {
+    if (x === 1) { said.className = "msg lose"; said.textContent = "Naming 1 would lose the game, so this lesson leaves it unpaid."; return; }
+    const before = kunzColumns(gens, mod).k;
+    gens = minimal([...gens, x]);
+    const after = kunzColumns(gens, mod).k;
+    const fell = after.map((h, i) => (h < before[i] ? i : null)).filter((i) => i !== null);
+    said.className = "msg";
+    said.textContent = `You name ${x}. ${fell.length === 1 ? "Column" : "Columns"} ${fell.join(", ")} ${fell.length === 1 ? "falls" : "fall"}; the heights are now ${after.join(", ")}.`;
+    quizMsg.textContent = "";
+    draw();
+    if (!asked) ask(); else { const g = document.getElementById("kunz-guess"); if (g) g.value = ""; }
   }
   function draw() {
     const keep = focusedTile(board);
-    const { m, w, k, F } = kunzColumns(gens);
+    const { w, k, F } = kunzColumns(gens, mod);
     const rows = Math.max(...k) + 1;
-    board.style.gridTemplateColumns = `repeat(${m}, minmax(0, 56px))`;
+    board.style.gridTemplateColumns = `repeat(${mod}, minmax(0, 56px))`;
     board.replaceChildren();
     for (let r = 0; r < rows; r++) {
-      for (let i = 0; i < m; i++) {
-        const n = r * m + i, unpaid = n < w[i], first = n === w[i];
-        board.append(el("button", { class: "tile sm" + (unpaid ? (n === 1 ? " one" : "") : first ? " paid floor" : " paid"), type: "button",
-          "data-n": n, disabled: !unpaid, "aria-label": unpaid ? `${n}, unpaid` : first ? `${n}, first paid amount of its column` : `${n}, paid`,
+      for (let i = 0; i < mod; i++) {
+        const n = r * mod + i, unpaid = n < w[i], floor = n === w[i];
+        board.append(el("button", { class: "tile sm" + (unpaid ? (n === 1 ? " one" : "") : floor ? " paid floor" : " paid"), type: "button",
+          "data-n": n, disabled: !unpaid,
+          "aria-label": `${n}, column ${i}, ${unpaid ? "unpaid" : floor ? "the column's first paid amount" : "paid"}`,
           onclick: () => name(n) }, n));
       }
     }
-    for (let i = 0; i < m; i++) board.append(el("span", { class: "height" }, k[i]));
-    stats.innerHTML = `Position <b>${setText(gens)}</b>: ${m} columns, one for each remainder when dividing by ${m}. ` +
-      `Column heights (unpaid amounts in each column): <b>${k.join(", ")}</b>. The largest unpaid amount is ${F}, just above the floor of the deepest column.`;
-    key.textContent = `the engine's key: [${[...k, ...Array(Math.max(0, 16 - m)).fill(0)].join(" ")}]  (16 bytes)`;
+    for (let i = 0; i < mod; i++) board.append(el("span", { class: "height", "aria-hidden": "true" }, k[i]));
+    const top = Math.max(...w);
+    stats.innerHTML = `Position <b>${setText(gens)}</b> in ${mod} columns, one for each remainder when dividing by ${mod}. ` +
+      `Column heights: <b>${k.join(", ")}</b>. The largest unpaid amount is ${F}: the highest floor, ${top}, minus ${mod}.`;
+    key.textContent = `the engine's key: [${engineKey(gens, mod).join(" ")}]  (16 bytes)`;
     refocus(board, keep);
   }
   function ask() {
     asked = true;
-    const guess = el("input", { type: "number", min: "0", step: "1", id: "kunz-guess", "aria-label": "How many amounts are unpaid?" });
+    const guess = el("input", { type: "number", min: "0", step: "1", id: "kunz-guess" });
     quiz.replaceChildren(el("label", { for: "kunz-guess" }, "How many amounts are unpaid now? Read the heights, don't count the tiles."), guess,
       el("button", { class: "ctrl primary", type: "button", onclick: () => {
-        const total = kunzColumns(gens).k.reduce((a, b) => a + b, 0);
+        const total = kunzColumns(gens, mod).k.reduce((a, b) => a + b, 0);
         const ok = Number(guess.value) === total;
         quizMsg.className = "msg " + (ok ? "win" : "lose");
-        quizMsg.textContent = ok ? `Yes: the heights add up to ${total}, including 1.` : `Not quite: the heights add up to ${total}, including 1.`;
+        quizMsg.textContent = ok ? `Yes: the heights add up to ${total}, counting 1.` : "Not quite. Add the numbers under the columns; 1 counts too.";
         if (ok) markDone("kunz");
       } }, "Check"));
   }
@@ -428,11 +445,12 @@ function lessonKunz(root) {
     eyebrow("NUMERICAL SEMIGROUPS, 2020–2026"),
     el("h2", {}, "Kunz's columns"),
     story("In 2020 Eaton, Herzinger, Pierce and Thompson wrote Sylver Coinage in the language of algebra: once the named numbers share no common factor, the paid amounts form a <b>numerical semigroup</b>.",
-          "Line the amounts up in columns by their remainder when divided by the smallest coin m. Going down a column adds m each step, so once an amount is paid, everything below it in that column is paid too. Each column is described by one number, its count of unpaid amounts. These counts are the position's <b>Kunz coordinates</b>.",
-          "Their sum is the number of unpaid amounts. The campaign's 2026 engine stores every position after the opening 16 as its 16 column heights, one byte each, so its hardest replay, 633,734,956 positions, fit in 14.2 GiB of memory. Name a copper amount and watch the columns fall."),
+          "Line the amounts up in columns by their remainder when divided by the smallest coin m. Going down a column adds m each step, so once an amount is paid, everything below it in that column is paid too. Each column is described by one number, its count of unpaid amounts. These counts are the position's <b>Kunz coordinates</b>, after Ernst Kunz, who classified numerical semigroups by them in 1987.",
+          "The campaign's Kunz engine (<code>sylver/kunz_solver.cpp</code>, 2026) keeps each position it searches as 16 bytes, one column height per byte, using the columns of the position it starts from and zeros in the unused bytes. Its largest replay, {16, 26, 82, 88, 701}, held 633,734,956 positions in 14.2 GiB; <code>native_solver.cpp</code> would have needed about 90 GB.",
+          "Name a copper amount and watch the columns fall. Like the engine, the board keeps the columns of the starting coin, even after you name a smaller amount."),
     el("div", { class: "game" }, picks, board,
-      el("p", { class: "note" }, "Copper: unpaid. Outlined: the first paid amount in each column, its floor. Grey: paid. The number under a column is its height."),
-      stats, key, quiz, quizMsg),
+      el("p", { class: "note" }, "Copper: unpaid (red 1: naming it loses). Grey with a gold bar: the first paid amount in its column, the column's floor. Plain grey: paid. The number under a column is its height."),
+      said, stats, key, quiz, quizMsg),
   );
   start(KUNZ_START[0]);
 }
@@ -842,7 +860,7 @@ function show(i, focus) {
 const lessonFromHash = () => LESSONS.findIndex(([id]) => "#" + id === location.hash);
 
 if (typeof module !== "undefined") {
-  module.exports = { E_REPLIES, FRONTIER, KUNZ_START, LESSONS, LONG, LONG_MAX, NAMED, TABLE, isPaid, kunzColumns, minimal, mirrorMate, paidUpTo };
+  module.exports = { E_REPLIES, FRONTIER, KUNZ_START, LESSONS, LONG, LONG_MAX, NAMED, TABLE, engineKey, isPaid, kunzColumns, minimal, mirrorMate, paidUpTo };
 } else {
   window.addEventListener("hashchange", () => { const i = lessonFromHash(); if (i >= 0 && i !== current) show(i, false); });
   show(Math.max(0, lessonFromHash()), false);
