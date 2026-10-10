@@ -5,11 +5,11 @@ play Sylver Coinage against the exact solver in your browser, and query
 the campaign's 273,000-outcome cache directly from this repository.
 
 **▶ [The Sylver Coinage Story](https://rudi-cilibrasi.github.io/sylver-coinage/story.html):**
-a five-minute animated history, from Sylvester's coins (1884) through
+a six-minute animated history, from Sylvester's coins (1884) through
 *Winning Ways*, George Sicherman and Thomas Blok to this campaign. Then
 learn the ideas by playing them in
 **[The Sylver Mint](https://rudi-cilibrasi.github.io/sylver-coinage/mint.html)**,
-seven small games that end at the reply-38 frontier.
+nine small games that end at the reply-38 frontier.
 
 This repository is the complete, auditable record of a computational
 campaign on **Sylver Coinage after the opening move 16** (Conway's prize
