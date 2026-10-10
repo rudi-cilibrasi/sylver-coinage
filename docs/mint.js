@@ -1,4 +1,4 @@
-// The Sylver Mint: ten small games that retrace the history of Sylver
+// The Sylver Mint: eleven small games that retrace the history of Sylver
 // Coinage. Every game runs the repository's exact evaluator (solver.js). The
 // answer table and the reply-38 frontier are exported so the node tests can
 // check them against the campaign audits.
@@ -568,7 +568,80 @@ function lessonMirror(root) {
   start("beat");
 }
 
-// ---------------------------------------------------------------- lesson 8: answer the reply
+// ---------------------------------------------------------------- lesson 8: which openings win?
+// The openings 1 to 17, as Sicherman (2002, p. 5) and OEIS A248380 give them: primes from 5 up win
+// (Hutchings), a multiple of such a prime loses to the prime, and the small numbers 2^a 3^b have answers
+// up to 12. [opening, "win" | "lose" | "open", the answer that beats it or null, why]
+const OPENINGS = [
+  [1, "lose", null, "naming 1 loses at once"],
+  [2, "lose", 3, "the reply 3 leaves {2, 3}, where only 1 is left"],
+  [3, "lose", 2, "the reply 2 leaves {2, 3}"],
+  [4, "lose", 6, "the reply 6 leaves C = {4, 6}, a losing position"],
+  [5, "win", null, "a prime from 5 up wins, by Hutchings' theorem"],
+  [6, "lose", 4, "the reply 4 leaves {4, 6}; 9 also wins, leaving {6, 9}"],
+  [7, "win", null, "a prime from 5 up wins, by Hutchings' theorem"],
+  [8, "lose", 12, "the reply 12 leaves {8, 12}, which loses by Blok's mirror; 14 also wins, leaving E = {8, 14}"],
+  [9, "lose", 6, "the reply 6 leaves {6, 9}, which Sicherman lists as a losing position"],
+  [10, "lose", 5, "a multiple of the prime 5 loses to 5"],
+  [11, "win", null, "a prime from 5 up wins, by Hutchings' theorem"],
+  [12, "lose", 8, "the reply 8 leaves {8, 12}"],
+  [13, "win", null, "a prime from 5 up wins, by Hutchings' theorem"],
+  [14, "lose", 7, "a multiple of the prime 7 loses to 7"],
+  [15, "lose", 5, "a multiple of the prime 5 loses to 5"],
+  [16, "open", null, "it is the smallest undecided opening, Conway's $1,000 question"],
+  [17, "win", null, "a prime from 5 up wins, by Hutchings' theorem"],
+];
+function lessonOpenings(root) {
+  const answered = new Map();
+  const board = el("div", { class: "tiles" }), detail = el("p", { class: "msg", "aria-live": "polite" }, "Pick an opening.");
+  const choose = el("div", { class: "row" }), score = el("p", { class: "note" });
+  let current = null;
+  const label = { win: "the opener wins", lose: "the opener loses", open: "nobody knows" };
+  function draw() {
+    const keep = focusedTile(board);
+    board.replaceChildren(...OPENINGS.map(([n, truth]) => {
+      const got = answered.get(n);
+      const right = got === truth;
+      const cls = got === undefined ? "" : right ? (truth === "win" ? " good" : truth === "lose" ? " bad" : " gold") : " wrong";
+      return el("button", { class: "tile" + cls + (n === current ? " pick" : ""), type: "button", "data-n": n,
+        "aria-label": got === undefined ? `opening ${n}` : right ? `opening ${n}: ${label[truth]}` : `opening ${n}: try again`,
+        onclick: () => pick(n) }, n);
+    }));
+    refocus(board, keep);
+    const right = OPENINGS.filter(([n, truth]) => answered.get(n) === truth).length;
+    score.textContent = `${right} of ${OPENINGS.length} classified correctly.`;
+    if (right === OPENINGS.length) markDone("openings");
+  }
+  function pick(n) {
+    current = n;
+    detail.className = "msg";
+    detail.textContent = `The opening ${n}: does the player who names it win?`;
+    choose.replaceChildren(...[["win", "Wins"], ["lose", "Loses"], ["open", "Nobody knows"]].map(([v, text]) =>
+      el("button", { class: "ctrl", type: "button", onclick: () => judge(n, v) }, text)));
+    draw();
+  }
+  function judge(n, v) {
+    const [, truth, answer, why] = OPENINGS.find(([m]) => m === n);
+    answered.set(n, truth === v ? v : `wrong:${v}`);
+    detail.className = "msg " + (truth === v ? "win" : "lose");
+    detail.textContent = `${truth === v ? "Right" : "Not quite"}. ${n} ${truth === "win" ? "wins" : truth === "lose" ? "loses" : "is undecided"}` +
+      (answer ? ` to ${answer}` : "") + `: ${why}.`;
+    choose.replaceChildren();
+    current = null;
+    draw();
+  }
+  root.append(
+    eyebrow("THE OPENINGS, 1982–2014"),
+    el("h2", {}, "Which openings win?"),
+    story("Which first moves win? By 2002 the answer was known for every opening up to 15, from three facts. A prime from 5 up wins, by Hutchings' theorem. A multiple of such a prime loses to the prime itself: after 10, the reply 5 leaves just {5}, the position of the winning opening 5, with the first player to move. And each of the small numbers of the form 2<sup>a</sup>3<sup>b</sup> up to 12 has a known answer.",
+          "Every opening 2<sup>a</sup>3<sup>b</sup> above 12 is undecided, and the smallest, 16, is the subject of Conway's $1,000 question (OEIS A248380). Classify the openings from 1 to 17."),
+    el("div", { class: "game" }, board, detail, choose, score),
+    el("p", { class: "note" }, "Sources: G. Sicherman, Theory and Practice of Sylver Coinage, Integers 2 (2002), p. 5; OEIS A248380."),
+  );
+  draw();
+}
+
+// ---------------------------------------------------------------- lesson 9: answer the reply
 // Certified losing positions the answer lesson names (sylver/short_certificates.py and the campaign audits).
 const NAMED = {
   C: [4, 6], E: [8, 14], F: [12, 14, 16], G: [8, 20, 26], I: [16, 20, 22, 24], K: [10, 16, 24], P0: [12, 16, 22],
@@ -647,7 +720,7 @@ function lessonAnswer(root) {
   ask(false);
 }
 
-// ---------------------------------------------------------------- lesson 9: assay a certificate
+// ---------------------------------------------------------------- lesson 10: assay a certificate
 // The even obligations of E = {8, 14} and their replies, as in node E of sylver/short_certificates.py.
 const E_REPLIES = { 2: [3, null], 4: [6, "C = {4, 6}"], 6: [4, "C = {4, 6}"], 10: [19, null], 12: [10, "{8, 10, 12, 14}, a member of the pairing family"],
                     18: [25, null], 20: [9, null], 26: [17, null], 34: [27, null] };
@@ -693,7 +766,7 @@ function lessonAssay(root) {
   );
 }
 
-// ---------------------------------------------------------------- lesson 10: the frontier
+// ---------------------------------------------------------------- lesson 11: the frontier
 // Every obligation of {16, 38}: k is the kind of move, s its status in the reply-38 record as of October 10, 2026
 // (sylver/campaigns/r38-2026-10-09); tests/test_docs_mint.py derives the same statuses from its scan logs.
 const FRONTIER = [
@@ -838,6 +911,7 @@ const LESSONS = [
   ["long", "A long losing position", "Sicherman, 1990s", lessonLong],
   ["kunz", "Kunz's columns", "Semigroups, 2020", lessonKunz],
   ["mirror", "Blok's mirror", "Blok, 2021", lessonMirror],
+  ["openings", "Which openings win?", "1982–2014", lessonOpenings],
   ["answer", "Answer the reply", "Opening 16", lessonAnswer],
   ["assay", "Assay a certificate", "2026", lessonAssay],
   ["frontier", "The frontier: 38", "October 2026", lessonFrontier],
@@ -865,7 +939,7 @@ function show(i, focus) {
 const lessonFromHash = () => LESSONS.findIndex(([id]) => "#" + id === location.hash);
 
 if (typeof module !== "undefined") {
-  module.exports = { E_REPLIES, FRONTIER, KUNZ_START, LESSONS, LONG, LONG_MAX, NAMED, TABLE, engineKey, isPaid, kunzColumns, minimal, mirrorMate, paidUpTo };
+  module.exports = { E_REPLIES, FRONTIER, KUNZ_START, LESSONS, LONG, LONG_MAX, NAMED, OPENINGS, TABLE, engineKey, isPaid, kunzColumns, minimal, mirrorMate, paidUpTo };
 } else {
   window.addEventListener("hashchange", () => { const i = lessonFromHash(); if (i >= 0 && i !== current) show(i, false); });
   show(Math.max(0, lessonFromHash()), false);
