@@ -232,6 +232,7 @@ chapter(9, null, null, (ctx, t, d) => {
 }, "Title");
 
 CH[CH.length - 1].text = ["Sylver Coinage: a game about coins, a formula from 1884, and the smallest opening nobody has solved."];
+CH[CH.length - 1].label = "THE SYLVER COINAGE STORY";
 // 1. The game: a full example on tiles 1..36
 const GAME = [
   [6.5, "A", 5], [14.0, "B", 7], [28.0, "A", 4], [31.5, "B", 6], [34.5, "A", 3], [37.5, "B", 2], [41.0, "A", 1],
@@ -587,6 +588,7 @@ chapter(16, 2026.8, null, (ctx, t, d) => {
 }, "Open");
 
 CH[CH.length - 1].text = ["Who wins after 16? Still open. Play the game, check a certificate, or find an answer to 38."];
+CH[CH.length - 1].label = "WHO WINS AFTER 16? STILL OPEN";
 // ---------- the timeline ----------
 let acc = 0;
 for (const c of CH) { c.start = acc; acc += c.dur; c.end = acc; }
@@ -653,5 +655,12 @@ function transcript() {
   });
 }
 
-if (typeof module !== "undefined") module.exports = { renderAt, transcript, DURATION, CHAPTERS: CH, W, H, ANSWERS, NOTES, REPLIES, RULED_OUT_38 };
-else Object.assign(window, { renderAt, transcript, DURATION, CHAPTERS: CH });
+// The chapters in ffmpeg's metadata format (times in milliseconds), for the MP4's chapter markers.
+function chapterMetadata() {
+  const esc = (t) => t.replace(/[=;#\\\n\r]/g, (c) => "\\" + c);
+  return ";FFMETADATA1\ntitle=The Sylver Coinage Story\n" + CH.map((c) =>
+    `[CHAPTER]\nTIMEBASE=1/1000\nSTART=${Math.round(c.start * 1000)}\nEND=${Math.round(c.end * 1000)}\ntitle=${esc(c.brow || c.label || c.name)}\n`).join("");
+}
+
+if (typeof module !== "undefined") module.exports = { renderAt, transcript, chapterMetadata, DURATION, CHAPTERS: CH, W, H, ANSWERS, NOTES, REPLIES, RULED_OUT_38 };
+else Object.assign(window, { renderAt, transcript, chapterMetadata, DURATION, CHAPTERS: CH });
