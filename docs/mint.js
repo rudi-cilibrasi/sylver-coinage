@@ -329,12 +329,14 @@ function lessonLong(root) {
     }
     refocus(tiles, keep);
   }
-  function ask() {
+  // After an answer its explanation stays up, and the next question is announced with it.
+  function ask(afterAnswer = false) {
     const x = 2 * (50 + Math.floor(Math.random() * 50)) + 1;   // an odd number from 101 to 199
-    const guess = el("input", { type: "number", min: "1", step: "1", id: "long-guess", "aria-label": `Your prediction for ${x}` });
+    const guess = el("input", { type: "number", min: "1", step: "1", id: "long-guess" });
     quiz.replaceChildren(el("label", { for: "long-guess" }, `Predict: what does the computer answer to ${x}?`), guess,
       el("button", { class: "ctrl primary", type: "button", onclick: (e) => check(x, Number(guess.value), e.currentTarget) }, "Check"));
-    quizMsg.className = "msg"; quizMsg.textContent = "";
+    if (afterAnswer) { quizMsg.textContent += ` Next: what does the computer answer to ${x}?`; guess.focus(); }
+    else { quizMsg.className = "msg"; quizMsg.textContent = ""; }
   }
   function check(x, y, button) {
     button.disabled = true;                 // the solve below runs on the page's thread
@@ -346,9 +348,9 @@ function lessonLong(root) {
     }
     quizMsg.className = "msg " + (ok ? "win" : "lose");
     quizMsg.textContent = ok ? (y === reply ? `Yes: the computer answers ${reply}.` : `Yes: ${y} also wins (the computer's first choice is ${reply}).`)
-                             : `No: the computer answers ${reply}. Look at the differences in the table, then try a new number.`;
+                             : `No: the computer answers ${reply}. Look at the differences in the table.`;
     if (ok && ++predicted >= 2) markDone("long");
-    setTimeout(ask, ok ? 1600 : 2600);   // a new number either way, so a revealed answer cannot be typed back
+    setTimeout(() => ask(true), 1200);   // a new number either way, so a revealed answer cannot be typed back
   }
   root.append(
     eyebrow("GEORGE SICHERMAN, 1990s"),
@@ -422,7 +424,7 @@ function lessonKunz(root) {
     for (let i = 0; i < mod; i++) board.append(el("span", { class: "height", "aria-hidden": "true" }, k[i]));
     const top = Math.max(...w);
     stats.innerHTML = `Position <b>${setText(gens)}</b> in ${mod} columns, one for each remainder when dividing by ${mod}. ` +
-      `Column heights: <b>${k.join(", ")}</b>. The largest unpaid amount is ${F}: the highest floor, ${top}, minus ${mod}.`;
+      `Column heights: <b>${k.join(", ")}</b>. The largest unpaid amount is ${F}: the largest floor, ${top}, minus ${mod}.`;
     key.textContent = `the engine's key: [${engineKey(gens, mod).join(" ")}]  (16 bytes)`;
     refocus(board, keep);
   }
@@ -434,7 +436,7 @@ function lessonKunz(root) {
         const total = kunzColumns(gens, mod).k.reduce((a, b) => a + b, 0);
         const ok = Number(guess.value) === total;
         quizMsg.className = "msg " + (ok ? "win" : "lose");
-        quizMsg.textContent = ok ? `Yes: the heights add up to ${total}, counting 1.` : "Not quite. Add the numbers under the columns; 1 counts too.";
+        quizMsg.textContent = ok ? `Yes: the heights add up to ${total}, counting 1.` : "Not quite. Add the numbers under the columns; the amount 1 is already counted in column 1's height.";
         if (ok) markDone("kunz");
       } }, "Check"));
   }
@@ -447,7 +449,7 @@ function lessonKunz(root) {
     story("In 2020 Eaton, Herzinger, Pierce and Thompson wrote Sylver Coinage in the language of algebra: once the named numbers share no common factor, the paid amounts form a <b>numerical semigroup</b>.",
           "Line the amounts up in columns by their remainder when divided by the smallest coin m. Going down a column adds m each step, so once an amount is paid, everything below it in that column is paid too. Each column is described by one number, its count of unpaid amounts. These counts are the position's <b>Kunz coordinates</b>, after Ernst Kunz, who classified numerical semigroups by them in 1987.",
           "The campaign's Kunz engine (<code>sylver/kunz_solver.cpp</code>, 2026) keeps each position it searches as 16 bytes, one column height per byte, using the columns of the position it starts from and zeros in the unused bytes. Its largest replay, {16, 26, 82, 88, 701}, held 633,734,956 positions in 14.2 GiB; <code>native_solver.cpp</code> would have needed about 90 GB.",
-          "Name a copper amount and watch the columns fall. Like the engine, the board keeps the columns of the starting coin, even after you name a smaller amount."),
+          "Name a copper amount and watch the columns fall. Like the engine, the board keeps the columns of the starting coin, even after you name a smaller amount; the heights are then no longer that position's own Kunz coordinates."),
     el("div", { class: "game" }, picks, board,
       el("p", { class: "note" }, "Copper: unpaid (red 1: naming it loses). Grey with a gold bar: the first paid amount in its column, the column's floor. Plain grey: paid. The number under a column is its height."),
       said, stats, key, quiz, quizMsg),
