@@ -1,4 +1,4 @@
-// The Sylver Mint: nine small games that retrace the history of Sylver
+// The Sylver Mint: ten small games that retrace the history of Sylver
 // Coinage. Every game runs the repository's exact evaluator (solver.js). The
 // answer table and the reply-38 frontier are exported so the node tests can
 // check them against the campaign audits.
@@ -329,12 +329,17 @@ function lessonLong(root) {
     }
     refocus(tiles, keep);
   }
-  function ask() {
+  // After an answer its explanation stays up, and the next question is announced with it.
+  function ask(afterAnswer = false) {
     const x = 2 * (50 + Math.floor(Math.random() * 50)) + 1;   // an odd number from 101 to 199
-    const guess = el("input", { type: "number", min: "1", step: "1", id: "long-guess", "aria-label": `Your prediction for ${x}` });
+    const guess = el("input", { type: "number", min: "1", step: "1", id: "long-guess" });
     quiz.replaceChildren(el("label", { for: "long-guess" }, `Predict: what does the computer answer to ${x}?`), guess,
       el("button", { class: "ctrl primary", type: "button", onclick: (e) => check(x, Number(guess.value), e.currentTarget) }, "Check"));
-    quizMsg.className = "msg"; quizMsg.textContent = "";
+    if (afterAnswer) {
+      quizMsg.textContent += ` Next: what does the computer answer to ${x}?`;
+      if (document.activeElement === document.body) guess.focus();   // unless the player has moved on
+    }
+    else { quizMsg.className = "msg"; quizMsg.textContent = ""; }
   }
   function check(x, y, button) {
     button.disabled = true;                 // the solve below runs on the page's thread
@@ -346,9 +351,9 @@ function lessonLong(root) {
     }
     quizMsg.className = "msg " + (ok ? "win" : "lose");
     quizMsg.textContent = ok ? (y === reply ? `Yes: the computer answers ${reply}.` : `Yes: ${y} also wins (the computer's first choice is ${reply}).`)
-                             : `No: the computer answers ${reply}.`;
+                             : `No: the computer answers ${reply}. Look at the differences in the table.`;
     if (ok && ++predicted >= 2) markDone("long");
-    if (ok) setTimeout(ask, 1600); else button.disabled = false;
+    setTimeout(() => ask(true), 1200);   // a new number either way, so a revealed answer cannot be typed back
   }
   root.append(
     eyebrow("GEORGE SICHERMAN, 1990s"),
@@ -367,7 +372,95 @@ function lessonLong(root) {
   draw();
 }
 
-// ---------------------------------------------------------------- lesson 6: Blok's mirror
+// ---------------------------------------------------------------- lesson 6: Kunz's columns
+// Columns of amounts by remainder modulo `mod`, which must be paid (it is the starting position's
+// smallest coin, which stays named). Going down a column adds mod, so everything below a column's
+// first paid amount w_i is paid, and the column is described by its height k_i = (w_i - i) / mod,
+// its count of unpaid amounts. With mod the smallest coin these are the Kunz coordinates;
+// sylver/kunz_solver.cpp keeps its starting position's columns, as this lesson does.
+function kunzColumns(gens, mod = Math.min(...gens)) {
+  const F = frobenius(gens), pay = paidUpTo(gens, F + mod);
+  const w = Array.from({ length: mod }, (_, i) => { let n = i; while (!pay[n]) n += mod; return n; });
+  return { m: mod, w, k: w.map((x, i) => (x - i) / mod), F };
+}
+// The 16 bytes kunz_solver.cpp keys a position by: one height per column, zeros in the unused lanes.
+const engineKey = (gens, mod) => [...kunzColumns(gens, mod).k, ...Array(16 - mod).fill(0)];
+const KUNZ_START = [[5, 7], [7, 9, 11], [6, 9, 20], [8, 11, 13]];
+function lessonKunz(root) {
+  let gens, mod, asked = false;
+  const board = el("div", { class: "kunz" }), stats = el("p", { class: "note" }), key = el("p", { class: "formula small" });
+  const said = el("p", { class: "msg", "aria-live": "polite" });
+  const quiz = el("div", { class: "row" }), quizMsg = el("p", { class: "msg", "aria-live": "polite" });
+  const picks = el("div", { class: "row" });
+  function start(g) {
+    gens = minimal(g); mod = gens[0]; asked = false;
+    quiz.replaceChildren(); quizMsg.textContent = ""; said.className = "msg"; said.textContent = "";
+    draw();
+  }
+  function name(x) {
+    if (x === 1) { said.className = "msg lose"; said.textContent = "Naming 1 would lose the game, so this lesson leaves it unpaid."; return; }
+    const before = kunzColumns(gens, mod).k;
+    gens = minimal([...gens, x]);
+    const after = kunzColumns(gens, mod).k;
+    const fell = after.map((h, i) => (h < before[i] ? i : null)).filter((i) => i !== null);
+    said.className = "msg";
+    said.textContent = `You name ${x}. ${fell.length === 1 ? "Column" : "Columns"} ${fell.join(", ")} ${fell.length === 1 ? "falls" : "fall"}; the heights are now ${after.join(", ")}.`;
+    quizMsg.textContent = "";
+    draw();
+    if (!asked) ask(); else { const g = document.getElementById("kunz-guess"); if (g) g.value = ""; }
+  }
+  function draw() {
+    const keep = focusedTile(board);
+    const { w, k, F } = kunzColumns(gens, mod);
+    const rows = Math.max(...k) + 1;
+    board.style.gridTemplateColumns = `repeat(${mod}, minmax(0, 56px))`;
+    board.replaceChildren();
+    for (let r = 0; r < rows; r++) {
+      for (let i = 0; i < mod; i++) {
+        const n = r * mod + i, unpaid = n < w[i], floor = n === w[i];
+        board.append(el("button", { class: "tile sm" + (unpaid ? (n === 1 ? " one" : "") : floor ? " paid floor" : " paid"), type: "button",
+          "data-n": n, disabled: !unpaid,
+          "aria-label": `${n}, column ${i}, ${unpaid ? "unpaid" : floor ? "the column's first paid amount" : "paid"}`,
+          onclick: () => name(n) }, n));
+      }
+    }
+    for (let i = 0; i < mod; i++) board.append(el("span", { class: "height", "aria-hidden": "true" }, k[i]));
+    const top = Math.max(...w);
+    stats.innerHTML = `Position <b>${setText(gens)}</b> in ${mod} columns, one for each remainder when dividing by ${mod}. ` +
+      `Column heights: <b>${k.join(", ")}</b>. The largest unpaid amount is ${F}: the largest floor, ${top}, minus ${mod}.`;
+    key.textContent = `the engine's key: [${engineKey(gens, mod).join(" ")}]  (16 bytes)`;
+    refocus(board, keep);
+  }
+  function ask() {
+    asked = true;
+    const guess = el("input", { type: "number", min: "0", step: "1", id: "kunz-guess" });
+    quiz.replaceChildren(el("label", { for: "kunz-guess" }, "How many amounts are unpaid now? Read the heights, don't count the tiles."), guess,
+      el("button", { class: "ctrl primary", type: "button", onclick: () => {
+        const total = kunzColumns(gens, mod).k.reduce((a, b) => a + b, 0);
+        const ok = Number(guess.value) === total;
+        quizMsg.className = "msg " + (ok ? "win" : "lose");
+        quizMsg.textContent = ok ? `Yes: the heights add up to ${total}, counting 1.` : "Not quite. Add the numbers under the columns; the amount 1 is already counted in column 1's height.";
+        if (ok) markDone("kunz");
+      } }, "Check"));
+  }
+  KUNZ_START.forEach((g, i) => picks.append(el("button", { class: "chip", type: "button", "aria-pressed": String(i === 0),
+    onclick: (e) => { picks.querySelectorAll(".chip").forEach((c) => c.setAttribute("aria-pressed", "false"));
+      e.currentTarget.setAttribute("aria-pressed", "true"); start(g); } }, "start at " + setText(g))));
+  root.append(
+    eyebrow("NUMERICAL SEMIGROUPS, 2020–2026"),
+    el("h2", {}, "Kunz's columns"),
+    story("In 2020 Eaton, Herzinger, Pierce and Thompson wrote Sylver Coinage in the language of algebra: once the named numbers share no common factor, the paid amounts form a <b>numerical semigroup</b>.",
+          "Line the amounts up in columns by their remainder when divided by the smallest coin m. Going down a column adds m each step, so once an amount is paid, everything below it in that column is paid too. Each column is described by one number, its count of unpaid amounts. These counts are the position's <b>Kunz coordinates</b>, after Ernst Kunz, who classified numerical semigroups by them in 1987.",
+          "The campaign's Kunz engine (<code>sylver/kunz_solver.cpp</code>, 2026) keeps each position it searches as 16 bytes, one column height per byte, using the columns of the position it starts from and zeros in the unused bytes. Its largest replay, {16, 26, 82, 88, 701}, held 633,734,956 positions in 14.2 GiB; <code>native_solver.cpp</code> would have needed about 90 GB.",
+          "Name a copper amount and watch the columns fall. Like the engine, the board keeps the columns of the starting coin, even after you name a smaller amount; the heights are then no longer that position's own Kunz coordinates."),
+    el("div", { class: "game" }, picks, board,
+      el("p", { class: "note" }, "Copper: unpaid (red 1: naming it loses). Grey with a gold bar: the first paid amount in its column, the column's floor. Plain grey: paid. The number under a column is its height."),
+      said, stats, key, quiz, quizMsg),
+  );
+  start(KUNZ_START[0]);
+}
+
+// ---------------------------------------------------------------- lesson 7: Blok's mirror
 // Blok's pairing for the unpaid amounts of {8, 12} (checked in sylver/eight_twelve.py):
 // 2 with 3, 4 with 6, 4j+1 with 4j+3 and 8j+2 with 8j+6 for j >= 1; 1 has no mate.
 function mirrorMate(x) {
@@ -475,7 +568,7 @@ function lessonMirror(root) {
   start("beat");
 }
 
-// ---------------------------------------------------------------- lesson 7: answer the reply
+// ---------------------------------------------------------------- lesson 8: answer the reply
 // Certified losing positions the answer lesson names (sylver/short_certificates.py and the campaign audits).
 const NAMED = {
   C: [4, 6], E: [8, 14], F: [12, 14, 16], G: [8, 20, 26], I: [16, 20, 22, 24], K: [10, 16, 24], P0: [12, 16, 22],
@@ -554,7 +647,7 @@ function lessonAnswer(root) {
   ask(false);
 }
 
-// ---------------------------------------------------------------- lesson 8: assay a certificate
+// ---------------------------------------------------------------- lesson 9: assay a certificate
 // The even obligations of E = {8, 14} and their replies, as in node E of sylver/short_certificates.py.
 const E_REPLIES = { 2: [3, null], 4: [6, "C = {4, 6}"], 6: [4, "C = {4, 6}"], 10: [19, null], 12: [10, "{8, 10, 12, 14}, a member of the pairing family"],
                     18: [25, null], 20: [9, null], 26: [17, null], 34: [27, null] };
@@ -600,7 +693,7 @@ function lessonAssay(root) {
   );
 }
 
-// ---------------------------------------------------------------- lesson 9: the frontier
+// ---------------------------------------------------------------- lesson 10: the frontier
 // Every obligation of {16, 38}: k is the kind of move, s its status in the reply-38 record of October 9, 2026
 // (sylver/campaigns/r38-2026-10-09); tests/test_docs_mint.py derives the same statuses from its scan logs.
 const FRONTIER = [
@@ -743,6 +836,7 @@ const LESSONS = [
   ["enders", "Steal a strategy", "Hutchings, 1982", lessonEnders],
   ["quiet", "Quiet ends, short and long", "Winning Ways", lessonQuiet],
   ["long", "A long losing position", "Sicherman, 1990s", lessonLong],
+  ["kunz", "Kunz's columns", "Semigroups, 2020", lessonKunz],
   ["mirror", "Blok's mirror", "Blok, 2021", lessonMirror],
   ["answer", "Answer the reply", "Opening 16", lessonAnswer],
   ["assay", "Assay a certificate", "2026", lessonAssay],
@@ -771,7 +865,7 @@ function show(i, focus) {
 const lessonFromHash = () => LESSONS.findIndex(([id]) => "#" + id === location.hash);
 
 if (typeof module !== "undefined") {
-  module.exports = { E_REPLIES, FRONTIER, LESSONS, LONG, LONG_MAX, NAMED, TABLE, isPaid, minimal, mirrorMate, paidUpTo };
+  module.exports = { E_REPLIES, FRONTIER, KUNZ_START, LESSONS, LONG, LONG_MAX, NAMED, TABLE, engineKey, isPaid, kunzColumns, minimal, mirrorMate, paidUpTo };
 } else {
   window.addEventListener("hashchange", () => { const i = lessonFromHash(); if (i >= 0 && i !== current) show(i, false); });
   show(Math.max(0, lessonFromHash()), false);
