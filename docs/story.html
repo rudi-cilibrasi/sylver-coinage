@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Sylver Coinage Story</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='13' font-size='13'%3E%E2%9A%92%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=IBM+Plex+Mono:wght@400;600;700&family=Spectral:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+  :root {
+    color-scheme: dark;
+    --ground: #0c1017; --panel: #141a24; --line: #2b3546;
+    --text: #e9edf2; --muted: #98a3b2; --gilt: #d9b26a; --silver: #cfd5dd;
+  }
+  html, body { background: var(--ground); color: var(--text); }
+  body { margin: 0; font: 17px/1.5 "Spectral", Georgia, serif; }
+  .wrap { max-width: 1240px; margin: 0 auto; padding-inline: 16px; padding-block: 24px 40px; }
+  h1 {
+    font: 600 clamp(26px, 4vw, 40px)/1.15 "Cinzel", "Times New Roman", serif;
+    letter-spacing: 0.06em; margin: 0 0 6px; text-wrap: balance; color: var(--silver);
+  }
+  .lede { margin: 0 0 18px; color: var(--muted); max-width: 66ch; }
+  .stage { position: relative; width: 100%; max-width: 100%; aspect-ratio: 16 / 9; background: #141a24;
+           border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+  canvas { display: block; width: 100%; height: 100%; }
+  .controls { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 12px; }
+  button {
+    font: 600 15px "IBM Plex Mono", monospace; color: var(--ground); background: var(--gilt);
+    border: 0; border-radius: 4px; padding: 8px 16px; cursor: pointer; min-width: 92px;
+  }
+  button:focus-visible, input:focus-visible, .chap:focus-visible { outline: 2px solid var(--silver); outline-offset: 2px; }
+  .time { font: 14px "IBM Plex Mono", monospace; color: var(--muted); font-variant-numeric: tabular-nums; }
+  input[type=range] { flex: 1 1 240px; accent-color: var(--gilt); }
+  .chapters { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; padding: 0; list-style: none; }
+  .chap {
+    font: 13px "IBM Plex Mono", monospace; color: var(--muted); background: var(--panel);
+    border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px; cursor: pointer;
+  }
+  .chap[aria-current="true"] { color: var(--ground); background: var(--silver); border-color: var(--silver); }
+  .notes { margin-top: 26px; color: var(--muted); font-size: 15px; max-width: 72ch; }
+  .notes a { color: var(--gilt); }
+  body.render .wrap { padding: 0; max-width: none; }
+  body.render h1, body.render .lede, body.render .controls, body.render .chapters, body.render .notes { display: none; }
+  body.render .stage { width: 1920px; height: 1080px; aspect-ratio: auto; border: 0; border-radius: 0; }
+  @media (prefers-reduced-motion: reduce) { .chap { transition: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>The Sylver Coinage Story</h1>
+  <p class="lede">From Sylvester's coins in 1884 to machine-checked certificates in 2026: how one simple
+    game became a famous open problem, and how far the opening 16 has been pushed.</p>
+  <div class="stage"><canvas id="film" width="1920" height="1080" aria-label="Animated history of Sylver Coinage"></canvas></div>
+  <div class="controls">
+    <button id="play" type="button">Play</button>
+    <span class="time" id="time">0:00 / 0:00</span>
+    <input id="scrub" type="range" min="0" max="1000" value="0" aria-label="Position in the film">
+  </div>
+  <ul class="chapters" id="chapters"></ul>
+  <p class="notes">Sources: Berlekamp, Conway and Guy, <i>Winning Ways for your Mathematical Plays</i> (1982), chapter 18;
+    G. Sicherman, <i>Theory and Practice of Sylver Coinage</i>, Integers 2 (2002), and
+    <a href="https://sicherman.net/sylver/">sicherman.net/sylver</a>; T. Blok's reports (2021–2026);
+    <a href="https://oeis.org/A248380">OEIS A248380</a>; the campaign records at
+    <a href="https://github.com/rudi-cilibrasi/sylver-coinage">github.com/rudi-cilibrasi/sylver-coinage</a>.</p>
+  <p class="notes">Learn the ideas by playing them in <a href="mint.html">The Sylver Mint</a>, or play the
+    exact solver in the <a href="index.html">solver demo</a>.</p>
+</div>
+
+<script src="story.js"></script>
+<script>
+"use strict";
+(function () {
+  const canvas = document.getElementById("film"), ctx = canvas.getContext("2d");
+  const render = location.hash === "#render";
+  if (render) document.body.classList.add("render");
+  let t = 0, playing = false, last = null;
+  const play = document.getElementById("play"), scrub = document.getElementById("scrub"), time = document.getElementById("time");
+  const list = document.getElementById("chapters");
+  const fmt = (s) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
+  const chips = CHAPTERS.map((c, i) => {
+    const li = document.createElement("li"), b = document.createElement("button");
+    b.className = "chap"; b.type = "button"; b.textContent = c.name;
+    b.addEventListener("click", () => { t = c.start + 0.01; draw(); });
+    li.appendChild(b); list.appendChild(li);
+    return b;
+  });
+  function draw() {
+    renderAt(ctx, t);
+    scrub.value = Math.round((t / DURATION) * 1000);
+    time.textContent = `${fmt(t)} / ${fmt(DURATION)}`;
+    chips.forEach((b, i) => b.setAttribute("aria-current", String(t >= CHAPTERS[i].start && t < CHAPTERS[i].end)));
+  }
+  function tick(now) {
+    if (!playing) { last = null; return; }
+    if (last !== null) t = Math.min(DURATION, t + (now - last) / 1000);
+    last = now;
+    draw();
+    if (t >= DURATION) { playing = false; play.textContent = "Replay"; return; }
+    requestAnimationFrame(tick);
+  }
+  play.addEventListener("click", () => {
+    if (t >= DURATION) t = 0;
+    playing = !playing;
+    play.textContent = playing ? "Pause" : "Play";
+    if (playing) requestAnimationFrame(tick);
+  });
+  scrub.addEventListener("input", () => { t = (scrub.value / 1000) * DURATION; draw(); });
+  window.drawFrame = (s) => { t = s; renderAt(ctx, t); };
+  const ready = document.fonts ? document.fonts.ready : Promise.resolve();
+  Promise.all([ready, document.fonts ? Promise.all([
+    document.fonts.load('600 40px "Cinzel"'), document.fonts.load('600 40px "IBM Plex Mono"'),
+    document.fonts.load('400 40px "Spectral"'), document.fonts.load('italic 400 40px "Spectral"')]) : null])
+    .catch(() => null)
+    .then(() => { t = render ? 0 : 6.5; draw(); window.filmReady = true; });
+})();
+</script>
+</body>
+</html>
