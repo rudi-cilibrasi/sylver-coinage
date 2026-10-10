@@ -12,7 +12,7 @@ a six-minute animated history, from Sylvester's coins (1884) through
 ([MP4, 13.6 MB](https://github.com/rudi-cilibrasi/sylver-coinage/releases/download/story-2026-10-10/sylver-coinage-story.mp4)). Then
 learn the ideas by playing them in
 **[The Sylver Mint](https://rudi-cilibrasi.github.io/sylver-coinage/mint.html)**,
-ten small games that end at the reply-38 frontier.
+eleven small games that end at the reply-38 frontier.
 
 This repository is the complete, auditable record of a computational
 campaign on **Sylver Coinage after the opening move 16** (Conway's prize
@@ -301,7 +301,7 @@ and the [recorded pilot league](sylver/arena/data/league/REPORT.md).
 | `sylver/move26_data/` | exact outcome cache (267,847 rows) and scan artifacts |
 | `tests/` | 60+ unit and differential tests |
 | `docs/superpowers/` | design specs and implementation plans for each campaign |
-| `docs/story.*`, `docs/mint.*` | the history film (`render-story.mjs` renders it to MP4) and the Mint's ten lessons; `tests/test_docs_story.py` and `tests/test_docs_mint.py` check their facts against the audits |
+| `docs/story.*`, `docs/mint.*` | the history film (`render-story.mjs` renders it to MP4) and the Mint's eleven lessons; `tests/test_docs_story.py` and `tests/test_docs_mint.py` check their facts against the audits |
 
 ## Large artifacts
 
