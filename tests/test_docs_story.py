@@ -1,0 +1,159 @@
+import json
+import re
+import shutil
+import subprocess
+import unittest
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+LEDGER = ROOT / 'sylver/campaigns/o16-2026-10-09/audit.json'
+R38 = ROOT / 'sylver/campaigns/r38-2026-10-09/audit.json'
+
+# Draw the whole film at four frames a second on a recording 2D context: every
+# call must have finite numeric arguments, and every string drawn is collected.
+SCRIPT = r'''
+const root = process.argv[process.argv.length - 1];
+const film = require(root + "/docs/story.js");
+const texts = new Set(), bad = [];
+let frame = 0, captionLines = [];
+const state = { globalAlpha: 1, font: "10px sans-serif", fillStyle: "#000", strokeStyle: "#000", lineWidth: 1,
+                textAlign: "start", textBaseline: "alphabetic", letterSpacing: "0px", lineCap: "butt",
+                lineJoin: "miter", shadowBlur: 0, shadowColor: "transparent", globalCompositeOperation: "source-over" };
+const stack = [];
+const gradient = { addColorStop() {} };
+const methods = {
+  save() { stack.push({ ...state }); },
+  restore() { Object.assign(state, stack.pop()); },
+  measureText(s) { const px = Number((/([\d.]+)px/.exec(state.font) || [0, 10])[1]); return { width: String(s).length * px * 0.55 }; },
+  fillText(s, x, y) {
+    texts.add(String(s));
+    // captions are the 40px lines centred near the bottom of the stage
+    if (/ 40px /.test(state.font) && y > 820 && y < 1000 && state.globalAlpha > 0.9) captionLines.push(String(s));
+  },
+  strokeText(s) { texts.add(String(s)); },
+  createLinearGradient() { return gradient; },
+  createRadialGradient() { return gradient; },
+};
+const ctx = new Proxy(state, {
+  get(target, prop) {
+    if (prop in target) return target[prop];
+    const impl = methods[prop];
+    return (...args) => {
+      for (const v of args) if (typeof v === "number" && !Number.isFinite(v)) bad.push(`${String(prop)} at frame ${frame}: ${args}`);
+      return impl ? impl(...args) : undefined;
+    };
+  },
+  set(target, prop, value) {
+    if (typeof value === "number" && !Number.isFinite(value)) bad.push(`${String(prop)} = ${value} at frame ${frame}`);
+    target[prop] = value;
+    return true;
+  },
+  has(target, prop) { return prop in target || prop in methods; },
+});
+const frames = Math.ceil(film.DURATION * 4), captions = {};
+for (frame = 0; frame <= frames; frame++) {
+  captionLines = [];
+  film.renderAt(ctx, frame / 4);
+  const caption = captionLines.join(" ");
+  if (caption) captions[caption] = (captions[caption] || 0) + 0.25;
+}
+console.log(JSON.stringify({
+  duration: film.DURATION, frames,
+  chapters: film.CHAPTERS.map((c) => ({ name: c.name, start: c.start, end: c.end, dur: c.dur })),
+  answers: film.ANSWERS, ruledOut: film.RULED_OUT_38, texts: [...texts], bad: bad.slice(0, 20), stackDepth: stack.length, captions,
+  notes: film.NOTES.map((n) => n[1]), replies: film.REPLIES, transcript: film.transcript(),
+  years: film.CHAPTERS.map((c) => c.year),
+}));
+'''
+
+
+class StoryFilmTests(unittest.TestCase):
+    """docs/story.js must draw every frame cleanly and agree with the records."""
+
+    @classmethod
+    def setUpClass(cls):
+        node = shutil.which('node')
+        if node is None:
+            raise unittest.SkipTest('node is not installed')
+        out = subprocess.run([node, '-e', SCRIPT, str(ROOT)], capture_output=True, text=True, timeout=300, check=True)
+        cls.report = json.loads(out.stdout)
+        # Captions wrap at spaces, so join the drawn lines with spaces.
+        cls.drawn = ' '.join(cls.report['texts'])
+
+    def test_every_frame_draws_with_finite_coordinates(self):
+        self.assertEqual(self.report['bad'], [])
+        self.assertEqual(self.report['stackDepth'], 0)
+        self.assertGreater(self.report['frames'], 1000)
+
+    def test_chapters_tile_the_film(self):
+        chapters = self.report['chapters']
+        self.assertEqual(chapters[0]['start'], 0)
+        for before, after in zip(chapters, chapters[1:]):
+            self.assertEqual(before['end'], after['start'])
+        self.assertEqual(chapters[-1]['end'], self.report['duration'])
+        self.assertEqual(sum(c['dur'] for c in chapters), self.report['duration'])
+
+    def test_answers_match_the_ledger(self):
+        ledger = json.loads(LEDGER.read_text())['answers']
+        film = {int(r): a for r, a in self.report['answers'].items()}
+        expected = {int(r): row['answer'] for r, row in ledger.items() if int(r) <= 36}
+        self.assertEqual(film, expected)
+
+    def test_ruled_out_answers_to_38_match_the_audit(self):
+        refuted = json.loads(R38.read_text())['refuted_answers_to_38']
+        self.assertEqual(sorted(self.report['ruledOut']), sorted(int(m) for m in refuted))
+
+    def test_every_caption_stays_long_enough_to_read(self):
+        # Three words a second, plus a second to find the caption.
+        captions = self.report['captions']
+        self.assertGreater(len(captions), 20)
+        for caption, seconds in captions.items():
+            self.assertGreaterEqual(seconds, len(caption.split()) / 3 + 1, caption)
+
+    def test_replies_are_the_legal_even_replies_to_16(self):
+        self.assertEqual(self.report['replies'], [r for r in range(2, 39, 2) if r % 16])
+
+    def test_dated_notes_match_the_readme_headlines(self):
+        readme = (ROOT / 'README.md').read_text()
+        headline = {
+            'U': re.search(r'U=\{16,26,88\} is P and the reply 26 to the\s+opening 16 loses \((October \d+)\)', readme),
+            'Y': re.search(r'Y=\{16,28,58\} is P, so the reply 28 to the opening 16 loses \((October \d+)\)', readme),
+            'Z': re.search(r'Z=\{16,30,56\} is P, so the reply 30 to the opening 16 loses \((October \d+)\)', readme),
+            'ledger': re.search(r'Every reply to the opening 16 up to 36 now has an answer \((October \d+)\)', readme),
+        }
+        for name, match in headline.items():
+            self.assertIsNotNone(match, name)
+        day = {name: int(match[1].split()[1]) for name, match in headline.items()}
+        notes = self.report['notes']
+        self.assertTrue(any(n.startswith(f"Oct {day['U']}: 26 loses to 88") for n in notes), notes)
+        self.assertTrue(any(n.startswith(f"Oct {day['Y']}–{day['Z']}: 28 loses to 58, and 30 to 56") for n in notes), notes)
+        self.assertTrue(any(n.startswith(f"Oct {day['ledger']}: a ledger shows every reply up to 36") for n in notes), notes)
+
+    def test_timeline_runs_forward(self):
+        years = [y for y in self.report['years'] if y is not None]
+        self.assertEqual(years, sorted(years))
+
+    def test_transcript_has_every_caption(self):
+        lines = [line for chapter in self.report['transcript'] for line in chapter['lines']]
+        self.assertEqual(len(self.report['transcript']), len(self.report['chapters']))
+        self.assertTrue(all(chapter['lines'] for chapter in self.report['transcript']))
+        for caption in self.report['captions']:
+            self.assertIn(caption, ' '.join(lines), caption)
+
+    def test_quotes_are_verbatim_from_the_research_log(self):
+        log = ' '.join((ROOT / 'sylver/RESEARCH.md').read_text().split())
+        quotes = [q for chapter in self.report['transcript'] for line in chapter['lines'] for q in re.findall(r'“([^”]+)”', line)]
+        letter = [q for q in quotes if 'Blok' not in q]   # the news-page quote is checked against sicherman.net by hand
+        self.assertGreaterEqual(len(letter), 2)
+        for quote in letter:
+            self.assertIn(quote, log, quote)
+
+    def test_key_facts_are_on_screen(self):
+        for fact in ('1884', 'a·b − a − b', 'Winning Ways', 'GEORGE SICHERMAN', 'THOMAS BLOK', '403,200', '381,091',
+                     '49,337', '633,734,956', '{16, 26, 54, 60, 62}', '{16, 28, 36, 38, 58}', 'OEIS A248380',
+                     'Still open'):
+            self.assertIn(fact, self.drawn, fact)
+
+
+if __name__ == '__main__':
+    unittest.main()
