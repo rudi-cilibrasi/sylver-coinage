@@ -25,7 +25,7 @@ exceeds 10^12 states.
 
 For the week of September 21–27, see the [progress summary](docs/progress/2026-09-28-week.md).
 
-- **Reply 38: four new P-positions refute five answers (October 9).**
+- **Reply 38: four P-positions refute five answers (October 9).**
   - I={16,20,22,24}, B28={16,28,38,40}, B24={16,24,38,44} and
     B56={16,38,56,60} are P. Each is short, and every one of its Quiet End
     obligations is covered:
@@ -36,6 +36,11 @@ For the week of September 21–27, see the [progress summary](docs/progress/2026
   - So 24, 28, 40, 44 and 56 do not answer the reply 38. {16,28,38} is N,
     which settles the question the Y record left open.
   - No answer to 38 is known yet. It remains the lowest unanswered reply.
+  - I and B24 were already on Sicherman's
+    [list of P-positions](https://sicherman.net/sylver/ppos.html) (updated
+    September 28), so these certificates confirm them independently. B28 and
+    B56 are not on that list. (Corrected October 10: this entry first called
+    all four new.)
 
   See the [record](sylver/campaigns/r38-2026-10-09/RESULT.md).
 - **Every reply to the opening 16 up to 36 now has an answer (October 9).**
@@ -50,8 +55,11 @@ For the week of September 21–27, see the [progress summary](docs/progress/2026
   See the [ledger](sylver/campaigns/o16-2026-10-09/RESULT.md).
 - **Z={16,30,56} is P, so the reply 30 to the opening 16 loses (October 8).**
   - **The certificate.** All 52 of Z's Quiet End obligations are covered.
-    - Move 44 is answered by 40 into a second new short P-position,
-      Z′={16,30,40,44}, whose 40 obligations the same audit covers.
+    - Move 44 is answered by 40 into a second short P-position,
+      Z′={16,30,40,44}, whose 40 obligations the same audit covers. Z′ is on
+      Sicherman's [list of P-positions](https://sicherman.net/sylver/ppos.html),
+      so this confirms it independently (corrected October 10: this entry
+      first called it new).
     - The finite witnesses are replayed by `native_solver` and the Python
       evaluator with equal state counts: 896,749,503 states.
     - The two largest, at 297 and 262 million states, are too large for

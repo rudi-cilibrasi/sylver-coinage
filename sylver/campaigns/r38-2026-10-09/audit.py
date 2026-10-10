@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"""Four new P-positions after the opening 16, and the answers to the reply 38 they refute.
+"""Four P-positions after the opening 16, and the answers to the reply 38 they refute.
+
+(I and B24 were already on Sicherman's list of P-positions; see the record.)
 
 I={16,20,22,24}, B28={16,28,38,40}, B24={16,24,38,44} and B56={16,38,56,60}
 each have gcd two and a short (quiet ender) half. So by the Quiet End Theorem each is P exactly when
