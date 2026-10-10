@@ -290,7 +290,7 @@ and the [recorded pilot league](sylver/arena/data/league/REPORT.md).
 | `sylver/move26_data/` | exact outcome cache (267,847 rows) and scan artifacts |
 | `tests/` | 60+ unit and differential tests |
 | `docs/superpowers/` | design specs and implementation plans for each campaign |
-| `docs/story.*`, `docs/mint.*` | the history film (`render-story.mjs` renders it to MP4) and the Mint's seven lessons; `tests/test_docs_story.py` and `tests/test_docs_mint.py` check their facts against the audits |
+| `docs/story.*`, `docs/mint.*` | the history film (`render-story.mjs` renders it to MP4) and the Mint's nine lessons; `tests/test_docs_story.py` and `tests/test_docs_mint.py` check their facts against the audits |
 
 ## Large artifacts
 

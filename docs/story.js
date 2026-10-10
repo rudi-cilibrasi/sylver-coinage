@@ -493,8 +493,8 @@ chapter(28, 2022, "2021–2026 · THOMAS BLOK", (ctx, t, d) => {
 
 // 9. 2026: the campaign checks the published claims, and the authors answer
 const CONFIRMATIONS = [
-  [1.0, "JULY", "Replies 2 to 24 answered, confirming {16, 20, 34} from Sicherman's list and {10, 16, 24} from Blok's report"],
-  [5.5, "JULY 24", "A periodicity engine re-derives {8, 10, 22}, Sicherman's first long losing position, from the 1990s"],
+  [1.0, "JULY", "Replies 2 to 24 answered, confirming {16, 20, 34} and {10, 16, 24}, both on Sicherman's list"],
+  [5.5, "JULY 23", "A periodicity engine re-derives {8, 10, 22}, Sicherman's first long losing position, from the 1990s"],
   [12.5, "AUG 27", "Sicherman's news page: the work “confirms Thomas Blok's analysis of {16}”"],
   [20.5, "SEPT 3", "Blok proves {16, 26, 54, 60, 62} is a losing position"],
   [23.0, "SEPT 5", "The campaign confirms it independently"],
@@ -520,7 +520,7 @@ chapter(32, 2026.3, "2026 · CONFIRMATIONS", (ctx, t, d) => {
     text(ctx, "George Sicherman", 1210, 630 + dy, { size: 30, weight: 600, color: "#3a4352", alpha: la });
     text(ctx, "in a letter, August 27, 2026", 1210, 670 + dy, { size: 26, style: "italic", color: "#5b6676", alpha: la });
   }
-  caption(ctx, "In July 2026 an AI-assisted campaign began answering the replies to 16. Every finite computation was replayed by two independent programs.", a * window_(t, 0.5, 10.5, 0.5));
+  caption(ctx, "In July 2026 an AI-assisted campaign began answering the replies to 16. Every finite computation its certificates use was replayed by two independent programs.", a * window_(t, 0.5, 10.5, 0.5));
   caption(ctx, "On the way it re-checked published claims, like Sicherman's {8, 10, 22}, first computed on a network of SUN workstations in the 1990s.", a * window_(t, 10.5, 20.5, 0.5));
   caption(ctx, "In September Thomas Blok proved new losing positions after 16, and the campaign confirmed the first within two days.", a * window_(t, 20.5, d, 0.5));
 }, "Confirmations");
@@ -615,17 +615,38 @@ function renderAt(ctx, t) {
   return shown;
 }
 
-// The film as text: each chapter's heading and its captions in order, from drawing every
-// quarter second on a context that ignores the drawing.
-const IGNORE = new Proxy({}, {
-  get: (o, k) => (k === "measureText" ? () => ({ width: 0 }) : typeof k === "string" && k.startsWith("create") ? () => ({ addColorStop() {} }) : () => {}),
-  set: () => true,
-  has: () => false,
-});
+// The film as text: each chapter's heading, then everything it writes that reads as a phrase
+// (captions, cards, timelines, quotes) in order of appearance, from drawing every quarter second
+// on a context that only collects text. Measured widths are zero, so no line is wrapped.
+const UNTRANSCRIBED = new Set(["PLAYER A", "PLAYER B", ...MILESTONES.map(([, label]) => label)]);   // labels, not content
 function transcript() {
+  let written = [];
+  const collect = new Proxy({}, {
+    get: (o, k) => (k === "measureText" ? () => ({ width: 0 })
+      : k === "fillText" ? (s) => { written.push(String(s)); }
+      : typeof k === "string" && k.startsWith("create") ? () => ({ addColorStop() {} }) : () => {}),
+    set: () => true,
+    has: () => false,
+  });
   return CH.map((c) => {
     const lines = [];
-    for (let t = 0; t < c.dur; t += 0.25) for (const line of renderAt(IGNORE, c.start + t)) if (!lines.includes(line)) lines.push(line);
+    for (let t = 0; t < c.dur; t += 0.25) {
+      written = [];
+      renderAt(collect, c.start + t);
+      // A label in capitals (a year, a date, a card or book title) introduces the next phrase drawn;
+      // anything else in between (a tile's number, a single mark) cancels it.
+      let label = null;
+      for (const line of written) {
+        if (line === c.brow || UNTRANSCRIBED.has(line)) continue;
+        if (/^(\d{4}|[A-Z][A-Z' ]*[A-Z](\s\d{1,2})?)$/.test(line)) { label = label ? `${label} ${line}` : line; continue; }
+        const words = line.trim().split(/\s+/).length;
+        const phrase = words >= 3 || (words === 2 && (/\d/.test(line) || /^[A-Z][a-z]+ [A-Z][a-z]+$/.test(line)));
+        if (!phrase) { label = null; continue; }
+        const entry = label ? `${label}: ${line}` : line;
+        label = null;
+        if (!lines.includes(entry) && !lines.includes(line)) lines.push(entry);
+      }
+    }
     return { name: c.name, heading: c.brow, start: c.start, lines: lines.length ? lines : c.text || [] };
   });
 }

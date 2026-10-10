@@ -37,13 +37,13 @@ function el(tag, attrs = {}, ...kids) {
 }
 const P = (html) => { const p = document.createElement("p"); p.innerHTML = html; return p; };
 function story(...paras) { return el("div", { class: "story" }, ...paras.map(P)); }
-// Rebuilding a board drops keyboard focus: note the focused tile's number first, then
-// put focus back on that number, or on the next tile that is still enabled.
+// Rebuilding a board drops keyboard focus: note the focused tile's number first, then put focus
+// back on that number, or the next enabled tile above it, or the nearest below it (1 only as a last resort).
 const focusedTile = (board) => (board.contains(document.activeElement) && document.activeElement.dataset.n ? Number(document.activeElement.dataset.n) : null);
 function refocus(board, n) {
   if (n === null) return;
-  const tiles = [...board.querySelectorAll("button[data-n]")];
-  const next = tiles.find((b) => Number(b.dataset.n) >= n && !b.disabled) || tiles.find((b) => !b.disabled);
+  const live = [...board.querySelectorAll("button[data-n]")].filter((b) => !b.disabled);
+  const next = live.find((b) => Number(b.dataset.n) >= n) || live.filter((b) => b.dataset.n !== "1").pop() || live[0];
   if (next) next.focus();
 }
 const eyebrow = (label) => el("p", { class: "eyebrow" }, `LESSON ${current + 1} · ${label}`);
@@ -293,7 +293,7 @@ function lessonQuiet(root) {
 // ---------------------------------------------------------------- lesson 5: Sicherman's long position
 // {8, 10, 22} is long: its half {4, 5, 11} is not a quiet ender, so every odd number stays a
 // possible move. Each odd move x leaves a finite game, which the evaluator solves here.
-const LONG = [8, 10, 22];
+const LONG = [8, 10, 22], LONG_MAX = 199;   // larger odd moves take seconds to solve in a browser
 function longReply(x) {
   const s = new Engine([...LONG, x]);
   return { reply: s.winningMove(s.initialState), states: s.memo.size };
@@ -303,13 +303,13 @@ function lessonLong(root) {
   const tiles = el("div", { class: "tiles" });
   const rows = el("tbody");
   const tried = new Map();
-  const custom = el("input", { type: "number", min: "3", max: "999", step: "2", value: "101", id: "long-x", "aria-label": "Any odd number up to 999" });
+  const custom = el("input", { type: "number", min: "3", max: String(LONG_MAX), step: "2", value: "101", id: "long-x", "aria-label": `Any odd number up to ${LONG_MAX}` });
   const quiz = el("div", { class: "row" });
   const quizMsg = el("p", { class: "msg", "aria-live": "polite" });
   let predicted = 0;
 
   function name(x) {
-    if (!(Number.isInteger(x) && x >= 3 && x <= 999 && x % 2)) { msg.className = "msg"; msg.textContent = "Choose an odd number from 3 to 999."; return; }
+    if (!(Number.isInteger(x) && x >= 3 && x <= LONG_MAX && x % 2)) { msg.className = "msg"; msg.textContent = `Choose an odd number from 3 to ${LONG_MAX}.`; return; }
     const { reply, states } = longReply(x);
     tried.set(x, reply);
     const dest = minimal([...LONG, x, reply]);
@@ -330,13 +330,14 @@ function lessonLong(root) {
     refocus(tiles, keep);
   }
   function ask() {
-    const x = 2 * (100 + Math.floor(Math.random() * 400)) + 1;
+    const x = 2 * (50 + Math.floor(Math.random() * 50)) + 1;   // an odd number from 101 to 199
     const guess = el("input", { type: "number", min: "1", step: "1", id: "long-guess", "aria-label": `Your prediction for ${x}` });
     quiz.replaceChildren(el("label", { for: "long-guess" }, `Predict: what does the computer answer to ${x}?`), guess,
-      el("button", { class: "ctrl primary", type: "button", onclick: () => check(x, Number(guess.value)) }, "Check"));
+      el("button", { class: "ctrl primary", type: "button", onclick: (e) => check(x, Number(guess.value), e.currentTarget) }, "Check"));
     quizMsg.className = "msg"; quizMsg.textContent = "";
   }
-  function check(x, y) {
+  function check(x, y, button) {
+    button.disabled = true;                 // the solve below runs on the page's thread
     const { reply } = longReply(x);
     let ok = y === reply;
     if (!ok && Number.isInteger(y) && y > 1) {
@@ -347,7 +348,7 @@ function lessonLong(root) {
     quizMsg.textContent = ok ? (y === reply ? `Yes: the computer answers ${reply}.` : `Yes: ${y} also wins (the computer's first choice is ${reply}).`)
                              : `No: the computer answers ${reply}.`;
     if (ok && ++predicted >= 2) markDone("long");
-    if (ok) setTimeout(ask, 1600);
+    if (ok) setTimeout(ask, 1600); else button.disabled = false;
   }
   root.append(
     eyebrow("GEORGE SICHERMAN, 1990s"),
@@ -355,13 +356,13 @@ function lessonLong(root) {
     story("Halve {8, 10, 22} and you get {4, 5, 11}. Its unpaid amounts are 1, 2, 3, 6 and 7, and they do not pair up: 1 and 6 are both unpaid. So {8, 10, 22} is <b>long</b>: no quiet end trims its odd moves, and every odd number from 3 up is still a legal move.",
           "George Sicherman proved it is a losing position anyway. Try to beat it: every odd move you name leaves a finite game, and the computer solves it on the spot."),
     el("div", { class: "game" }, tiles,
-      el("div", { class: "row" }, el("label", { for: "long-x" }, "or any odd number up to 999"), custom,
+      el("div", { class: "row" }, el("label", { for: "long-x" }, `or any odd number up to ${LONG_MAX}`), custom,
          el("button", { class: "ctrl", type: "button", onclick: () => name(Number(custom.value)) }, "Name it")),
       msg,
       el("div", { class: "table-wrap" }, el("table", {}, el("thead", {}, el("tr", {}, ...["you", "computer", "difference"].map((h) => el("th", {}, h)))), rows)),
       quiz, quizMsg),
-    story("There are infinitely many odd moves, so trying them one by one can never finish. Sicherman used the <b>Periodicity Theorem</b>: when every named number is even, the outcomes of the odd moves eventually repeat, so a finite computation covers them all. He ran it on a network of SUN workstations in the 1990s.",
-          "In 2026 the campaign's periodicity engine checked his result independently: from 49 on, the outcomes repeat every 8, and every odd move loses. He wrote that he was “relieved to learn that your results agree with mine.”"),
+    story("There are infinitely many odd moves, so trying them one by one can never finish. Sicherman used the <b>Periodicity Theorem</b>: when the named numbers have greatest common divisor 2, the analysis of the odd moves eventually repeats, so a finite computation covers them all. He ran it on a network of SUN workstations in the 1990s.",
+          "In 2026 the campaign's periodicity engine checked his result independently: from 49 on, its analysis repeats every 8, and no odd move wins. He wrote that he was “relieved to learn that your results agree with mine.”"),
   );
   draw();
 }
@@ -378,7 +379,7 @@ function mirrorMate(x) {
 }
 const MIRROR_TOP = 63, MIRROR_LIMIT = 1200;
 function lessonMirror(root) {
-  let named, paid, over, mode;
+  let named, paid, over, mode, game = 0;
   const msg = el("p", { class: "msg", "aria-live": "polite" });
   const board = el("div", { class: "tiles mirror" });
   const pairs = el("p", { class: "note" });
@@ -386,12 +387,14 @@ function lessonMirror(root) {
   const big = el("input", { type: "number", min: "1", max: "999", value: "101", id: "mirror-x", "aria-label": "Any unpaid number up to 999" });
   const unpaid = () => { const out = []; for (let n = 1; n <= MIRROR_LIMIT - 8; n++) if (!paid[n]) out.push(n); return out; };
   const recount = () => { paid = paidUpTo([8, 12, ...named], MIRROR_LIMIT); };
+  const later = (f, ms) => { const mine = game; setTimeout(() => { if (mine === game) f(); }, ms); };
   function start(m) {
+    game++;
     mode = m; named = []; over = false; recount();
     msg.className = "msg";
     msg.textContent = mode === "beat" ? "Your move: name any unpaid amount. The mirror answers." : "The computer moves first. Answer with the mate.";
     draw();
-    if (mode === "hold") setTimeout(computerMoves, 500);
+    if (mode === "hold") later(computerMoves, 500);
   }
   function play(x) { named.push(x); recount(); }
   function finished(loser) {
@@ -420,7 +423,7 @@ function lessonMirror(root) {
     if (unpaid().length === 1) { finished("computer"); return; }
     msg.className = "msg win"; msg.textContent = `Right: ${x} pairs with ${named[named.length - 2]}.`;
     draw();
-    setTimeout(computerMoves, 900);
+    later(computerMoves, 900);
   }
   function computerMoves() {
     if (over) return;
@@ -447,7 +450,7 @@ function lessonMirror(root) {
     const live = unpaid();
     const finite = live[live.length - 1] < MIRROR_LIMIT - 64;
     const shown = live.filter((n) => n > 1 && n < mirrorMate(n)).slice(0, 12).map((n) => `${n}–${mirrorMate(n)}`);
-    pairs.textContent = `Unpaid: 1, and the pairs ${shown.join(", ")}` +
+    pairs.textContent = !shown.length ? "Unpaid: only 1." : `Unpaid: 1, and the pairs ${shown.join(", ")}` +
       (finite ? (live.length - 1 > 2 * shown.length ? ", …" : ".") : ", … and infinitely many more.");
   }
   [["beat", "Try to beat the mirror"], ["hold", "Hold the mirror yourself"]].forEach(([m, label], i) =>
@@ -759,13 +762,16 @@ function show(i, focus) {
   LESSONS[i][3](main);
   if (i < LESSONS.length - 1) main.append(el("div", { class: "next" }, el("button", { class: "ctrl primary", type: "button", onclick: () => show(i + 1, true) }, `Next: ${LESSONS[i + 1][1]}`)));
   renderNav();
+  // on phones the lesson list scrolls sideways: bring the current lesson into it (the page itself does not move)
+  const list = document.getElementById("lessons"), here = list.querySelector('.lesson-btn[aria-current="page"]');
+  if (here) list.scrollLeft += here.getBoundingClientRect().left - list.getBoundingClientRect().left - 16;
   try { history.replaceState(null, "", "#" + LESSONS[i][0]); } catch (e) { /* not allowed here */ }
   if (focus) main.focus({ preventScroll: false });
 }
 const lessonFromHash = () => LESSONS.findIndex(([id]) => "#" + id === location.hash);
 
 if (typeof module !== "undefined") {
-  module.exports = { E_REPLIES, FRONTIER, LESSONS, LONG, NAMED, TABLE, isPaid, minimal, mirrorMate, paidUpTo };
+  module.exports = { E_REPLIES, FRONTIER, LESSONS, LONG, LONG_MAX, NAMED, TABLE, isPaid, minimal, mirrorMate, paidUpTo };
 } else {
   window.addEventListener("hashchange", () => { const i = lessonFromHash(); if (i >= 0 && i !== current) show(i, false); });
   show(Math.max(0, lessonFromHash()), false);

@@ -30,7 +30,8 @@
     font: 600 15px "IBM Plex Mono", monospace; color: var(--ground); background: var(--gilt);
     border: 0; border-radius: 4px; padding: 8px 16px; cursor: pointer; min-width: 92px;
   }
-  button:focus-visible, input:focus-visible, .chap:focus-visible { outline: 2px solid var(--silver); outline-offset: 2px; }
+  button:focus-visible, input:focus-visible, .chap:focus-visible, summary:focus-visible { outline: 2px solid var(--silver); outline-offset: 2px; }
+  canvas:focus-visible { outline: 3px solid var(--gilt); outline-offset: -3px; }
   .time { font: 14px "IBM Plex Mono", monospace; color: var(--muted); font-variant-numeric: tabular-nums; }
   input[type=range] { flex: 1 1 240px; accent-color: var(--gilt); }
   .chapters { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; padding: 0; list-style: none; }
@@ -61,7 +62,7 @@
   <h1>The Sylver Coinage Story</h1>
   <p class="lede">From Sylvester's coins in 1884 to machine-checked certificates in 2026: how one simple
     game became a famous open problem, and how far the opening 16 has been pushed.</p>
-  <div class="stage"><canvas id="film" width="1920" height="1080" role="img" aria-label="Animated history of Sylver Coinage; the transcript below has every caption"></canvas></div>
+  <div class="stage"><canvas id="film" width="1920" height="1080" tabindex="0" role="img" aria-label="Animated history of Sylver Coinage; the transcript below has every caption"></canvas></div>
   <p class="now" id="now" aria-hidden="true"></p>
   <div class="controls">
     <button id="play" type="button">Play</button>
@@ -70,7 +71,7 @@
     <input id="scrub" type="range" min="0" max="1000" value="0" aria-label="Position in the film">
   </div>
   <ul class="chapters" id="chapters"></ul>
-  <p class="keys">Space plays and pauses; the arrow keys skip five seconds.</p>
+  <p class="keys">With the film or the page focused, Space plays and pauses and the arrow keys skip five seconds.</p>
   <details class="transcript" id="transcript"><summary>Read the film as text</summary></details>
   <p class="notes">Sources: Berlekamp, Conway and Guy, <i>Winning Ways for your Mathematical Plays</i> (1982), chapter 18;
     G. Sicherman, <i>Theory and Practice of Sylver Coinage</i>, Integers 2 (2002), and
@@ -121,9 +122,9 @@
     if (playing) requestAnimationFrame(tick);
   }
   play.addEventListener("click", toggle);
-  // Space or K plays and pauses; the arrow keys seek five seconds (not while a control has focus)
+  // Space or K plays and pauses and the arrow keys seek five seconds, when the film or the page has focus
   document.addEventListener("keydown", (e) => {
-    if (render || e.altKey || e.ctrlKey || e.metaKey || e.target.closest("button, input")) return;
+    if (render || e.altKey || e.ctrlKey || e.metaKey || (e.target !== document.body && e.target !== canvas)) return;
     if (e.key === " " || e.key === "k") { e.preventDefault(); toggle(); }
     else if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
       e.preventDefault();

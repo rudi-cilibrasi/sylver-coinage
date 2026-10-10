@@ -93,7 +93,7 @@ console.log(JSON.stringify({
   table: mint.TABLE, frontier: mint.FRONTIER, lessons: mint.LESSONS.map((l) => l[0]), solved,
   minimal: mint.minimal([16, 24, 10, 32, 48]), long: mint.LONG, mirror: { ...mirror, failures: mirror.failures.slice(0, 10) },
   mates: Array.from({ length: 420 }, (_, i) => mint.mirrorMate(i + 1)),
-  named: mint.NAMED, eReplies: mint.E_REPLIES,
+  named: mint.NAMED, eReplies: mint.E_REPLIES, longMax: mint.LONG_MAX,
 }));
 '''
 
@@ -203,7 +203,17 @@ class MintTests(unittest.TestCase):
         tail = analyze_odd_tail((8, 10, 22), 201)
         self.assertEqual((tail.p_values, tail.period_start, tail.period_length), ((), 49, 8))
         text = (ROOT / 'docs/mint.js').read_text()
-        self.assertIn('from 49 on, the outcomes repeat every 8, and every odd move loses', text)
+        self.assertIn('from 49 on, its analysis repeats every 8, and no odd move wins', text)
+        self.assertIn('when the named numbers have greatest common divisor 2', text)
+
+    def test_long_lesson_solves_only_quick_positions(self):
+        # Each odd move x leaves a finite game that the page solves on its own thread: about
+        # a second at 200 on a loaded host, but tens of seconds near 1000.
+        self.assertLessEqual(self.report['longMax'], 199)
+        text = (ROOT / 'docs/mint.js').read_text()
+        lesson = text[text.index('function lessonLong'):text.index('// ----', text.index('function lessonLong'))]
+        self.assertNotIn('999', lesson)
+        self.assertIn('2 * (50 + Math.floor(Math.random() * 50)) + 1', lesson)   # the quiz asks about 101 to 199
 
     def test_frontier_statuses_come_from_the_committed_scans(self):
         moves, status = recorded_r38_status()

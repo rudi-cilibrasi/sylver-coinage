@@ -140,6 +140,14 @@ class StoryFilmTests(unittest.TestCase):
         for caption in self.report['captions']:
             self.assertIn(caption, ' '.join(lines), caption)
 
+    def test_quotes_are_verbatim_from_the_research_log(self):
+        log = ' '.join((ROOT / 'sylver/RESEARCH.md').read_text().split())
+        quotes = [q for chapter in self.report['transcript'] for line in chapter['lines'] for q in re.findall(r'“([^”]+)”', line)]
+        letter = [q for q in quotes if 'Blok' not in q]   # the news-page quote is checked against sicherman.net by hand
+        self.assertGreaterEqual(len(letter), 2)
+        for quote in letter:
+            self.assertIn(quote, log, quote)
+
     def test_key_facts_are_on_screen(self):
         for fact in ('1884', 'a·b − a − b', 'Winning Ways', 'GEORGE SICHERMAN', 'THOMAS BLOK', '403,200', '381,091',
                      '49,337', '633,734,956', '{16, 26, 54, 60, 62}', '{16, 28, 36, 38, 58}', 'OEIS A248380',
