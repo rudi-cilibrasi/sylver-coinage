@@ -22,9 +22,28 @@ for (const [reply, answer, , , finite] of mint.TABLE) {
   try { solved[reply] = { move: s.winningMove(s.initialState), states: s.memo.size }; }
   catch (e) { solved[reply] = { error: String(e) }; }
 }
+// Blok's mirror: play random games from {8, 12}; after each move the mate
+// must be unpaid, and the unpaid amounts must be 1 and whole pairs.
+const mirror = { games: 0, moves: 0, failures: [] };
+let seed = 7;
+const random = (n) => { seed = (seed * 48271) % 2147483647; return seed % n; };  // MINSTD, exact in doubles
+for (let game = 0; game < 300; game++) {
+  const named = [8, 12];
+  for (let turn = 0; turn < 60; turn++) {
+    const paid = mint.paidUpTo(named, 260);
+    const live = []; for (let n = 2; n <= 200; n++) if (!paid[n]) live.push(n);
+    if (!live.length) break;
+    for (const n of live) if (mint.mirrorMate(n) <= 256 && paid[mint.mirrorMate(n)]) mirror.failures.push(`${named}: ${n} unpaid, its mate paid`);
+    const x = live[random(live.length)], y = mint.mirrorMate(x);
+    if (mint.paidUpTo([...named, x], 260)[y]) mirror.failures.push(`${named} + ${x}: the mate ${y} is paid`);
+    named.push(x, y); mirror.moves += 2;
+  }
+  mirror.games++;
+}
 console.log(JSON.stringify({
   table: mint.TABLE, frontier: mint.FRONTIER, lessons: mint.LESSONS.map((l) => l[0]), solved,
-  minimal: mint.minimal([16, 24, 10, 32, 48]),
+  minimal: mint.minimal([16, 24, 10, 32, 48]), long: mint.LONG, mirror: { ...mirror, failures: mirror.failures.slice(0, 10) },
+  mates: Array.from({ length: 420 }, (_, i) => mint.mirrorMate(i + 1)),
 }));
 '''
 
@@ -108,6 +127,33 @@ class MintTests(unittest.TestCase):
         self.assertEqual(certified, refuted)
         ladder = {r['m'] for r in self.report['frontier'] if r['s'] == 'ladder'}
         self.assertEqual(ladder, {72, 88, 104, 120})
+
+    def test_blok_mirror_pairs_every_gap_of_8_12(self):
+        mates = self.report['mates']
+        for x in gaps([8, 12], 400):
+            y = mates[x - 1]
+            if x == 1:
+                self.assertIsNone(y)
+                continue
+            self.assertIn(y, gaps([8, 12], 420), x)
+            self.assertEqual(mates[y - 1], x, x)
+            self.assertLess(abs(x - y), x, x)  # 2x > y: the mirror's survival lemma needs it
+
+    def test_blok_mirror_always_has_a_legal_answer(self):
+        mirror = self.report['mirror']
+        self.assertEqual(mirror['failures'], [])
+        self.assertEqual(mirror['games'], 300)
+        self.assertGreater(mirror['moves'], 1000)
+
+    def test_long_lesson_matches_the_periodicity_engine(self):
+        from sylver.periodicity import analyze_odd_tail
+        self.assertEqual(self.report['long'], [8, 10, 22])
+        self.assertEqual(gaps([4, 5, 11]), [1, 2, 3, 6, 7])
+        self.assertFalse(is_short([4, 5, 11]))
+        tail = analyze_odd_tail((8, 10, 22), 201)
+        self.assertEqual((tail.p_values, tail.period_start, tail.period_length), ((), 49, 8))
+        text = (ROOT / 'docs/mint.js').read_text()
+        self.assertIn('from 49 on, the outcomes repeat every 8, and every odd move loses', text)
 
     def test_lessons_have_unique_ids(self):
         lessons = self.report['lessons']

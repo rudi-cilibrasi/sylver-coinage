@@ -83,6 +83,9 @@
   .tile.gold { border-color: var(--gilt); background: var(--gilt-soft); }
   .tile.pick { outline: 3px solid var(--gilt); outline-offset: 1px; }
   .tile.sm { min-width: 38px; height: 38px; font-size: 15px; border-radius: 8px; }
+  .tiles.mirror { display: grid; grid-template-columns: repeat(8, minmax(0, 56px)); }
+  .tiles.mirror .tile { min-width: 0; width: 100%; height: 50px; padding: 0; line-height: 1.05; }
+  .tile .mate { display: block; font: 500 11px var(--mono); color: var(--muted); }
   .msg { margin: 0; min-height: 1.5em; }
   .msg.win { color: var(--verdigris); font-weight: 600; }
   .msg.lose { color: var(--oxide); font-weight: 600; }
@@ -126,10 +129,11 @@
 <body>
 <div class="page">
   <header>
-    <div class="mark">SEVEN SMALL GAMES</div>
+    <div class="mark">NINE SMALL GAMES</div>
     <h1>The Sylver Mint</h1>
     <p class="sub">Learn Sylver Coinage the way its researchers did: play the game, find Sylvester's formula, steal a
-      strategy, test a quiet end, answer the replies to 16, assay a certificate, and look at today's frontier.
+      strategy, test a quiet end, try to beat Sicherman's long position, hold Blok's mirror, answer the replies to 16,
+      assay a certificate, and look at today's frontier.
       New to the story? Watch <a href="story.html">The Sylver Coinage Story</a> first.</p>
   </header>
   <div class="layout">

@@ -14,7 +14,7 @@ SCRIPT = r'''
 const root = process.argv[process.argv.length - 1];
 const film = require(root + "/docs/story.js");
 const texts = new Set(), bad = [];
-let frame = 0;
+let frame = 0, captionLines = [];
 const state = { globalAlpha: 1, font: "10px sans-serif", fillStyle: "#000", strokeStyle: "#000", lineWidth: 1,
                 textAlign: "start", textBaseline: "alphabetic", letterSpacing: "0px", lineCap: "butt",
                 lineJoin: "miter", shadowBlur: 0, shadowColor: "transparent", globalCompositeOperation: "source-over" };
@@ -24,7 +24,11 @@ const methods = {
   save() { stack.push({ ...state }); },
   restore() { Object.assign(state, stack.pop()); },
   measureText(s) { const px = Number((/([\d.]+)px/.exec(state.font) || [0, 10])[1]); return { width: String(s).length * px * 0.55 }; },
-  fillText(s) { texts.add(String(s)); },
+  fillText(s, x, y) {
+    texts.add(String(s));
+    // captions are the 40px lines centred near the bottom of the stage
+    if (/ 40px /.test(state.font) && y > 820 && y < 1000 && state.globalAlpha > 0.9) captionLines.push(String(s));
+  },
   strokeText(s) { texts.add(String(s)); },
   createLinearGradient() { return gradient; },
   createRadialGradient() { return gradient; },
@@ -45,12 +49,17 @@ const ctx = new Proxy(state, {
   },
   has(target, prop) { return prop in target || prop in methods; },
 });
-const frames = Math.ceil(film.DURATION * 4);
-for (frame = 0; frame <= frames; frame++) film.renderAt(ctx, frame / 4);
+const frames = Math.ceil(film.DURATION * 4), captions = {};
+for (frame = 0; frame <= frames; frame++) {
+  captionLines = [];
+  film.renderAt(ctx, frame / 4);
+  const caption = captionLines.join(" ");
+  if (caption) captions[caption] = (captions[caption] || 0) + 0.25;
+}
 console.log(JSON.stringify({
   duration: film.DURATION, frames,
   chapters: film.CHAPTERS.map((c) => ({ name: c.name, start: c.start, end: c.end, dur: c.dur })),
-  answers: film.ANSWERS, ruledOut: film.RULED_OUT_38, texts: [...texts], bad: bad.slice(0, 20), stackDepth: stack.length,
+  answers: film.ANSWERS, ruledOut: film.RULED_OUT_38, texts: [...texts], bad: bad.slice(0, 20), stackDepth: stack.length, captions,
 }));
 '''
 
@@ -90,6 +99,13 @@ class StoryFilmTests(unittest.TestCase):
     def test_ruled_out_answers_to_38_match_the_audit(self):
         refuted = json.loads(R38.read_text())['refuted_answers_to_38']
         self.assertEqual(sorted(self.report['ruledOut']), sorted(int(m) for m in refuted))
+
+    def test_every_caption_stays_long_enough_to_read(self):
+        # Three words a second, plus a second to find the caption.
+        captions = self.report['captions']
+        self.assertGreater(len(captions), 20)
+        for caption, seconds in captions.items():
+            self.assertGreaterEqual(seconds, len(caption.split()) / 3 + 1, caption)
 
     def test_key_facts_are_on_screen(self):
         for fact in ('1884', 'a·b − a − b', 'Winning Ways', 'GEORGE SICHERMAN', 'THOMAS BLOK', '403,200', '381,091',

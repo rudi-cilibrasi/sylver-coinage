@@ -1,4 +1,4 @@
-// The Sylver Mint: seven small games that retrace the history of Sylver
+// The Sylver Mint: nine small games that retrace the history of Sylver
 // Coinage. Every game runs the repository's exact evaluator (solver.js). The
 // answer table and the reply-38 frontier are exported so the node tests can
 // check them against the campaign audits.
@@ -37,6 +37,7 @@ function el(tag, attrs = {}, ...kids) {
 }
 const P = (html) => { const p = document.createElement("p"); p.innerHTML = html; return p; };
 function story(...paras) { return el("div", { class: "story" }, ...paras.map(P)); }
+const eyebrow = (label) => el("p", { class: "eyebrow" }, `LESSON ${current + 1} · ${label}`);
 
 let done = new Set();
 try { done = new Set(JSON.parse(localStorage.getItem("mint-done") || "[]")); } catch (e) { done = new Set(); }
@@ -114,7 +115,7 @@ function lessonPlay(root) {
     onclick: (e) => { picks.querySelectorAll(".chip").forEach((c) => c.setAttribute("aria-pressed", "false"));
       e.currentTarget.setAttribute("aria-pressed", "true"); start(g, true); } }, "start at " + setText(g))));
   root.append(
-    el("p", { class: "eyebrow" }, "LESSON 1 · JOHN H. CONWAY'S GAME"),
+    eyebrow("JOHN H. CONWAY'S GAME"),
     el("h2", {}, "Mint and lose"),
     story("Two players take turns naming a positive whole number. A number is <b>paid</b> once it is a sum of numbers already named, and paid numbers can never be named again. Whoever is forced to name <b>1</b> loses.",
           "The two silver coins are already named. Copper tiles are the amounts still unpaid, and grey tiles are paid. You move first, and the computer plays perfectly."),
@@ -156,7 +157,7 @@ function lessonSylvester(root) {
     if (right === truth.length && !wrong) markDone("sylvester");
   } }, "Check");
   root.append(
-    el("p", { class: "eyebrow" }, "LESSON 2 · J. J. SYLVESTER, 1884"),
+    eyebrow("J. J. SYLVESTER, 1884"),
     el("h2", {}, "The largest unpayable amount"),
     story("Sylvester asked which amounts can be paid with coins of two values. When the values share no common factor, every large amount can be paid, and only finitely many small ones cannot.",
           "He proved the largest unpayable amount is <b>a·b − a − b</b>. The game is named in his honour. Find the unpayable amounts yourself, then check."),
@@ -206,7 +207,7 @@ function lessonEnders(root) {
     markDone("enders");
   }
   root.append(
-    el("p", { class: "eyebrow" }, "LESSON 3 · HUTCHINGS' THEOREM, IN WINNING WAYS (1982)"),
+    eyebrow("HUTCHINGS' THEOREM, IN WINNING WAYS (1982)"),
     el("h2", {}, "Steal a strategy"),
     story("R. L. Hutchings showed that every position made of two coins with no common factor is an <b>ender</b>: every legal move except the largest unpaid amount t also pays t.",
           "A strategy-stealing argument then shows the player to move must be able to win. After the opening 5, 7, 11, 13 or any larger prime, every reply leaves such a position, so a prime opening wins. The proof names no winning move."),
@@ -250,7 +251,7 @@ function lessonQuiet(root) {
     }
   }
   root.append(
-    el("p", { class: "eyebrow" }, "LESSON 4 · THE QUIET END THEOREM, WINNING WAYS (1982)"),
+    eyebrow("THE QUIET END THEOREM, WINNING WAYS (1982)"),
     el("h2", {}, "Quiet ends, short and long"),
     story("A <b>quiet ender</b> is an ender where the unpaid amounts pair up: for every k, exactly one of k and t − k is paid. George Sicherman's papers use these names.",
           "Pick a position and look at the pairs. The quiet ones are what make even positions <b>short</b>, so a computer can settle them by checking a finite list."),
@@ -259,7 +260,185 @@ function lessonQuiet(root) {
   setup(options[0]);
 }
 
-// ---------------------------------------------------------------- lesson 5: answer the reply
+// ---------------------------------------------------------------- lesson 5: Sicherman's long position
+// {8, 10, 22} is long: its half {4, 5, 11} is not a quiet ender, so every odd number stays a
+// possible move. Each odd move x leaves a finite game, which the evaluator solves here.
+const LONG = [8, 10, 22];
+function longReply(x) {
+  const s = new Engine([...LONG, x]);
+  return { reply: s.winningMove(s.initialState), states: s.memo.size };
+}
+function lessonLong(root) {
+  const msg = el("p", { class: "msg", "aria-live": "polite" }, "Pick an odd number.");
+  const tiles = el("div", { class: "tiles" });
+  const rows = el("tbody");
+  const tried = new Map();
+  const custom = el("input", { type: "number", min: "3", max: "999", step: "2", value: "101", id: "long-x", "aria-label": "Any odd number up to 999" });
+  const quiz = el("div", { class: "row" });
+  const quizMsg = el("p", { class: "msg", "aria-live": "polite" });
+  let predicted = 0;
+
+  function name(x) {
+    if (!(Number.isInteger(x) && x >= 3 && x <= 999 && x % 2)) { msg.className = "msg"; msg.textContent = "Choose an odd number from 3 to 999."; return; }
+    const { reply, states } = longReply(x);
+    tried.set(x, reply);
+    const dest = minimal([...LONG, x, reply]);
+    msg.className = "msg lose";
+    msg.textContent = `You name ${x}. The computer answers ${reply}, reaching ${setText(dest)}: a losing position for you (${plural(states, "position")} examined).`;
+    rows.prepend(el("tr", {}, el("td", { class: "mono" }, x), el("td", { class: "mono" }, reply),
+      el("td", { class: "mono" }, (reply > x ? "+" : "") + (reply - x))));
+    draw();
+    if (tried.size === 4) ask();
+  }
+  function draw() {
+    tiles.replaceChildren();
+    for (let x = 3; x <= 63; x += 2) {
+      tiles.append(el("button", { class: "tile sm" + (tried.has(x) ? " bad" : ""), type: "button",
+        "aria-label": tried.has(x) ? `${x}, answered by ${tried.get(x)}` : String(x), onclick: () => name(x) }, x));
+    }
+  }
+  function ask() {
+    const x = 2 * (100 + Math.floor(Math.random() * 400)) + 1;
+    const guess = el("input", { type: "number", min: "1", step: "1", id: "long-guess", "aria-label": `Your prediction for ${x}` });
+    quiz.replaceChildren(el("label", { for: "long-guess" }, `Predict: what does the computer answer to ${x}?`), guess,
+      el("button", { class: "ctrl primary", type: "button", onclick: () => check(x, Number(guess.value)) }, "Check"));
+    quizMsg.className = "msg"; quizMsg.textContent = "";
+  }
+  function check(x, y) {
+    const { reply } = longReply(x);
+    let ok = y === reply;
+    if (!ok && Number.isInteger(y) && y > 1) {
+      const s = new Engine([...LONG, x]);
+      if (!isPaid(s, s.initialState, y)) { const d = new Engine([...LONG, x, y]); ok = d.winningMove(d.initialState) === 0; }
+    }
+    quizMsg.className = "msg " + (ok ? "win" : "lose");
+    quizMsg.textContent = ok ? (y === reply ? `Yes: the computer answers ${reply}.` : `Yes: ${y} also wins (the computer's first choice is ${reply}).`)
+                             : `No: the computer answers ${reply}.`;
+    if (ok && ++predicted >= 2) markDone("long");
+    if (ok) setTimeout(ask, 1600);
+  }
+  root.append(
+    eyebrow("GEORGE SICHERMAN, 1990s"),
+    el("h2", {}, "A long losing position"),
+    story("Halve {8, 10, 22} and you get {4, 5, 11}. Its unpaid amounts are 1, 2, 3, 6 and 7, and they do not pair up: 1 and 6 are both unpaid. So {8, 10, 22} is <b>long</b>: no quiet end trims its odd moves, and every odd number from 3 up is still a legal move.",
+          "George Sicherman proved it is a losing position anyway. Try to beat it: every odd move you name leaves a finite game, and the computer solves it on the spot."),
+    el("div", { class: "game" }, tiles,
+      el("div", { class: "row" }, el("label", { for: "long-x" }, "or any odd number up to 999"), custom,
+         el("button", { class: "ctrl", type: "button", onclick: () => name(Number(custom.value)) }, "Name it")),
+      msg,
+      el("div", { class: "table-wrap" }, el("table", {}, el("thead", {}, el("tr", {}, ...["you", "computer", "difference"].map((h) => el("th", {}, h)))), rows)),
+      quiz, quizMsg),
+    story("There are infinitely many odd moves, so trying them one by one can never finish. Sicherman used the <b>Periodicity Theorem</b>: when every named number is even, the outcomes of the odd moves eventually repeat, so a finite computation covers them all. He ran it on a network of SUN workstations in the 1990s.",
+          "In 2026 the campaign's periodicity engine checked his result independently: from 49 on, the outcomes repeat every 8, and every odd move loses. He wrote that he was “relieved to learn that your results agree with mine.”"),
+  );
+  draw();
+}
+
+// ---------------------------------------------------------------- lesson 6: Blok's mirror
+// Blok's pairing for the unpaid amounts of {8, 12} (checked in sylver/eight_twelve.py):
+// 2 with 3, 4 with 6, 4j+1 with 4j+3 and 8j+2 with 8j+6 for j >= 1; 1 has no mate.
+function mirrorMate(x) {
+  if (x === 1) return null;
+  if (x === 2 || x === 3) return 5 - x;
+  if (x === 4 || x === 6) return 10 - x;
+  if (x % 2) return x % 4 === 1 ? x + 2 : x - 2;
+  return x % 8 === 2 ? x + 4 : x - 4;
+}
+const MIRROR_TOP = 63, MIRROR_LIMIT = 1200;
+function lessonMirror(root) {
+  let named, paid, over, mode;
+  const msg = el("p", { class: "msg", "aria-live": "polite" });
+  const board = el("div", { class: "tiles mirror" });
+  const pairs = el("p", { class: "note" });
+  const modes = el("div", { class: "row" });
+  const big = el("input", { type: "number", min: "1", max: "999", value: "101", id: "mirror-x", "aria-label": "Any unpaid number up to 999" });
+  const unpaid = () => { const out = []; for (let n = 1; n <= MIRROR_LIMIT - 8; n++) if (!paid[n]) out.push(n); return out; };
+  const recount = () => { paid = paidUpTo([8, 12, ...named], MIRROR_LIMIT); };
+  function start(m) {
+    mode = m; named = []; over = false; recount();
+    msg.className = "msg";
+    msg.textContent = mode === "beat" ? "Your move: name any unpaid amount. The mirror answers." : "The computer moves first. Answer with the mate.";
+    draw();
+    if (mode === "hold") setTimeout(computerMoves, 500);
+  }
+  function play(x) { named.push(x); recount(); }
+  function finished(loser) {
+    over = true;
+    msg.className = "msg " + (loser === "you" ? "lose" : "win");
+    msg.textContent = loser === "you" ? "Only 1 is left, and it is your turn: the mirror wins, as Blok's proof promises."
+                                      : "Only 1 is left for the computer. You held the mirror and won.";
+    markDone("mirror");
+    draw();
+  }
+  function youName(x) {
+    if (over) return;
+    if (mode === "beat") {
+      if (x === 1) { finished("you"); return; }
+      play(x);
+      const y = mirrorMate(x);
+      play(y);
+      msg.className = "msg";
+      msg.textContent = `You name ${x}. The mirror answers ${y}, its mate.`;
+      if (unpaid().length === 1) finished("you"); else draw();
+      return;
+    }
+    const want = mirrorMate(named[named.length - 1]);
+    if (x !== want) { msg.className = "msg lose"; msg.textContent = `${x} is not the mate of ${named[named.length - 1]}. Look for the pair.`; return; }
+    play(x);
+    if (unpaid().length === 1) { finished("computer"); return; }
+    msg.className = "msg win"; msg.textContent = `Right: ${x} pairs with ${named[named.length - 2]}.`;
+    draw();
+    setTimeout(computerMoves, 900);
+  }
+  function computerMoves() {
+    if (over) return;
+    const live = unpaid().filter((n) => n > 1), small = live.filter((n) => n <= MIRROR_TOP);
+    const options = small.length ? small : live;
+    const x = options[Math.floor(Math.random() * options.length)];
+    play(x);
+    msg.className = "msg"; msg.textContent = `The computer names ${x}. Which number is its mate?`;
+    draw();
+  }
+  function draw() {
+    board.replaceChildren();
+    for (let n = 1; n <= MIRROR_TOP; n++) {
+      const isNamed = n === 8 || n === 12 || named.includes(n);
+      const mate = mirrorMate(n);
+      let cls = "tile";
+      if (isNamed) cls += " named"; else if (paid[n]) cls += " paid"; else if (n === 1) cls += " one";
+      board.append(el("button", { class: cls, type: "button", disabled: isNamed || paid[n] || over,
+        "aria-label": paid[n] ? `${n} paid` : mate ? `${n}, mate ${mate}` : String(n), onclick: () => youName(n) },
+        el("span", {}, n), !paid[n] && !isNamed && mate ? el("span", { class: "mate" }, "↔" + mate) : null));
+    }
+    const live = unpaid();
+    const finite = live[live.length - 1] < MIRROR_LIMIT - 64;
+    const shown = live.filter((n) => n > 1 && n < mirrorMate(n)).slice(0, 12).map((n) => `${n}–${mirrorMate(n)}`);
+    pairs.textContent = `Unpaid: 1, and the pairs ${shown.join(", ")}` +
+      (finite ? (live.length - 1 > 2 * shown.length ? ", …" : ".") : ", … and infinitely many more.");
+  }
+  [["beat", "Try to beat the mirror"], ["hold", "Hold the mirror yourself"]].forEach(([m, label], i) =>
+    modes.append(el("button", { class: "chip", type: "button", "aria-pressed": String(i === 0), onclick: (e) => {
+      modes.querySelectorAll(".chip").forEach((c) => c.setAttribute("aria-pressed", "false"));
+      e.currentTarget.setAttribute("aria-pressed", "true"); start(m); } }, label)));
+  root.append(
+    eyebrow("THOMAS BLOK, 2021"),
+    el("h2", {}, "Blok's mirror"),
+    story("Thomas Blok's 2021 report on positions with g = 2 proves whole families of losing positions with <b>pairing strategies</b>. The simplest is {8, 12}. Its unpaid amounts are 4, every odd number, and every number 2 more than a multiple of 4.",
+          "Blok pairs them: 2 with 3, 4 with 6, 5 with 7, 9 with 11 and so on, and 10 with 14, 18 with 22 and so on. Whatever the first player names, the second names its mate. The mate is always still unpaid, the unpaid amounts always come in whole pairs, and in the end the first player must name 1."),
+    el("div", { class: "game" }, modes, board,
+      el("div", { class: "row" }, el("label", { for: "mirror-x" }, "or name a larger number"), big,
+         el("button", { class: "ctrl", type: "button", onclick: () => {
+           const x = Number(big.value);
+           if (!Number.isInteger(x) || x < 1 || x > 999 || paid[x]) { msg.className = "msg"; msg.textContent = "Choose an unpaid number up to 999."; return; }
+           youName(x);
+         } }, "Name it")),
+      pairs, msg),
+    el("p", { class: "note" }, "Each tile shows its mate. The board stops at 63, but the pairs go on forever."),
+  );
+  start("beat");
+}
+
+// ---------------------------------------------------------------- lesson 7: answer the reply
 const TABLE = [
   [2, 3, "{2, 3}", "finite: only 1 is left", [2, 3]], [4, 6, "{4, 6}", "Winning Ways: a losing position", null],
   [6, 7, "{6, 7, 16}", "finite", [6, 7, 16]], [8, 14, "{8, 14}", "a short losing position", null],
@@ -306,7 +485,7 @@ function lessonAnswer(root) {
     } }, i === TABLE.length - 1 ? "Finish" : "Next reply"));
   }
   root.append(
-    el("p", { class: "eyebrow" }, "LESSON 5 · THE OPENING 16, 1982–2026"),
+    eyebrow("THE OPENING 16, 1982–2026"),
     el("h2", {}, "Answer the reply"),
     story("Nobody knows who wins after the opening 16. One way to show the opener wins is to answer every reply. A reply r <b>loses</b> when the opener has an answer a that leaves {16, r, a} as a losing position.",
           "Odd replies lose by Hutchings' theorem. The even replies up to 36 now all have certified answers. Find them."),
@@ -315,7 +494,7 @@ function lessonAnswer(root) {
   ask();
 }
 
-// ---------------------------------------------------------------- lesson 6: assay a certificate
+// ---------------------------------------------------------------- lesson 8: assay a certificate
 function lessonAssay(root) {
   // E = {8,14}: half {4,7}, t = 17. Even obligations 2g for the gaps g; odd obligations the odd gaps above 1.
   const half = [4, 7], t = 17, pay = paidUpTo(half, t), gaps = [];
@@ -351,7 +530,7 @@ function lessonAssay(root) {
     if (ok === rows.length) markDone("assay");
   }
   root.append(
-    el("p", { class: "eyebrow" }, "LESSON 6 · HOW 2026 CERTIFICATES WORK"),
+    eyebrow("HOW 2026 CERTIFICATES WORK"),
     el("h2", {}, "Assay a certificate"),
     story("To prove a short position is losing, you list its <b>obligations</b>, the only moves the Quiet End Theorem leaves open, and answer each one with a reply that reaches a known losing position.",
           "{8, 14} is the double of the quiet ender {4, 7}. It has 14 obligations. The computer below finds or checks each reply. In the 2026 campaign the same kind of check ran on positions with hundreds of millions of states, twice, by two independent programs."),
@@ -360,7 +539,7 @@ function lessonAssay(root) {
   );
 }
 
-// ---------------------------------------------------------------- lesson 7: the frontier
+// ---------------------------------------------------------------- lesson 9: the frontier
 // Every obligation of {16, 38}: k is the kind of move, s its status as of October 10, 2026.
 const FRONTIER = [
   {"m": 2, "k": "long", "s": "search", "why": "{16,38,2} is won by 3 (search)"},
@@ -480,7 +659,7 @@ function lessonFrontier(root) {
     el("span", {}, el("i", { style: "border-color: var(--gilt); background: var(--gilt-soft)" }), `ladder rungs (${counts("ladder")})`),
     el("span", {}, el("i", { style: "border-color: var(--copper); background: var(--copper-soft)" }), `open (${counts("open")})`)), detail);
   root.append(
-    el("p", { class: "eyebrow" }, "LESSON 7 · OCTOBER 2026"),
+    eyebrow("OCTOBER 2026"),
     el("h2", {}, "The frontier: the reply 38"),
     story("Every even reply to 16 up to 36 has an answer. The reply 38 does not, yet. Because {16, 38} is short, any answer must be one of these 98 moves.",
           "Eleven are ruled out by certified losing positions. Search has ruled out most others. The short candidates 72, 88, 104 and 120 form a <b>ladder</b> with 56 and 136: each rung leads back to the rungs below it, so at most one can be the answer."),
@@ -495,6 +674,8 @@ const LESSONS = [
   ["sylvester", "The largest unpayable amount", "Sylvester, 1884", lessonSylvester],
   ["enders", "Steal a strategy", "Hutchings, 1982", lessonEnders],
   ["quiet", "Quiet ends, short and long", "Winning Ways", lessonQuiet],
+  ["long", "A long losing position", "Sicherman, 1990s", lessonLong],
+  ["mirror", "Blok's mirror", "Blok, 2021", lessonMirror],
   ["answer", "Answer the reply", "Opening 16", lessonAnswer],
   ["assay", "Assay a certificate", "2026", lessonAssay],
   ["frontier", "The frontier: 38", "October 2026", lessonFrontier],
@@ -519,7 +700,7 @@ function show(i, focus) {
 const lessonFromHash = () => LESSONS.findIndex(([id]) => "#" + id === location.hash);
 
 if (typeof module !== "undefined") {
-  module.exports = { FRONTIER, LESSONS, TABLE, isPaid, minimal, paidUpTo };
+  module.exports = { FRONTIER, LESSONS, LONG, TABLE, isPaid, minimal, mirrorMate, paidUpTo };
 } else {
   window.addEventListener("hashchange", () => { const i = lessonFromHash(); if (i >= 0 && i !== current) show(i, false); });
   show(Math.max(0, lessonFromHash()), false);

@@ -40,9 +40,10 @@
   }
   .chap[aria-current="true"] { color: var(--ground); background: var(--silver); border-color: var(--silver); }
   .notes { margin-top: 26px; color: var(--muted); font-size: 15px; max-width: 72ch; }
+  .keys { margin: 10px 0 0; color: var(--muted); font: 13px "IBM Plex Mono", monospace; }
   .notes a { color: var(--gilt); }
   body.render .wrap { padding: 0; max-width: none; }
-  body.render h1, body.render .lede, body.render .controls, body.render .chapters, body.render .notes { display: none; }
+  body.render h1, body.render .lede, body.render .controls, body.render .chapters, body.render .keys, body.render .notes { display: none; }
   body.render .stage { width: 1920px; height: 1080px; aspect-ratio: auto; border: 0; border-radius: 0; }
   @media (prefers-reduced-motion: reduce) { .chap { transition: none; } }
 </style>
@@ -59,6 +60,7 @@
     <input id="scrub" type="range" min="0" max="1000" value="0" aria-label="Position in the film">
   </div>
   <ul class="chapters" id="chapters"></ul>
+  <p class="keys">Space plays and pauses; the arrow keys skip five seconds.</p>
   <p class="notes">Sources: Berlekamp, Conway and Guy, <i>Winning Ways for your Mathematical Plays</i> (1982), chapter 18;
     G. Sicherman, <i>Theory and Practice of Sylver Coinage</i>, Integers 2 (2002), and
     <a href="https://sicherman.net/sylver/">sicherman.net/sylver</a>; T. Blok's reports (2021–2026);
@@ -100,11 +102,22 @@
     if (t >= DURATION) { playing = false; play.textContent = "Replay"; return; }
     requestAnimationFrame(tick);
   }
-  play.addEventListener("click", () => {
+  function toggle() {
     if (t >= DURATION) t = 0;
     playing = !playing;
     play.textContent = playing ? "Pause" : "Play";
     if (playing) requestAnimationFrame(tick);
+  }
+  play.addEventListener("click", toggle);
+  // Space or K plays and pauses; the arrow keys seek five seconds (not while a control has focus)
+  document.addEventListener("keydown", (e) => {
+    if (render || e.altKey || e.ctrlKey || e.metaKey || e.target.closest("button, input")) return;
+    if (e.key === " " || e.key === "k") { e.preventDefault(); toggle(); }
+    else if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+      e.preventDefault();
+      t = Math.min(DURATION, Math.max(0, t + (e.key === "ArrowLeft" ? -5 : 5)));
+      draw();
+    }
   });
   scrub.addEventListener("input", () => { t = (scrub.value / 1000) * DURATION; draw(); });
   window.drawFrame = (s) => { t = s; renderAt(ctx, t); };

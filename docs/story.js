@@ -1,4 +1,4 @@
-// The Sylver Coinage Story: a history in eleven chapters, as a deterministic
+// The Sylver Coinage Story: a history in twelve chapters, as a deterministic
 // canvas film. renderAt(ctx, t) draws the frame at t seconds on a 1920x1080
 // stage, so the same code drives the player in story.html, the frame-by-frame
 // MP4 render (render-story.mjs) and the node tests.
@@ -225,14 +225,14 @@ chapter(9, null, null, (ctx, t, d) => {
   const sub = a * seg(t, 2.4, 3.6);
   text(ctx, "A game about coins, a formula from 1884,", 964, 616, { size: 40, style: "italic", color: C.muted, alpha: sub });
   text(ctx, "and one opening nobody has solved.", 964, 668, { size: 40, style: "italic", color: C.muted, alpha: sub });
-  text(ctx, "A HISTORY IN ELEVEN CHAPTERS", 964, 760, { size: 24, font: F.display, color: C.gilt, spacing: 5, alpha: a * seg(t, 3.6, 4.6) });
+  text(ctx, "A HISTORY IN TWELVE CHAPTERS", 964, 760, { size: 24, font: F.display, color: C.gilt, spacing: 5, alpha: a * seg(t, 3.6, 4.6) });
 }, "Title");
 
 // 1. The game: a full example on tiles 1..36
 const GAME = [
-  [6.0, "A", 5], [12.5, "B", 7], [21.5, "A", 4], [25.0, "B", 6], [28.0, "A", 3], [31.0, "B", 2], [34.5, "A", 1],
+  [6.5, "A", 5], [14.0, "B", 7], [28.0, "A", 4], [31.5, "B", 6], [34.5, "A", 3], [37.5, "B", 2], [41.0, "A", 1],
 ];
-chapter(42, null, "THE GAME", (ctx, t, d) => {
+chapter(48, null, "THE GAME", (ctx, t, d) => {
   const a = window_(t, 0, d, 0.8);
   // tiles in a 9x4 grid
   const cols = 9, tw = 118, th = 86, gx = 20, gy = 18, x0 = 640, y0 = 220;
@@ -251,7 +251,7 @@ chapter(42, null, "THE GAME", (ctx, t, d) => {
       const prev = paid(named.slice(0, -1).filter((m) => m !== 1), 36);
       if (!prev[n]) { const p = seg(sinceLast, 0.1 + (n % 9) * 0.04, 0.7 + (n % 9) * 0.04); glow = (1 - p) * 0.9; if (p < 1) state = p < 0.5 ? "open" : "minted"; }
     }
-    if (state === "open" && t > 18 && t < 21.5) glow = 0.5 + 0.5 * Math.sin((t - 18) * 4);
+    if (state === "open" && t > 21.5 && t < 28) glow = 0.5 + 0.5 * Math.sin((t - 21.5) * 4);
     tile(ctx, x, y, tw, th, n, state, { alpha: a * appear, glow });
   }
   // players and the coins they named
@@ -265,12 +265,12 @@ chapter(42, null, "THE GAME", (ctx, t, d) => {
   });
   // captions
   const caps = [
-    [0.5, 6, "Two players take turns naming a positive whole number."],
-    [6, 12.5, "Naming 5 removes every number you could pay with 5s: 10, 15, 20 and so on."],
-    [12.5, 18, "Naming 7 removes every sum of 5s and 7s. Paid amounts can never be named again."],
-    [18, 21.5, "With 5 and 7 on the table, only twelve amounts are still unpaid."],
-    [21.5, 34.5, "Each move shrinks what is left: 4 leaves 1, 2, 3 and 6; then 6, 3 and 2 are named."],
-    [34.5, 42, "Player A has nothing left but 1. Whoever is forced to name 1 loses."],
+    [0.5, 6.5, "Two players take turns naming a positive whole number."],
+    [6.5, 14, "Naming 5 removes every number you could pay with 5s: 10, 15, 20 and so on."],
+    [14, 21.5, "Naming 7 removes every sum of 5s and 7s. Paid amounts can never be named again."],
+    [21.5, 28, "With 5 and 7 on the table, only twelve amounts are still unpaid."],
+    [28, 41, "Each move shrinks what is left: 4 leaves 1, 2, 3 and 6; then 6, 3 and 2 are named."],
+    [41, 48, "Player A has nothing left but 1. Whoever is forced to name 1 loses."],
   ];
   for (const [s, e, c] of caps) caption(ctx, c, a * window_(t, s, e, 0.5));
 }, "The game");
@@ -384,18 +384,18 @@ chapter(32, null, "IDEAS · QUIET ENDS, SHORT AND LONG", (ctx, t, d) => {
   text(ctx, "k", x0 - 40, 316, { size: 30, font: F.mono, color: C.muted, align: "center", alpha: pa });
   text(ctx, "17−k", x0 - 52, 476, { size: 26, font: F.mono, color: C.muted, align: "center", alpha: pa });
   // doubled: {8,14}, then long {8,30,34}
-  const s = a * seg(t, 15, 16);
+  const s = a * seg(t, 13, 14);
   coin(ctx, 620, 650, 56, 8, { alpha: s });
   coin(ctx, 740, 650, 56, 14, { alpha: s });
   text(ctx, "short: finitely many moves to check", 820, 662, { size: 32, color: C.verdigris, alpha: s });
-  const l = a * seg(t, 22, 23);
+  const l = a * seg(t, 23, 24);
   coin(ctx, 560, 770, 46, 8, { alpha: l, metal: "copper" });
   coin(ctx, 660, 770, 46, 30, { alpha: l, metal: "copper" });
   coin(ctx, 760, 770, 46, 34, { alpha: l, metal: "copper" });
   text(ctx, "long: the only winning move is 49,337", 830, 782, { size: 32, color: C.copperHi, alpha: l });
-  caption(ctx, "With 4 and 7 the unpaid amounts pair up: of k and 17 − k, exactly one can be paid. Such a position is a quiet ender.", a * window_(t, 1, 15, 0.5));
-  caption(ctx, "Double a quiet ender, as in {8, 14}, and the Quiet End Theorem leaves only finitely many odd moves to check.", a * window_(t, 15, 22, 0.5));
-  caption(ctx, "Positions without that structure are long. Some have astonishing answers, found only by computer.", a * window_(t, 22, d, 0.5));
+  caption(ctx, "With 4 and 7 the unpaid amounts pair up: of k and 17 − k, exactly one can be paid. Such a position is a quiet ender.", a * window_(t, 1, 13, 0.5));
+  caption(ctx, "Double a quiet ender, as in {8, 14}, and the Quiet End Theorem leaves only finitely many odd moves to check.", a * window_(t, 13, 23, 0.5));
+  caption(ctx, "Positions without that structure are long. Some have astonishing answers, found only by computer.", a * window_(t, 23, d, 0.5));
 }, "Quiet ends");
 
 // 6. George Sicherman
@@ -483,12 +483,46 @@ chapter(28, 2022, "2021–2026 · THOMAS BLOK", (ctx, t, d) => {
   caption(ctx, "In September 2026 he proved {16, 26, 54, 60, 62} and {16, 28, 36, 38, 58} are losing positions too.", a * window_(t, 15, d, 0.5));
 }, "Blok");
 
-// 9. The 2026 campaign: replies to the opening 16
+// 9. 2026: the campaign checks the published claims, and the authors answer
+const CONFIRMATIONS = [
+  [1.0, "JULY", "Replies 2 to 24 answered, confirming {16, 20, 34} from Sicherman's list and {10, 16, 24} from Blok's report"],
+  [5.5, "JULY 24", "A periodicity engine re-derives {8, 10, 22}, Sicherman's first long losing position, from the 1990s"],
+  [12.5, "AUG 27", "Sicherman's news page: the work “confirms Thomas Blok's analysis of {16}”"],
+  [20.5, "SEPT 3", "Blok proves {16, 26, 54, 60, 62} is a losing position"],
+  [23.0, "SEPT 5", "The campaign confirms it independently"],
+];
+chapter(32, 2026.3, "2026 · CONFIRMATIONS", (ctx, t, d) => {
+  const a = window_(t, 0, d, 0.8);
+  CONFIRMATIONS.forEach(([at, when, body], k) => {
+    const p = easeOut(seg(t, at, at + 0.8)), y = 196 + k * 118, ia = a * p;
+    text(ctx, when, 160, y + 40, { size: 30, font: F.mono, weight: 600, color: C.gilt, alpha: ia });
+    const lines = wrap(ctx, body, 720, `400 30px ${F.body}`);
+    lines.forEach((ln, i) => text(ctx, ln, 350 + (1 - p) * 40, y + 40 + i * 38, { size: 30, color: C.text, alpha: ia }));
+  });
+  // George Sicherman's letter
+  const p = easeOut(seg(t, 10.5, 11.5)), la = a * p, dy = (1 - p) * 30;
+  if (la > 0) {
+    ctx.save(); ctx.globalAlpha = la;
+    roundRect(ctx, 1170, 210 + dy, 600, 500, 12);
+    ctx.fillStyle = "#e8e3d6"; ctx.fill(); ctx.restore();
+    const q = wrap(ctx, "“I have long wished for independent confirmation of our results.”", 520, `italic 400 42px ${F.body}`);
+    q.forEach((ln, i) => text(ctx, ln, 1210, 290 + i * 56 + dy, { size: 42, style: "italic", color: "#1b2230", alpha: la }));
+    const q2 = wrap(ctx, "And on {8, 10, 22}: “relieved to learn that your results agree with mine.”", 520, `italic 400 30px ${F.body}`);
+    q2.forEach((ln, i) => text(ctx, ln, 1210, 488 + i * 40 + dy, { size: 30, style: "italic", color: "#3a4352", alpha: la }));
+    text(ctx, "George Sicherman", 1210, 630 + dy, { size: 30, weight: 600, color: "#3a4352", alpha: la });
+    text(ctx, "in a letter, August 27, 2026", 1210, 670 + dy, { size: 26, style: "italic", color: "#5b6676", alpha: la });
+  }
+  caption(ctx, "In July 2026 an AI-assisted campaign began answering the replies to 16, replaying every claim with two independent programs.", a * window_(t, 0.5, 10.5, 0.5));
+  caption(ctx, "On the way it re-checked published claims, like Sicherman's {8, 10, 22}, first computed on a network of SUN workstations in the 1990s.", a * window_(t, 10.5, 20.5, 0.5));
+  caption(ctx, "In September Thomas Blok proved new losing positions after 16, and the campaign confirmed the first within two days.", a * window_(t, 20.5, d, 0.5));
+}, "Confirmations");
+
+// 10. The 2026 campaign: replies to the opening 16
 const REPLIES = [2, 4, 6, 8, 10, 12, 14, 18, 20, 22, 24, 26, 28, 30, 34, 36, 38];
 const ANSWERS = { 2: 3, 4: 6, 6: 7, 8: 14, 10: 9, 12: 14, 14: 8, 18: 5, 20: 34, 22: 12, 24: 10, 26: 88, 28: 58, 30: 56, 34: 20, 36: 23 };
-const WHEN = { 26: 18, 28: 22, 30: 25, 34: 28, 36: 30 };
+const WHEN = { 26: 19, 28: 23, 30: 25.5, 34: 28, 36: 30 };
 const RULED_OUT_38 = [4, 6, 8, 12, 14, 22, 24, 28, 40, 44, 56];   // by certified P-positions
-chapter(48, 2026.6, "2026 · MACHINE-CHECKED CERTIFICATES", (ctx, t, d) => {
+chapter(50, 2026.6, "2026 · MACHINE-CHECKED CERTIFICATES", (ctx, t, d) => {
   const a = window_(t, 0, d, 0.8);
   text(ctx, "16", 170, 330, { size: 96, font: F.mono, weight: 700, color: C.silverHi, alpha: a });
   text(ctx, "opening", 170, 370, { size: 26, color: C.muted, alpha: a });
@@ -497,42 +531,42 @@ chapter(48, 2026.6, "2026 · MACHINE-CHECKED CERTIFICATES", (ctx, t, d) => {
   const tw = 78, th = 76, gap = 9, x0 = 360;
   REPLIES.forEach((r, i) => {
     const x = x0 + i * (tw + gap);
-    const at = r <= 24 ? 4 : r === 38 ? 32 : WHEN[r];
+    const at = r <= 24 ? 10.5 : r === 38 ? 33 : WHEN[r];
     const p = seg(t, 1 + i * 0.1, 1.5 + i * 0.1);
     const done = t >= at + 0.6 && r !== 38;
-    tile(ctx, x, 256, tw, th, r, r === 38 && t > 32 ? "frontier" : done ? "win" : "unknown",
-         { alpha: a * p, size: 30, glow: r === 38 && t > 32 ? 0.6 + 0.4 * Math.sin(t * 3) : 0 });
+    tile(ctx, x, 256, tw, th, r, r === 38 && t > 33 ? "frontier" : done ? "win" : "unknown",
+         { alpha: a * p, size: 30, glow: r === 38 && t > 33 ? 0.6 + 0.4 * Math.sin(t * 3) : 0 });
     if (r !== 38) {
       const s = easeBack(seg(t, at, at + 0.6));
       if (s > 0) coin(ctx, x + tw / 2, 400, 32 * s, ANSWERS[r], { alpha: a, labelSize: ANSWERS[r] > 9 ? 22 : 26 });
     }
   });
   // the reply 38: candidate answers ruled out
-  const oa = a * seg(t, 33, 34);
+  const oa = a * seg(t, 35, 36);
   text(ctx, "answers to 38 ruled out so far", 360, 560, { size: 28, color: C.muted, alpha: oa });
   RULED_OUT_38.forEach((n, i) => {
-    const s = seg(t, 34 + i * 0.3, 34.4 + i * 0.3);
+    const s = seg(t, 36 + i * 0.3, 36.4 + i * 0.3);
     tile(ctx, 360 + i * 87, 584, 78, 66, n, "lose", { alpha: oa * s, size: 28 });
   });
-  const fa = a * seg(t, 40, 41);
+  const fa = a * seg(t, 42, 43);
   text(ctx, "38 ?", 1500, 680, { size: 64, font: F.mono, weight: 700, color: C.gilt, alpha: fa });
   // ledger of dates
   const notes = [
-    [4, "July: replies 2 to 24 answered, each answer certified"],
-    [18, "Oct 7: 26 loses to 88, after a search found 701 in {16, 26, 82, 88}"],
-    [22, "Oct 7–8: 28 loses to 58, and 30 to 56"],
+    [10.5, "July: replies 2 to 24 answered, each answer certified"],
+    [19, "Oct 6: 26 loses to 88, after a search found 701 in {16, 26, 82, 88}"],
+    [23, "Oct 7–8: 28 loses to 58, and 30 to 56"],
     [28, "Oct 9: a ledger shows every reply up to 36 has an answer"],
   ];
   const live = notes.filter(([at]) => t >= at).slice(-1)[0];
   if (live) text(ctx, live[1], 360, 520, { size: 30, style: "italic", color: C.silver, alpha: a * window_(t, live[0], live[0] + 6, 0.4) });
-  caption(ctx, "In 2026 an AI-assisted campaign set out to answer every reply to 16, with each claim replayed by two independent programs.", a * window_(t, 0.5, 9, 0.5));
-  caption(ctx, "A reply loses when the opener has an answer that leaves a losing position. Two solvers must agree on every count.", a * window_(t, 9, 17, 0.5));
-  caption(ctx, "The hardest step, 701 in {16, 26, 82, 88}, took 633,734,956 positions, counted identically by two engines.", a * window_(t, 17, 26, 0.5));
-  caption(ctx, "By October 9 every reply up to 36 had an answer. The reply 38 is the frontier.", a * window_(t, 26, 33, 0.5));
-  caption(ctx, "Eleven possible answers to 38 are ruled out so far, by certified losing positions. None works yet.", a * window_(t, 33, d, 0.5));
+  caption(ctx, "A reply loses when the opener has an answer that leaves a losing position. Two solvers must agree on every count.", a * window_(t, 0.5, 10, 0.5));
+  caption(ctx, "Replies 2 to 24 fell in July. The replies above 24 took months of computing and new engines.", a * window_(t, 10, 18.5, 0.5));
+  caption(ctx, "The hardest step, 701 in {16, 26, 82, 88}, took 633,734,956 positions, counted identically by two engines.", a * window_(t, 18.5, 27, 0.5));
+  caption(ctx, "By October 9 every reply up to 36 had an answer. The reply 38 is the frontier.", a * window_(t, 27, 35, 0.5));
+  caption(ctx, "Eleven possible answers to 38 are ruled out so far, by certified losing positions. None works yet.", a * window_(t, 35, d, 0.5));
 }, "2026");
 
-// 10. Closing
+// 11. Closing
 chapter(16, 2026.8, null, (ctx, t, d) => {
   const a = window_(t, 0, d, 1.0);
   coin(ctx, W / 2, 400, 200, "16", { alpha: a, legend: "WHO · WINS ·" });
