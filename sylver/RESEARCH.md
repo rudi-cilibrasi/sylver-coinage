@@ -1662,7 +1662,8 @@ even moves leave a short position, and 46 a long one.
 
 **Three P-positions, certified** (corrected October 10: this first said
 "new"; I and B24 were already on Sicherman's list, see the correction
-below). I={16,20,22,24}, B28={16,28,38,40} and B24={16,24,38,44} are short, and every obligation of each is covered
+below). I={16,20,22,24}, B28={16,28,38,40} and B24={16,24,38,44} are short,
+and every obligation of each is covered
 (97 obligations, 78 finite witnesses replayed natively and in Python,
 58,116,949 states).
 - B24's move 20 is answered by 22, which makes 38 redundant (38 = 16 + 22)
@@ -1760,7 +1761,8 @@ updated September 28, 2026, before either record. What this campaign
 produced for them is an independent confirmation with a full certificate.
 Corrected: the README and the Z and reply-38 records, each with a dated
 note; this log's October 8 and 9 summaries and Attempt 37, which point here;
-the index, r38 and z pages; and the reply-38 audit's docstring. B28={16,28,38,40}, B56={16,38,56,60}, Z={16,30,56}, Y={16,28,58},
+the index, r38 and z pages; and the reply-38 audit's docstring.
+B28={16,28,38,40}, B56={16,38,56,60}, Z={16,30,56}, Y={16,28,58},
 U={16,26,88} and W={16,26,62,98} are not on that list. The independent review
 of pull request #43 (the film and lesson pages) noticed the overlap.
 
