@@ -313,12 +313,13 @@ const fs = require("fs");
 const root = process.argv[process.argv.length - 1];
 const { describeAudit } = require(root + "/docs/w.js");
 const audit = JSON.parse(fs.readFileSync(root + "/sylver/campaigns/r38-2026-10-09/audit.json"));
-console.log(JSON.stringify({I: describeAudit(audit.I), B28: describeAudit(audit.B28), B24: describeAudit(audit.B24)}));
+console.log(JSON.stringify({I: describeAudit(audit.I), B28: describeAudit(audit.B28), B24: describeAudit(audit.B24),
+                            B56: describeAudit(audit.B56)}));
 '''
 
 
 class R38Tests(unittest.TestCase):
-    """I, B28 and B24 are P, so 24, 28, 40 and 44 do not answer the reply 38 to 16."""
+    """I, B28, B24 and B56 are P, so 24, 28, 40, 44 and 56 do not answer the reply 38 to 16."""
 
     def load(self, name):
         spec = importlib.util.spec_from_file_location(name, R38_AUDIT.parent / 'audit.py')
@@ -333,13 +334,17 @@ class R38Tests(unittest.TestCase):
         out = subprocess.run([node, '-e', R38_SCRIPT, str(ROOT)], capture_output=True, text=True, timeout=60,
                              check=True)
         described = json.loads(out.stdout)
-        for name, total in (('I', 21), ('B28', 38), ('B24', 38)):
+        for name, total in (('I', 21), ('B28', 38), ('B24', 38), ('B56', 56)):
             d = described[name]
             self.assertEqual((len(d['rows']), d['failures'], d['outcome']), (total, [], 'P'), name)
             for row in d['rows']:
                 self.assertNotEqual(row['answer'], 'unrecognized evidence', row)
                 self.assertTrue(row['link'] and (ROOT / row['link']).exists(), row)
         self.assertEqual([r['move'] for r in described['B24']['rows'] if r['evidence'] == 'P by the same audit'], [20])
+        self.assertEqual([r['move'] for r in described['B56']['rows'] if r['evidence'] == 'P by the same audit'],
+                         [24, 28, 40, 44])
+        self.assertEqual(sorted(r['move'] for r in described['B56']['rows']
+                                if r['evidence'] == 'finite witness (native + Kunz)'), [74, 84, 90, 122])
 
     def test_the_committed_r38_audit_is_reproducible(self):
         result = subprocess.run([sys.executable, str(R38_AUDIT.parent / 'audit.py')], capture_output=True, text=True,
@@ -352,9 +357,9 @@ class R38Tests(unittest.TestCase):
                          {'4': (6, 'C', 'N'), '6': (4, 'C', 'N'), '8': (14, 'E', 'N'), '12': (14, 'F', 'N'),
                           '14': (8, 'E', 'N'), '22': (12, 'P0', 'N'),
                           '24': (44, 'B24', 'N'), '28': (40, 'B28', 'N'), '40': (28, 'B28', 'N'),
-                          '44': (24, 'B24', 'N')})
+                          '44': (24, 'B24', 'N'), '56': (60, 'B56', 'N')})
         # No route goes through a node that needs Sicherman's {8,10,22} (G, K, M, O, S, T, V).
-        nodes = {row['certificate'].split()[1] for name in ('I', 'B28', 'B24')
+        nodes = {row['certificate'].split()[1] for name in ('I', 'B28', 'B24', 'B56')
                  for row in fresh[name]['obligations'].values() if row['evidence'] == 'certified-node'}
         self.assertEqual(nodes, {'C', 'D', 'E', 'F', 'J', 'P0'})
 
@@ -365,19 +370,19 @@ class R38Tests(unittest.TestCase):
         self.assertIsNotNone(audit.nested_p(b24, routes, 20, {'I': 'P'}))
         self.assertIsNone(audit.nested_p(b24, routes, 20, {'I': 'unknown'}))
         self.assertIsNone(audit.nested_p(b24, {20: (24, 'I')}, 20, {'I': 'P'}))   # 24 is not a legal reply there
-        rows, failures = audit.refutations({'B24': 'unknown', 'B28': 'P'})
+        rows, failures = audit.refutations({'B24': 'unknown', 'B28': 'P', 'B56': 'P'})
         self.assertEqual({a: r['outcome'] for a, r in rows.items() if r['reaches'] in ('B24', 'B28')},
                          {'24': 'unknown', '28': 'N', '40': 'N', '44': 'unknown'})
         self.assertEqual(len(failures), 2)
         self.assertEqual(rows['6']['outcome'], 'N')   # {16,38,6} = {6,16}; 4 reaches {4,6,16} = {4,6}...
         audit.REFUTED = {**audit.REFUTED, 6: (4, 'E')}   # ...which is C, not E
-        rows, failures = audit.refutations({'B24': 'P', 'B28': 'P'})
+        rows, failures = audit.refutations({'B24': 'P', 'B28': 'P', 'B56': 'P'})
         self.assertEqual((rows['6']['outcome'], len(failures)), ('unknown', 1))
 
     def test_a_transcript_that_says_n_is_rejected_even_when_rehashed(self):
         audit = self.load('r38_audit_transcript')
         i = audit.position(audit.POSITIONS['I'][0])
-        self.assertEqual(audit.finite_witness(i, 'i', 3)['evidence'], 'finite-witness')
+        self.assertEqual(audit.finite_witness('I', i, 'i', 3)['evidence'], 'finite-witness')
         with tempfile.TemporaryDirectory() as tmp:
             shutil.copy(R38_AUDIT.parent / 'i3-certificate.json', tmp)
             shutil.copytree(R38_AUDIT.parent / 'verification/i3', Path(tmp) / 'verification/i3')
@@ -388,7 +393,39 @@ class R38Tests(unittest.TestCase):
             data['runs']['native']['stdout_sha256'] = hashlib.sha256(stdout.read_bytes()).hexdigest()
             receipt.write_text(json.dumps(data))
             audit.HERE = Path(tmp)
-            self.assertIsNone(audit.finite_witness(i, 'i', 3))
+            self.assertIsNone(audit.finite_witness('I', i, 'i', 3))
+
+    def test_a_kunz_replay_with_another_count_is_rejected(self):
+        audit = self.load('r38_audit_kunz')
+        b56 = audit.position(audit.POSITIONS['B56'][0])
+        self.assertEqual(audit.finite_witness('B56', b56, 'b56_', 84)['evidence'], 'finite-witness-native-kunz')
+        self.assertIsNone(audit.finite_witness('I', b56, 'b56_', 84))   # a Python replay is required elsewhere
+        with tempfile.TemporaryDirectory() as tmp:
+            shutil.copy(R38_AUDIT.parent / 'b56_84-certificate.json', tmp)
+            shutil.copytree(R38_AUDIT.parent / 'verification/b56_84', Path(tmp) / 'verification/b56_84')
+            shutil.copytree(R38_AUDIT.parent / 'verification/sources', Path(tmp) / 'verification/sources')
+            # A fully consistent forgery of the Kunz replay (its stdout, stderr and
+            # receipt all say states - 1): only the tie to the native count rejects it.
+            replay = Path(tmp) / 'verification/b56_84'
+            receipt = replay / 'kunz-receipt.json'
+            data = json.loads(receipt.read_text())
+            for stream in ('stdout', 'stderr'):
+                path = replay / f'kunz-{stream}.txt'
+                path.write_text(path.read_text().replace(str(data['states']), str(data['states'] - 1)))
+                data[f'{stream}_sha256'] = hashlib.sha256(path.read_bytes()).hexdigest()
+            data['states'] -= 1
+            receipt.write_text(json.dumps(data))
+            audit.KUNZ_SNAPSHOT = Path(tmp) / 'verification/sources' / audit.KUNZ_SNAPSHOT.name
+            dest = audit.position((*b56, 84, 109))
+            self.assertEqual(audit.kunz_states(replay, dest, data['frobenius']), data['states'])
+            audit.HERE = Path(tmp)
+            self.assertIsNone(audit.finite_witness('B56', b56, 'b56_', 84))
+            # A transcript whose timed command is not the pinned sequential one, re-hashed.
+            stderr = replay / 'kunz-stderr.txt'
+            stderr.write_text(stderr.read_text().replace('--threads 1 --verify-memo', '--threads 8 --verify-memo', 1))
+            data['stderr_sha256'] = hashlib.sha256(stderr.read_bytes()).hexdigest()
+            receipt.write_text(json.dumps(data))
+            self.assertIsNone(audit.kunz_states(replay, dest, data['frobenius']))
 
 
 X_AUDIT = ROOT / 'sylver/campaigns/x-2026-10-06/audit.json'

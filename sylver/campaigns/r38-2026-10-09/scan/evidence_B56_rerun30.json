@@ -1,0 +1,21 @@
+{
+ "position": [
+  16,
+  38,
+  56,
+  60
+ ],
+ "obligations": 56,
+ "rows": [
+  {
+   "obligation": 30,
+   "kind": "even",
+   "reply": 235,
+   "via": "finite",
+   "destination": "16,30,38,56,235",
+   "seconds": 522.2,
+   "frobenius": 317,
+   "states": 44692168
+  }
+ ]
+}

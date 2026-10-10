@@ -1,0 +1,5 @@
+18:29:27 start b56_74 (423,748,850 states, 27.875280898064375 GiB cap)
+20:11:22 b56_74 done rc=0 6116s
+20:11:22 start b56_90 (341,842,991 states, 22.53562661446631 GiB cap)
+21:28:53 b56_90 done rc=0 4651s
+finished: 2 failed: {}

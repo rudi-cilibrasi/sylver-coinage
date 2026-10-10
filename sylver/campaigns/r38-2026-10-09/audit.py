@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Three new P-positions after the opening 16, and the answers to the reply 38 they refute.
+"""Four new P-positions after the opening 16, and the answers to the reply 38 they refute.
 
-I={16,20,22,24}, B28={16,28,38,40} and B24={16,24,38,44} each have gcd two and
-a short (quiet ender) half. So by the Quiet End Theorem each is P exactly when
+I={16,20,22,24}, B28={16,28,38,40}, B24={16,24,38,44} and B56={16,38,56,60}
+each have gcd two and a short (quiet ender) half. So by the Quiet End Theorem each is P exactly when
 each of its obligations leads to an N-position: the even moves 2g for the gaps
 g of its half, and the half's odd gaps above 1. The audit lists them twice,
 with the arena referee's profile and with an independent coin-sum count,
@@ -14,9 +14,15 @@ evidence for an obligation m:
    receipt of that certificate (outcomes P, matching state counts, return
    codes, re-hashed transcripts whose own lines state P, the destination's
    Frobenius number and that count);
-2. ``certified-node``: the listed reply reaches a P-position certified in
+2. ``finite-witness-native-kunz`` (the moves in NATIVE_KUNZ only): as 1, but
+   the destination (above 175 million states) gets a ``kunz_solver.cpp``
+   replay in place of the Python one, run sequentially (``--threads 1``, the
+   state count native_solver.cpp reports) with ``--verify-memo``. The audit
+   requires the exact command, both transcripts, the exact source
+   (KUNZ_SNAPSHOT, whose hash is pinned here), and equal state counts;
+3. ``certified-node``: the listed reply reaches a P-position certified in
    ``sylver.short_certificates.NODES`` (legality and identity checked);
-3. ``nested-p``: the listed reply reaches another position of POSITIONS that
+4. ``nested-p``: the listed reply reaches another position of POSITIONS that
    this audit has already found P (it must be listed earlier).
 
 The audit fails unless every obligation of every position is covered. It then
@@ -46,10 +52,18 @@ POSITIONS = {
                                        20: (26, 'J'), 22: (12, 'P0'), 26: (20, 'J')}, {}),
     'B24': ((16, 24, 38, 44), 'b24_', {4: (6, 'C'), 6: (4, 'C'), 8: (14, 'E'), 12: (14, 'F'), 14: (8, 'E'),
                                        22: (12, 'P0')}, {20: (22, 'I')}),
+    'B56': ((16, 38, 56, 60), 'b56_', {4: (6, 'C'), 6: (4, 'C'), 8: (14, 'E'), 12: (14, 'F'), 14: (8, 'E'),
+                                       22: (12, 'P0')},
+            {24: (44, 'B24'), 28: (40, 'B28'), 40: (28, 'B28'), 44: (24, 'B24')}),
 }
+# B56's four witnesses above 175 million states: native_solver.cpp and sequential kunz_solver.cpp replays
+NATIVE_KUNZ = {'B56': {74, 84, 90, 122}}
+KUNZ_OPTIONS = ['--threads', '1', '--verify-memo', '--verify-threads', '6', '--memo-stats']
+KUNZ_SNAPSHOT = HERE / 'verification/sources/kunz_solver-243866d.cpp'
+KUNZ_SOURCE_SHA256 = '4b6221788c1e76805bbf7d680a493e7c21c9664a2ef3274ff50487302cd2c672'   # unchanged since 48c1968
 # answer a to the reply 38: (the move that takes {16,38,a} to a P-position, that position or certified node)
 REFUTED = {4: (6, 'C'), 6: (4, 'C'), 8: (14, 'E'), 12: (14, 'F'), 14: (8, 'E'), 22: (12, 'P0'),
-           24: (44, 'B24'), 28: (40, 'B28'), 40: (28, 'B28'), 44: (24, 'B24')}
+           24: (44, 'B24'), 28: (40, 'B28'), 40: (28, 'B28'), 44: (24, 'B24'), 56: (60, 'B56')}
 
 
 def coin_sum_obligations(p):
@@ -86,22 +100,58 @@ def transcript_states(name, stdout, dest, frobenius):
     return row.get('states') if ok else None
 
 
-def finite_witness(p, prefix, m):
+def kunz_states(directory, dest, frobenius):
+    """The state count of a verified sequential kunz_solver replay of ``dest`` in ``directory``, or None."""
+    receipt = directory / 'kunz-receipt.json'
+    files = [directory / f'kunz-{stream}.txt' for stream in ('stdout', 'stderr')]
+    if not (receipt.exists() and all(f.exists() for f in files)):
+        return None
+    r = json.loads(receipt.read_text())
+    snapshot = (directory / str(r.get('source_snapshot', ''))).resolve()
+    if (snapshot != KUNZ_SNAPSHOT.resolve() or r.get('source_sha256') != KUNZ_SOURCE_SHA256
+            or hashlib.sha256(snapshot.read_bytes()).hexdigest() != KUNZ_SOURCE_SHA256
+            or [hashlib.sha256(f.read_bytes()).hexdigest() for f in files] != [r.get('stdout_sha256'),
+                                                                               r.get('stderr_sha256')]):
+        return None
+    states = r.get('states')
+    stdout, stderr = files[0].read_text().splitlines(), files[1].read_text().splitlines()
+    ok = (type(states) is int and r.get('returncode') == 0 and r.get('outcome') == 'P'
+          and r.get('position') == list(dest) and r.get('frobenius') == frobenius
+          and r.get('source') == 'sylver/kunz_solver.cpp'
+          and r.get('command', [None])[1:] == [*KUNZ_OPTIONS, *map(str, dest)]
+          and stdout == [f'P winning_move=none frobenius={frobenius} states={states}', f'verified entries={states}']
+          and stderr.count(f'kunz_solver: memo verified ({states} entries)') == 1
+          and [line.strip() for line in stderr if line.strip().startswith('Exit status')] == ['Exit status: 0']
+          and timed_arguments(stderr) == [*KUNZ_OPTIONS, *map(str, dest)])
+    return states if ok else None
+
+
+def timed_arguments(stderr):
+    """The arguments (after the binary) of the one command /usr/bin/time reports in a transcript, or None."""
+    timed = [line.strip() for line in stderr if line.strip().startswith('Command being timed: "')]
+    if len(timed) != 1 or not timed[0].endswith('"'):
+        return None
+    return timed[0][len('Command being timed: "'):-1].split()[1:]
+
+
+def finite_witness(name, p, prefix, m):
     cert, receipt = HERE / f'{prefix}{m}-certificate.json', HERE / f'verification/{prefix}{m}/receipt.json'
     if not (cert.exists() and receipt.exists()):
         return None
     c, r = json.loads(cert.read_text()), json.loads(receipt.read_text())
     native, python = r.get('runs', {}).get('native'), r.get('runs', {}).get('python')
-    if (r.get('status') != 'verified' or native is None or python is None
-            or type(native.get('states')) is not int or type(python.get('states')) is not int):
+    native_kunz = m in NATIVE_KUNZ.get(name, ())
+    if (r.get('status') != 'verified' or native is None or (python is None) != native_kunz
+            or type(native.get('states')) is not int or (python is not None and type(python.get('states')) is not int)):
         return None
     dest = position((*p, m, c['reply']))
     ok = (r['certificate_sha256'] == hashlib.sha256(cert.read_bytes()).hexdigest() and c['parent'] == list(p)
           and c['opponent_move'] == m and legal(position((*p, m)), c['reply']) and gcd(*dest) == 1
           and list(dest) == c['destination'] == r['position'] and c['destination_outcome'] == 'P'
           and frobenius_number(dest) == c['frobenius'] == r['frobenius']
-          and native['states'] == python['states'])
-    for solver, run in (('native', native), ('python', python)):
+          and native['states'] == (kunz_states(receipt.parent, dest, c['frobenius']) if native_kunz
+                                   else python['states']))
+    for solver, run in (('native', native),) + ((() if native_kunz else (('python', python),))):
         files = [HERE / f'verification/{prefix}{m}/{solver}-{stream}.txt' for stream in ('stdout', 'stderr')]
         ok = ok and (run['outcome'] == 'P' and run['returncode'] == 0 and not run['timed_out']
                      and run['frobenius'] == c['frobenius'] and run['command'][-len(dest):] == list(map(str, dest))
@@ -111,7 +161,7 @@ def finite_witness(p, prefix, m):
         ok = ok and transcript_states(solver, files[0].read_text(), dest, c['frobenius']) == native['states']
     if not ok:
         return None
-    return {'evidence': 'finite-witness', 'reply': c['reply'],
+    return {'evidence': 'finite-witness-native-kunz' if native_kunz else 'finite-witness', 'reply': c['reply'],
             'destination': key(dest),
             'certificate': str(cert.relative_to(ROOT)), 'receipt': str(receipt.relative_to(ROOT)),
             'states': native['states']}
@@ -153,7 +203,7 @@ def audit_position(name, outcomes):
     if info['moves'] != recount:
         section['failures'].append(f'{name}: the referee profile and the coin-sum recount disagree')
     for m in info['moves']:
-        row = (finite_witness(p, prefix, m) or certified_node(p, node_routes, m)
+        row = (finite_witness(name, p, prefix, m) or certified_node(p, node_routes, m)
                or nested_p(p, nested_routes, m, outcomes))
         if row is None:
             section['failures'].append(f'{name}: move {m} has no accepted evidence')

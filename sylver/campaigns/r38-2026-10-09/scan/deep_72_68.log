@@ -1,0 +1,6 @@
+14:08:45 C = (16, 38, 68, 72) candidates 345 first [95, 111, 115, 119, 121, 123, 125, 127]
+14:27:52 batch 95..171: classified 17/30, P=None, 1147.8s
+14:59:51 batch 149..207: classified 2/30, P=None, 1918.4s
+15:23:00 batch 155..213: classified 3/30, P=None, 1389.2s
+15:43:43 batch 163..221: classified 1/30, P=None, 1242.9s
+16:27:46 batch 167..225: classified 1/30, P=None, 2643.3s

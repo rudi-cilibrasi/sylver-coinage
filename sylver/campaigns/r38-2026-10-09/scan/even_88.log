@@ -1,0 +1,38 @@
+r=88 e=   2 resolved  reply=3 via=finite odd witness tried=1 0.1s
+r=88 e=   4 resolved  reply=6 via=node C tried=- 0.0s
+r=88 e=   6 resolved  reply=4 via=node C tried=- 0.0s
+r=88 e=   8 resolved  reply=14 via=node E tried=- 0.0s
+r=88 e=  10 resolved  reply=9 via=finite odd witness tried=3 0.1s
+r=88 e=  12 resolved  reply=14 via=node F tried=- 0.0s
+r=88 e=  14 resolved  reply=8 via=node E tried=- 0.0s
+r=88 e=  18 resolved  reply=5 via=finite odd witness tried=2 0.1s
+r=88 e=  20 resolved  reply=13 via=finite odd witness tried=6 0.1s
+r=88 e=  22 resolved  reply=12 via=node P0 tried=- 0.0s
+r=88 e=  24 resolved  reply=44 via=search: P (resolve_16-24-38-44) tried=- 0.0s
+r=88 e=  26 resolved  reply=371 via=finite odd witness tried=185 568.5s
+r=88 e=  28 resolved  reply=40 via=search: P (resolve_16-28-38-40) tried=- 0.0s
+r=88 e=  30 resolved  reply=19 via=finite odd witness tried=10 1.6s
+r=88 e=  34 resolved  reply=53 via=finite odd witness tried=26 41.7s
+r=88 e=  36 resolved  reply=123 via=finite odd witness tried=61 467.8s
+r=88 e=  40 resolved  reply=28 via=search: P (resolve_16-28-38-40) tried=- 0.0s
+r=88 e=  42 resolved  reply=181 via=finite odd witness tried=90 1302.0s
+r=88 e=  44 resolved  reply=24 via=search: P (resolve_16-24-38-44) tried=- 0.0s
+r=88 e=  46 resolved  reply=129 via=finite odd witness tried=64 1605.8s
+r=88 e=  50 resolved  reply=79 via=finite odd witness tried=39 1035.1s
+r=88 e=  52 resolved  reply=19 via=finite odd witness tried=12 41.5s
+r=88 e=  56 short: needs even reply=None via=None tried=23 1032.0s
+r=88 e=  58 resolved  reply=11 via=finite odd witness tried=6 0.3s
+r=88 e=  60 resolved  reply=17 via=finite odd witness tried=7 0.6s
+r=88 e=  62 resolved  reply=51 via=finite odd witness tried=27 502.4s
+r=88 e=  66 resolved  reply=49 via=finite odd witness tried=26 441.5s
+r=88 e=  68 resolved  reply=33 via=finite odd witness tried=17 57.1s
+r=88 e=  72 short: needs even reply=None via=None tried=25 923.8s
+r=88 e=  56 resolved  reply=60 via=search: P (resolve_16-38-56-60) tried=- 0.0s
+r=88 e=  72 open      reply=None via=None tried=24 1473.5s
+r=88 e=  74 open      reply=None via=None tried=41 1653.1s
+r=88 e=  78 resolved  reply=29 via=finite odd witness tried=11 4.6s
+r=88 e=  82 resolved  reply=27 via=finite odd witness tried=18 51.0s
+r=88 e=  84 resolved  reply=51 via=finite odd witness tried=25 206.3s
+r=88 e=  90 open      reply=None via=None tried=35 2112.9s
+r=88 e=  94 open      reply=None via=None tried=36 5346.9s
+r=88 e=  98 open      reply=None via=None tried=35 3327.3s

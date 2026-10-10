@@ -17,13 +17,16 @@ exceeds 10^12 states.
 
 For the week of September 21–27, see the [progress summary](docs/progress/2026-09-28-week.md).
 
-- **Reply 38: three new P-positions refute four answers (October 9).**
-  - I={16,20,22,24}, B28={16,28,38,40} and B24={16,24,38,44} are P. Each
-    is short. Its Quiet End obligations are covered by finite witnesses
-    replayed natively and in Python, by certified nodes, and (B24's move
-    20) by I.
-  - So 24, 28, 40 and 44 do not answer the reply 38. {16,28,38} is N, which
-    settles the question the Y record left open.
+- **Reply 38: four new P-positions refute five answers (October 9).**
+  - I={16,20,22,24}, B28={16,28,38,40}, B24={16,24,38,44} and
+    B56={16,38,56,60} are P. Each is short, and every one of its Quiet End
+    obligations is covered:
+    - by finite witnesses, replayed natively and in Python, or for B56's
+      four largest natively and by a sequential Kunz run;
+    - by certified nodes;
+    - or by another of these positions.
+  - So 24, 28, 40, 44 and 56 do not answer the reply 38. {16,28,38} is N,
+    which settles the question the Y record left open.
   - No answer to 38 is known yet. It remains the lowest unanswered reply.
 
   See the [record](sylver/campaigns/r38-2026-10-09/RESULT.md).

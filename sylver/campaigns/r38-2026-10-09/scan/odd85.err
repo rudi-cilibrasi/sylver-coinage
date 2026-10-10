@@ -1,0 +1,25 @@
+kunz_solver: sweep stopped during move=85 (memo holds 1000005930 states)
+kunz_solver: memo entries=1000005930 slots=1407874191 bytes=23933861247
+	Command being timed: "./kunz --threads 4 --stop-at-p --max-states 1000000000 --memo-stats --odd-list 85 16 38"
+	User time (seconds): 8860.12
+	System time (seconds): 52.64
+	Percent of CPU this job got: 175%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:24:32
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 23488780
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 16878395
+	Voluntary context switches: 2957
+	Involuntary context switches: 3529286
+	Swaps: 0
+	File system inputs: 264
+	File system outputs: 8
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

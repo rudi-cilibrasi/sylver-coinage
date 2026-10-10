@@ -1,0 +1,10 @@
+{"child": [16, 38, 72, 78], "w": 81, "outcome": "N", "winning_move": "95", "states": 296093039, "returncode": 0, "stderr_tail": "", "seconds": 1167.9}
+{"child": [16, 38, 72, 78], "w": 87, "outcome": "N", "winning_move": "79", "states": 348806171, "returncode": 0, "stderr_tail": "", "seconds": 1125.5}
+{"child": [16, 38, 72, 78], "w": 91, "outcome": "N", "winning_move": "117", "states": 404219836, "returncode": 0, "stderr_tail": "", "seconds": 654.2}
+{"child": [16, 38, 72, 78], "w": 93, "outcome": "N", "winning_move": "97", "states": 417422021, "returncode": 0, "stderr_tail": "", "seconds": 843.7}
+{"child": [16, 38, 72, 78], "w": 95, "outcome": "N", "winning_move": "81", "states": 428716164, "returncode": 0, "stderr_tail": "", "seconds": 1003.9}
+{"child": [16, 38, 72, 84], "w": 87, "outcome": "N", "winning_move": "77", "states": 366939381, "returncode": 0, "stderr_tail": "", "seconds": 543.6}
+{"child": [16, 38, 72, 84], "w": 99, "outcome": "N", "winning_move": "101", "states": 505688529, "returncode": 0, "stderr_tail": "", "seconds": 738.7}
+{"child": [16, 38, 72, 84], "w": 105, "outcome": "N", "winning_move": "131", "states": 581613623, "returncode": 0, "stderr_tail": "", "seconds": 511.7}
+{"child": [16, 38, 72, 84], "w": 107, "outcome": "N", "winning_move": "157", "states": 606280703, "returncode": 0, "stderr_tail": "", "seconds": 772.1}
+{"child": [16, 38, 68, 72], "w": 147, "outcome": "N", "winning_move": "36", "states": 333025870, "returncode": 0, "stderr_tail": "", "seconds": 415.1}
