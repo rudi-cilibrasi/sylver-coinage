@@ -17,8 +17,10 @@ unanswered reply is now 36. Opening 16 remains unresolved.
 ## The certificate
 
 The proof has two levels. Z's move 44 reaches Z+44 = {16,30,44,56}. That
-position is answered by 40, which reaches a second new P-position,
-**Z′={16,30,40,44}**. [audit.py](audit.py) audits Z′ first and then Z
+position is answered by 40, which reaches a second P-position,
+**Z′={16,30,40,44}**. Z′ is on George Sicherman's
+[list of P-positions](https://sicherman.net/sylver/ppos.html), so this record
+confirms it independently (corrected October 10: it first called Z′ new). [audit.py](audit.py) audits Z′ first and then Z
 ([audit.json](audit.json)).
 
 Both positions have gcd two and quiet-ender halves:

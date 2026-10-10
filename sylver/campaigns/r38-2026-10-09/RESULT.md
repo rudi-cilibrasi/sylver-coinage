@@ -1,11 +1,11 @@
-# Reply 38 after the opening 16: four new P-positions refute five answers
+# Reply 38 after the opening 16: four P-positions refute five answers
 
 After the opening 16, the lowest reply with no known answer is 38
 ([the ledger](../o16-2026-10-09/RESULT.md)). {16,38} has gcd two and a short
 half, {8,19}. So by the Quiet End Theorem, a move answers 38 only if it is
 one of {16,38}'s 98 obligations: 35 odd moves and 63 even ones.
 
-This record certifies four new P-positions:
+This record certifies four P-positions:
 
 | Position | Half | Its Frobenius number | Obligations |
 | --- | --- | ---: | ---: |
@@ -13,6 +13,11 @@ This record certifies four new P-positions:
 | B28={16,28,38,40} | {8,14,19,20} | 45 | 38 |
 | B24={16,24,38,44} | {8,12,19,22} | 45 | 38 |
 | B56={16,38,56,60} | {8,19,28,30} | 69 | 56 |
+
+**Correction (October 10).** This record first called all four new. I and B24
+are on George Sicherman's [list of P-positions](https://sicherman.net/sylver/ppos.html)
+(last updated September 28), so for them it is an independent confirmation.
+B28 and B56 are not on that list.
 
 They refute five candidate answers to 38:
 - **24 and 44 do not answer 38.** {16,38,24} and {16,38,44} each move to B24,

@@ -1,8 +1,9 @@
 # Sylver Coinage after 16: research log
 
-**October 9, the reply 38:** four new short P-positions, I={16,20,22,24},
+**October 9, the reply 38:** four short P-positions, I={16,20,22,24},
 B28={16,28,38,40}, B24={16,24,38,44} and B56={16,38,56,60}, show that 24,
-28, 40, 44 and 56 do not answer the reply 38. B28 also settles the Y
+28, 40, 44 and 56 do not answer the reply 38. I and B24 were already on
+Sicherman's list (see the October 10 correction). B28 also settles the Y
 record's open question: {16,28,38} is N. No answer to 38 is known yet. See
 Attempts 37 and 38 and [the record](campaigns/r38-2026-10-09/RESULT.md).
 
@@ -11,8 +12,9 @@ Attempts 37 and 38 and [the record](campaigns/r38-2026-10-09/RESULT.md).
 {16,23,36}. The lowest open reply is 38. See Attempt 36 and
 [the ledger](campaigns/o16-2026-10-09/RESULT.md).
 
-**October 8, the reply 30 loses:** Z={16,30,56} is P, through a second new
-short P-position, Z′={16,30,40,44}. Every reply to the opening 16 up to 30
+**October 8, the reply 30 loses:** Z={16,30,56} is P, through a second
+short P-position, Z′={16,30,40,44}, already on Sicherman's list (see the
+October 10 correction). Every reply to the opening 16 up to 30
 now has an answer. See Attempt 35 and [the Z record](campaigns/z-2026-10-08/RESULT.md).
 
 **October 7, the reply 28 loses:** Y={16,28,58} is P. All 54 of its Quiet
@@ -1658,8 +1660,10 @@ gaps of {8,19} above 1, and the 63 even moves 2g for its gaps g. 17 of the
 even moves leave a short position, and 46 a long one.
 `campaigns/r38-2026-10-09/` records the search so far.
 
-**Three new P-positions, certified.** I={16,20,22,24}, B28={16,28,38,40}
-and B24={16,24,38,44} are short, and every obligation of each is covered
+**Three P-positions, certified** (corrected October 10: this first said
+"new"; I and B24 were already on Sicherman's list, see the correction
+below). I={16,20,22,24}, B28={16,28,38,40} and B24={16,24,38,44} are short,
+and every obligation of each is covered
 (97 obligations, 78 finite witnesses replayed natively and in Python,
 58,116,949 states).
 - B24's move 20 is answered by 22, which makes 38 redundant (38 = 16 + 22)
@@ -1747,6 +1751,20 @@ b, for b a lower rung, leads back to {16,38,b}.
   obligations are N, a refutation of 72 would have to go through a long
   P-position. The Quiet End Theorem alone cannot certify one. A periodicity
   certificate could, as for {8,10,22}, but none has been attempted here.
+
+### Correction — 2026-10-10: I, B24 and Z′ were already on Sicherman's list
+
+The records of October 8 and 9 called Z′={16,30,40,44}, I={16,20,22,24} and
+B24={16,24,38,44} new. All three are on George Sicherman's
+[list of P-positions with g > 1](https://sicherman.net/sylver/ppos.html), last
+updated September 28, 2026, before either record. What this campaign
+produced for them is an independent confirmation with a full certificate.
+Corrected: the README and the Z and reply-38 records, each with a dated
+note; this log's October 8 and 9 summaries and Attempt 37, which point here;
+the index, r38 and z pages; and the reply-38 audit's docstring.
+B28={16,28,38,40}, B56={16,38,56,60}, Z={16,30,56}, Y={16,28,58},
+U={16,26,88} and W={16,26,62,98} are not on that list. The independent review
+of pull request #43 (the film and lesson pages) noticed the overlap.
 
 ### Sources
 
