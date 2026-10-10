@@ -1,4 +1,4 @@
-// The Sylver Mint: nine small games that retrace the history of Sylver
+// The Sylver Mint: ten small games that retrace the history of Sylver
 // Coinage. Every game runs the repository's exact evaluator (solver.js). The
 // answer table and the reply-38 frontier are exported so the node tests can
 // check them against the campaign audits.
@@ -367,7 +367,77 @@ function lessonLong(root) {
   draw();
 }
 
-// ---------------------------------------------------------------- lesson 6: Blok's mirror
+// ---------------------------------------------------------------- lesson 6: Kunz's columns
+// With smallest coin m, a position is described by m column heights: in the column of the amounts
+// with remainder i (mod m), everything from the first paid amount w_i down is paid, so the column's
+// height k_i = (w_i - i) / m is its number of unpaid amounts (as in sylver/kunz_solver.cpp).
+function kunzColumns(gens) {
+  const m = Math.min(...gens), F = frobenius(gens), pay = paidUpTo(gens, F + m);
+  const w = Array.from({ length: m }, (_, i) => { let n = i; while (!pay[n]) n += m; return n; });
+  return { m, w, k: w.map((x, i) => (x - i) / m), F };
+}
+const KUNZ_START = [[5, 7], [7, 9, 11], [6, 9, 20], [8, 11, 13]];
+function lessonKunz(root) {
+  let gens, asked = false;
+  const board = el("div", { class: "kunz" }), stats = el("p", { class: "note" }), key = el("p", { class: "formula small" });
+  const quiz = el("div", { class: "row" }), quizMsg = el("p", { class: "msg", "aria-live": "polite" });
+  const picks = el("div", { class: "row" });
+  function start(g) { gens = minimal(g); asked = false; quiz.replaceChildren(); quizMsg.textContent = ""; draw(); }
+  function name(x) {
+    if (x === 1) { quizMsg.className = "msg lose"; quizMsg.textContent = "Naming 1 would lose the game, so this lesson leaves it unpaid."; return; }
+    gens = minimal([...gens, x]);
+    draw();
+    if (!asked) ask();
+  }
+  function draw() {
+    const keep = focusedTile(board);
+    const { m, w, k, F } = kunzColumns(gens);
+    const rows = Math.max(...k) + 1;
+    board.style.gridTemplateColumns = `repeat(${m}, minmax(0, 56px))`;
+    board.replaceChildren();
+    for (let r = 0; r < rows; r++) {
+      for (let i = 0; i < m; i++) {
+        const n = r * m + i, unpaid = n < w[i], first = n === w[i];
+        board.append(el("button", { class: "tile sm" + (unpaid ? (n === 1 ? " one" : "") : first ? " paid floor" : " paid"), type: "button",
+          "data-n": n, disabled: !unpaid, "aria-label": unpaid ? `${n}, unpaid` : first ? `${n}, first paid amount of its column` : `${n}, paid`,
+          onclick: () => name(n) }, n));
+      }
+    }
+    for (let i = 0; i < m; i++) board.append(el("span", { class: "height" }, k[i]));
+    stats.innerHTML = `Position <b>${setText(gens)}</b>: ${m} columns, one for each remainder when dividing by ${m}. ` +
+      `Column heights (unpaid amounts in each column): <b>${k.join(", ")}</b>. The largest unpaid amount is ${F}, just above the floor of the deepest column.`;
+    key.textContent = `the engine's key: [${[...k, ...Array(Math.max(0, 16 - m)).fill(0)].join(" ")}]  (16 bytes)`;
+    refocus(board, keep);
+  }
+  function ask() {
+    asked = true;
+    const guess = el("input", { type: "number", min: "0", step: "1", id: "kunz-guess", "aria-label": "How many amounts are unpaid?" });
+    quiz.replaceChildren(el("label", { for: "kunz-guess" }, "How many amounts are unpaid now? Read the heights, don't count the tiles."), guess,
+      el("button", { class: "ctrl primary", type: "button", onclick: () => {
+        const total = kunzColumns(gens).k.reduce((a, b) => a + b, 0);
+        const ok = Number(guess.value) === total;
+        quizMsg.className = "msg " + (ok ? "win" : "lose");
+        quizMsg.textContent = ok ? `Yes: the heights add up to ${total}, including 1.` : `Not quite: the heights add up to ${total}, including 1.`;
+        if (ok) markDone("kunz");
+      } }, "Check"));
+  }
+  KUNZ_START.forEach((g, i) => picks.append(el("button", { class: "chip", type: "button", "aria-pressed": String(i === 0),
+    onclick: (e) => { picks.querySelectorAll(".chip").forEach((c) => c.setAttribute("aria-pressed", "false"));
+      e.currentTarget.setAttribute("aria-pressed", "true"); start(g); } }, "start at " + setText(g))));
+  root.append(
+    eyebrow("NUMERICAL SEMIGROUPS, 2020–2026"),
+    el("h2", {}, "Kunz's columns"),
+    story("In 2020 Eaton, Herzinger, Pierce and Thompson wrote Sylver Coinage in the language of algebra: once the named numbers share no common factor, the paid amounts form a <b>numerical semigroup</b>.",
+          "Line the amounts up in columns by their remainder when divided by the smallest coin m. Going down a column adds m each step, so once an amount is paid, everything below it in that column is paid too. Each column is described by one number, its count of unpaid amounts. These counts are the position's <b>Kunz coordinates</b>.",
+          "Their sum is the number of unpaid amounts. The campaign's 2026 engine stores every position after the opening 16 as its 16 column heights, one byte each, so its hardest replay, 633,734,956 positions, fit in 14.2 GiB of memory. Name a copper amount and watch the columns fall."),
+    el("div", { class: "game" }, picks, board,
+      el("p", { class: "note" }, "Copper: unpaid. Outlined: the first paid amount in each column, its floor. Grey: paid. The number under a column is its height."),
+      stats, key, quiz, quizMsg),
+  );
+  start(KUNZ_START[0]);
+}
+
+// ---------------------------------------------------------------- lesson 7: Blok's mirror
 // Blok's pairing for the unpaid amounts of {8, 12} (checked in sylver/eight_twelve.py):
 // 2 with 3, 4 with 6, 4j+1 with 4j+3 and 8j+2 with 8j+6 for j >= 1; 1 has no mate.
 function mirrorMate(x) {
@@ -475,7 +545,7 @@ function lessonMirror(root) {
   start("beat");
 }
 
-// ---------------------------------------------------------------- lesson 7: answer the reply
+// ---------------------------------------------------------------- lesson 8: answer the reply
 // Certified losing positions the answer lesson names (sylver/short_certificates.py and the campaign audits).
 const NAMED = {
   C: [4, 6], E: [8, 14], F: [12, 14, 16], G: [8, 20, 26], I: [16, 20, 22, 24], K: [10, 16, 24], P0: [12, 16, 22],
@@ -554,7 +624,7 @@ function lessonAnswer(root) {
   ask(false);
 }
 
-// ---------------------------------------------------------------- lesson 8: assay a certificate
+// ---------------------------------------------------------------- lesson 9: assay a certificate
 // The even obligations of E = {8, 14} and their replies, as in node E of sylver/short_certificates.py.
 const E_REPLIES = { 2: [3, null], 4: [6, "C = {4, 6}"], 6: [4, "C = {4, 6}"], 10: [19, null], 12: [10, "{8, 10, 12, 14}, a member of the pairing family"],
                     18: [25, null], 20: [9, null], 26: [17, null], 34: [27, null] };
@@ -600,7 +670,7 @@ function lessonAssay(root) {
   );
 }
 
-// ---------------------------------------------------------------- lesson 9: the frontier
+// ---------------------------------------------------------------- lesson 10: the frontier
 // Every obligation of {16, 38}: k is the kind of move, s its status in the reply-38 record of October 9, 2026
 // (sylver/campaigns/r38-2026-10-09); tests/test_docs_mint.py derives the same statuses from its scan logs.
 const FRONTIER = [
@@ -743,6 +813,7 @@ const LESSONS = [
   ["enders", "Steal a strategy", "Hutchings, 1982", lessonEnders],
   ["quiet", "Quiet ends, short and long", "Winning Ways", lessonQuiet],
   ["long", "A long losing position", "Sicherman, 1990s", lessonLong],
+  ["kunz", "Kunz's columns", "Semigroups, 2020", lessonKunz],
   ["mirror", "Blok's mirror", "Blok, 2021", lessonMirror],
   ["answer", "Answer the reply", "Opening 16", lessonAnswer],
   ["assay", "Assay a certificate", "2026", lessonAssay],
@@ -771,7 +842,7 @@ function show(i, focus) {
 const lessonFromHash = () => LESSONS.findIndex(([id]) => "#" + id === location.hash);
 
 if (typeof module !== "undefined") {
-  module.exports = { E_REPLIES, FRONTIER, LESSONS, LONG, LONG_MAX, NAMED, TABLE, isPaid, minimal, mirrorMate, paidUpTo };
+  module.exports = { E_REPLIES, FRONTIER, KUNZ_START, LESSONS, LONG, LONG_MAX, NAMED, TABLE, isPaid, kunzColumns, minimal, mirrorMate, paidUpTo };
 } else {
   window.addEventListener("hashchange", () => { const i = lessonFromHash(); if (i >= 0 && i !== current) show(i, false); });
   show(Math.max(0, lessonFromHash()), false);

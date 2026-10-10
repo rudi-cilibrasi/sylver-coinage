@@ -94,6 +94,7 @@ console.log(JSON.stringify({
   minimal: mint.minimal([16, 24, 10, 32, 48]), long: mint.LONG, mirror: { ...mirror, failures: mirror.failures.slice(0, 10) },
   mates: Array.from({ length: 420 }, (_, i) => mint.mirrorMate(i + 1)),
   named: mint.NAMED, eReplies: mint.E_REPLIES, longMax: mint.LONG_MAX,
+  kunz: [...mint.KUNZ_START, [2, 3], [3, 5, 7], [4, 6, 9], [9, 10, 16], [16, 23, 36], [16, 25, 26, 44]].map((g) => ({ gens: g, ...mint.kunzColumns(g) })),
 }));
 '''
 
@@ -253,6 +254,28 @@ class MintTests(unittest.TestCase):
         node = next(n for n in NODES if n.name == 'E')
         edges = {move: reply for move, reply, _ in node.even_responses}
         self.assertEqual({int(m): r[0] for m, r in self.report['eReplies'].items()}, edges)
+
+    def test_kunz_columns_are_the_apery_set(self):
+        for row in self.report['kunz']:
+            gens, m, w, k = row['gens'], row['m'], row['w'], row['k']
+            limit = max(w) + m
+            paid = members(gens, limit)
+            self.assertEqual(m, min(gens))
+            for i in range(m):                    # w_i: the least paid amount with remainder i
+                self.assertEqual(w[i], next(n for n in range(i, limit + 1, m) if paid[n]), (gens, i))
+                self.assertEqual(k[i], (w[i] - i) // m)
+            g = gaps(gens, limit)
+            self.assertEqual(sum(k), len(g), gens)                 # the heights add up to the unpaid amounts
+            self.assertEqual(row['F'], max(w) - m, gens)           # the largest unpaid amount
+            self.assertEqual(row['F'], max(g), gens)
+            for n in range(1, limit):                              # kunz_solver.cpp: n is a gap exactly when n / m < k_{n mod m}
+                self.assertEqual(n // m < k[n % m], not paid[n], (gens, n))
+
+    def test_kunz_lesson_memory_figure_is_the_x_record(self):
+        text = (ROOT / 'docs/mint.js').read_text()
+        self.assertIn('633,734,956 positions, fit in 14.2 GiB', text)
+        record = (ROOT / 'sylver/campaigns/x-2026-10-06/RESULT.md').read_text()
+        self.assertRegex(record, r'replay \| `kunz_solver\.cpp` \(bc5460d\) \| 1 \| P \| 633,734,956 \|.*\| 14\.2 GiB \|')
 
     def test_lessons_have_unique_ids(self):
         lessons = self.report['lessons']

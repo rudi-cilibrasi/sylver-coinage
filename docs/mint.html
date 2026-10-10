@@ -87,6 +87,11 @@
   .tiles.mirror { display: grid; grid-template-columns: repeat(8, minmax(0, 56px)); }
   .tiles.mirror .tile { min-width: 0; width: 100%; height: 50px; padding: 0; line-height: 1.05; }
   .tile .tag { display: block; font: 500 11px var(--mono); color: var(--muted); }
+  .kunz { display: grid; gap: 6px; justify-content: start; }
+  .kunz .tile { min-width: 0; width: 100%; }
+  .kunz .height { text-align: center; font: 600 14px var(--mono); color: var(--gilt); }
+  .tile.paid.floor { border: 2px solid var(--gilt); color: var(--ink); font-weight: 600; }
+  .formula.small { font-size: 15px; overflow-wrap: anywhere; }
   .tile.good .tag, .tile.bad .tag { color: var(--ink); }
   .msg { margin: 0; min-height: 1.5em; }
   .msg.win { color: var(--verdigris); font-weight: 600; }
@@ -132,10 +137,10 @@
 <body>
 <div class="page">
   <header>
-    <div class="mark">NINE SMALL GAMES</div>
+    <div class="mark">TEN SMALL GAMES</div>
     <h1>The Sylver Mint</h1>
     <p class="sub">Learn Sylver Coinage the way its researchers did: play the game, find Sylvester's formula, steal a
-      strategy, test a quiet end, try to beat Sicherman's long position, hold Blok's mirror, answer the replies to 16,
+      strategy, test a quiet end, try to beat Sicherman's long position, read a position's Kunz columns, hold Blok's mirror, answer the replies to 16,
       assay a certificate, and look at today's frontier.
       New to the story? Watch <a href="story.html">The Sylver Coinage Story</a> first.</p>
   </header>
