@@ -110,12 +110,15 @@ discovery output, not certified.
 - **Odd.** The ledger's scan showed the 24 smallest odd candidates are N.
   One more shared-memo sweep here showed that 71, 69, 77 and 79 are N, then
   stopped during 85 at its 1,400,000,000-state cap.
-  - On October 10 a queue ran each of the other seven alone, with a
-    1,700,000,000-state memo ([scan/odd_queue.sh](scan/odd_queue.sh)). 85, 87,
-    93 and 101 are N, won by 105, 273, 83 and 33.
+  - On October 10 a queue ran each of the other seven alone, on 8 threads
+    with a cap of 1,700,000,000 states (`--max-states`;
+    [scan/odd_queue.sh](scan/odd_queue.sh)). 85, 87, 93 and 101 are N, won
+    by 105, 273, 83 and 33.
   - 109, 117 and 125 stopped at that cap, and again when each was retried
-    alone at 2,100,000,000 states, about 50 GB of memory
-    ([scan/odd_retry.sh](scan/odd_retry.sh)). They are open.
+    alone at 2,100,000,000 states, whose memo took about 50.5 GB of this
+    62.5 GiB host ([scan/odd_retry.sh](scan/odd_retry.sh)). They are open:
+    each needs more than 2.1 billion states, and the cap cannot rise much
+    further here.
 - **Short even.**
   - For a = 6, 12, 20, 60 and 136, an odd move wins from {16,38,a}
     ([scan/odd_filter.jsonl](scan/odd_filter.jsonl)).
@@ -149,10 +152,15 @@ discovery output, not certified.
   - 31 stayed open within the sweeps' state caps: 42, 46, 52, 62, 66, 68,
     74, 82, 84, 90, 106, 110, 116, 122, 126, 132, 138 and 142, and, from the
     map's continuation on October 10, 148, 154, 158, 164, 170, 180, 186, 196,
-    202, 212, 218, 234 and 250. Every long candidate has now been searched. For 42, the
-    106 odd replies classified are all N, and four more (205, 213, 215 and
-    221) were not classified: their batches stopped at the state cap or the
-    1,800-second timeout.
+    202, 212, 218, 234 and 250.
+  - For 42, the 106 odd replies classified are all N, and four more (205,
+    213, 215 and 221) were not classified: their batches stopped at the state
+    cap or the 1,800-second timeout.
+  - So every long candidate has been searched, but mostly shallowly. The map
+    gave each batch of odd replies a cap of 500,000,000 states up to 50,
+    150,000,000 from 52 to 218, and 700,000,000 for 234 and 250, and gave up
+    on a candidate after four batches stopped. 27 of the 31 open candidates
+    had only the 150,000,000-state cap (see the scan README).
 
 ## Reproduction
 

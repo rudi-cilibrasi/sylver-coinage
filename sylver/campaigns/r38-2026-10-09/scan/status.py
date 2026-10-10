@@ -1,13 +1,13 @@
 """Status of {16,38}'s obligations from the search logs (a move is an answer to 38 iff {16,38,move} is P)."""
 import json, re, sys
 from pathlib import Path
-sys.path.insert(0, '/home/ruclaw/src/sylver-coinage')
-from sylver.arena.common import position, profile, key
+sys.path.insert(0, str(Path(__file__).resolve().parents[4]))
+from sylver.arena.common import position, profile, key  # noqa: E402
 
 HERE = Path(__file__).resolve().parent
 info = profile(position((16, 38)))
 status = {}
-# odd: the o16 scan's first 24 (by Frobenius) are N; the open sweep reports the rest
+# odd: the o16 scan's first 24 (by Frobenius) are N; the shared sweep, then the per-candidate queue and retries, report the rest
 odd = [m for m in info['moves'] if m % 2]
 for name in ('odd_open.out', 'odd_queue.out', 'odd_retry.out'):   # the shared sweep, then each open candidate alone
     if not (HERE / name).exists():

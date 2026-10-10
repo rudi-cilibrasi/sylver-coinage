@@ -34,12 +34,11 @@ def recorded_r38_status():
     from sylver.arena.common import key, position, profile
     moves = profile(position((16, 38)))['moves']
     status = {}
-    for name in ('odd_open.out', 'odd_queue.out', 'odd_retry.out'):
-        if not (SCAN / name).exists():
-            continue
+    for name in ('odd_open.out', 'odd_queue.out', 'odd_retry.out'):   # the shared sweep, the queue, the retries
         for line in (SCAN / name).read_text().splitlines():
             m = re.match(r'move=(\d+) (\w) winning_move=(\S+)', line)
-            if m and m[2] == 'N':
+            assert not m or m[2] == 'N', f'{name} has a P row, an answer to 38: the Mint must say so ({line})'
+            if m:
                 status[int(m[1])] = int(m[3])
     open_odd = {71, 69, 77, 79, 85, 93, 101, 87, 109, 117, 125}   # the ledger's scan settled the other odd moves
     for m in moves:
@@ -240,6 +239,20 @@ class MintTests(unittest.TestCase):
             won = re.search(r'won by (?:the odd move )?(\d+)', row['why'])
             if won:
                 self.assertEqual(int(won[1]), status[m], m)
+
+    def test_open_moves_say_how_far_they_were_searched(self):
+        frontier = {r['m']: r for r in self.report['frontier']}
+        long_log = (SCAN / 'resolve_16-38-long.log').read_text()
+        for m, row in frontier.items():
+            if row['s'] != 'open':
+                continue
+            if row['k'] == 'odd':        # each open odd move ran alone to the 2.1-billion-state cap
+                err = (SCAN / f'odd_retry_{m}.err').read_text()
+                self.assertIn(f'sweep stopped during move={m} (memo holds 21', err, m)
+                self.assertIn('2.1-billion-state cap', row['why'], m)
+            else:                        # each open long move is an open row of the map
+                self.assertRegex(long_log, rf'r=16-38 e=\s*{m} open ', m)
+                self.assertEqual(row['why'], "open within the sweeps' state caps", m)
 
     def test_named_positions_are_certified(self):
         certified = certified_positions()

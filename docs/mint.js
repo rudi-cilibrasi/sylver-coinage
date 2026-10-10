@@ -775,7 +775,7 @@ const FRONTIER = [
   {"m": 117, "k": "odd", "s": "open", "why": "open: searched alone, it stopped at a 2.1-billion-state cap"},
   {"m": 120, "k": "short", "s": "ladder", "why": "a rung of the ladder 56, 72, 88, 104, 120, 136; some of its odd obligations are not finished"},
   {"m": 122, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
-  {"m": 125, "k": "odd", "s": "open", "why": "open: the shared sweep stopped during 85 at its 1.4-billion-state cap"},
+  {"m": 125, "k": "odd", "s": "open", "why": "open: searched alone, it stopped at a 2.1-billion-state cap"},
   {"m": 126, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
   {"m": 132, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
   {"m": 136, "k": "short", "s": "search", "why": "{16,38,136} is won by the odd move 37 (search)"},
