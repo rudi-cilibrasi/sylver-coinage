@@ -569,74 +569,94 @@ function lessonMirror(root) {
 }
 
 // ---------------------------------------------------------------- lesson 8: which openings win?
-// The openings 1 to 17, as Sicherman (2002, p. 5) and OEIS A248380 give them: primes from 5 up win
+// The openings 1 to 17, as Sicherman (2002, #G02, p. 5) and OEIS A248380 give them: primes from 5 up win
 // (Hutchings), a multiple of such a prime loses to the prime, and the small numbers 2^a 3^b have answers
-// up to 12. [opening, "win" | "lose" | "open", the answer that beats it or null, why]
+// up to 12. [opening, "win" | "lose" | "open", an answer that beats it, another one or null, why]
 const OPENINGS = [
-  [1, "lose", null, "naming 1 loses at once"],
-  [2, "lose", 3, "the reply 3 leaves {2, 3}, where only 1 is left"],
-  [3, "lose", 2, "the reply 2 leaves {2, 3}"],
-  [4, "lose", 6, "the reply 6 leaves C = {4, 6}, a losing position"],
-  [5, "win", null, "a prime from 5 up wins, by Hutchings' theorem"],
-  [6, "lose", 4, "the reply 4 leaves {4, 6}; 9 also wins, leaving {6, 9}"],
-  [7, "win", null, "a prime from 5 up wins, by Hutchings' theorem"],
-  [8, "lose", 12, "the reply 12 leaves {8, 12}, which loses by Blok's mirror; 14 also wins, leaving E = {8, 14}"],
-  [9, "lose", 6, "the reply 6 leaves {6, 9}, which Sicherman lists as a losing position"],
-  [10, "lose", 5, "a multiple of the prime 5 loses to 5"],
-  [11, "win", null, "a prime from 5 up wins, by Hutchings' theorem"],
-  [12, "lose", 8, "the reply 8 leaves {8, 12}"],
-  [13, "win", null, "a prime from 5 up wins, by Hutchings' theorem"],
-  [14, "lose", 7, "a multiple of the prime 7 loses to 7"],
-  [15, "lose", 5, "a multiple of the prime 5 loses to 5"],
-  [16, "open", null, "it is the smallest undecided opening, Conway's $1,000 question"],
-  [17, "win", null, "a prime from 5 up wins, by Hutchings' theorem"],
+  [1, "lose", null, null, "naming 1 loses at once"],
+  [2, "lose", 3, null, "the reply 3 leaves {2, 3}, where only 1 is left"],
+  [3, "lose", 2, null, "the reply 2 leaves {2, 3}"],
+  [4, "lose", 6, null, "the reply 6 leaves C = {4, 6}, a losing position"],
+  [5, "win", null, null, "a prime from 5 up wins, by Hutchings' theorem"],
+  [6, "lose", 4, 9, "the reply 4 leaves {4, 6}; 9 also wins, leaving {6, 9}"],
+  [7, "win", null, null, "a prime from 5 up wins, by Hutchings' theorem"],
+  [8, "lose", 12, 14, "the reply 12 leaves {8, 12}, which loses by Blok's mirror; 14 also wins, leaving E = {8, 14}"],
+  [9, "lose", 6, null, "the reply 6 leaves {6, 9}, which Sicherman lists as a losing position"],
+  [10, "lose", 5, null, "a multiple of the prime 5 loses to 5"],
+  [11, "win", null, null, "a prime from 5 up wins, by Hutchings' theorem"],
+  [12, "lose", 8, null, "the reply 8 leaves {8, 12}"],
+  [13, "win", null, null, "a prime from 5 up wins, by Hutchings' theorem"],
+  [14, "lose", 7, null, "a multiple of the prime 7 loses to 7"],
+  [15, "lose", 5, null, "a multiple of the prime 5 loses to 5"],
+  [16, "open", null, null, "it was the smallest opening Sicherman's 2002 paper left undecided, and still is: Conway's $1,000 question"],
+  [17, "win", null, null, "a prime from 5 up wins, by Hutchings' theorem"],
 ];
+// A hint for a miss: which of the three facts applies, without the verdict.
+function openingHint(n) {
+  const prime = (p) => p >= 2 && [...Array(p).keys()].slice(2).every((d) => p % d);
+  if (n === 1) return "whoever names 1 has named the losing number.";
+  if (n >= 5 && prime(n)) return `${n} is a prime from 5 up.`;
+  const p = [...Array(n + 1).keys()].find((d) => d >= 5 && prime(d) && n % d === 0);
+  if (p) return `${n} is a multiple of the prime ${p}.`;
+  return n > 12 ? `${n} has the form 2^a 3^b and is above 12.` : `${n} has the form 2^a 3^b, at most 12: look for a reply that leaves a known losing position.`;
+}
 function lessonOpenings(root) {
-  const answered = new Map();
+  const solved = new Set();
   const board = el("div", { class: "tiles" }), detail = el("p", { class: "msg", "aria-live": "polite" }, "Pick an opening.");
   const choose = el("div", { class: "row" }), score = el("p", { class: "note" });
+  const tagOf = { win: "wins", lose: "loses", open: "open" };
   let current = null;
-  const label = { win: "the opener wins", lose: "the opener loses", open: "nobody knows" };
   function draw() {
-    const keep = focusedTile(board);
     board.replaceChildren(...OPENINGS.map(([n, truth]) => {
-      const got = answered.get(n);
-      const right = got === truth;
-      const cls = got === undefined ? "" : right ? (truth === "win" ? " good" : truth === "lose" ? " bad" : " gold") : " wrong";
+      const done = solved.has(n);
+      const cls = done ? (truth === "win" ? " good" : truth === "lose" ? " bad" : " gold") : "";
       return el("button", { class: "tile" + cls + (n === current ? " pick" : ""), type: "button", "data-n": n,
-        "aria-label": got === undefined ? `opening ${n}` : right ? `opening ${n}: ${label[truth]}` : `opening ${n}: try again`,
-        onclick: () => pick(n) }, n);
+        "aria-pressed": String(n === current), "aria-label": done ? `opening ${n}: ${tagOf[truth]}` : `opening ${n}`,
+        onclick: () => pick(n) }, el("span", {}, n), done ? el("span", { class: "tag" }, tagOf[truth]) : null);
     }));
-    refocus(board, keep);
-    const right = OPENINGS.filter(([n, truth]) => answered.get(n) === truth).length;
-    score.textContent = `${right} of ${OPENINGS.length} classified correctly.`;
-    if (right === OPENINGS.length) markDone("openings");
+    score.textContent = `${solved.size} of ${OPENINGS.length} classified.`;
+  }
+  function reason(n) {
+    const [, truth, answer, , why] = OPENINGS.find(([m]) => m === n);
+    return `${n} ${truth === "win" ? "wins" : truth === "lose" ? "loses" : "is undecided"}` + (answer ? ` to ${answer}` : "") + `: ${why}.`;
   }
   function pick(n) {
     current = n;
+    choose.replaceChildren();
+    if (solved.has(n)) { detail.className = "msg"; detail.textContent = reason(n); draw(); board.querySelector(`[data-n="${n}"]`).focus(); return; }
     detail.className = "msg";
     detail.textContent = `The opening ${n}: does the player who names it win?`;
     choose.replaceChildren(...[["win", "Wins"], ["lose", "Loses"], ["open", "Nobody knows"]].map(([v, text]) =>
       el("button", { class: "ctrl", type: "button", onclick: () => judge(n, v) }, text)));
     draw();
+    choose.querySelector("button").focus();
   }
   function judge(n, v) {
-    const [, truth, answer, why] = OPENINGS.find(([m]) => m === n);
-    answered.set(n, truth === v ? v : `wrong:${v}`);
-    detail.className = "msg " + (truth === v ? "win" : "lose");
-    detail.textContent = `${truth === v ? "Right" : "Not quite"}. ${n} ${truth === "win" ? "wins" : truth === "lose" ? "loses" : "is undecided"}` +
-      (answer ? ` to ${answer}` : "") + `: ${why}.`;
-    choose.replaceChildren();
+    const truth = OPENINGS.find(([m]) => m === n)[1];
+    if (truth !== v) {                     // a hint, not the verdict; the question stays open
+      detail.className = "msg lose";
+      detail.textContent = `Not quite. Hint: ${openingHint(n)}`;
+      choose.querySelector("button").focus();
+      return;
+    }
+    solved.add(n);
     current = null;
+    choose.replaceChildren();
+    detail.className = "msg win";
+    detail.textContent = `Right. ${reason(n)}` + (solved.size === OPENINGS.length
+      ? " All 17 classified: every opening up to 15 was settled by 2002, and 16 is the first undecided one. Next: answer the replies to 16." : "");
     draw();
+    board.querySelector(`[data-n="${n}"]`).focus();
+    if (solved.size === OPENINGS.length) markDone("openings");
   }
   root.append(
     eyebrow("THE OPENINGS, 1982–2014"),
     el("h2", {}, "Which openings win?"),
-    story("Which first moves win? By 2002 the answer was known for every opening up to 15, from three facts. A prime from 5 up wins, by Hutchings' theorem. A multiple of such a prime loses to the prime itself: after 10, the reply 5 leaves just {5}, the position of the winning opening 5, with the first player to move. And each of the small numbers of the form 2<sup>a</sup>3<sup>b</sup> up to 12 has a known answer.",
-          "Every opening 2<sup>a</sup>3<sup>b</sup> above 12 is undecided, and the smallest, 16, is the subject of Conway's $1,000 question (OEIS A248380). Classify the openings from 1 to 17."),
+    story("Which first moves win? By 2002 the answer was known for every opening up to 15, from three facts. A prime from 5 up wins, by Hutchings' theorem. A multiple of such a prime loses to the prime itself: after 10, the reply 5 leaves just {5}, so the first player now faces what a winning opening 5 leaves for the opponent. And each of the small numbers of the form 2<sup>a</sup>3<sup>b</sup> up to 12 has a known answer.",
+          "Sicherman's 2002 paper left every opening 2<sup>a</sup>3<sup>b</sup> above 12 undecided. The smallest, 16, is Conway's $1,000 question, and it is still open. Classify the openings from 1 to 17; a miss gives a hint."),
     el("div", { class: "game" }, board, detail, choose, score),
-    el("p", { class: "note" }, "Sources: G. Sicherman, Theory and Practice of Sylver Coinage, Integers 2 (2002), p. 5; OEIS A248380."),
+    el("p", { class: "note" }, "Sources: G. Sicherman, Theory and Practice of Sylver Coinage, Integers 2 (2002), #G02, p. 5; ",
+      el("a", { href: "https://oeis.org/A248380" }, "OEIS A248380"), "."),
   );
   draw();
 }

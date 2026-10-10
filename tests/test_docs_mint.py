@@ -323,28 +323,35 @@ class MintTests(unittest.TestCase):
     def test_openings_match_oeis_and_their_answers_hold(self):
         # OEIS A248380: a(n) = 1 if the first player wins by opening with n, else 2; a(16) unknown, a(17) = 1.
         oeis = [2, 2, 2, 2, 1, 2, 1, 2, 2, 2, 1, 2, 1, 2, 2]
-        rows = {n: (truth, answer) for n, truth, answer, _ in self.report['openings']}
-        self.assertEqual(sorted(rows), list(range(1, 18)))
+        openings = self.report['openings']
+        self.assertEqual([row[0] for row in openings], list(range(1, 18)))     # one row each, in order
+        rows = {n: (truth, answer, also) for n, truth, answer, also, _ in openings}
         for n, value in enumerate(oeis, 1):
             self.assertEqual(rows[n][0], 'win' if value == 1 else 'lose', n)
         self.assertEqual(rows[16][0], 'open')
         self.assertEqual(rows[17][0], 'win')
+        from sylver.eight_twelve import BASE
         from sylver.short_certificates import NODES
         from sylver.solver import solve_position
         nodes = {tuple(node.generators) for node in NODES}
-        published = {(6, 9): 'Sicherman (2002) lists {6, 9} as P', (8, 12): 'sylver/eight_twelve.py proves {8, 12} P'}
-        for n, (truth, answer) in rows.items():
+        published = {(6, 9): 'Sicherman (2002), #G02, p. 5, lists {6, 9} as P', tuple(BASE): 'sylver/eight_twelve.py proves it P'}
+        for n, (truth, answer, also) in rows.items():
             if truth != 'lose' or n == 1:
+                self.assertIsNone(answer, n)
+                self.assertIsNone(also, n)
                 continue
-            self.assertFalse(members([n], answer)[answer], (n, answer))      # the answer is legal after n
-            dest = tuple(minimal([n, answer]))
-            if len(dest) == 1:                                             # {p}: the winning prime opening
-                p = dest[0]
-                self.assertTrue(p >= 5 and all(p % d for d in range(2, p)), (n, answer))
-            elif gcd(*dest) == 1:
-                self.assertIsNone(solve_position(dest).winning_move, (n, dest))
-            else:
-                self.assertTrue(dest in nodes or dest in published, (n, dest))
+            for reply in (answer, also):
+                if reply is None:
+                    continue
+                self.assertFalse(members([n], reply)[reply], (n, reply))          # the reply is legal after n
+                dest = tuple(minimal([n, reply]))
+                if len(dest) == 1:                                             # {p}: the winning prime opening
+                    p = dest[0]
+                    self.assertTrue(p >= 5 and all(p % d for d in range(2, p)), (n, reply))
+                elif gcd(*dest) == 1:
+                    self.assertIsNone(solve_position(dest).winning_move, (n, dest))
+                else:
+                    self.assertTrue(dest in nodes or dest in published, (n, dest))
 
     def test_lessons_have_unique_ids(self):
         lessons = self.report['lessons']
