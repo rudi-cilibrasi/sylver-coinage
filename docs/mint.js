@@ -335,7 +335,10 @@ function lessonLong(root) {
     const guess = el("input", { type: "number", min: "1", step: "1", id: "long-guess" });
     quiz.replaceChildren(el("label", { for: "long-guess" }, `Predict: what does the computer answer to ${x}?`), guess,
       el("button", { class: "ctrl primary", type: "button", onclick: (e) => check(x, Number(guess.value), e.currentTarget) }, "Check"));
-    if (afterAnswer) { quizMsg.textContent += ` Next: what does the computer answer to ${x}?`; guess.focus(); }
+    if (afterAnswer) {
+      quizMsg.textContent += ` Next: what does the computer answer to ${x}?`;
+      if (document.activeElement === document.body) guess.focus();   // unless the player has moved on
+    }
     else { quizMsg.className = "msg"; quizMsg.textContent = ""; }
   }
   function check(x, y, button) {
