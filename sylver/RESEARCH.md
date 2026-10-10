@@ -1,10 +1,10 @@
 # Sylver Coinage after 16: research log
 
-**October 9, the reply 38:** three new short P-positions,
-I={16,20,22,24}, B28={16,28,38,40} and B24={16,24,38,44}, show that 24, 28,
-40 and 44 do not answer the reply 38. B28 also settles the Y record's open
-question: {16,28,38} is N. No answer to 38 is known yet. See Attempt 37 and
-[the record](campaigns/r38-2026-10-09/RESULT.md).
+**October 9, the reply 38:** four new short P-positions, I={16,20,22,24},
+B28={16,28,38,40}, B24={16,24,38,44} and B56={16,38,56,60}, show that 24,
+28, 40, 44 and 56 do not answer the reply 38. B28 also settles the Y
+record's open question: {16,28,38} is N. No answer to 38 is known yet. See
+Attempts 37 and 38 and [the record](campaigns/r38-2026-10-09/RESULT.md).
 
 **October 9, a ledger of answers:** every even reply to the opening 16 up to
 36 now has an answer. 36 is answered by 23, through the finite P-position
@@ -1701,6 +1701,52 @@ and B24={16,24,38,44} are short, and every obligation of each is covered
 {16,38,a,e} whose odd obligations are all N and whose short children are all
 N. Such a position is P whenever its long children are N too. The search
 looks for these first.
+
+### Attempt 38 — 56 does not answer 38 (2026-10-09)
+
+The search found (discovery output, like the rest of this paragraph and
+the ladder below) that {16,38,56} is odd-complete: every odd obligation is
+N. The first resolver pass answered 31 of its 39 even obligations. The
+other eight:
+- 60 leads to the short position B56={16,38,56,60}, whose short children
+  are all N;
+- seven long children stayed open when their sweeps hit the state cap or
+  the timeout.
+
+**B56 is P, certified.** All 56 of its obligations are covered:
+- 46 by finite witnesses:
+  - 42 replayed natively and in Python;
+  - the four of 180 to 424 million states replayed natively and by a
+    sequential Kunz run;
+- six by certified nodes;
+- four by B24 and B28 (its moves 24, 28, 40 and 44).
+
+Its move 74 needed a deep reply. In the search, {16,38,56,60,74} had no
+even reply into a short P-position, and the first P among its odd replies,
+in order of the destination's Frobenius number, was 205. The witness
+{16,38,56,60,74,205}, with Frobenius number 305 and 423,748,850 states, is
+certified. So {16,38,56} is N through 60 (certified), and 56 does not
+answer 38.
+
+**The ladder 56, 72, 88, 104, 120, 136.** These are the short candidates
+a = 56 + 16k. Since 16 is in every position here, a candidate's obligation
+b, for b a lower rung, leads back to {16,38,b}.
+- So at most one rung can be P: a P rung refutes every rung above it.
+- 136 falls to an odd obligation (37) and 56 to B56.
+- An answer among the short candidates must therefore be the first P rung
+  among 72, 88, 104 and 120.
+- 72 is odd-complete. Its obligations 56, 58 and 66 are answered: by 60 into
+  B56, and by the deep replies 129 and 69. Three long children, 68, 78 and
+  84, have neither an even reply into a short P-position nor an odd winner
+  so far. The hardest of their odd replies each need about 300 to 600 million
+  states. Its obligations from 100 up were not yet resolved.
+- By the time B56 was added, the map of {16,38}'s long candidates had found
+  a winning odd reply for 13 of them (and 14 moves to E); 18 stayed open
+  within its caps, and 14 were not yet searched.
+- If the sweeps are right that all of 72's short children and odd
+  obligations are N, a refutation of 72 would have to go through a long
+  P-position. The Quiet End Theorem alone cannot certify one. A periodicity
+  certificate could, as for {8,10,22}, but none has been attempted here.
 
 ### Sources
 

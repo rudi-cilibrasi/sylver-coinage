@@ -1,0 +1,25 @@
+kunz_solver: memo verified (423748850 entries)
+kunz_solver: memo entries=423748850 slots=597318777 bytes=10154419209
+	Command being timed: "/tmp/claude-1001/-home-ruclaw-src-sylver-coinage/cd9b0cdd-5710-4000-902b-0c5c9cdc90cc/scratchpad/r38/kunz-243866d --threads 1 --verify-memo --verify-threads 6 --memo-stats 16 38 56 60 74 205"
+	User time (seconds): 18282.41
+	System time (seconds): 36.47
+	Percent of CPU this job got: 251%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 2:01:25
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 10005012
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 6887842
+	Voluntary context switches: 548
+	Involuntary context switches: 5953227
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

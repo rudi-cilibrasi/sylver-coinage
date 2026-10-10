@@ -39,7 +39,7 @@ def main(evidence_file, prefix, outdir, name):
         path.write_text(json.dumps(cert, indent=2) + '\n')
         gib = row['states'] * float(__import__('os').environ.get('REPLAY_BYTES_PER_STATE', 160)) / 1024 ** 3 + 0.25
         cap = max(3, int(row['states'] * 220 / 1024 ** 3) + 2)      # per-solver address-space cap
-        hours = max(1.0, row['states'] / 12_000 / 3600 * 1.5)
+        hours = max(1.0, row["states"] / float(__import__("os").environ.get("REPLAY_RATE", 12_000)) / 3600 * 1.5)
         jobs.append((row['states'], m, path, gib, cap, hours))
     jobs.sort(reverse=True)
     running, results = {}, {}

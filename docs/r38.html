@@ -41,22 +41,23 @@
 </style>
 </head>
 <body>
-<h1>Reply 38 after 16: three new P-positions refute four answers</h1>
+<h1>Reply 38 after 16: four new P-positions refute five answers</h1>
 <p>
   After the opening 16, the lowest reply with no known answer is 38. {16,38}
   is <i>short</i>, so by the Quiet End Theorem a move answers 38 only if it is
-  one of its 98 <i>obligations</i>. This record certifies three new short
-  P-positions, I = {16,20,22,24}, B28 = {16,28,38,40} and B24 = {16,24,38,44}.
-  Each is P because every one of its obligations, listed below, leads to an
-  N-position. They show that 24, 28, 40 and 44 do not answer 38; with the
-  certified nodes C, E, F and P0, the audit also rules out 4, 6, 8, 12, 14
-  and 22.
+  one of its 98 <i>obligations</i>. This record certifies four new short
+  P-positions, I = {16,20,22,24}, B28 = {16,28,38,40}, B24 = {16,24,38,44}
+  and B56 = {16,38,56,60}. Each is P because every one of its obligations,
+  listed below, leads to an N-position. They show that 24, 28, 40, 44 and 56
+  do not answer 38; with the certified nodes C, E, F and P0, the audit also
+  rules out 4, 6, 8, 12, 14 and 22.
   <a href="https://github.com/rudi-cilibrasi/sylver-coinage/blob/main/sylver/campaigns/r38-2026-10-09/RESULT.md">The result</a>
   records the search, which has found no answer to 38 yet.
 </p>
 <p>
   <b>What it rests on.</b> Finite witnesses are replayed natively and in
-  Python. The certified nodes C, D, E, F, J and P0 bring in Blok's pairing
+  Python; B56's four largest (180 to 424 million states) natively and by a
+  sequential Kunz run instead. The certified nodes C, D, E, F, J and P0 bring in Blok's pairing
   family, as in <a href="y.html">Y</a>; nothing here rests on Sicherman's
   {8,10,22}.
 </p>
@@ -65,6 +66,14 @@
 <div class="tablewrap">
   <table id="ref" hidden>
     <thead><tr><th>Answer</th><th>Position</th><th>Its move</th><th>Reaches</th><th>Outcome</th></tr></thead>
+    <tbody></tbody>
+  </table>
+</div>
+<h2>B56 = {16,38,56,60}</h2>
+<p id="status-b56">Loading the audit from the repository&hellip;</p>
+<div class="tablewrap">
+  <table id="b56" hidden>
+    <thead><tr><th>Move</th><th>Position</th><th>Evidence</th><th>Answer</th><th>States</th><th>Check</th></tr></thead>
     <tbody></tbody>
   </table>
 </div>
@@ -104,7 +113,8 @@
 <script src="audit-page.js"></script>
 <script>
 "use strict";
-for (const [name, table, status] of [["B24", "b24", "status-b24"], ["B28", "b28", "status-b28"], ["I", "i", "status-i"]]) {
+for (const [name, table, status] of [["B56", "b56", "status-b56"], ["B24", "b24", "status-b24"],
+                                     ["B28", "b28", "status-b28"], ["I", "i", "status-i"]]) {
   renderAuditPage({
     campaign: "r38-2026-10-09", table, status, section: name,
     verdict: (d) => d.failures.length === 0 && d.rows.length === d.total && d.outcome === "P"

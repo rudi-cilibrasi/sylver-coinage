@@ -1,0 +1,61 @@
+{
+ "position": [
+  16,
+  38,
+  56,
+  60
+ ],
+ "obligations": 56,
+ "rows": [
+  {
+   "obligation": 42,
+   "kind": "even",
+   "reply": 295,
+   "via": "finite",
+   "destination": "16,38,42,56,60,295",
+   "seconds": 1148.9,
+   "frobenius": 377,
+   "states": 137569824
+  },
+  {
+   "obligation": 84,
+   "kind": "even",
+   "reply": 109,
+   "via": "finite",
+   "destination": "16,38,56,60,84,109",
+   "seconds": 837.1,
+   "frobenius": 215,
+   "states": 208823070
+  },
+  {
+   "obligation": 100,
+   "kind": "even",
+   "reply": 75,
+   "via": "finite",
+   "destination": "16,38,56,60,75,100",
+   "seconds": 480.4,
+   "frobenius": 197,
+   "states": 106299182
+  },
+  {
+   "obligation": 106,
+   "kind": "even",
+   "reply": 75,
+   "via": "finite",
+   "destination": "16,38,56,60,75,106",
+   "seconds": 485.1,
+   "frobenius": 175,
+   "states": 106107254
+  },
+  {
+   "obligation": 122,
+   "kind": "even",
+   "reply": 93,
+   "via": "finite",
+   "destination": "16,38,56,60,93,122",
+   "seconds": 878.6,
+   "frobenius": 199,
+   "states": 179722136
+  }
+ ]
+}
