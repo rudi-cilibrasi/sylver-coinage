@@ -618,7 +618,9 @@ function renderAt(ctx, t) {
 // The film as text: each chapter's heading, then everything it writes that reads as a phrase
 // (captions, cards, timelines, quotes) in order of appearance, from drawing every quarter second
 // on a context that only collects text. Measured widths are zero, so no line is wrapped.
-const UNTRANSCRIBED = new Set(["PLAYER A", "PLAYER B", ...MILESTONES.map(([, label]) => label)]);   // labels, not content
+// labels, not content: the players' names and the timeline's names (its years are drawn last in each
+// frame, so they introduce nothing, and a chapter's own years such as Blok's "2026" must stay)
+const UNTRANSCRIBED = new Set(["PLAYER A", "PLAYER B", ...MILESTONES.map(([, label]) => label).filter((l) => !/^\d{4}$/.test(l))]);
 function transcript() {
   let written = [];
   const collect = new Proxy({}, {
