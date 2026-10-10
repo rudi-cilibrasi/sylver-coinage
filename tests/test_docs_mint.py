@@ -34,10 +34,13 @@ def recorded_r38_status():
     from sylver.arena.common import key, position, profile
     moves = profile(position((16, 38)))['moves']
     status = {}
-    for line in (SCAN / 'odd_open.out').read_text().splitlines():
-        m = re.match(r'move=(\d+) (\w) winning_move=(\S+)', line)
-        if m and m[2] == 'N':
-            status[int(m[1])] = int(m[3])
+    for name in ('odd_open.out', 'odd_queue.out', 'odd_retry.out'):
+        if not (SCAN / name).exists():
+            continue
+        for line in (SCAN / name).read_text().splitlines():
+            m = re.match(r'move=(\d+) (\w) winning_move=(\S+)', line)
+            if m and m[2] == 'N':
+                status[int(m[1])] = int(m[3])
     open_odd = {71, 69, 77, 79, 85, 93, 101, 87, 109, 117, 125}   # the ledger's scan settled the other odd moves
     for m in moves:
         if m % 2 and m not in open_odd:

@@ -20,6 +20,8 @@ The certificate's audit does not use this file.
 | the rest of 72's and 104's odd obligations | `kunz --threads 5 --stop-at-p --max-states 600000000 --odd-list 69,77,85 16 38 72` (and `85,93,101 16 38 104`) | `odd72.*`, `odd104.*` |
 | {16,38}'s 11 odd candidates the o16 scan left | `kunz --threads 6 --stop-at-p --max-states 1400000000 --odd-list 71,69,77,79,85,93,101,87,109,117,125 16 38` | `odd_open.*` |
 | the odd candidate 85 alone | `kunz --threads 4 --stop-at-p --max-states 1000000000 --memo-stats --odd-list 85 16 38` (stopped at the cap) | `odd85.*` |
+| each of the seven open odd candidates alone (October 10) | `./odd_queue.sh`: `kunz --threads 8 --stop-at-p --max-states 1700000000 --memo-stats --odd-list M 16 38` per candidate | `odd_queue.*` |
+| 109, 117 and 125 again, alone at 2.1 billion states | `./odd_retry.sh` (`--max-states 2100000000`) | `odd_retry.*` |
 | even obligations of a candidate a | `python even_resolver.py A` | `even_A.jsonl` (A = 8, 24, 40, 56, 72, 88) |
 | even obligations of any short position | `python resolve_position.py G...` (`--only-long` skips short children) | `resolve_<G>.jsonl` |
 | even replies into short P-positions | `python pair_search.py G...` | `pair_*.log` |
@@ -49,6 +51,9 @@ Notes:
   working name `A`; the evidence file was relabeled `I` by hand before the
   replays.
 - `status.py` tabulates {16,38}'s obligations from these outputs.
+- The map of the long children (`resolve_16-38`) continued on October 10
+  from 148 to 218; `resolve_16-38.jsonl` and `resolve_16-38-long.log`
+  grew by those twelve rows.
 - B56's evidence was first split at 100,000,000 states.
   - Below that, the witnesses were replayed natively and in Python
     (`evidence_B56_py.json`).
