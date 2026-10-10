@@ -61,7 +61,7 @@ console.log(JSON.stringify({
   duration: film.DURATION, frames,
   chapters: film.CHAPTERS.map((c) => ({ name: c.name, start: c.start, end: c.end, dur: c.dur })),
   answers: film.ANSWERS, ruledOut: film.RULED_OUT_38, texts: [...texts], bad: bad.slice(0, 20), stackDepth: stack.length, captions,
-  notes: film.NOTES.map((n) => n[1]), replies: film.REPLIES, transcript: film.transcript(),
+  notes: film.NOTES.map((n) => n[1]), replies: film.REPLIES, transcript: film.transcript(), chapterMetadata: film.chapterMetadata(),
   years: film.CHAPTERS.map((c) => c.year),
 }));
 '''
@@ -109,6 +109,17 @@ class StoryFilmTests(unittest.TestCase):
         self.assertGreater(len(captions), 20)
         for caption, seconds in captions.items():
             self.assertGreaterEqual(seconds, len(caption.split()) / 3 + 1, caption)
+
+    def test_mp4_chapter_markers_tile_the_film(self):
+        meta = self.report['chapterMetadata']
+        self.assertTrue(meta.startswith(';FFMETADATA1\n'))
+        blocks = re.findall(r'\[CHAPTER\]\nTIMEBASE=1/1000\nSTART=(\d+)\nEND=(\d+)\ntitle=(.+)\n', meta)
+        chapters = self.report['chapters']
+        self.assertEqual(len(blocks), len(chapters))
+        for (start, end, title), chapter in zip(blocks, chapters):
+            self.assertEqual((int(start), int(end)), (round(chapter['start'] * 1000), round(chapter['end'] * 1000)))
+            self.assertTrue(title and title not in ('Title', 'Open'), title)
+        self.assertEqual(int(blocks[-1][1]), round(self.report['duration'] * 1000))
 
     def test_replies_are_the_legal_even_replies_to_16(self):
         self.assertEqual(self.report['replies'], [r for r in range(2, 39, 2) if r % 16])

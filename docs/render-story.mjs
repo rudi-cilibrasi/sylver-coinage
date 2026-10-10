@@ -5,8 +5,9 @@
 // parallel, each piped into its own ffmpeg; the slices are then concatenated
 // without re-encoding. Needs ffmpeg and Playwright: set PLAYWRIGHT to the
 // module's path if it is not installed here, and CHROME to a browser binary
-// if Playwright's own is missing. The fonts load from Google Fonts. On any
-// failure the other encoders are stopped and the temporary files removed.
+// if Playwright's own is missing. The fonts load from Google Fonts. The MP4
+// carries the film's chapters as chapter markers. On any failure the other
+// encoders are stopped and the temporary files removed.
 import { createRequire } from 'module';
 import { spawn } from 'child_process';
 import { mkdtempSync, rmSync, writeFileSync } from 'fs';
@@ -67,12 +68,16 @@ try {
   browser = await chromium.launch({ executablePath: process.env.CHROME });
   const probe = await open(browser);
   const frames = Math.round((await probe.evaluate(() => window.DURATION)) * FPS);
+  const chapters = await probe.evaluate(() => window.chapterMetadata());
   await probe.close();
   const per = Math.ceil(frames / K);
   await Promise.all(Array.from({ length: K }, (_, k) => slice(browser, k, k * per, Math.min(frames, (k + 1) * per))));
   const list = join(work, 'slices.txt');
   writeFileSync(list, Array.from({ length: K }, (_, k) => `file '${join(work, `seg_${k}.mp4`)}'`).join('\n') + '\n');
-  await ffmpeg(['-f', 'concat', '-safe', '0', '-i', list, '-c', 'copy', '-movflags', '+faststart', OUT]).done;
+  const meta = join(work, 'chapters.txt');
+  writeFileSync(meta, chapters);
+  await ffmpeg(['-f', 'concat', '-safe', '0', '-i', list, '-i', meta, '-map', '0', '-map_metadata', '1', '-map_chapters', '1',
+    '-c', 'copy', '-movflags', '+faststart', OUT]).done;
   console.log(`${frames} frames in ${((Date.now() - t0) / 1000).toFixed(0)} s -> ${OUT}`);
 } finally {
   for (const ff of encoders) ff.kill('SIGKILL');
