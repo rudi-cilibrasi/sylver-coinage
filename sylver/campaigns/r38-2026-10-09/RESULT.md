@@ -146,14 +146,13 @@ discovery output, not certified.
     30 (271), 34 (53), 36 (123), 50 (79), 58 (11), 78 (27), 94 (43),
     98 (31), 100 (41) and 174 (45).
   - 14 moves to E by 8.
-  - 29 stayed open within the sweeps' state caps: 42, 46, 52, 62, 66, 68,
+  - 31 stayed open within the sweeps' state caps: 42, 46, 52, 62, 66, 68,
     74, 82, 84, 90, 106, 110, 116, 122, 126, 132, 138 and 142, and, from the
     map's continuation on October 10, 148, 154, 158, 164, 170, 180, 186, 196,
-    202, 212 and 218. For 42, the
+    202, 212, 218, 234 and 250. Every long candidate has now been searched. For 42, the
     106 odd replies classified are all N, and four more (205, 213, 215 and
     221) were not classified: their batches stopped at the state cap or the
     1,800-second timeout.
-  - 234 and 250 have not been searched.
 
 ## Reproduction
 

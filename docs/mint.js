@@ -793,8 +793,8 @@ const FRONTIER = [
   {"m": 202, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
   {"m": 212, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
   {"m": 218, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
-  {"m": 234, "k": "long", "s": "open", "why": "not searched yet"},
-  {"m": 250, "k": "long", "s": "open", "why": "not searched yet"},
+  {"m": 234, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
+  {"m": 250, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
 ];
 function lessonFrontier(root) {
   const detail = el("p", { class: "detail", "aria-live": "polite" }, "Click a tile to see what is known about it.");

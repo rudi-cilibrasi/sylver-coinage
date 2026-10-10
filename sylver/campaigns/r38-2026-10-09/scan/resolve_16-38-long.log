@@ -42,3 +42,6 @@ r=16-38 e= 196 open      reply=None via=None tried=26 1010.6s
 r=16-38 e= 202 open      reply=None via=None tried=24 1175.3s
 r=16-38 e= 212 open      reply=None via=None tried=25 1175.1s
 r=16-38 e= 218 open      reply=None via=None tried=24 1635.4s
+r=16-38 e= 234 open      reply=None via=None tried=38 2999.6s
+r=16-38 e= 250 open      reply=None via=None tried=35 2845.8s
+summary: {'resolved': 15, 'short: needs even': 0, 'open': 31, 'REFUTES r': 0} of 63

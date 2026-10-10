@@ -52,8 +52,8 @@ Notes:
   replays.
 - `status.py` tabulates {16,38}'s obligations from these outputs.
 - The map of the long children (`resolve_16-38`) continued on October 10
-  from 148 to 218; `resolve_16-38.jsonl` and `resolve_16-38-long.log`
-  grew by those twelve rows.
+  from 148 to 250; `resolve_16-38.jsonl` and `resolve_16-38-long.log`
+  grew by those fourteen rows (the log also ends with the map's summary).
 - B56's evidence was first split at 100,000,000 states.
   - Below that, the witnesses were replayed natively and in Python
     (`evidence_B56_py.json`).

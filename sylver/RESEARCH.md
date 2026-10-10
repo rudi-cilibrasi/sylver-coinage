@@ -1766,6 +1766,28 @@ B28={16,28,38,40}, B56={16,38,56,60}, Z={16,30,56}, Y={16,28,58},
 U={16,26,88} and W={16,26,62,98} are not on that list. The independent review
 of pull request #43 (the film and lesson pages) noticed the overlap.
 
+### Attempt 39 — the search for an answer to 38 goes on (2026-10-10)
+
+The search continued, and the reply-38 record now includes it
+([its search section](campaigns/r38-2026-10-09/RESULT.md#the-search-for-an-answer-to-38)).
+These are discovery results, not certified.
+
+- **Odd candidates.**
+  - A queue ran each of the seven open odd candidates alone, with a
+    1.7-billion-state memo. 85, 87, 93 and 101 are N, won by 105, 273, 83
+    and 33.
+  - 109, 117 and 125 stopped at that cap. Retried alone at 2.1 billion
+    states, about 50 GB each and 35 to 45 minutes, they stopped again.
+  - This host cannot settle them with the Kunz memo as it is.
+- **Long candidates.** The map of the long candidates went on from 148 to
+  250. 174 is won by 45, and the other thirteen stayed open within its caps,
+  so every long candidate has now been searched: 15 are N and 31 are open.
+- **Tally.**
+  - Of {16,38}'s 98 obligations, 60 are N: 11 certified, 49 by search.
+  - 38 are open: the ladder rungs 72, 88, 104 and 120, the odd moves 109, 117
+    and 125, and 31 long candidates.
+  - No answer to 38 is known.
+
 ### Sources
 
 - <https://math.colgate.edu/~integers/yg2/yg2.pdf>

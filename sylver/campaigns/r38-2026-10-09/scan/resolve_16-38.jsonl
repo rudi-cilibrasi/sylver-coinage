@@ -42,3 +42,5 @@
 {"e": 202, "child": "16,38,202", "status": "open", "reply": null, "via": null, "odd_tried": 24, "skipped": [41, 49, 63, 71], "states": null, "child_short": false, "child_even_obligations": null, "seconds": 1175.3}
 {"e": 212, "child": "16,38,212", "status": "open", "reply": null, "via": null, "odd_tried": 25, "skipped": [41, 63, 49, 71], "states": null, "child_short": false, "child_even_obligations": null, "seconds": 1175.1}
 {"e": 218, "child": "16,38,218", "status": "open", "reply": null, "via": null, "odd_tried": 24, "skipped": [41, 63, 49, 51], "states": null, "child_short": false, "child_even_obligations": null, "seconds": 1635.4}
+{"e": 234, "child": "16,38,234", "status": "open", "reply": null, "via": null, "odd_tried": 38, "skipped": [71, 75, 85, 83], "states": null, "child_short": false, "child_even_obligations": null, "seconds": 2999.6}
+{"e": 250, "child": "16,38,250", "status": "open", "reply": null, "via": null, "odd_tried": 35, "skipped": [71, 79, 85, 93], "states": null, "child_short": false, "child_even_obligations": null, "seconds": 2845.8}
