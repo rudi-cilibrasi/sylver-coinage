@@ -588,7 +588,7 @@ const OPENINGS = [
   [13, "win", null, null, "a prime from 5 up wins, by Hutchings' theorem"],
   [14, "lose", 7, null, "a multiple of the prime 7 loses to 7"],
   [15, "lose", 5, null, "a multiple of the prime 5 loses to 5"],
-  [16, "open", null, null, "it was the smallest opening Sicherman's 2002 paper left undecided, and still is: Conway's $1,000 question"],
+  [16, "open", null, null, "it was the smallest opening Sicherman's 2002 paper left undecided, it still is, and it is Conway's $1,000 question"],
   [17, "win", null, null, "a prime from 5 up wins, by Hutchings' theorem"],
 ];
 // A hint for a miss: which of the three facts applies, without the verdict.
@@ -598,7 +598,7 @@ function openingHint(n) {
   if (n >= 5 && prime(n)) return `${n} is a prime from 5 up.`;
   const p = [...Array(n + 1).keys()].find((d) => d >= 5 && prime(d) && n % d === 0);
   if (p) return `${n} is a multiple of the prime ${p}.`;
-  return n > 12 ? `${n} has the form 2^a 3^b and is above 12.` : `${n} has the form 2^a 3^b, at most 12: look for a reply that leaves a known losing position.`;
+  return n > 12 ? `${n} is a power of 2 times a power of 3, above 12.` : `${n} is a power of 2 times a power of 3, at most 12: look for a reply that leaves a known losing position.`;
 }
 function lessonOpenings(root) {
   const solved = new Set();
@@ -634,9 +634,9 @@ function lessonOpenings(root) {
   function judge(n, v) {
     const truth = OPENINGS.find(([m]) => m === n)[1];
     if (truth !== v) {                     // a hint, not the verdict; the question stays open
+      const said = { win: `${n} does not win`, lose: `${n} does not lose`, open: `${n} is not undecided` }[v];
       detail.className = "msg lose";
-      detail.textContent = `Not quite. Hint: ${openingHint(n)}`;
-      choose.querySelector("button").focus();
+      detail.textContent = `Not quite: ${said}. Hint: ${openingHint(n)}`;
       return;
     }
     solved.add(n);

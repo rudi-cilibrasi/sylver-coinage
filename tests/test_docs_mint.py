@@ -335,11 +335,15 @@ class MintTests(unittest.TestCase):
         from sylver.solver import solve_position
         nodes = {tuple(node.generators) for node in NODES}
         published = {(6, 9): 'Sicherman (2002), #G02, p. 5, lists {6, 9} as P', tuple(BASE): 'sylver/eight_twelve.py proves it P'}
+        why = {n: text for n, *_, text in openings}
         for n, (truth, answer, also) in rows.items():
             if truth != 'lose' or n == 1:
                 self.assertIsNone(answer, n)
                 self.assertIsNone(also, n)
                 continue
+            self.assertIsNotNone(answer, n)                                    # every other loss names its answer
+            if also is not None:
+                self.assertIn(f'{also} also wins', why[n], n)
             for reply in (answer, also):
                 if reply is None:
                     continue
