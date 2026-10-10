@@ -60,7 +60,10 @@ function wrap(ctx, s, maxWidth, font) {
   return lines;
 }
 
+// The captions of the frame being drawn (alpha above one half), so the page can show them as text too.
+let shownCaptions = null;
 function caption(ctx, s, alpha) {
+  if (shownCaptions && alpha > 0.5 && !shownCaptions.includes(s)) shownCaptions.push(s);
   if (alpha <= 0) return;
   const size = 40, font = `400 ${size}px ${F.body}`;
   const lines = wrap(ctx, s, 1480, font);
@@ -224,10 +227,11 @@ chapter(9, null, null, (ctx, t, d) => {
   text(ctx, "COINAGE", 960, 528, { size: 118, font: F.display, weight: 700, color: C.silver, spacing: 10, alpha: a * seg(t, 1.1, 2.3) });
   const sub = a * seg(t, 2.4, 3.6);
   text(ctx, "A game about coins, a formula from 1884,", 964, 616, { size: 40, style: "italic", color: C.muted, alpha: sub });
-  text(ctx, "and one opening nobody has solved.", 964, 668, { size: 40, style: "italic", color: C.muted, alpha: sub });
+  text(ctx, "and the smallest opening nobody has solved.", 964, 668, { size: 40, style: "italic", color: C.muted, alpha: sub });
   text(ctx, "A HISTORY IN TWELVE CHAPTERS", 964, 760, { size: 24, font: F.display, color: C.gilt, spacing: 5, alpha: a * seg(t, 3.6, 4.6) });
 }, "Title");
 
+CH[CH.length - 1].text = ["Sylver Coinage: a game about coins, a formula from 1884, and the smallest opening nobody has solved."];
 // 1. The game: a full example on tiles 1..36
 const GAME = [
   [6.5, "A", 5], [14.0, "B", 7], [28.0, "A", 4], [31.5, "B", 6], [34.5, "A", 3], [37.5, "B", 2], [41.0, "A", 1],
@@ -323,7 +327,7 @@ chapter(30, 1982, "1982 · WINNING WAYS", (ctx, t, d) => {
   const cards = [
     [5, "HUTCHINGS' THEOREM", "Open with a prime 5, 7, 11, 13 … and you can win. The proof steals a strategy, so it names no winning move."],
     [11, "THE QUIET END THEOREM", "In many positions it rules out infinitely many moves at once, leaving only finitely many to check."],
-    [17, "THE PERIODICITY THEOREM", "When every named number is even, the outcomes of the odd moves eventually repeat in a fixed pattern."],
+    [17, "THE PERIODICITY THEOREM", "When the named numbers have greatest common divisor 2, the winning moves after each odd move eventually repeat in a fixed pattern."],
   ];
   cards.forEach(([at, title, body], k) => {
     const p = easeOut(seg(t, at, at + 0.8)), y = 230 + k * 172;
@@ -343,28 +347,9 @@ chapter(30, 1982, "1982 · WINNING WAYS", (ctx, t, d) => {
   caption(ctx, "Every game must end, yet even the first move is hard to judge.", a * window_(t, 23, d, 0.5));
 }, "Winning Ways");
 
-// 4. The openings and Conway's prize
-const OPEN = { 1: "lose", 2: "lose", 3: "lose", 4: "lose", 5: "win", 6: "lose", 7: "win", 8: "lose", 9: "lose", 10: "lose",
-               11: "win", 12: "lose", 13: "win", 14: "lose", 15: "lose", 16: "frontier", 17: "win" };
-chapter(26, 2014, "2014 · CONWAY'S $1,000 QUESTION", (ctx, t, d) => {
-  const a = window_(t, 0, d, 0.8);
-  const tw = 92, th = 112, gap = 10, x0 = (W - 17 * tw - 16 * gap) / 2, y = 330;
-  for (let n = 1; n <= 17; n++) {
-    const p = seg(t, 0.6 + n * 0.22, 1.1 + n * 0.22);
-    const st = OPEN[n];
-    const sub = st === "win" ? "wins" : st === "lose" ? "loses" : "?";
-    const glow = n === 16 && t > 5 ? 0.6 + 0.4 * Math.sin(t * 3) : 0;
-    tile(ctx, x0 + (n - 1) * (tw + gap), y, tw, th, n, p < 1 ? "unknown" : st, { alpha: a * Math.max(0.15, p), sub: p >= 1 ? sub : null, glow, size: 44 });
-  }
-  const q = a * seg(t, 12, 13);
-  coin(ctx, W / 2, 640, 80, "$", { alpha: q, metal: "silver", labelSize: 74 });
-  text(ctx, "1,000", W / 2 + 110, 664, { size: 64, font: F.mono, weight: 600, color: C.gilt, alpha: q });
-  caption(ctx, "Every opening up to 15 is settled: the primes 5, 7, 11 and 13 win, and all the others lose.", a * window_(t, 0.5, 12, 0.5));
-  caption(ctx, "Then comes 16. In 2014 Conway offered $1,000 for the answer: after the opening 16, who wins?", a * window_(t, 12, d, 0.5));
-}, "Opening 16");
 
-// 5. Enders, quiet ends, short and long
-chapter(32, null, "IDEAS · QUIET ENDS, SHORT AND LONG", (ctx, t, d) => {
+// 4. Enders, quiet ends, short and long
+chapter(32, 1982, "IDEAS · QUIET ENDS, SHORT AND LONG", (ctx, t, d) => {
   const a = window_(t, 0, d, 0.8);
   // <4,7>: t = 17; pair k with 17 - k
   const T = 17, pay = paid([4, 7], T), tw = 82, th = 72, gap = 10, x0 = (W - 9 * tw - 8 * gap) / 2;
@@ -398,7 +383,7 @@ chapter(32, null, "IDEAS · QUIET ENDS, SHORT AND LONG", (ctx, t, d) => {
   caption(ctx, "Positions without that structure are long. Some have astonishing answers, found only by computer.", a * window_(t, 23, d, 0.5));
 }, "Quiet ends");
 
-// 6. George Sicherman
+// 5. George Sicherman
 chapter(28, 2002, "1991–2002 · GEORGE SICHERMAN", (ctx, t, d) => {
   const a = window_(t, 0, d, 0.8);
   const items = [
@@ -413,27 +398,49 @@ chapter(28, 2002, "1991–2002 · GEORGE SICHERMAN", (ctx, t, d) => {
     const lines = wrap(ctx, body, 700, `400 32px ${F.body}`);
     lines.forEach((ln, i) => text(ctx, ln, 330 + (1 - p) * 40, y + 30 + i * 40, { size: 32, color: C.text, alpha: ia }));
   });
-  // schematic of eventual periodicity: an irregular start, then one block repeated exactly
+  // {6, 40, 74}: every odd move loses; what repeats is the analysis of the replies
   const pa = a * seg(t, 10, 11);
   text(ctx, "Odd moves x in {6, 40, 74}", 1120, 260, { size: 30, color: C.muted, alpha: pa });
-  const pre = [1, 0, 0, 1, 1, 0, 1, 0], block = [0, 1, 0, 0, 1, 0, 1, 1];
-  const cells = pre.concat(block, block, block);
-  cells.forEach((v, i) => {
-    const bx = 1120 + i * 21.5, shown = seg(t, 10.5 + i * 0.05, 10.8 + i * 0.05);
-    ctx.save(); ctx.globalAlpha = pa * shown; ctx.fillStyle = v ? C.oxide : C.verdigrisLo;
-    ctx.fillRect(bx, 300, 18, 56); ctx.restore();
+  for (let i = 0; i < 32; i++) {
+    const shown = seg(t, 10.5 + i * 0.05, 10.8 + i * 0.05);
+    ctx.save(); ctx.globalAlpha = pa * shown; ctx.fillStyle = C.oxide; ctx.fillRect(1120 + i * 21.5, 300, 18, 40); ctx.restore();
+  }
+  text(ctx, "every one loses: no odd move wins", 1120, 382, { size: 26, color: C.silver, alpha: pa * seg(t, 12, 12.6) });
+  // the analysis behind it: an irregular start, then one block repeated exactly (schematic)
+  const ra = a * seg(t, 12.6, 13.4), pre = [3, 1, 4, 0, 2, 4, 1, 3], block = [2, 0, 3, 1, 4, 2, 0, 1];
+  pre.concat(block, block, block).forEach((v, i) => {
+    ctx.save(); ctx.globalAlpha = ra; ctx.fillStyle = C.gilt;
+    ctx.beginPath(); ctx.arc(1129 + i * 21.5, 470 - v * 11, 5, 0, Math.PI * 2); ctx.fill(); ctx.restore();
   });
-  const ba = pa * seg(t, 12.5, 13.3), bx0 = 1120 + 8 * 21.5, bx1 = bx0 + 8 * 21.5 - 3.5;
-  ctx.save(); ctx.globalAlpha = ba; ctx.strokeStyle = C.gilt; ctx.lineWidth = 2;
-  ctx.beginPath(); ctx.moveTo(bx0, 372); ctx.lineTo(bx0, 382); ctx.lineTo(bx1, 382); ctx.lineTo(bx1, 372); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(bx0, 290); ctx.lineTo(bx0, 268 + 0); ctx.stroke(); ctx.restore();
-  text(ctx, "schematic, not the real outcomes", 1120, 420, { size: 22, style: "italic", color: C.faint, alpha: pa });
+  const bx0 = 1120 + 8 * 21.5, bx1 = bx0 + 8 * 21.5 - 3.5;
+  ctx.save(); ctx.globalAlpha = ra; ctx.strokeStyle = C.gilt; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(bx0, 482); ctx.lineTo(bx0, 492); ctx.lineTo(bx1, 492); ctx.lineTo(bx1, 482); ctx.stroke(); ctx.restore();
+  text(ctx, "the analysis of the replies repeats (schematic)", 1120, 526, { size: 22, style: "italic", color: C.faint, alpha: ra });
   const q = a * seg(t, 14, 15);
-  text(ctx, "period 403,200", 1120, 540, { size: 46, font: F.mono, weight: 600, color: C.gilt, alpha: q });
-  text(ctx, "from x = 381,091", 1120, 596, { size: 32, font: F.mono, color: C.silver, alpha: q });
+  text(ctx, "period 403,200", 1120, 610, { size: 46, font: F.mono, weight: 600, color: C.gilt, alpha: q });
+  text(ctx, "from x = 381,091", 1120, 662, { size: 32, font: F.mono, color: C.silver, alpha: q });
   caption(ctx, "George Sicherman spent decades computing positions, proving new theorems and keeping the community's tables.", a * window_(t, 0.5, 14, 0.5));
-  caption(ctx, "His 2002 paper shows the Periodicity Theorem at work: in {6, 40, 74} a period of 403,200 starts at 381,091.", a * window_(t, 14, d, 0.5));
+  caption(ctx, "His 2002 paper puts the Periodicity Theorem to work: no odd move wins in {6, 40, 74}, settled by a pattern that repeats every 403,200 from 381,091.", a * window_(t, 14, d, 0.5));
 }, "Sicherman");
+// 6. The openings and Conway's prize, 2014
+const OPEN = { 1: "lose", 2: "lose", 3: "lose", 4: "lose", 5: "win", 6: "lose", 7: "win", 8: "lose", 9: "lose", 10: "lose",
+               11: "win", 12: "lose", 13: "win", 14: "lose", 15: "lose", 16: "frontier", 17: "win" };
+chapter(26, 2014, "2014 · CONWAY'S $1,000 QUESTION", (ctx, t, d) => {
+  const a = window_(t, 0, d, 0.8);
+  const tw = 92, th = 112, gap = 10, x0 = (W - 17 * tw - 16 * gap) / 2, y = 330;
+  for (let n = 1; n <= 17; n++) {
+    const p = seg(t, 0.6 + n * 0.22, 1.1 + n * 0.22);
+    const st = OPEN[n];
+    const sub = st === "win" ? "wins" : st === "lose" ? "loses" : "?";
+    const glow = n === 16 && t > 5 ? 0.6 + 0.4 * Math.sin(t * 3) : 0;
+    tile(ctx, x0 + (n - 1) * (tw + gap), y, tw, th, n, p < 1 ? "unknown" : st, { alpha: a * Math.max(0.15, p), sub: p >= 1 ? sub : null, glow, size: 44 });
+  }
+  const q = a * seg(t, 12, 13);
+  coin(ctx, W / 2, 640, 80, "$", { alpha: q, metal: "silver", labelSize: 74 });
+  text(ctx, "1,000", W / 2 + 110, 664, { size: 64, font: F.mono, weight: 600, color: C.gilt, alpha: q });
+  caption(ctx, "Every opening up to 15 is settled: the primes 5, 7, 11 and 13 win, and all the others lose.", a * window_(t, 0.5, 12, 0.5));
+  caption(ctx, "Then comes 16. In 2014 Conway put it first among his Five $1,000 Problems: after the opening 16, who wins?", a * window_(t, 12, d, 0.5));
+}, "Opening 16");
 
 // 7. Numerical semigroups, 2020-2024
 chapter(18, 2020, "2020–2024 · NUMERICAL SEMIGROUPS", (ctx, t, d) => {
@@ -455,14 +462,14 @@ chapter(18, 2020, "2020–2024 · NUMERICAL SEMIGROUPS", (ctx, t, d) => {
     wl.forEach((ln, i) => text(ctx, ln, x + 40, 520 + i * 36 + (1 - p) * 30, { size: 28, color: "#3a4352", alpha: ca }));
     text(ctx, where, x + 40, 600 + (1 - p) * 30, { size: 26, style: "italic", color: "#5b6676", alpha: ca });
   });
-  caption(ctx, "Algebraists noticed that every position is a numerical semigroup, and new papers proved old claims about games after 4.", a * window_(t, 0.5, d, 0.5));
+  caption(ctx, "Algebraists noticed that the paid amounts form a numerical semigroup once the named numbers share no factor, and new papers proved old claims about games after 4.", a * window_(t, 0.5, d, 0.5));
 }, "Semigroups");
 
 // 8. Thomas Blok
 chapter(28, 2022, "2021–2026 · THOMAS BLOK", (ctx, t, d) => {
   const a = window_(t, 0, d, 0.8);
   const items = [
-    [0.6, "2021", "Sylver Coinage positions with g = 2: pairing proofs for whole families of losing positions"],
+    [0.6, "2021", "Sylver Coinage positions with g = 2: every even position containing an even number from 2 to 10, analysed completely"],
     [2.8, "2022", "Even positions in 14: every even position containing 14, analysed completely"],
     [5.0, "2026", "The 6-16 Tables, and in September new losing positions after the opening 16"],
   ];
@@ -474,12 +481,13 @@ chapter(28, 2022, "2021–2026 · THOMAS BLOK", (ctx, t, d) => {
   });
   // the pairing family {8,12}, {8,10,12,14}, {8,12,18,22}, {8,12,26,30}
   const fam = [[8, 12], [8, 10, 12, 14], [8, 12, 18, 22], [8, 12, 26, 30]];
+  text(ctx, "known losing positions by 2002; Blok's pairing proofs", 1330 - 44, 222, { size: 24, style: "italic", color: C.muted, alpha: a * seg(t, 9, 10) });
   fam.forEach((set, k) => {
     const fa = a * seg(t, 9 + k * 1.2, 10 + k * 1.2), y = 300 + k * 118;
     set.forEach((n, j) => coin(ctx, 1330 + j * 104, y, 44, n, { alpha: fa }));
     text(ctx, "P", 1330 + 4 * 104 + 10, y + 14, { size: 38, font: F.display, weight: 700, color: C.verdigris, alpha: fa });
   });
-  caption(ctx, "Thomas Blok mapped the even positions systematically, with pairing proofs for families of losing positions such as {8, 12}.", a * window_(t, 0.5, 15, 0.5));
+  caption(ctx, "Thomas Blok analysed the even positions systematically, and gave simple pairing proofs of losing positions already known, such as {8, 12}.", a * window_(t, 0.5, 15, 0.5));
   caption(ctx, "In September 2026 he proved {16, 26, 54, 60, 62} and {16, 28, 36, 38, 58} are losing positions too.", a * window_(t, 15, d, 0.5));
 }, "Blok");
 
@@ -512,7 +520,7 @@ chapter(32, 2026.3, "2026 · CONFIRMATIONS", (ctx, t, d) => {
     text(ctx, "George Sicherman", 1210, 630 + dy, { size: 30, weight: 600, color: "#3a4352", alpha: la });
     text(ctx, "in a letter, August 27, 2026", 1210, 670 + dy, { size: 26, style: "italic", color: "#5b6676", alpha: la });
   }
-  caption(ctx, "In July 2026 an AI-assisted campaign began answering the replies to 16, replaying every claim with two independent programs.", a * window_(t, 0.5, 10.5, 0.5));
+  caption(ctx, "In July 2026 an AI-assisted campaign began answering the replies to 16. Every finite computation was replayed by two independent programs.", a * window_(t, 0.5, 10.5, 0.5));
   caption(ctx, "On the way it re-checked published claims, like Sicherman's {8, 10, 22}, first computed on a network of SUN workstations in the 1990s.", a * window_(t, 10.5, 20.5, 0.5));
   caption(ctx, "In September Thomas Blok proved new losing positions after 16, and the campaign confirmed the first within two days.", a * window_(t, 20.5, d, 0.5));
 }, "Confirmations");
@@ -522,6 +530,13 @@ const REPLIES = [2, 4, 6, 8, 10, 12, 14, 18, 20, 22, 24, 26, 28, 30, 34, 36, 38]
 const ANSWERS = { 2: 3, 4: 6, 6: 7, 8: 14, 10: 9, 12: 14, 14: 8, 18: 5, 20: 34, 22: 12, 24: 10, 26: 88, 28: 58, 30: 56, 34: 20, 36: 23 };
 const WHEN = { 26: 19, 28: 23, 30: 25.5, 34: 28, 36: 30 };
 const RULED_OUT_38 = [4, 6, 8, 12, 14, 22, 24, 28, 40, 44, 56];   // by certified P-positions
+// [seconds into the chapter, the dated note shown]; the tests check the dates against the README
+const NOTES = [
+  [10.5, "July: replies 2 to 24 answered, each answer certified"],
+  [19, "Oct 6: 26 loses to 88, after a search found 701 in {16, 26, 82, 88}"],
+  [23, "Oct 7–8: 28 loses to 58, and 30 to 56"],
+  [28, "Oct 9: a ledger shows every reply up to 36 has an answer"],
+];
 chapter(50, 2026.6, "2026 · MACHINE-CHECKED CERTIFICATES", (ctx, t, d) => {
   const a = window_(t, 0, d, 0.8);
   text(ctx, "16", 170, 330, { size: 96, font: F.mono, weight: 700, color: C.silverHi, alpha: a });
@@ -551,13 +566,7 @@ chapter(50, 2026.6, "2026 · MACHINE-CHECKED CERTIFICATES", (ctx, t, d) => {
   const fa = a * seg(t, 42, 43);
   text(ctx, "38 ?", 1500, 680, { size: 64, font: F.mono, weight: 700, color: C.gilt, alpha: fa });
   // ledger of dates
-  const notes = [
-    [10.5, "July: replies 2 to 24 answered, each answer certified"],
-    [19, "Oct 6: 26 loses to 88, after a search found 701 in {16, 26, 82, 88}"],
-    [23, "Oct 7–8: 28 loses to 58, and 30 to 56"],
-    [28, "Oct 9: a ledger shows every reply up to 36 has an answer"],
-  ];
-  const live = notes.filter(([at]) => t >= at).slice(-1)[0];
+  const live = NOTES.filter(([at]) => t >= at).slice(-1)[0];
   if (live) text(ctx, live[1], 360, 520, { size: 30, style: "italic", color: C.silver, alpha: a * window_(t, live[0], live[0] + 6, 0.4) });
   caption(ctx, "A reply loses when the opener has an answer that leaves a losing position. Two solvers must agree on every count.", a * window_(t, 0.5, 10, 0.5));
   caption(ctx, "Replies 2 to 24 fell in July. The replies above 24 took months of computing and new engines.", a * window_(t, 10, 18.5, 0.5));
@@ -577,6 +586,7 @@ chapter(16, 2026.8, null, (ctx, t, d) => {
   text(ctx, "OEIS A248380 · Eaton et al. (2020) · Boyers et al. (2024) · github.com/rudi-cilibrasi/sylver-coinage", W / 2, 916, { size: 24, color: C.faint, align: "center", alpha: s });
 }, "Open");
 
+CH[CH.length - 1].text = ["Who wins after 16? Still open. Play the game, check a certificate, or find an answer to 38."];
 // ---------- the timeline ----------
 let acc = 0;
 for (const c of CH) { c.start = acc; acc += c.dur; c.end = acc; }
@@ -588,8 +598,10 @@ function yearAt(t) {
   return year;
 }
 
+// Draw the frame at t seconds; returns the captions it shows.
 function renderAt(ctx, t) {
   t = clamp(t, 0, DURATION - 1e-6);
+  shownCaptions = [];
   ctx.save();
   background(ctx);
   const c = CH.find((x) => t >= x.start && t < x.end) || CH[CH.length - 1];
@@ -598,7 +610,25 @@ function renderAt(ctx, t) {
   c.draw(ctx, lt, c.dur);
   ribbon(ctx, yearAt(t), t > CH[0].end - 1 ? clamp((t - CH[0].end + 1) / 1.5) : 0);
   ctx.restore();
+  const shown = shownCaptions;
+  shownCaptions = null;
+  return shown;
 }
 
-if (typeof module !== "undefined") module.exports = { renderAt, DURATION, CHAPTERS: CH, W, H, ANSWERS, RULED_OUT_38 };
-else Object.assign(window, { renderAt, DURATION, CHAPTERS: CH });
+// The film as text: each chapter's heading and its captions in order, from drawing every
+// quarter second on a context that ignores the drawing.
+const IGNORE = new Proxy({}, {
+  get: (o, k) => (k === "measureText" ? () => ({ width: 0 }) : typeof k === "string" && k.startsWith("create") ? () => ({ addColorStop() {} }) : () => {}),
+  set: () => true,
+  has: () => false,
+});
+function transcript() {
+  return CH.map((c) => {
+    const lines = [];
+    for (let t = 0; t < c.dur; t += 0.25) for (const line of renderAt(IGNORE, c.start + t)) if (!lines.includes(line)) lines.push(line);
+    return { name: c.name, heading: c.brow, start: c.start, lines: lines.length ? lines : c.text || [] };
+  });
+}
+
+if (typeof module !== "undefined") module.exports = { renderAt, transcript, DURATION, CHAPTERS: CH, W, H, ANSWERS, NOTES, REPLIES, RULED_OUT_38 };
+else Object.assign(window, { renderAt, transcript, DURATION, CHAPTERS: CH });

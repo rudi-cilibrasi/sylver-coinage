@@ -1,4 +1,5 @@
 import json
+import re
 import shutil
 import subprocess
 import unittest
@@ -60,6 +61,8 @@ console.log(JSON.stringify({
   duration: film.DURATION, frames,
   chapters: film.CHAPTERS.map((c) => ({ name: c.name, start: c.start, end: c.end, dur: c.dur })),
   answers: film.ANSWERS, ruledOut: film.RULED_OUT_38, texts: [...texts], bad: bad.slice(0, 20), stackDepth: stack.length, captions,
+  notes: film.NOTES.map((n) => n[1]), replies: film.REPLIES, transcript: film.transcript(),
+  years: film.CHAPTERS.map((c) => c.year),
 }));
 '''
 
@@ -106,6 +109,36 @@ class StoryFilmTests(unittest.TestCase):
         self.assertGreater(len(captions), 20)
         for caption, seconds in captions.items():
             self.assertGreaterEqual(seconds, len(caption.split()) / 3 + 1, caption)
+
+    def test_replies_are_the_legal_even_replies_to_16(self):
+        self.assertEqual(self.report['replies'], [r for r in range(2, 39, 2) if r % 16])
+
+    def test_dated_notes_match_the_readme_headlines(self):
+        readme = (ROOT / 'README.md').read_text()
+        headline = {
+            'U': re.search(r'U=\{16,26,88\} is P and the reply 26 to the\s+opening 16 loses \((October \d+)\)', readme),
+            'Y': re.search(r'Y=\{16,28,58\} is P, so the reply 28 to the opening 16 loses \((October \d+)\)', readme),
+            'Z': re.search(r'Z=\{16,30,56\} is P, so the reply 30 to the opening 16 loses \((October \d+)\)', readme),
+            'ledger': re.search(r'Every reply to the opening 16 up to 36 now has an answer \((October \d+)\)', readme),
+        }
+        for name, match in headline.items():
+            self.assertIsNotNone(match, name)
+        day = {name: int(match[1].split()[1]) for name, match in headline.items()}
+        notes = self.report['notes']
+        self.assertTrue(any(n.startswith(f"Oct {day['U']}: 26 loses to 88") for n in notes), notes)
+        self.assertTrue(any(n.startswith(f"Oct {day['Y']}–{day['Z']}: 28 loses to 58, and 30 to 56") for n in notes), notes)
+        self.assertTrue(any(n.startswith(f"Oct {day['ledger']}: a ledger shows every reply up to 36") for n in notes), notes)
+
+    def test_timeline_runs_forward(self):
+        years = [y for y in self.report['years'] if y is not None]
+        self.assertEqual(years, sorted(years))
+
+    def test_transcript_has_every_caption(self):
+        lines = [line for chapter in self.report['transcript'] for line in chapter['lines']]
+        self.assertEqual(len(self.report['transcript']), len(self.report['chapters']))
+        self.assertTrue(all(chapter['lines'] for chapter in self.report['transcript']))
+        for caption in self.report['captions']:
+            self.assertIn(caption, ' '.join(lines), caption)
 
     def test_key_facts_are_on_screen(self):
         for fact in ('1884', 'a·b − a − b', 'Winning Ways', 'GEORGE SICHERMAN', 'THOMAS BLOK', '403,200', '381,091',

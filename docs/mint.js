@@ -37,6 +37,15 @@ function el(tag, attrs = {}, ...kids) {
 }
 const P = (html) => { const p = document.createElement("p"); p.innerHTML = html; return p; };
 function story(...paras) { return el("div", { class: "story" }, ...paras.map(P)); }
+// Rebuilding a board drops keyboard focus: note the focused tile's number first, then
+// put focus back on that number, or on the next tile that is still enabled.
+const focusedTile = (board) => (board.contains(document.activeElement) && document.activeElement.dataset.n ? Number(document.activeElement.dataset.n) : null);
+function refocus(board, n) {
+  if (n === null) return;
+  const tiles = [...board.querySelectorAll("button[data-n]")];
+  const next = tiles.find((b) => Number(b.dataset.n) >= n && !b.disabled) || tiles.find((b) => !b.disabled);
+  if (next) next.focus();
+}
 const eyebrow = (label) => el("p", { class: "eyebrow" }, `LESSON ${current + 1} · ${label}`);
 
 let done = new Set();
@@ -50,24 +59,29 @@ function markDone(id) {
 // ---------------------------------------------------------------- lesson 1: play
 function lessonPlay(root) {
   const presets = [[5, 7], [4, 9], [5, 6], [4, 7], [7, 9]];
-  let solver, state, history, human, over, hints = false;
+  let solver, state, history, over, thinking = false, game = 0, hints = false;
+  let want = null;                         // the tile to refocus once the computer has replied
   const msg = el("p", { class: "msg", "aria-live": "polite" });
   const board = el("div", { class: "tiles" });
   const picks = el("div", { class: "row" });
   const hintBtn = el("button", { class: "ctrl", type: "button", "aria-pressed": "false",
     onclick: () => { hints = !hints; hintBtn.setAttribute("aria-pressed", String(hints)); draw(); } }, "Show winning moves");
   const undo = el("button", { class: "ctrl", type: "button", onclick: () => {
-    if (history.length >= 2 && !over) { history.pop(); history.pop(); state = recompute(); draw(); }
+    if (history.length >= 2 && !over && !thinking) {
+      history.pop(); history.pop(); state = recompute();
+      msg.className = "msg"; msg.textContent = "Took back your last move and the computer's reply. Your move.";
+      draw();
+    }
   } }, "Undo");
   const named = () => history.map((h) => h.m);
   function recompute() { let s = solver.initialState; for (const h of history) s = solver.adjoin(s, h.m); return s; }
-  function start(gens, humanFirst) {
-    solver = new Engine(gens); history = []; over = false; human = humanFirst;
+  function start(gens) {
+    game++;                                  // a reply still pending from the last game is dropped
+    solver = new Engine(gens); history = []; over = false; thinking = false;
     state = solver.initialState;
     msg.className = "msg";
-    msg.textContent = humanFirst ? "Your move. Pick an unpaid amount." : "The computer moves first.";
+    msg.textContent = "Your move. Pick an unpaid amount.";
     draw();
-    if (!humanFirst) setTimeout(computer, 500);
   }
   function unpaid() { return [1, ...solver.legalMoves(state)]; }
   function end(loser, early) {
@@ -81,12 +95,21 @@ function lessonPlay(root) {
   }
   function move(m, who) {
     history.push({ m, who });
-    if (m === 1) { end(who === "you" ? "you" : "computer", unpaid().length > 1); return; }
+    if (m === 1) { end(who, unpaid().length > 1); return; }
     state = solver.adjoin(state, m);
     if (unpaid().length === 1) { end(who === "you" ? "computer" : "you"); return; }
     draw();
   }
+  function yourMove(m) {
+    if (over || thinking) return;
+    move(m, "you");
+    if (over) return;
+    want = m; thinking = true; draw();
+    const mine = game;
+    setTimeout(() => { if (mine === game) computer(); }, 450);
+  }
   function computer() {
+    thinking = false;
     if (over) return;
     const w = solver.winningMove(state), legal = solver.legalMoves(state);
     const m = w || (legal.length ? legal[legal.length - 1] : 1);
@@ -95,34 +118,36 @@ function lessonPlay(root) {
     move(m, "computer");
   }
   function draw() {
+    const keep = focusedTile(board) ?? want;
     board.replaceChildren();
     const gens = solver.gens, top = solver.frobenius;
-    const winSet = new Set();
-    if (hints && !over) for (const m of solver.legalMoves(state)) if (solver.winningMove(solver.adjoin(state, m)) === 0) winSet.add(m);
+    const winSet = new Set(), showHints = hints && !over && !thinking;
+    if (showHints) for (const m of solver.legalMoves(state)) if (solver.winningMove(solver.adjoin(state, m)) === 0) winSet.add(m);
     for (let n = 1; n <= top; n++) {
       const isNamed = gens.includes(n) || named().includes(n);
       const paid = isPaid(solver, state, n) && n !== 1;
-      let cls = "tile";
+      let cls = "tile", hint = null;
       if (isNamed) cls += " named"; else if (paid) cls += " paid";
       else if (n === 1) cls += " one";
-      else if (hints && !over) cls += winSet.has(n) ? " good" : " bad";
-      const b = el("button", { class: cls, type: "button", disabled: isNamed || paid || over,
-        "aria-label": `${n}${paid ? " paid" : ""}`, onclick: () => { move(n, "you"); if (!over) setTimeout(computer, 450); } }, n);
-      board.append(b);
+      else if (showHints) { hint = winSet.has(n) ? "wins" : "loses"; cls += winSet.has(n) ? " good" : " bad"; }
+      board.append(el("button", { class: cls, type: "button", "data-n": n, disabled: isNamed || paid || over || thinking,
+        "aria-label": `${n}${isNamed ? ", named" : paid ? ", paid" : hint ? `, ${hint}` : ""}`, onclick: () => yourMove(n) },
+        el("span", {}, n), hint ? el("span", { class: "tag" }, hint) : null));
     }
+    if (!thinking && keep !== null) { refocus(board, keep); want = null; }
   }
   presets.forEach((g, i) => picks.append(el("button", { class: "chip", type: "button", "aria-pressed": String(i === 0),
     onclick: (e) => { picks.querySelectorAll(".chip").forEach((c) => c.setAttribute("aria-pressed", "false"));
-      e.currentTarget.setAttribute("aria-pressed", "true"); start(g, true); } }, "start at " + setText(g))));
+      e.currentTarget.setAttribute("aria-pressed", "true"); start(g); } }, "start at " + setText(g))));
   root.append(
     eyebrow("JOHN H. CONWAY'S GAME"),
     el("h2", {}, "Mint and lose"),
     story("Two players take turns naming a positive whole number. A number is <b>paid</b> once it is a sum of numbers already named, and paid numbers can never be named again. Whoever is forced to name <b>1</b> loses.",
           "The two silver coins are already named. Copper tiles are the amounts still unpaid, and grey tiles are paid. You move first, and the computer plays perfectly."),
     el("div", { class: "game" }, picks, board, msg, el("div", { class: "row" }, hintBtn, undo)),
-    el("p", { class: "note" }, "Every position like these, with two coins that share no factor, is a win for the player to move, so a winning move always exists. Finding it is the hard part."),
+    el("p", { class: "note" }, "Every position like these, two coins with no common factor other than {2, 3}, is a win for the player to move, so a winning move always exists. Finding it is the hard part."),
   );
-  start(presets[0], true);
+  start(presets[0]);
 }
 
 // ---------------------------------------------------------------- lesson 2: Sylvester
@@ -143,7 +168,11 @@ function lessonSylvester(root) {
       if (checked) cls += pay[n] ? (marked.has(n) ? " bad" : " paid") : (marked.has(n) ? " good" : " gold");
       else if (marked.has(n)) cls += " pick";
       board.append(el("button", { class: cls, type: "button", disabled: checked, "aria-pressed": String(marked.has(n)),
-        onclick: () => { marked.has(n) ? marked.delete(n) : marked.add(n); draw(); } }, n));
+        onclick: (e) => {
+          marked.has(n) ? marked.delete(n) : marked.add(n);
+          e.currentTarget.classList.toggle("pick", marked.has(n));
+          e.currentTarget.setAttribute("aria-pressed", String(marked.has(n)));
+        } }, n));
     }
   }
   const check = el("button", { class: "ctrl primary", type: "button", onclick: () => {
@@ -186,20 +215,19 @@ function lessonEnders(root) {
     for (let n = 1; n <= t; n++) {
       if (pay[n]) continue;
       const cls = "tile" + (n === t ? " gold" : tried.has(n) ? " good" : "");
-      board.append(el("button", { class: cls, type: "button", onclick: () => explain(n) }, n));
+      board.append(el("button", { class: cls, type: "button", onclick: (e) => explain(n, e.currentTarget) }, n));
     }
   }
-  function explain(u) {
+  function explain(u, tile) {
     const pay = paidUpTo(gens, t);
     if (u === t) { msg.className = "msg"; msg.innerHTML = `${t} is the one move that removes nothing else: it is the <i>end</i>.`; return; }
-    if (u === 1) { msg.className = "msg lose"; msg.textContent = "Naming 1 loses at once."; tried.add(1); draw(); return; }
-    tried.add(u);
+    tried.add(u); tile.classList.add("good");
+    if (u === 1) { msg.className = "msg lose"; msg.textContent = "Naming 1 loses at once."; return; }
     msg.className = "msg";
     msg.innerHTML = `Naming ${u} pays ${t}: ${t} = ${u} + ${t - u}, and ${t - u} ${pay[t - u] ? "is already paid" : "is paid too"}.`;
     const left = [];
     for (let n = 2; n < t; n++) if (!pay[n] && !tried.has(n)) left.push(n);
     if (!left.length) finish();
-    draw();
   }
   function finish() {
     const s = new Engine(gens), w = s.winningMove(s.initialState);
@@ -209,8 +237,8 @@ function lessonEnders(root) {
   root.append(
     eyebrow("HUTCHINGS' THEOREM, IN WINNING WAYS (1982)"),
     el("h2", {}, "Steal a strategy"),
-    story("R. L. Hutchings showed that every position made of two coins with no common factor is an <b>ender</b>: every legal move except the largest unpaid amount t also pays t.",
-          "A strategy-stealing argument then shows the player to move must be able to win. After the opening 5, 7, 11, 13 or any larger prime, every reply leaves such a position, so a prime opening wins. The proof names no winning move."),
+    story("R. L. Hutchings' theorem rests on <b>enders</b>: positions where every legal move except the largest unpaid amount t also pays t. Every position made of two coins with no common factor is one.",
+          "A strategy-stealing argument shows the player to move in an ender can win, unless only 1 is left, as in {2, 3}. After the opening 5, 7, 11, 13 or any larger prime, every reply leaves such a position, so a prime opening wins. The proof names no winning move."),
     el("div", { class: "game" }, el("div", { class: "row" }, el("label", { for: "end-pair" }, "Try"), sel), board, msg, reveal),
   );
   setup(options[1]);
@@ -221,6 +249,7 @@ function lessonEnders(root) {
 function lessonQuiet(root) {
   const options = [[4, 7], [5, 6], [4, 5, 7], [6, 8, 11], [8, 10, 11, 12], [4, 6, 9]];
   let gens, t;
+  const kinds = new Set();
   const pairsBox = el("div", { class: "pairs" }), verdict = el("p", { class: "msg", "aria-live": "polite" }), doubled = el("div", { class: "story" });
   const sel = el("select", { id: "quiet-pos", "aria-label": "Position", onchange: () => setup(sel.value.split(",").map(Number)) },
     ...options.map((g) => el("option", { value: g.join(",") }, setText(g))));
@@ -245,16 +274,17 @@ function lessonQuiet(root) {
       for (let n = 1; n <= t; n++) if (!pay[n]) gaps.push(n);
       const odd = gaps.filter((n) => n > 1 && n % 2), even = gaps.map((n) => 2 * n);
       doubled.innerHTML = `<p>Double it: <b>${setText(g.map((x) => 2 * x))}</b>. Now every named number is even, so infinitely many odd moves are legal. The Quiet End Theorem shows every odd move except the odd unpaid amounts ${odd.length ? odd.join(", ") : "(none)"} leaves a quiet ender, which loses for the player who made it. So this doubled position is <b>short</b>: only ${odd.length} odd and ${even.length} even moves (${even.join(", ")}) need checking.</p>`;
-      if (g.join() === "4,7") markDone("quiet");
     } else {
-      doubled.innerHTML = `<p>Doubling an unquiet position gives a <b>long</b> one: no theorem bounds the odd moves, and winning moves can be enormous. In {8, 30, 34} the only winning move is 49,337.</p>`;
+      doubled.innerHTML = `<p>Doubling an unquiet position gives a <b>long</b> one. The Quiet End Theorem no longer bounds the odd moves; only the Periodicity Theorem does, usually far out, so winning moves can be enormous. In {8, 30, 34} the only winning move is 49,337.</p>`;
     }
+    kinds.add(quiet);
+    if (kinds.size === 2) markDone("quiet");
   }
   root.append(
     eyebrow("THE QUIET END THEOREM, WINNING WAYS (1982)"),
     el("h2", {}, "Quiet ends, short and long"),
     story("A <b>quiet ender</b> is an ender where the unpaid amounts pair up: for every k, exactly one of k and t − k is paid. George Sicherman's papers use these names.",
-          "Pick a position and look at the pairs. The quiet ones are what make even positions <b>short</b>, so a computer can settle them by checking a finite list."),
+          "Pick a position and look at the pairs; try both a quiet one and {4, 5, 7}. The quiet ones are what make even positions <b>short</b>, so a computer can settle them by checking a finite list."),
     el("div", { class: "game" }, el("div", { class: "row" }, el("label", { for: "quiet-pos" }, "Position"), sel), pairsBox, verdict, doubled),
   );
   setup(options[0]);
@@ -291,11 +321,13 @@ function lessonLong(root) {
     if (tried.size === 4) ask();
   }
   function draw() {
+    const keep = focusedTile(tiles);
     tiles.replaceChildren();
     for (let x = 3; x <= 63; x += 2) {
-      tiles.append(el("button", { class: "tile sm" + (tried.has(x) ? " bad" : ""), type: "button",
+      tiles.append(el("button", { class: "tile sm" + (tried.has(x) ? " bad" : ""), type: "button", "data-n": x,
         "aria-label": tried.has(x) ? `${x}, answered by ${tried.get(x)}` : String(x), onclick: () => name(x) }, x));
     }
+    refocus(tiles, keep);
   }
   function ask() {
     const x = 2 * (100 + Math.floor(Math.random() * 400)) + 1;
@@ -400,16 +432,18 @@ function lessonMirror(root) {
     draw();
   }
   function draw() {
+    const keep = focusedTile(board);
     board.replaceChildren();
     for (let n = 1; n <= MIRROR_TOP; n++) {
       const isNamed = n === 8 || n === 12 || named.includes(n);
       const mate = mirrorMate(n);
       let cls = "tile";
       if (isNamed) cls += " named"; else if (paid[n]) cls += " paid"; else if (n === 1) cls += " one";
-      board.append(el("button", { class: cls, type: "button", disabled: isNamed || paid[n] || over,
+      board.append(el("button", { class: cls, type: "button", "data-n": n, disabled: isNamed || paid[n] || over,
         "aria-label": paid[n] ? `${n} paid` : mate ? `${n}, mate ${mate}` : String(n), onclick: () => youName(n) },
-        el("span", {}, n), !paid[n] && !isNamed && mate ? el("span", { class: "mate" }, "↔" + mate) : null));
+        el("span", {}, n), !paid[n] && !isNamed && mate ? el("span", { class: "tag" }, "↔" + mate) : null));
     }
+    refocus(board, keep);
     const live = unpaid();
     const finite = live[live.length - 1] < MIRROR_LIMIT - 64;
     const shown = live.filter((n) => n > 1 && n < mirrorMate(n)).slice(0, 12).map((n) => `${n}–${mirrorMate(n)}`);
@@ -423,7 +457,7 @@ function lessonMirror(root) {
   root.append(
     eyebrow("THOMAS BLOK, 2021"),
     el("h2", {}, "Blok's mirror"),
-    story("Thomas Blok's 2021 report on positions with g = 2 proves whole families of losing positions with <b>pairing strategies</b>. The simplest is {8, 12}. Its unpaid amounts are 4, every odd number, and every number 2 more than a multiple of 4.",
+    story("By 2002 {8, 12} was known to be a losing position: Sicherman's paper lists it, with the family {8, 12, 8n + 2, 8n + 6}. Thomas Blok's 2021 report on positions with g = 2 shows that a simple <b>pairing strategy</b> proves it. The unpaid amounts of {8, 12} are 4, every odd number, and every number 2 more than a multiple of 4.",
           "Blok pairs them: 2 with 3, 4 with 6, 5 with 7, 9 with 11 and so on, and 10 with 14, 18 with 22 and so on. Whatever the first player names, the second names its mate. The mate is always still unpaid, the unpaid amounts always come in whole pairs, and in the end the first player must name 1."),
     el("div", { class: "game" }, modes, board,
       el("div", { class: "row" }, el("label", { for: "mirror-x" }, "or name a larger number"), big,
@@ -439,72 +473,96 @@ function lessonMirror(root) {
 }
 
 // ---------------------------------------------------------------- lesson 7: answer the reply
+// Certified losing positions the answer lesson names (sylver/short_certificates.py and the campaign audits).
+const NAMED = {
+  C: [4, 6], E: [8, 14], F: [12, 14, 16], G: [8, 20, 26], I: [16, 20, 22, 24], K: [10, 16, 24], P0: [12, 16, 22],
+  R: [14, 16, 20, 26], T: [16, 20, 34], U: [16, 26, 88], V: [16, 26, 36, 56], W: [16, 26, 62, 98], Y: [16, 28, 58],
+  Z: [16, 30, 56], "Z′": [16, 30, 40, 44], B24: [16, 24, 38, 44], B28: [16, 28, 38, 40],
+};
+// One row per legal even reply r to 16 up to 36: the certified answer, where it leads, why that position loses,
+// its generators when it is finite (so the page can check it), and three moves that are NOT answers, each with
+// the computer's winning reply and, when it has one, the name of the certified losing position that reply reaches.
 const TABLE = [
-  [2, 3, "{2, 3}", "finite: only 1 is left", [2, 3]], [4, 6, "{4, 6}", "Winning Ways: a losing position", null],
-  [6, 7, "{6, 7, 16}", "finite", [6, 7, 16]], [8, 14, "{8, 14}", "a short losing position", null],
-  [10, 9, "{9, 10, 16}", "finite", [9, 10, 16]], [12, 14, "{12, 14, 16}", "a short losing position", null],
-  [14, 8, "{8, 14}", "16 = 8 + 8, so this is {8, 14}", null], [18, 5, "{5, 16, 18}", "finite", [5, 16, 18]],
-  [20, 34, "{16, 20, 34}", "on Sicherman's list of losing positions, certified in 2026", null], [22, 12, "{12, 16, 22}", "a published losing position", null],
-  [24, 10, "{10, 16, 24}", "claimed in Blok's g = 2 report, certified in 2026", null], [26, 88, "{16, 26, 88}", "certified in 2026 (U)", null],
-  [28, 58, "{16, 28, 58}", "certified in 2026 (Y)", null], [30, 56, "{16, 30, 56}", "certified in 2026 (Z)", null],
-  [34, 20, "{16, 20, 34}", "the same position as after 20 and 34", null], [36, 23, "{16, 23, 36}", "finite: 1,179,780 positions", null],
+  [2, 3, "{2, 3}", "finite: only 1 is left", [2, 3], [[5, 3, null], [7, 3, null], [9, 3, null]]],
+  [4, 6, "{4, 6}", "C, a classic losing position", null, [[3, 2, null], [5, 11, null], [10, 6, "C"]]],
+  [6, 7, "{6, 7, 16}", "finite", [6, 7, 16], [[5, 19, null], [8, 4, "C"], [9, 13, null]]],
+  [8, 14, "{8, 14}", "E, a short losing position", null, [[4, 6, "C"], [9, 21, null], [22, 14, "E"]]],
+  [10, 9, "{9, 10, 16}", "finite", [9, 10, 16], [[6, 4, "C"], [7, 19, null], [34, 24, "K"]]],
+  [12, 14, "{12, 14, 16}", "F, a short losing position", null, [[5, 9, null], [26, 14, "F"], [34, 22, "P0"]]],
+  [14, 8, "{8, 14}", "16 = 8 + 8, so this is E = {8, 14}", null, [[5, 27, null], [20, 26, "R"], [22, 8, "E"]]],
+  [18, 5, "{5, 16, 18}", "finite", [5, 16, 18], [[4, 6, "C"], [7, 6, null], [9, 10, null]]],
+  [20, 34, "{16, 20, 34}", "T, on Sicherman's list of losing positions, certified in 2026", null, [[9, 6, null], [10, 24, "K"], [22, 24, "I"]]],
+  [22, 12, "{12, 16, 22}", "P0, a published losing position", null, [[8, 14, "E"], [13, 5, null], [20, 24, "I"]]],
+  [24, 10, "{10, 16, 24}", "K, listed by Sicherman in 2002 and in Blok's g = 2 report, certified in 2026", null, [[9, 7, null], [22, 12, "P0"], [38, 44, "B24"]]],
+  [26, 88, "{16, 26, 88}", "U, certified in 2026", null, [[11, 40, null], [36, 56, "V"], [62, 98, "W"]]],
+  [28, 58, "{16, 28, 58}", "Y, certified in 2026", null, [[13, 51, null], [38, 40, "B28"], [74, 58, "Y"]]],
+  [30, 56, "{16, 30, 56}", "Z, certified in 2026", null, [[11, 39, null], [40, 44, "Z′"], [72, 56, "Z"]]],
+  [34, 20, "{16, 20, 34}", "T again, reached the other way", null, [[13, 19, null], [22, 12, "P0"], [36, 20, "T"]]],
+  [36, 23, "{16, 23, 36}", "finite: 1,179,780 positions", null, [[15, 7, null], [26, 56, "V"], [34, 20, "T"]]],
 ];
 function lessonAnswer(root) {
   let i = 0, score = 0, seen = 0;
   const q = el("div", { class: "story" }), opts = el("div", { class: "row" }), msg = el("p", { class: "msg", "aria-live": "polite" });
-  const after = el("div", { class: "row" });
-  function legalAfter(r, x) {
-    for (let k = 0; k * r <= x; k++) if ((x - k * r) % 16 === 0) return false;   // x is paid by 16s and rs
-    return true;
-  }
-  function ask() {
-    const [r, ans] = TABLE[i];
-    q.innerHTML = `<p>You opened with <b>16</b>. The computer replies <b>${r}</b>. Which answer leaves a losing position for it?</p>`;
-    const pool = new Set([ans]);
-    const cands = [3, 5, 7, 9, 10, 11, 12, 13, 14, 15, 17, 19, 20, 21, 23, 25, 34, 40, 56, 58, 88].filter((x) => legalAfter(r, x) && x !== ans);
-    let k = (r * 7) % cands.length;
-    while (pool.size < 4) { pool.add(cands[k % cands.length]); k += 5; }
-    const list = [...pool].sort((x, y) => x - y);
+  const after = el("div", { class: "row" }), checked = el("p", { class: "note", "aria-live": "polite" });
+  function ask(focus) {
+    const [r, ans, , , , wrong] = TABLE[i];
+    q.innerHTML = `<p>Reply ${i + 1} of ${TABLE.length}. You opened with <b>16</b>. The computer replies <b>${r}</b>. Which answer leaves a losing position for it?</p>`;
+    const list = [ans, ...wrong.map(([x]) => x)].sort((x, y) => x - y);
     opts.replaceChildren(...list.map((x) => el("button", { class: "tile", type: "button", onclick: () => answer(x) }, x)));
-    msg.className = "msg"; msg.textContent = ""; after.replaceChildren();
+    msg.className = "msg"; msg.textContent = ""; checked.textContent = ""; after.replaceChildren();
+    if (focus) opts.querySelector("button").focus();
   }
   function answer(x) {
-    const [r, ans, dest, why, finite] = TABLE[i];
+    const [r, ans, dest, why, finite, wrong] = TABLE[i];
     seen++;
     opts.querySelectorAll("button").forEach((b) => { b.disabled = true; if (Number(b.textContent) === ans) b.classList.add("good"); else if (Number(b.textContent) === x) b.classList.add("bad"); });
-    if (x === ans) { score++; msg.className = "msg win"; msg.innerHTML = `Yes: ${r} is answered by ${ans}, reaching ${dest} (${why}).`; }
-    else { msg.className = "msg lose"; msg.innerHTML = `The certified answer is ${ans}, reaching ${dest} (${why}). Your choice ${x} is not the one this table certifies.`; }
+    if (x === ans) { score++; msg.className = "msg win"; msg.textContent = `Yes: ${r} is answered by ${ans}, reaching ${dest} (${why}).`; }
+    else {
+      const [, y, name] = wrong.find(([w]) => w === x);
+      const reached = setText(minimal([16, r, x, y]));
+      msg.className = "msg lose";
+      msg.textContent = `Not ${x}: after 16, ${r} and ${x}, the computer names ${y} and reaches ${name ? `${name} = ${reached}` : reached}, a losing position for you. ` +
+                        `The certified answer is ${ans}, reaching ${dest} (${why}).`;
+    }
     if (finite) after.append(el("button", { class: "ctrl", type: "button", onclick: (e) => {
       const s = new Engine(finite), w = s.winningMove(s.initialState);
-      e.currentTarget.replaceWith(el("span", { class: "note" }, w === 0 ? `Checked here: ${dest} is a losing position for the player to move (${plural(s.memo.size, "position")} examined).` : `Unexpected: ${dest} has the winning move ${w}.`));
+      e.currentTarget.remove();
+      checked.textContent = w === 0 ? `Checked here: ${dest} is a losing position for the player to move (${plural(s.memo.size, "position")} examined).` : `Unexpected: ${dest} has the winning move ${w}.`;
     } }, `Check ${dest} yourself`));
+    const last = i === TABLE.length - 1;
     after.append(el("button", { class: "ctrl primary", type: "button", onclick: () => {
-      i = (i + 1) % TABLE.length;
-      if (i === 0) { msg.className = "msg win"; msg.textContent = `All 16 replies done: ${score} of ${seen} answered on the first try.`; markDone("answer"); }
-      ask();
-    } }, i === TABLE.length - 1 ? "Finish" : "Next reply"));
+      if (!last) { i++; ask(true); return; }
+      q.innerHTML = `<p>All ${TABLE.length} replies done: you found ${score} of ${seen} answers.</p>`;
+      opts.replaceChildren(); msg.className = "msg win"; msg.textContent = "Every even reply up to 36 has a certified answer. The next one, 38, has none yet: see the last lesson.";
+      checked.textContent = "";
+      after.replaceChildren(el("button", { class: "ctrl", type: "button", onclick: () => { i = 0; score = 0; seen = 0; ask(true); } }, "Start again"));
+      markDone("answer");
+      after.querySelector("button").focus();
+    } }, last ? "Finish" : "Next reply"));
+    after.querySelector(".primary").focus();
   }
   root.append(
     eyebrow("THE OPENING 16, 1982–2026"),
     el("h2", {}, "Answer the reply"),
     story("Nobody knows who wins after the opening 16. One way to show the opener wins is to answer every reply. A reply r <b>loses</b> when the opener has an answer a that leaves {16, r, a} as a losing position.",
-          "Odd replies lose by Hutchings' theorem. The even replies up to 36 now all have certified answers. Find them."),
-    el("div", { class: "game" }, q, opts, msg, after),
+          "Odd replies lose by Hutchings' theorem. The even replies up to 36 now all have certified answers. Find them. Some replies have more than one answer; the three wrong choices offered here are certainly wrong."),
+    el("div", { class: "game" }, q, opts, msg, after, checked),
   );
-  ask();
+  ask(false);
 }
 
 // ---------------------------------------------------------------- lesson 8: assay a certificate
+// The even obligations of E = {8, 14} and their replies, as in node E of sylver/short_certificates.py.
+const E_REPLIES = { 2: [3, null], 4: [6, "C = {4, 6}"], 6: [4, "C = {4, 6}"], 10: [19, null], 12: [10, "{8, 10, 12, 14}, a member of the pairing family"],
+                    18: [25, null], 20: [9, null], 26: [17, null], 34: [27, null] };
 function lessonAssay(root) {
   // E = {8,14}: half {4,7}, t = 17. Even obligations 2g for the gaps g; odd obligations the odd gaps above 1.
   const half = [4, 7], t = 17, pay = paidUpTo(half, t), gaps = [];
   for (let n = 1; n <= t; n++) if (!pay[n]) gaps.push(n);
-  const evenReplies = { 2: [3, null], 4: [6, "C = {4, 6}"], 6: [4, "C = {4, 6}"], 10: [19, null], 12: [10, "{8, 10, 12, 14}, Blok's pairing family"],
-                        18: [25, null], 20: [9, null], 26: [17, null], 34: [27, null] };
   const obligations = [...gaps.map((g) => 2 * g), ...gaps.filter((g) => g > 1 && g % 2)].sort((a, b) => a - b);
   const tbody = el("tbody"), msg = el("p", { class: "msg", "aria-live": "polite" });
   const rows = obligations.map((m) => {
-    const node = m % 2 === 0 ? evenReplies[m] : null;
+    const node = m % 2 === 0 ? E_REPLIES[m] : null;
     const status = el("span", { class: "status s-run" }, node && node[1] ? "named position" : "not checked");
     const reply = el("td", { class: "mono" }, node ? String(node[0]) : "?");
     const dest = el("td", { class: "mono" }, node ? (node[1] || setText(minimal([8, 14, m, node[0]]))) : "");
@@ -540,7 +598,8 @@ function lessonAssay(root) {
 }
 
 // ---------------------------------------------------------------- lesson 9: the frontier
-// Every obligation of {16, 38}: k is the kind of move, s its status as of October 10, 2026.
+// Every obligation of {16, 38}: k is the kind of move, s its status in the reply-38 record of October 9, 2026
+// (sylver/campaigns/r38-2026-10-09); tests/test_docs_mint.py derives the same statuses from its scan logs.
 const FRONTIER = [
   {"m": 2, "k": "long", "s": "search", "why": "{16,38,2} is won by 3 (search)"},
   {"m": 3, "k": "odd", "s": "search", "why": "{16,38,3} has a winning reply (the ledger's scan)"},
@@ -576,80 +635,86 @@ const FRONTIER = [
   {"m": 39, "k": "odd", "s": "search", "why": "{16,38,39} has a winning reply (the ledger's scan)"},
   {"m": 40, "k": "short", "s": "certified", "why": "{16,38,40} moves by 28 to B28={16,28,38,40}, a certified losing position"},
   {"m": 41, "k": "odd", "s": "search", "why": "{16,38,41} has a winning reply (the ledger's scan)"},
-  {"m": 42, "k": "long", "s": "open", "why": "not settled yet"},
+  {"m": 42, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
   {"m": 44, "k": "short", "s": "certified", "why": "{16,38,44} moves by 24 to B24={16,24,38,44}, a certified losing position"},
   {"m": 45, "k": "odd", "s": "search", "why": "{16,38,45} has a winning reply (the ledger's scan)"},
-  {"m": 46, "k": "long", "s": "open", "why": "not settled yet"},
+  {"m": 46, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
   {"m": 47, "k": "odd", "s": "search", "why": "{16,38,47} has a winning reply (the ledger's scan)"},
   {"m": 49, "k": "odd", "s": "search", "why": "{16,38,49} has a winning reply (the ledger's scan)"},
   {"m": 50, "k": "long", "s": "search", "why": "{16,38,50} is won by 79 (search)"},
-  {"m": 52, "k": "long", "s": "open", "why": "not settled yet"},
+  {"m": 52, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
   {"m": 53, "k": "odd", "s": "search", "why": "{16,38,53} has a winning reply (the ledger's scan)"},
   {"m": 55, "k": "odd", "s": "search", "why": "{16,38,55} has a winning reply (the ledger's scan)"},
   {"m": 56, "k": "short", "s": "certified", "why": "{16,38,56} moves by 60 to B56={16,38,56,60}, a certified losing position"},
   {"m": 58, "k": "long", "s": "search", "why": "{16,38,58} is won by 11 (search)"},
   {"m": 60, "k": "short", "s": "search", "why": "{16,38,60} is won by the odd move 17 (search)"},
   {"m": 61, "k": "odd", "s": "search", "why": "{16,38,61} has a winning reply (the ledger's scan)"},
-  {"m": 62, "k": "long", "s": "open", "why": "not settled yet"},
+  {"m": 62, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
   {"m": 63, "k": "odd", "s": "search", "why": "{16,38,63} has a winning reply (the ledger's scan)"},
-  {"m": 66, "k": "long", "s": "open", "why": "not settled yet"},
-  {"m": 68, "k": "long", "s": "open", "why": "not settled yet"},
+  {"m": 66, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
+  {"m": 68, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
   {"m": 69, "k": "odd", "s": "search", "why": "{16,38,69} is won by 25 (search)"},
   {"m": 71, "k": "odd", "s": "search", "why": "{16,38,71} is won by 73 (search)"},
   {"m": 72, "k": "short", "s": "ladder", "why": "a rung of the ladder 56, 72, 88, 104, 120, 136; its hard long children have no witness yet"},
-  {"m": 74, "k": "long", "s": "open", "why": "not settled yet"},
+  {"m": 74, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
   {"m": 77, "k": "odd", "s": "search", "why": "{16,38,77} is won by 27 (search)"},
   {"m": 78, "k": "long", "s": "search", "why": "{16,38,78} is won by 27 (search)"},
   {"m": 79, "k": "odd", "s": "search", "why": "{16,38,79} is won by 50 (search)"},
-  {"m": 82, "k": "long", "s": "open", "why": "not settled yet"},
-  {"m": 84, "k": "long", "s": "open", "why": "not settled yet"},
-  {"m": 85, "k": "odd", "s": "search", "why": "{16,38,85} is won by 105 (search)"},
-  {"m": 87, "k": "odd", "s": "search", "why": "{16,38,87} is won by 273 (search)"},
-  {"m": 88, "k": "short", "s": "ladder", "why": "a rung of the ladder 56, 72, 88, 104, 120, 136; its hard long children have no witness yet"},
-  {"m": 90, "k": "long", "s": "open", "why": "not settled yet"},
-  {"m": 93, "k": "odd", "s": "search", "why": "{16,38,93} is won by 83 (search)"},
+  {"m": 82, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
+  {"m": 84, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
+  {"m": 85, "k": "odd", "s": "open", "why": "open: the shared sweep stopped during 85 at its 1.4-billion-state cap"},
+  {"m": 87, "k": "odd", "s": "open", "why": "open: the shared sweep stopped during 85 at its 1.4-billion-state cap"},
+  {"m": 88, "k": "short", "s": "ladder", "why": "a rung of the ladder 56, 72, 88, 104, 120, 136; its obligation 72 leads back to {16,38,72}, so it waits on 72"},
+  {"m": 90, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
+  {"m": 93, "k": "odd", "s": "open", "why": "open: the shared sweep stopped during 85 at its 1.4-billion-state cap"},
   {"m": 94, "k": "long", "s": "search", "why": "{16,38,94} is won by 43 (search)"},
   {"m": 98, "k": "long", "s": "search", "why": "{16,38,98} is won by 31 (search)"},
   {"m": 100, "k": "long", "s": "search", "why": "{16,38,100} is won by 41 (search)"},
-  {"m": 101, "k": "odd", "s": "search", "why": "{16,38,101} is won by 33 (search)"},
-  {"m": 104, "k": "short", "s": "ladder", "why": "a rung of the ladder 56, 72, 88, 104, 120, 136; its hard long children have no witness yet"},
-  {"m": 106, "k": "long", "s": "open", "why": "not settled yet"},
-  {"m": 109, "k": "odd", "s": "open", "why": "not settled yet"},
-  {"m": 110, "k": "long", "s": "open", "why": "not settled yet"},
-  {"m": 116, "k": "long", "s": "open", "why": "not settled yet"},
-  {"m": 117, "k": "odd", "s": "open", "why": "not settled yet"},
-  {"m": 120, "k": "short", "s": "ladder", "why": "a rung of the ladder 56, 72, 88, 104, 120, 136; its hard long children have no witness yet"},
-  {"m": 122, "k": "long", "s": "open", "why": "not settled yet"},
-  {"m": 125, "k": "odd", "s": "open", "why": "not settled yet"},
-  {"m": 126, "k": "long", "s": "open", "why": "not settled yet"},
-  {"m": 132, "k": "long", "s": "open", "why": "not settled yet"},
+  {"m": 101, "k": "odd", "s": "open", "why": "open: the shared sweep stopped during 85 at its 1.4-billion-state cap"},
+  {"m": 104, "k": "short", "s": "ladder", "why": "a rung of the ladder 56, 72, 88, 104, 120, 136; some of its odd obligations are not finished"},
+  {"m": 106, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
+  {"m": 109, "k": "odd", "s": "open", "why": "open: the shared sweep stopped during 85 at its 1.4-billion-state cap"},
+  {"m": 110, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
+  {"m": 116, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
+  {"m": 117, "k": "odd", "s": "open", "why": "open: the shared sweep stopped during 85 at its 1.4-billion-state cap"},
+  {"m": 120, "k": "short", "s": "ladder", "why": "a rung of the ladder 56, 72, 88, 104, 120, 136; some of its odd obligations are not finished"},
+  {"m": 122, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
+  {"m": 125, "k": "odd", "s": "open", "why": "open: the shared sweep stopped during 85 at its 1.4-billion-state cap"},
+  {"m": 126, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
+  {"m": 132, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
   {"m": 136, "k": "short", "s": "search", "why": "{16,38,136} is won by the odd move 37 (search)"},
-  {"m": 138, "k": "long", "s": "open", "why": "not settled yet"},
-  {"m": 142, "k": "long", "s": "open", "why": "not settled yet"},
-  {"m": 148, "k": "long", "s": "open", "why": "not settled yet"},
-  {"m": 154, "k": "long", "s": "open", "why": "not settled yet"},
-  {"m": 158, "k": "long", "s": "open", "why": "not settled yet"},
-  {"m": 164, "k": "long", "s": "open", "why": "not settled yet"},
-  {"m": 170, "k": "long", "s": "open", "why": "not settled yet"},
-  {"m": 174, "k": "long", "s": "search", "why": "{16,38,174} is won by 45 (search)"},
-  {"m": 180, "k": "long", "s": "open", "why": "not settled yet"},
-  {"m": 186, "k": "long", "s": "open", "why": "not settled yet"},
-  {"m": 196, "k": "long", "s": "open", "why": "not settled yet"},
-  {"m": 202, "k": "long", "s": "open", "why": "not settled yet"},
-  {"m": 212, "k": "long", "s": "open", "why": "not settled yet"},
-  {"m": 218, "k": "long", "s": "open", "why": "not settled yet"},
-  {"m": 234, "k": "long", "s": "open", "why": "not settled yet"},
-  {"m": 250, "k": "long", "s": "open", "why": "not settled yet"},
+  {"m": 138, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
+  {"m": 142, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
+  {"m": 148, "k": "long", "s": "open", "why": "not searched yet"},
+  {"m": 154, "k": "long", "s": "open", "why": "not searched yet"},
+  {"m": 158, "k": "long", "s": "open", "why": "not searched yet"},
+  {"m": 164, "k": "long", "s": "open", "why": "not searched yet"},
+  {"m": 170, "k": "long", "s": "open", "why": "not searched yet"},
+  {"m": 174, "k": "long", "s": "open", "why": "not searched yet"},
+  {"m": 180, "k": "long", "s": "open", "why": "not searched yet"},
+  {"m": 186, "k": "long", "s": "open", "why": "not searched yet"},
+  {"m": 196, "k": "long", "s": "open", "why": "not searched yet"},
+  {"m": 202, "k": "long", "s": "open", "why": "not searched yet"},
+  {"m": 212, "k": "long", "s": "open", "why": "not searched yet"},
+  {"m": 218, "k": "long", "s": "open", "why": "not searched yet"},
+  {"m": 234, "k": "long", "s": "open", "why": "not searched yet"},
+  {"m": 250, "k": "long", "s": "open", "why": "not searched yet"},
 ];
 function lessonFrontier(root) {
   const detail = el("p", { class: "detail", "aria-live": "polite" }, "Click a tile to see what is known about it.");
   const groups = [["odd", "Odd answers"], ["short", "Even answers that leave a short position"], ["long", "Even answers that leave a long position"]];
   const box = el("div", { class: "game" });
-  const cls = { certified: "bad", search: "paid", open: "", ladder: "gold" };
+  const cls = { certified: "bad out", search: "paid out", open: "", ladder: "gold" };
+  const label = { certified: "ruled out, certified", search: "ruled out by search", open: "open", ladder: "ladder rung" };
+  const looked = new Set();
   for (const [k, title] of groups) {
     const tiles = el("div", { class: "tiles" });
     FRONTIER.filter((r) => r.k === k).forEach((r) => tiles.append(el("button", { class: "tile sm " + cls[r.s], type: "button",
-      onclick: () => { detail.innerHTML = `<b>${r.m}</b>: ${r.why}.`; } }, r.m)));
+      "aria-label": `${r.m}, ${label[r.s]}`, onclick: () => {
+        detail.innerHTML = `<b>${r.m}</b> (${label[r.s]}): ${r.why}.`;
+        looked.add(r.m);
+        if (looked.size === 3) markDone("frontier");
+      } }, r.m)));
     box.append(el("p", { class: "note" }, title), tiles);
   }
   const counts = (s) => FRONTIER.filter((r) => r.s === s).length;
@@ -662,9 +727,9 @@ function lessonFrontier(root) {
     eyebrow("OCTOBER 2026"),
     el("h2", {}, "The frontier: the reply 38"),
     story("Every even reply to 16 up to 36 has an answer. The reply 38 does not, yet. Because {16, 38} is short, any answer must be one of these 98 moves.",
-          "Eleven are ruled out by certified losing positions. Search has ruled out most others. The short candidates 72, 88, 104 and 120 form a <b>ladder</b> with 56 and 136: each rung leads back to the rungs below it, so at most one can be the answer."),
+          "Eleven are ruled out by certified losing positions, and search has ruled out 44 more (struck through). The short candidates 72, 88, 104 and 120 form a <b>ladder</b> with 56 and 136: each rung leads back to the rungs below it, so at most one can be the answer."),
     box,
-    el("p", { class: "note" }, "Status as of October 10, 2026, from the campaign records at github.com/rudi-cilibrasi/sylver-coinage. Search results are discovery output, not certificates."),
+    el("p", { class: "note" }, "Status as of October 9, 2026, from the reply-38 record (sylver/campaigns/r38-2026-10-09 at github.com/rudi-cilibrasi/sylver-coinage). Search results are discovery output, not certificates."),
   );
 }
 
@@ -700,7 +765,7 @@ function show(i, focus) {
 const lessonFromHash = () => LESSONS.findIndex(([id]) => "#" + id === location.hash);
 
 if (typeof module !== "undefined") {
-  module.exports = { FRONTIER, LESSONS, LONG, TABLE, isPaid, minimal, mirrorMate, paidUpTo };
+  module.exports = { E_REPLIES, FRONTIER, LESSONS, LONG, NAMED, TABLE, isPaid, minimal, mirrorMate, paidUpTo };
 } else {
   window.addEventListener("hashchange", () => { const i = lessonFromHash(); if (i >= 0 && i !== current) show(i, false); });
   show(Math.max(0, lessonFromHash()), false);

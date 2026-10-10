@@ -41,9 +41,17 @@
   .chap[aria-current="true"] { color: var(--ground); background: var(--silver); border-color: var(--silver); }
   .notes { margin-top: 26px; color: var(--muted); font-size: 15px; max-width: 72ch; }
   .keys { margin: 10px 0 0; color: var(--muted); font: 13px "IBM Plex Mono", monospace; }
+  .now { display: none; margin: 10px 0 0; min-height: 3em; font-size: 16px; }
+  @media (max-width: 760px) { .now { display: block; } }
+  .transcript { margin-top: 18px; max-width: 72ch; }
+  .transcript summary { cursor: pointer; color: var(--gilt); font: 600 15px "IBM Plex Mono", monospace; }
+  .transcript h2 { font: 600 16px "Cinzel", "Times New Roman", serif; letter-spacing: 0.08em; color: var(--silver); margin: 18px 0 6px; }
+  .transcript p { margin: 0 0 8px; }
+  .stage:fullscreen { aspect-ratio: auto; border: 0; border-radius: 0; background: #141a24; }
+  .stage:fullscreen canvas { object-fit: contain; }
   .notes a { color: var(--gilt); }
   body.render .wrap { padding: 0; max-width: none; }
-  body.render h1, body.render .lede, body.render .controls, body.render .chapters, body.render .keys, body.render .notes { display: none; }
+  body.render h1, body.render .lede, body.render .controls, body.render .chapters, body.render .keys, body.render .now, body.render .transcript, body.render .notes { display: none; }
   body.render .stage { width: 1920px; height: 1080px; aspect-ratio: auto; border: 0; border-radius: 0; }
   @media (prefers-reduced-motion: reduce) { .chap { transition: none; } }
 </style>
@@ -53,14 +61,17 @@
   <h1>The Sylver Coinage Story</h1>
   <p class="lede">From Sylvester's coins in 1884 to machine-checked certificates in 2026: how one simple
     game became a famous open problem, and how far the opening 16 has been pushed.</p>
-  <div class="stage"><canvas id="film" width="1920" height="1080" aria-label="Animated history of Sylver Coinage"></canvas></div>
+  <div class="stage"><canvas id="film" width="1920" height="1080" role="img" aria-label="Animated history of Sylver Coinage; the transcript below has every caption"></canvas></div>
+  <p class="now" id="now" aria-hidden="true"></p>
   <div class="controls">
     <button id="play" type="button">Play</button>
+    <button id="full" type="button" hidden>Full screen</button>
     <span class="time" id="time">0:00 / 0:00</span>
     <input id="scrub" type="range" min="0" max="1000" value="0" aria-label="Position in the film">
   </div>
   <ul class="chapters" id="chapters"></ul>
   <p class="keys">Space plays and pauses; the arrow keys skip five seconds.</p>
+  <details class="transcript" id="transcript"><summary>Read the film as text</summary></details>
   <p class="notes">Sources: Berlekamp, Conway and Guy, <i>Winning Ways for your Mathematical Plays</i> (1982), chapter 18;
     G. Sicherman, <i>Theory and Practice of Sylver Coinage</i>, Integers 2 (2002), and
     <a href="https://sicherman.net/sylver/">sicherman.net/sylver</a>; T. Blok's reports (2021–2026);
@@ -88,15 +99,16 @@
     li.appendChild(b); list.appendChild(li);
     return b;
   });
+  const now = document.getElementById("now");
   function draw() {
-    renderAt(ctx, t);
+    now.textContent = renderAt(ctx, t).join(" ");
     scrub.value = Math.round((t / DURATION) * 1000);
     time.textContent = `${fmt(t)} / ${fmt(DURATION)}`;
     chips.forEach((b, i) => b.setAttribute("aria-current", String(t >= CHAPTERS[i].start && t < CHAPTERS[i].end)));
   }
   function tick(now) {
     if (!playing) { last = null; return; }
-    if (last !== null) t = Math.min(DURATION, t + (now - last) / 1000);
+    if (last !== null) t = Math.min(DURATION, t + Math.min(0.1, (now - last) / 1000));   // no jump after a hidden tab
     last = now;
     draw();
     if (t >= DURATION) { playing = false; play.textContent = "Replay"; return; }
@@ -120,11 +132,28 @@
     }
   });
   scrub.addEventListener("input", () => { t = (scrub.value / 1000) * DURATION; draw(); });
+  const full = document.getElementById("full"), stage = document.querySelector(".stage");
+  if (document.fullscreenEnabled && stage.requestFullscreen) {
+    full.hidden = false;
+    full.addEventListener("click", () => { stage.requestFullscreen().catch(() => { full.hidden = true; }); });
+  }
+  const notes = document.getElementById("transcript");
+  notes.addEventListener("toggle", () => {
+    if (!notes.open || notes.dataset.filled) return;
+    notes.dataset.filled = "yes";
+    for (const c of transcript()) {
+      const h = document.createElement("h2");
+      h.textContent = `${fmt(c.start)} · ${c.heading || c.name}`;
+      notes.appendChild(h);
+      for (const line of c.lines) { const p = document.createElement("p"); p.textContent = line; notes.appendChild(p); }
+    }
+  });
   window.drawFrame = (s) => { t = s; renderAt(ctx, t); };
   const ready = document.fonts ? document.fonts.ready : Promise.resolve();
-  Promise.all([ready, document.fonts ? Promise.all([
-    document.fonts.load('600 40px "Cinzel"'), document.fonts.load('600 40px "IBM Plex Mono"'),
-    document.fonts.load('400 40px "Spectral"'), document.fonts.load('italic 400 40px "Spectral"')]) : null])
+  // every face the film draws with, so no frame is drawn with a fallback font
+  const faces = ['400 40px "Cinzel"', '600 40px "Cinzel"', '700 40px "Cinzel"', '400 40px "IBM Plex Mono"', '600 40px "IBM Plex Mono"',
+                 '700 40px "IBM Plex Mono"', '400 40px "Spectral"', '600 40px "Spectral"', 'italic 400 40px "Spectral"'];
+  Promise.all([ready, document.fonts ? Promise.all(faces.map((f) => document.fonts.load(f))) : null])
     .catch(() => null)
     .then(() => { t = render ? 0 : 6.5; draw(); window.filmReady = true; });
 })();
