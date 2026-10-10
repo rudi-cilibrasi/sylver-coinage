@@ -30,3 +30,18 @@ r=16-38 e= 126 open      reply=None via=None tried=27 590.9s
 r=16-38 e= 132 open      reply=None via=None tried=24 611.5s
 r=16-38 e= 138 open      reply=None via=None tried=24 561.1s
 r=16-38 e= 142 open      reply=None via=None tried=26 595.2s
+r=16-38 e= 148 open      reply=None via=None tried=25 719.8s
+r=16-38 e= 154 open      reply=None via=None tried=24 1022.8s
+r=16-38 e= 158 open      reply=None via=None tried=26 1310.6s
+r=16-38 e= 164 open      reply=None via=None tried=24 1455.7s
+r=16-38 e= 170 open      reply=None via=None tried=25 2135.5s
+r=16-38 e= 174 resolved  reply=45 via=finite odd witness tried=18 344.5s
+r=16-38 e= 180 open      reply=None via=None tried=25 1303.9s
+r=16-38 e= 186 open      reply=None via=None tried=21 1200.0s
+r=16-38 e= 196 open      reply=None via=None tried=26 1010.6s
+r=16-38 e= 202 open      reply=None via=None tried=24 1175.3s
+r=16-38 e= 212 open      reply=None via=None tried=25 1175.1s
+r=16-38 e= 218 open      reply=None via=None tried=24 1635.4s
+r=16-38 e= 234 open      reply=None via=None tried=38 2999.6s
+r=16-38 e= 250 open      reply=None via=None tried=35 2845.8s
+summary: {'resolved': 15, 'short: needs even': 0, 'open': 31, 'REFUTES r': 0} of 63

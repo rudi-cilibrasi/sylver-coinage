@@ -1,0 +1,24 @@
+kunz_solver: memo entries=1676278762 slots=2361645350 bytes=40147970950
+	Command being timed: "./kunz --threads 8 --stop-at-p --max-states 1700000000 --memo-stats --odd-list 93 16 38"
+	User time (seconds): 8702.89
+	System time (seconds): 57.32
+	Percent of CPU this job got: 770%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 18:56.88
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 39328972
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 8
+	Minor (reclaiming a frame) page faults: 28707240
+	Voluntary context switches: 14706
+	Involuntary context switches: 944174
+	Swaps: 0
+	File system inputs: 328
+	File system outputs: 16
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

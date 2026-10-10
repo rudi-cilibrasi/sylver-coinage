@@ -5,7 +5,9 @@ B28={16,28,38,40}, B24={16,24,38,44} and B56={16,38,56,60}, show that 24,
 28, 40, 44 and 56 do not answer the reply 38. I and B24 were already on
 Sicherman's list (see the October 10 correction). B28 also settles the Y
 record's open question: {16,28,38} is N. No answer to 38 is known yet. See
-Attempts 37 and 38 and [the record](campaigns/r38-2026-10-09/RESULT.md).
+Attempts 37 to 39 and [the record](campaigns/r38-2026-10-09/RESULT.md). On
+October 10 search also ruled out 85, 87, 93, 101 and 174; 109, 117 and 125 need
+more than 2.1 billion states each.
 
 **October 9, a ledger of answers:** every even reply to the opening 16 up to
 36 now has an answer. 36 is answered by 23, through the finite P-position
@@ -1765,6 +1767,31 @@ the index, r38 and z pages; and the reply-38 audit's docstring.
 B28={16,28,38,40}, B56={16,38,56,60}, Z={16,30,56}, Y={16,28,58},
 U={16,26,88} and W={16,26,62,98} are not on that list. The independent review
 of pull request #43 (the film and lesson pages) noticed the overlap.
+
+### Attempt 39 — the search for an answer to 38 goes on (2026-10-10)
+
+The search continued, and the reply-38 record now includes it
+([its search section](campaigns/r38-2026-10-09/RESULT.md#the-search-for-an-answer-to-38)).
+These are discovery results, not certified.
+
+- **Odd candidates.**
+  - A queue ran each of the seven open odd candidates alone, on 8 threads
+    with a cap of 1.7 billion states. 85, 87, 93 and 101 are N, won by 105,
+    273, 83 and 33.
+  - 109, 117 and 125 stopped at that cap. Retried alone at 2.1 billion
+    states, about 50.5 GB of memo each and 35 to 45 minutes, they stopped
+    again.
+  - Each needs more than 2.1 billion states, and there is little room to
+    raise the cap on this 62.5 GiB host.
+- **Long candidates.** The map of the long candidates went on from 148 to
+  250. 174 is won by 45, and the other thirteen stayed open within its caps.
+  Every long candidate has now been searched, 15 are N and 31 are open, but
+  27 of the open ones only with the map's 150-million-state cap per batch.
+- **Tally.**
+  - Of {16,38}'s 98 obligations, 60 are N: 11 certified, 49 by search.
+  - 38 are open: the ladder rungs 72, 88, 104 and 120, the odd moves 109, 117
+    and 125, and 31 long candidates.
+  - No answer to 38 is known.
 
 ### Sources
 
