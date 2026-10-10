@@ -51,10 +51,11 @@ Notes:
   working name `A`; the evidence file was relabeled `I` by hand before the
   replays.
 - `status.py` tabulates {16,38}'s obligations from these outputs.
-- The map of the long children (`resolve_16-38`) ran in three segments,
+- The map of the long children (`resolve_16-38`) ran in four segments,
   each `resolve_position.py 16 38 --only-long` with a cap per batch of odd
   replies:
-  - up to 50: `--threads 3 --max-states 500000000`;
+  - 2 to 36, the first run: `--max-states 300000000`;
+  - 42 to 50, restarted on October 9: `--threads 3 --max-states 500000000`;
   - from 52 to 218, resumed on October 10: `--threads 3 --max-states 150000000`;
   - 234 and 250: `--threads 6`, with the defaults of 700,000,000 states and
     1,800 seconds.

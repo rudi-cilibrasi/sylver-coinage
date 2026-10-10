@@ -248,7 +248,8 @@ class MintTests(unittest.TestCase):
                 continue
             if row['k'] == 'odd':        # each open odd move ran alone to the 2.1-billion-state cap
                 err = (SCAN / f'odd_retry_{m}.err').read_text()
-                self.assertIn(f'sweep stopped during move={m} (memo holds 21', err, m)
+                held = re.search(rf'sweep stopped during move={m} \(memo holds (\d+) states\)', err)
+                self.assertTrue(held and int(held[1]) >= 2_100_000_000, m)
                 self.assertIn('2.1-billion-state cap', row['why'], m)
             else:                        # each open long move is an open row of the map
                 self.assertRegex(long_log, rf'r=16-38 e=\s*{m} open ', m)

@@ -157,10 +157,11 @@ discovery output, not certified.
     213, 215 and 221) were not classified: their batches stopped at the state
     cap or the 1,800-second timeout.
   - So every long candidate has been searched, but mostly shallowly. The map
-    gave each batch of odd replies a cap of 500,000,000 states up to 50,
-    150,000,000 from 52 to 218, and 700,000,000 for 234 and 250, and gave up
-    on a candidate after four batches stopped. 27 of the 31 open candidates
-    had only the 150,000,000-state cap (see the scan README).
+    gave each batch of odd replies a cap of 300,000,000 states up to 36,
+    500,000,000 from 42 to 50, 150,000,000 from 52 to 218, and 700,000,000
+    for 234 and 250, and gave up on a candidate after four batches stopped.
+    27 of the 31 open candidates had only the 150,000,000-state cap (see the
+    scan README).
 
 ## Reproduction
 
