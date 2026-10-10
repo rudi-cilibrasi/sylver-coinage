@@ -4,6 +4,8 @@
 play Sylver Coinage against the exact solver in your browser, and query
 the campaign's 273,000-outcome cache directly from this repository.
 
+[![The Sylver Coinage Story: the title frame of the animated history](docs/media/story-poster.jpg)](https://rudi-cilibrasi.github.io/sylver-coinage/story.html)
+
 **▶ [The Sylver Coinage Story](https://rudi-cilibrasi.github.io/sylver-coinage/story.html):**
 a six-minute animated history, from Sylvester's coins (1884) through
 *Winning Ways*, George Sicherman and Thomas Blok to this campaign
