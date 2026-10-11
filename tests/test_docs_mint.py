@@ -58,6 +58,14 @@ def recorded_r38_status():
         m = re.match(r'r=16-38 e=\s*(\d+) (\S+)\s+reply=(\S+)', line)
         if m and m[2] == 'resolved':
             status.setdefault(int(m[1]), int(m[3]))
+    for path in sorted(SCAN.glob('deep_16-38-*.jsonl')):      # deeper sweeps of single long candidates
+        rest = path.stem.split('-')[2:]
+        if len(rest) != 1:
+            continue
+        for line in path.read_text().splitlines():
+            row = json.loads(line)
+            if row.get('P'):
+                status[int(rest[0])] = int(row['P'])
     return moves, status
 
 # Export the Mint's data, and solve the small finite destinations of its
@@ -254,6 +262,34 @@ class MintTests(unittest.TestCase):
             else:                        # each open long move is an open row of the map
                 self.assertRegex(long_log, rf'r=16-38 e=\s*{m} open ', m)
                 self.assertEqual(row['why'], "open within the sweeps' state caps", m)
+
+    def test_72s_open_children_come_from_the_logs(self):
+        """The Mint names the children of {16,38,72} still open; derive them from the committed outputs."""
+        from sylver.arena.common import position, profile
+        even = [m for m in profile(position((16, 38, 72)))['moves'] if m % 2 == 0]
+        done = set()
+        for line in (SCAN / 'even_72.jsonl').read_text().splitlines():
+            row = json.loads(line)
+            if row['status'] == 'resolved':
+                done.add(row['e'])
+        refuted = json.loads(R38.read_text())['refuted_answers_to_38']
+        if '56' in refuted:             # {16,38,72,56} = {16,38,56}, which moves to the certified B56
+            done.add(56)
+        for path in SCAN.glob('deep_16-38-*.jsonl'):
+            parts = [int(x) for x in path.stem.split('_')[1].split('-')]
+            rest = [x for x in parts if x not in (16, 38)]
+            if len(rest) == 2 and 72 in rest and any(json.loads(l).get('P') for l in path.read_text().splitlines()):
+                done.add(next(x for x in rest if x != 72))
+        for line in (SCAN / 'hunt.jsonl').read_text().splitlines():
+            row = json.loads(line)
+            if row['outcome'] == 'P':
+                done.add(next(x for x in row['child'] if x not in (16, 38, 72)))
+        still_open = [e for e in even if e not in done]
+        why = next(r['why'] for r in self.report['frontier'] if r['m'] == 72)
+        listed = [int(x) for x in re.search(r'children, ([\d, and]+), are all N', why)[1].replace('and', ',').split(',') if x.strip()]
+        self.assertEqual(listed, still_open)
+        count = re.search(r'its (\w+) open long children', why)[1]
+        self.assertEqual(count, ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'][len(listed)])
 
     def test_named_positions_are_certified(self):
         certified = certified_positions()

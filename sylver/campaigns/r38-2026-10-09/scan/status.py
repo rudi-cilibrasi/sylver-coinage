@@ -37,6 +37,15 @@ for line in (HERE / 'resolve_16-38-long.log').read_text().splitlines():
     m = re.match(r'r=16-38 e=\s*(\d+) (\S+)\s+reply=(\S+)', line)
     if m:
         status.setdefault(int(m[1]), ('N' if m[2] == 'resolved' else m[2], f'reply {m[3]}'))
+# deeper sweeps of long candidates the map searched shallowly (deep_long.sh): a batch with a P reply is a witness
+for path in sorted(HERE.glob('deep_16-38-*.jsonl')):
+    rest = path.stem.split('-')[2:]
+    if len(rest) != 1:          # files for the children of other candidates, such as 72's
+        continue
+    for line in path.read_text().splitlines():
+        row = json.loads(line)
+        if row.get('P'):
+            status[int(rest[0])] = ('N', f"reply {row['P']} (deeper sweep)")
 rows = []
 for mv in info['moves']:
     st = status.get(mv, ('?', ''))
