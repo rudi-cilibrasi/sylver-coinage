@@ -68,7 +68,7 @@ Notes:
   were mapped. The map has finished.
 - `deep_long.*` are complete: the pass finished on October 11 at 15:15. `hunt.*` is a snapshot of a
   run still going (taken at about 15:15). `deep_16-38-<E>.jsonl` is included for every candidate
-  (106 finished no batch, so it has no file). `status.py` counts a batch with a P reply as a witness. `even_72.*`
+  that finished a batch (all but 106, which has no file). `status.py` counts a batch with a P reply as a witness. `even_72.*`
   include the resumed resolver's last obligation, 170 (`even_resolver.py 72 --threads 2
   --max-states 300000000`). `hunt.py` logs a witness found through the partner rule only in
   `hunt.log` (as "WITNESS (partner)"), not as a P row in `hunt.jsonl`; none occurred here.

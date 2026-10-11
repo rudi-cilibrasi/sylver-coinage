@@ -1793,7 +1793,7 @@ These are discovery results, not certified.
     and 125, and 31 long candidates.
   - No answer to 38 is known.
 
-### Attempt 40 — two more long candidates fall, and 72 comes down to six children (2026-10-11)
+### Attempt 40 — three more long candidates fall, and 72 comes down to six children (2026-10-11)
 
 Overnight search for an answer to 38, recorded in
 [the reply-38 record](campaigns/r38-2026-10-09/RESULT.md#the-search-for-an-answer-to-38)
