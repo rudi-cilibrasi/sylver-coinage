@@ -136,7 +136,8 @@ discovery output, not certified.
     - 72's obligation 56 is answered through B56. The deep replies 129 and
       69 answer its obligations 58 and 66.
     - 72's long children 68, 78 and 84 have no even reply into a short
-      P-position and no odd winner found so far. The hardest of their odd
+      P-position. 68 and 78 have no odd winner found so far; the hunt below
+      found 139 for 84. The hardest of their odd
       replies each need from about 300 million to over a billion states:
       those from 81 on for 78, from 87 on for 84, and from about 150 on for
       68 (in the hunt below, some of 68's replies from 191 on stopped at its

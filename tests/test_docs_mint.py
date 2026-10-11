@@ -288,6 +288,8 @@ class MintTests(unittest.TestCase):
         why = next(r['why'] for r in self.report['frontier'] if r['m'] == 72)
         listed = [int(x) for x in re.search(r'children, ([\d, and]+), are all N', why)[1].replace('and', ',').split(',') if x.strip()]
         self.assertEqual(listed, still_open)
+        count = re.search(r'its (\w+) open long children', why)[1]
+        self.assertEqual(count, ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'][len(listed)])
 
     def test_named_positions_are_certified(self):
         certified = certified_positions()
