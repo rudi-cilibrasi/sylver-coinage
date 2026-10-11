@@ -137,15 +137,18 @@ discovery output, not certified.
       69 answer its obligations 58 and 66.
     - 72's long children 68, 78 and 84 have no even reply into a short
       P-position and no odd winner found so far. The hardest of their odd
-      replies each need about 300 to 600 million states: those from 81 on for 78,
-      from 87 on for 84, and from about 150 on for 68.
+      replies each need from about 300 million to over a billion states:
+      those from 81 on for 78, from 87 on for 84, and from about 150 on for
+      68 (in the hunt below, some of 68's replies from 191 on stopped at its
+      1,000,000,000-state cap).
     - Every short child of 72 is N, so a refutation of 72 would need a long
       P-position, which the Quiet End Theorem cannot certify.
-    - By October 11 every even obligation of {16,38,72} had been run: 170 is
-      won by 71 (`scan/even_72.*`), and a round-robin hunt over its open long
-      children found that 132 is won by 75 (`scan/hunt.*`). The open ones are
-      68, 78, 84, 100, 106, 116 and 154. So, by search, 72 answers 38 exactly
-      when all seven of them are N; one P among them refutes it.
+    - By October 11 every even obligation of {16,38,72} had been run:
+      {16,38,72,170} is won by 71 (`scan/even_72.*`), and a round-robin hunt
+      over its open long children found {16,38,72,132} won by 75 and
+      {16,38,72,84} won by 139 (`scan/hunt.*`). The open ones are 68, 78,
+      100, 106, 116 and 154. So, by search, 72 answers 38 exactly when all six
+      of them are N; one P among them refutes it.
     - 88's obligation 72 leads back to {16,38,72}.
   - 104 and 120 have odd obligations that the sweeps could not finish.
 - **Long even.** A long candidate is N as soon as one winning reply is
@@ -168,13 +171,14 @@ discovery output, not certified.
     for 234 and 250, and gave up on a candidate after four batches stopped.
     27 of the 31 open candidates had only the 150,000,000-state cap (see the
     scan README).
-  - A deeper pass on October 10 and 11 (`scan/deep_long.*`) took those 27 in
-    turn, resuming after the replies the map had classified and retrying the
-    ones it skipped, with a cap of 700,000,000 states per batch and an hour
-    per candidate. By 06:30 on October 11 it had found 52 won by 143 and 110
-    won by 59; 62, 66, 68, 74, 82, 84, 90, 106, 116, 122, 126, 132, 138, 142
-    and 148 ran out of time (106 without finishing a batch), and the rest of
-    the queue was still running. 29 long candidates are open.
+  - A deeper pass on October 10 and 11 (`scan/deep_long.*`) queued those 27,
+    one at a time, resuming near where the map had stopped and retrying the
+    replies it skipped, with a cap of 700,000,000 states per batch and an
+    hour per candidate. By 06:30 on October 11, 17 had had their hour: 52 is
+    won by 143 and 110 by 59, and 62, 66, 68, 74, 82, 84, 90, 106, 116, 122,
+    126, 132, 138, 142 and 148 ran out of time (106 without finishing a
+    batch). 154 was running, and 158 to 218 had not started. 29 long
+    candidates are open.
 
 ## Reproduction
 

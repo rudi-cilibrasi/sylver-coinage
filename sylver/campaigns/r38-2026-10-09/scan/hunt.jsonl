@@ -130,3 +130,9 @@
 {"child": [16, 38, 72, 154], "w": 115, "outcome": "N", "winning_move": "95", "states": null, "via": "partner of 95"}
 {"child": [16, 38, 68, 72], "w": 207, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1000.6}
 {"child": [16, 38, 72, 78], "w": 131, "outcome": "N", "winning_move": "57", "states": 432650456, "returncode": 0, "seconds": 378.1}
+{"child": [16, 38, 72, 84], "w": 139, "outcome": "P", "winning_move": "none", "states": 980837915, "returncode": 0, "seconds": 1107.9}
+{"child": [16, 38, 72, 100], "w": 103, "outcome": "N", "winning_move": "30", "states": 96786871, "returncode": 0, "seconds": 86.5}
+{"child": [16, 38, 72, 106], "w": 103, "outcome": "N", "winning_move": "30", "states": 105830137, "returncode": 0, "seconds": 89.5}
+{"child": [16, 38, 72, 116], "w": 99, "outcome": "N", "winning_move": "205", "states": 712917610, "returncode": 0, "seconds": 806.7}
+{"child": [16, 38, 72, 116], "w": 205, "outcome": "N", "winning_move": "99", "states": null, "via": "partner of 99"}
+{"child": [16, 38, 72, 154], "w": 97, "outcome": "N", "winning_move": "29", "states": 41545671, "returncode": 0, "seconds": 23.0}

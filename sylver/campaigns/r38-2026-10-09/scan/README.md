@@ -22,8 +22,8 @@ The certificate's audit does not use this file.
 | the odd candidate 85 alone | `kunz --threads 4 --stop-at-p --max-states 1000000000 --memo-stats --odd-list 85 16 38` (stopped at the cap) | `odd85.*` |
 | each of the seven open odd candidates alone (October 10) | `./odd_queue.sh`: `kunz --threads 8 --stop-at-p --max-states 1700000000 --memo-stats --odd-list M 16 38` per candidate | `odd_queue.*`, `odd_queue_<M>.err` |
 | 109, 117 and 125 again, alone at 2.1 billion states | `./odd_retry.sh` (`--max-states 2100000000`) | `odd_retry.*`, `odd_retry_<M>.err` |
-| a deeper pass over the 27 long candidates the map searched with 150M batches (October 10–11) | `./deep_long.sh`: `deep_witness.py --done-count K --also SKIPPED --threads 4 --max-states 700000000 --max-skips 8 16 38 E`, an hour each | `deep_long.*`, `deep_16-38-<E>.jsonl` |
-| 72's open long children: a round-robin witness hunt, each reply alone with the partner rule | `python hunt.py 1000000000` (children and starts in the script and `hunt_children.json`) | `hunt.*` |
+| a deeper pass over the 27 long candidates the map searched with 150M batches (October 10–11) | `./deep_long.sh`: `deep_witness.py --done-count K --also SKIPPED --threads 4 --max-states 700000000 --max-skips 8 16 38 E`, an hour each, with K the map's `odd_tried` (so two to four replies the map had classified are run again) | `deep_long.*`, `deep_16-38-<E>.jsonl` |
+| 72's open long children: a round-robin witness hunt, each reply alone with the partner rule | `python hunt.py 1200000000` on October 10 from 03:55 to 07:32, then `python hunt.py 1000000000` from 13:21 (children and starts in the script and `hunt_children.json`) | `hunt.*` |
 | even obligations of a candidate a | `python even_resolver.py A` | `even_A.jsonl` (A = 8, 24, 40, 56, 72, 88) |
 | even obligations of any short position | `python resolve_position.py G...` (`--only-long` skips short children) | `resolve_<G>.jsonl` |
 | even replies into short P-positions | `python pair_search.py G...` | `pair_*.log` |
@@ -69,7 +69,9 @@ Notes:
 - `deep_long.*` and `hunt.*` are snapshots taken on October 11 at 06:30, while both were still
   running; `deep_16-38-<E>.jsonl` is included for each candidate whose hour had ended (106 finished no
   batch, so it has no file). `status.py` counts a batch with a P reply as a witness. `even_72.*`
-  include the resumed resolver's last obligation, 170.
+  include the resumed resolver's last obligation, 170 (`even_resolver.py 72 --threads 2
+  --max-states 300000000`). `hunt.py` logs a witness found through the partner rule only in
+  `hunt.log` (as "WITNESS (partner)"), not as a P row in `hunt.jsonl`; none occurred here.
 - `odd_queue.out` and `odd_retry.out` hold only completed rows: a candidate
   stopped at `--max-states` prints only its "stopped" line, in its `.err`
   transcript, so `odd_retry.out` is empty. The `rc=` in the two `.log` files
@@ -92,7 +94,7 @@ Notes:
     on a host whose load average was about 23. Its incomplete receipt was
     removed and the replay rerun with `REPLAY_RATE=3000`, a longer budget.
 - Deep sweeps of candidate 72's long children are in `deep_72_*.log` and
-  `deep_16-38-*.jsonl`. They found the winners 58 → 129 and 66 → 69. For
+  `deep_16-38-*-72.jsonl` / `deep_16-38-72-*.jsonl`. They found the winners 58 → 129 and 66 → 69. For
   68, 78 and 84 they found none before they were stopped.
 - Some runs were stopped or still going when B56 was added:
   - the resolvers for 72 and 88;

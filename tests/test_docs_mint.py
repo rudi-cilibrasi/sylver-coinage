@@ -263,6 +263,32 @@ class MintTests(unittest.TestCase):
                 self.assertRegex(long_log, rf'r=16-38 e=\s*{m} open ', m)
                 self.assertEqual(row['why'], "open within the sweeps' state caps", m)
 
+    def test_72s_open_children_come_from_the_logs(self):
+        """The Mint names the children of {16,38,72} still open; derive them from the committed outputs."""
+        from sylver.arena.common import position, profile
+        even = [m for m in profile(position((16, 38, 72)))['moves'] if m % 2 == 0]
+        done = set()
+        for line in (SCAN / 'even_72.jsonl').read_text().splitlines():
+            row = json.loads(line)
+            if row['status'] == 'resolved':
+                done.add(row['e'])
+        refuted = json.loads(R38.read_text())['refuted_answers_to_38']
+        if '56' in refuted:             # {16,38,72,56} = {16,38,56}, which moves to the certified B56
+            done.add(56)
+        for path in SCAN.glob('deep_16-38-*.jsonl'):
+            parts = [int(x) for x in path.stem.split('_')[1].split('-')]
+            rest = [x for x in parts if x not in (16, 38)]
+            if len(rest) == 2 and 72 in rest and any(json.loads(l).get('P') for l in path.read_text().splitlines()):
+                done.add(next(x for x in rest if x != 72))
+        for line in (SCAN / 'hunt.jsonl').read_text().splitlines():
+            row = json.loads(line)
+            if row['outcome'] == 'P':
+                done.add(next(x for x in row['child'] if x not in (16, 38, 72)))
+        still_open = [e for e in even if e not in done]
+        why = next(r['why'] for r in self.report['frontier'] if r['m'] == 72)
+        listed = [int(x) for x in re.search(r'children, ([\d, and]+), are all N', why)[1].replace('and', ',').split(',') if x.strip()]
+        self.assertEqual(listed, still_open)
+
     def test_named_positions_are_certified(self):
         certified = certified_positions()
         for name, gens in self.report['named'].items():
