@@ -165,6 +165,8 @@ class StoryFilmTests(unittest.TestCase):
         certified = {int(m) for m in json.loads(R38.read_text())['refuted_answers_to_38']}
         self.assertEqual(self.report['search38'], {'ruledOut': len(set(status) - certified), 'open': len(moves) - len(status)})
         self.assertIn(f"search has ruled out {self.report['search38']['ruledOut']} more", self.drawn)
+        tally = self.report['search38']
+        self.assertIn(f"+ {tally['ruledOut']} more ruled out by search  ·  {tally['open']} still open", self.report['texts'])
 
     def test_key_facts_are_on_screen(self):
         for fact in ('1884', 'a·b − a − b', 'Winning Ways', 'GEORGE SICHERMAN', 'THOMAS BLOK', '403,200', '381,091',
