@@ -531,6 +531,8 @@ const REPLIES = [2, 4, 6, 8, 10, 12, 14, 18, 20, 22, 24, 26, 28, 30, 34, 36, 38]
 const ANSWERS = { 2: 3, 4: 6, 6: 7, 8: 14, 10: 9, 12: 14, 14: 8, 18: 5, 20: 34, 22: 12, 24: 10, 26: 88, 28: 58, 30: 56, 34: 20, 36: 23 };
 const WHEN = { 26: 19, 28: 23, 30: 25.5, 34: 28, 36: 30 };
 const RULED_OUT_38 = [4, 6, 8, 12, 14, 22, 24, 28, 40, 44, 56];   // by certified P-positions
+// The rest of the reply-38 record (sylver/campaigns/r38-2026-10-09): ruled out by search, and still open
+const SEARCH_38 = { ruledOut: 51, open: 36 };
 // [seconds into the chapter, the dated note shown]; the tests check the dates against the README
 const NOTES = [
   [10.5, "July: replies 2 to 24 answered, each answer certified"],
@@ -564,6 +566,8 @@ chapter(50, 2026.6, "2026 · MACHINE-CHECKED CERTIFICATES", (ctx, t, d) => {
     const s = seg(t, 36 + i * 0.3, 36.4 + i * 0.3);
     tile(ctx, 360 + i * 87, 584, 78, 66, n, "lose", { alpha: oa * s, size: 28 });
   });
+  text(ctx, `+ ${SEARCH_38.ruledOut} more ruled out by search  ·  ${SEARCH_38.open} still open`, 360, 700,
+       { size: 28, color: C.muted, alpha: oa * seg(t, 40, 41) });
   const fa = a * seg(t, 42, 43);
   text(ctx, "38 ?", 1500, 680, { size: 64, font: F.mono, weight: 700, color: C.gilt, alpha: fa });
   // ledger of dates
@@ -573,7 +577,7 @@ chapter(50, 2026.6, "2026 · MACHINE-CHECKED CERTIFICATES", (ctx, t, d) => {
   caption(ctx, "Replies 2 to 24 fell in July. The replies above 24 took months of computing and new engines.", a * window_(t, 10, 18.5, 0.5));
   caption(ctx, "The hardest step, 701 in {16, 26, 82, 88}, took 633,734,956 positions, counted identically by two engines.", a * window_(t, 18.5, 27, 0.5));
   caption(ctx, "By October 9 every reply up to 36 had an answer. The reply 38 is the frontier.", a * window_(t, 27, 35, 0.5));
-  caption(ctx, "Eleven possible answers to 38 are ruled out so far, by certified losing positions. None works yet.", a * window_(t, 35, d, 0.5));
+  caption(ctx, `Eleven possible answers to 38 are ruled out by certified losing positions, and search has ruled out ${SEARCH_38.ruledOut} more. None works yet.`, a * window_(t, 35, d, 0.5));
 }, "2026");
 
 // 11. Closing
@@ -662,5 +666,5 @@ function chapterMetadata() {
     `[CHAPTER]\nTIMEBASE=1/1000\nSTART=${Math.round(c.start * 1000)}\nEND=${Math.round(c.end * 1000)}\ntitle=${esc(c.brow || c.label || c.name)}\n`).join("");
 }
 
-if (typeof module !== "undefined") module.exports = { renderAt, transcript, chapterMetadata, DURATION, CHAPTERS: CH, W, H, ANSWERS, NOTES, REPLIES, RULED_OUT_38 };
+if (typeof module !== "undefined") module.exports = { renderAt, transcript, chapterMetadata, DURATION, CHAPTERS: CH, W, H, ANSWERS, NOTES, REPLIES, RULED_OUT_38, SEARCH_38 };
 else Object.assign(window, { renderAt, transcript, chapterMetadata, DURATION, CHAPTERS: CH });

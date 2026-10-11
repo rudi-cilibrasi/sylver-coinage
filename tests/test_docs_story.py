@@ -60,7 +60,7 @@ for (frame = 0; frame <= frames; frame++) {
 console.log(JSON.stringify({
   duration: film.DURATION, frames,
   chapters: film.CHAPTERS.map((c) => ({ name: c.name, start: c.start, end: c.end, dur: c.dur, heading: c.brow, label: c.label || null })),
-  answers: film.ANSWERS, ruledOut: film.RULED_OUT_38, texts: [...texts], bad: bad.slice(0, 20), stackDepth: stack.length, captions,
+  answers: film.ANSWERS, ruledOut: film.RULED_OUT_38, search38: film.SEARCH_38, texts: [...texts], bad: bad.slice(0, 20), stackDepth: stack.length, captions,
   notes: film.NOTES.map((n) => n[1]), replies: film.REPLIES, transcript: film.transcript(), chapterMetadata: film.chapterMetadata(),
   years: film.CHAPTERS.map((c) => c.year),
 }));
@@ -158,6 +158,15 @@ class StoryFilmTests(unittest.TestCase):
         self.assertGreaterEqual(len(letter), 2)
         for quote in letter:
             self.assertIn(quote, log, quote)
+
+    def test_reply_38_tally_matches_the_scan_logs(self):
+        from tests.test_docs_mint import recorded_r38_status
+        moves, status = recorded_r38_status()
+        certified = {int(m) for m in json.loads(R38.read_text())['refuted_answers_to_38']}
+        self.assertEqual(self.report['search38'], {'ruledOut': len(set(status) - certified), 'open': len(moves) - len(status)})
+        self.assertIn(f"search has ruled out {self.report['search38']['ruledOut']} more", self.drawn)
+        tally = self.report['search38']
+        self.assertIn(f"+ {tally['ruledOut']} more ruled out by search  ·  {tally['open']} still open", self.report['texts'])
 
     def test_key_facts_are_on_screen(self):
         for fact in ('1884', 'a·b − a − b', 'Winning Ways', 'GEORGE SICHERMAN', 'THOMAS BLOK', '403,200', '381,091',
