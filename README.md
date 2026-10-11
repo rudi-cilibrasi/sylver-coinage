@@ -38,6 +38,8 @@ For the week of September 21–27, see the [progress summary](docs/progress/2026
   - So 24, 28, 40, 44 and 56 do not answer the reply 38. {16,28,38} is N,
     which settles the question the Y record left open.
   - No answer to 38 is known yet. It remains the lowest unanswered reply.
+    By October 11 search had ruled out 51 more candidates, leaving 36 open;
+    72 answers 38 exactly when its seven open long children are all N.
   - I and B24 were already on Sicherman's
     [list of P-positions](https://sicherman.net/sylver/ppos.html) (last
     updated September 28), so these certificates confirm them independently. B28 and

@@ -1,0 +1,1 @@
+{"chunk": [63, 49, 71, 35, 53, 43, 79, 51, 57, 59, 61, 65, 67, 69, 87, 73, 75, 77, 81, 83, 85, 89, 91, 93, 95, 97, 99, 101, 103, 105], "classified": [63, 49], "P": null, "returncode": 0, "stderr_tail": "kunz_solver: sweep stopped during move=71 (memo holds 700013955 states)\n", "seconds": 1963.9}

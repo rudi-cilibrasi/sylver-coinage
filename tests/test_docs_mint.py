@@ -58,6 +58,14 @@ def recorded_r38_status():
         m = re.match(r'r=16-38 e=\s*(\d+) (\S+)\s+reply=(\S+)', line)
         if m and m[2] == 'resolved':
             status.setdefault(int(m[1]), int(m[3]))
+    for path in sorted(SCAN.glob('deep_16-38-*.jsonl')):      # deeper sweeps of single long candidates
+        rest = path.stem.split('-')[2:]
+        if len(rest) != 1:
+            continue
+        for line in path.read_text().splitlines():
+            row = json.loads(line)
+            if row.get('P'):
+                status[int(rest[0])] = int(row['P'])
     return moves, status
 
 # Export the Mint's data, and solve the small finite destinations of its

@@ -105,7 +105,7 @@ discovery output, not certified.
 | --- | ---: | ---: | ---: |
 | odd | 35 | 32 | 3 |
 | even, short child | 17 | 13 | 4 |
-| even, long child | 46 | 15 | 31 |
+| even, long child | 46 | 17 | 29 |
 
 - **Odd.** The ledger's scan showed the 24 smallest odd candidates are N.
   One more shared-memo sweep here showed that 71, 69, 77 and 79 are N, then
@@ -141,13 +141,19 @@ discovery output, not certified.
       from 87 on for 84, and from about 150 on for 68.
     - Every short child of 72 is N, so a refutation of 72 would need a long
       P-position, which the Quiet End Theorem cannot certify.
+    - By October 11 every even obligation of {16,38,72} had been run: 170 is
+      won by 71 (`scan/even_72.*`), and a round-robin hunt over its open long
+      children found that 132 is won by 75 (`scan/hunt.*`). The open ones are
+      68, 78, 84, 100, 106, 116 and 154. So, by search, 72 answers 38 exactly
+      when all seven of them are N; one P among them refutes it.
     - 88's obligation 72 leads back to {16,38,72}.
   - 104 and 120 have odd obligations that the sweeps could not finish.
 - **Long even.** A long candidate is N as soon as one winning reply is
   found.
   - Sweeps found a winning odd reply for 2 (3), 10 (9), 18 (5), 26 (97),
     30 (271), 34 (53), 36 (123), 50 (79), 58 (11), 78 (27), 94 (43),
-    98 (31), 100 (41) and 174 (45).
+    98 (31), 100 (41) and 174 (45), and the deeper pass below found 52 (143)
+    and 110 (59).
   - 14 moves to E by 8.
   - 31 stayed open within the sweeps' state caps: 42, 46, 52, 62, 66, 68,
     74, 82, 84, 90, 106, 110, 116, 122, 126, 132, 138 and 142, and, from the
@@ -162,6 +168,13 @@ discovery output, not certified.
     for 234 and 250, and gave up on a candidate after four batches stopped.
     27 of the 31 open candidates had only the 150,000,000-state cap (see the
     scan README).
+  - A deeper pass on October 10 and 11 (`scan/deep_long.*`) took those 27 in
+    turn, resuming after the replies the map had classified and retrying the
+    ones it skipped, with a cap of 700,000,000 states per batch and an hour
+    per candidate. By 06:30 on October 11 it had found 52 won by 143 and 110
+    won by 59; 62, 66, 68, 74, 82, 84, 90, 106, 116, 122, 126, 132, 138, 142
+    and 148 ran out of time (106 without finishing a batch), and the rest of
+    the queue was still running. 29 long candidates are open.
 
 ## Reproduction
 
