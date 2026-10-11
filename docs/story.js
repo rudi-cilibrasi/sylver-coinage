@@ -532,7 +532,7 @@ const ANSWERS = { 2: 3, 4: 6, 6: 7, 8: 14, 10: 9, 12: 14, 14: 8, 18: 5, 20: 34, 
 const WHEN = { 26: 19, 28: 23, 30: 25.5, 34: 28, 36: 30 };
 const RULED_OUT_38 = [4, 6, 8, 12, 14, 22, 24, 28, 40, 44, 56];   // by certified P-positions
 // The rest of the reply-38 record (sylver/campaigns/r38-2026-10-09): ruled out by search, and still open
-const SEARCH_38 = { ruledOut: 51, open: 36 };
+const SEARCH_38 = { ruledOut: 52, open: 35 };
 // [seconds into the chapter, the dated note shown]; the tests check the dates against the README
 const NOTES = [
   [10.5, "July: replies 2 to 24 answered, each answer certified"],

@@ -1793,7 +1793,7 @@ These are discovery results, not certified.
     and 125, and 31 long candidates.
   - No answer to 38 is known.
 
-### Attempt 40 — two more long candidates fall, and 72 comes down to six children (2026-10-11)
+### Attempt 40 — three more long candidates fall, and 72 comes down to six children (2026-10-11)
 
 Overnight search for an answer to 38, recorded in
 [the reply-38 record](campaigns/r38-2026-10-09/RESULT.md#the-search-for-an-answer-to-38)
@@ -1802,15 +1802,14 @@ Overnight search for an answer to 38, recorded in
 - **A deeper pass over the shallow long candidates.** The 27 long
   candidates the map had searched with 150-million-state batches were queued
   one at a time, with 700-million-state batches and an hour each.
-  - By 06:30 on October 11, 17 had had their hour. 52 is won by 143, and 110
-    by 59. Fifteen ran out of time.
-  - 154 was running, and 158 to 218 had not started.
+  - The pass finished on October 11 at 15:15. 52 is won by 143, 110 by 59
+    and 218 by 49. The other 24 ran out of time.
 - **72.** Every even obligation of {16,38,72} has now been run:
   {16,38,72,170} is won by 71. A witness hunt found {16,38,72,132} won by 75
   and {16,38,72,84} won by 139. Six long children stay open: 68, 78, 100,
   106, 116 and 154. By search, 72 answers 38 exactly when all six are N.
-- **Tally.** Of {16,38}'s 98 obligations, 62 are N (11 certified, 51 by
-  search) and 36 are open. No answer to 38 is known.
+- **Tally.** Of {16,38}'s 98 obligations, 63 are N (11 certified, 52 by
+  search) and 35 are open. No answer to 38 is known.
 
 ### Sources
 
