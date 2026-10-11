@@ -885,7 +885,7 @@ const FRONTIER = [
   {"m": 196, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
   {"m": 202, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
   {"m": 212, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
-  {"m": 218, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
+  {"m": 218, "k": "long", "s": "search", "why": "{16,38,218} is won by 49 (search, a deeper sweep)"},
   {"m": 234, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
   {"m": 250, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
 ];

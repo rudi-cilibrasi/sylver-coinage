@@ -66,9 +66,9 @@ Notes:
   the fourteen rows from 148 to 250. The log ends with the map's summary,
   which counts all 63 even obligations of {16,38}; only the 46 long ones
   were mapped. The map has finished.
-- `deep_long.*` (taken on October 11 at 06:30) and `hunt.*` (at about 06:55) are snapshots, while both were still
-  running; `deep_16-38-<E>.jsonl` is included for each candidate whose hour had ended (106 finished no
-  batch, so it has no file). `status.py` counts a batch with a P reply as a witness. `even_72.*`
+- `deep_long.*` are complete: the pass finished on October 11 at 15:15. `hunt.*` is a snapshot of a
+  run still going (taken at about 15:15). `deep_16-38-<E>.jsonl` is included for every candidate
+  (106 finished no batch, so it has no file). `status.py` counts a batch with a P reply as a witness. `even_72.*`
   include the resumed resolver's last obligation, 170 (`even_resolver.py 72 --threads 2
   --max-states 300000000`). `hunt.py` logs a witness found through the partner rule only in
   `hunt.log` (as "WITNESS (partner)"), not as a P row in `hunt.jsonl`; none occurred here.
