@@ -87,7 +87,7 @@ Notes:
     (both found in review, after the rows here; none of the rows has such a witness).
 - `deep_witness2.py` is `deep_witness.py` with `--exclude` and streamed rows: a sweep stopped
   by `timeout` records the rows of its batch in progress, with `returncode` "timeout" (234's
-  last batch). `deep_long2.sh` set K to the map's `odd_tried`, which counts only classified
+  and 250's last batches). `deep_long2.sh` set K to the map's `odd_tried`, which counts only classified
   replies, so 42 ran 217 and 219 again and 46 ran 139, which the map had classified;
   `deep_long2b.sh` adds the skipped count. Two lines of `deep_long2.log` were written by hand:
   the first, when the pass started, and the one saying the driver was replaced. As committed,
