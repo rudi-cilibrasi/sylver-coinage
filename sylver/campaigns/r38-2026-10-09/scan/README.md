@@ -67,8 +67,9 @@ Notes:
   the fourteen rows from 148 to 250. The log ends with the map's summary,
   which counts all 63 even obligations of {16,38}; only the 46 long ones
   were mapped. The map has finished.
-- `deep_long.*` are complete: the pass finished on October 11 at 15:15. `hunt.*` run to October 12
-  at 04:52, when the hunt was stopped. `deep_16-38-<E>.jsonl` is included for every candidate
+- `deep_long.*` are complete: the pass finished on October 11 at 15:15. `hunt.*` end on October 12
+  at 04:45 (the last row is from 04:26); the hunt was stopped at 04:52, before it finished
+  another reply. `deep_16-38-<E>.jsonl` is included for every candidate
   that finished a batch (all but 106, which has no file). `status.py` counts a batch with a P reply as a witness. `even_72.*`
   include the resumed resolver's last obligation, 170 (`even_resolver.py 72 --threads 2
   --max-states 300000000`). Until October 12 `hunt.py` logged a witness found through the
@@ -80,12 +81,19 @@ Notes:
     restarts (the restart at 04:29 had queued 132 again; it was stopped before running any of
     it);
   - with `--retry-capped`, retries the replies it capped, at a higher cap, each row recording
-    its cap. No row here comes from that mode.
+    its cap. No row here comes from that mode;
+  - logs a partner witness even when it is not queued, and no longer names its timer `start`,
+    which clashed with the function and would have crashed a run that added a child midway
+    (both found in review, after the rows here; none of the rows has such a witness).
 - `deep_witness2.py` is `deep_witness.py` with `--exclude` and streamed rows: a sweep stopped
   by `timeout` records the rows of its batch in progress, with `returncode` "timeout" (234's
   last batch). `deep_long2.sh` set K to the map's `odd_tried`, which counts only classified
-  replies, so 42 and 46 ran again up to four replies the map had classified; `deep_long2b.sh`
-  adds the skipped count.
+  replies, so 42 ran 217 and 219 again and 46 ran 139, which the map had classified;
+  `deep_long2b.sh` adds the skipped count. Two lines of `deep_long2.log` were written by hand:
+  the first, when the pass started, and the one saying the driver was replaced. As committed,
+  `deep_witness2.py` also checks for a signal before each read and describes `--exclude`
+  (classified or given up on) accurately. These runs used the earlier version; each of their
+  signals came during a read, where the two behave alike.
 - `odd_queue.out` and `odd_retry.out` hold only completed rows: a candidate
   stopped at `--max-states` prints only its "stopped" line, in its `.err`
   transcript, so `odd_retry.out` is empty. The `rc=` in the two `.log` files

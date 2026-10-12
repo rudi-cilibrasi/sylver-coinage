@@ -3,7 +3,7 @@
 Usage: deep_witness.py [--after N | --done-count K] [--also W,W,...] [--exclude W,W,...] [--wmax M] [--batch B]
                        [--threads T] [--max-states S] [--max-skips K] GENERATOR...
 Sweeps the odd w > N (and the --also list, replies an earlier sweep skipped) in
-batches sharing one memo, leaving out the --exclude list (replies an earlier sweep classified), stopping at the first P. A batch that hits the state cap
+batches sharing one memo, leaving out the --exclude list (replies an earlier sweep classified or gave up on), stopping at the first P. A batch that hits the state cap
 skips the reply in progress and requeues the rest. Appends one JSON line per batch
 to deep_<C>.jsonl and prints the result. A SIGTERM (as from timeout) stops the sweep after
 recording the replies the batch in progress had classified, with returncode "timeout".
@@ -22,7 +22,7 @@ ap.add_argument('--done-count', type=int, default=0,
                 help="skip the first K replies of a resolver's order (odd w <= 401 by Frobenius number); "
                      "--also brings back the ones it skipped")
 ap.add_argument('--also', default='')
-ap.add_argument('--exclude', default='', help='replies already classified (N) by an earlier sweep')
+ap.add_argument('--exclude', default='', help='replies an earlier sweep classified or gave up on')
 ap.add_argument('--wmax', type=int, default=801)
 ap.add_argument('--batch', type=int, default=30)
 ap.add_argument('--threads', type=int, default=4)
@@ -67,6 +67,8 @@ def run_batch(chunk):
         proc = subprocess.Popen(argv, stdout=subprocess.PIPE, stderr=err, text=True)
         reading = True
         try:
+            if stopping:                # a signal that came before the read began
+                raise Stop
             for line in proc.stdout:
                 if line.startswith('move='):
                     rows.append(line.split())
@@ -114,4 +116,5 @@ while queue:
             print('GAVE UP after', n, 'classified; skipped', skipped, flush=True)
             break
 else:
-    print('NO WITNESS up to', a.wmax, 'classified', n, 'skipped', skipped, flush=True)
+    print('NO WITNESS among the replies swept (up to', a.wmax, 'less --exclude); classified', n, 'skipped', skipped,
+          flush=True)

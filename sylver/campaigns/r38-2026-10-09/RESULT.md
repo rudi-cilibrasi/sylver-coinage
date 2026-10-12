@@ -185,10 +185,11 @@ discovery output, not certified.
   - A second deeper pass on October 12 (`scan/deep_long2.*`) took first the
     four long candidates the first pass had not covered, 42, 46, 234 and 250:
     two hours each at the same cap per batch, leaving out the replies already
-    classified. 42 is won by 233 (found in 26 minutes) and 46 by 147 (in 12
-    minutes). 234 and 250 ran out of time: they classified five and four
-    replies (all N), and six replies of each needed more than 700,000,000
-    states. 26 long candidates are open; the pass has not yet returned to the
+    classified (but for three of the map's; see the scan README). 42 is won by
+    233 (found in 26 minutes) and 46 by 147 (in 12 minutes). 234 and 250 ran
+    out of time: they classified five and four replies (all N), and six
+    replies of each were skipped when their batch hit the 700,000,000-state
+    cap. 26 long candidates are open; the pass has not yet returned to the
     other 24.
 
 ## Reproduction

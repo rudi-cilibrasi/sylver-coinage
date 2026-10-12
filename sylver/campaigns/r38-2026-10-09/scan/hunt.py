@@ -102,31 +102,32 @@ while any(s['witness'] is None and s['queue'] for s in state.values()):
         if s['witness'] is not None or not s['queue']:
             continue
         w = s['queue'].pop(0)
-        start = time.monotonic()
+        t0 = time.monotonic()
         proc = subprocess.run([str(HERE / 'kunz'), '--threads', '6', '--stop-at-p', '--max-states', str(CAP),
                                '--odd-list', str(w), *map(str, c)], capture_output=True, text=True)
         rows = [l.split() for l in proc.stdout.splitlines() if l.startswith('move=')]
         rec = {'child': list(c), 'w': w, 'outcome': rows[0][1] if rows else None,
                'winning_move': rows[0][2].split('=')[1] if rows else None,
                'states': int(rows[0][4].split('=')[1]) if rows else None,
-               'returncode': proc.returncode, 'seconds': round(time.monotonic() - start, 1), 'cap': CAP}
+               'returncode': proc.returncode, 'seconds': round(time.monotonic() - t0, 1), 'cap': CAP}
         log(rec)
         if rec['outcome'] == 'P':
             s['witness'] = w
             print('WITNESS', c, w, flush=True)
         elif rec['outcome'] == 'N' and rec['winning_move'] and rec['winning_move'] != 'none':
             v = int(rec['winning_move'])
-            if v % 2 and v in s['queue']:
-                if legal(position((*c, v)), w):
+            if v % 2 and not legal(position((*c, v)), w):
+                # C+v = C+w+v as semigroups, and C+w+v is P: a witness, whether or not v is queued
+                s['witness'] = v
+                if v in s['queue']:
                     s['queue'].remove(v)
-                    log({'child': list(c), 'w': v, 'outcome': 'N', 'winning_move': str(w), 'states': None,
-                         'via': f'partner of {w}'})
-                else:                   # C+v = C+w+v as semigroups, and C+w+v is P
-                    s['witness'] = v
-                    s['queue'].remove(v)
-                    log({'child': list(c), 'w': v, 'outcome': 'P', 'winning_move': None, 'states': None,
-                         'via': f'partner of {w}: {w} is generated in C+{v}, so C+{v} = C+{w}+{v}'})
-                    print('WITNESS (partner)', c, v, flush=True)
+                log({'child': list(c), 'w': v, 'outcome': 'P', 'winning_move': None, 'states': None,
+                     'via': f'partner of {w}: {w} is generated in C+{v}, so C+{v} = C+{w}+{v}'})
+                print('WITNESS (partner)', c, v, flush=True)
+            elif v % 2 and v in s['queue']:     # C+v+w is P, so C+v is N with winning move w
+                s['queue'].remove(v)
+                log({'child': list(c), 'w': v, 'outcome': 'N', 'winning_move': str(w), 'states': None,
+                     'via': f'partner of {w}'})
         elif rec['outcome'] is None and not RETRY:
             s['queue'].append(w)   # hit the cap: retry last
 for c, s in state.items():
