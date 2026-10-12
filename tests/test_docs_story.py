@@ -168,22 +168,46 @@ class StoryFilmTests(unittest.TestCase):
         tally = self.report['search38']
         self.assertIn(f"+ {tally['ruledOut']} more ruled out by search  ·  {tally['open']} still open", self.report['texts'])
 
-    def test_social_preview_images_exist(self):
-        # A link shared in chat or on social media shows og:image; a missing file breaks the card silently.
-        site = 'https://rudi-cilibrasi.github.io/sylver-coinage/'
-        for page in ('story.html', 'mint.html', 'index.html'):
-            html = (ROOT / 'docs' / page).read_text()
-            image = re.search(r'<meta property="og:image" content="([^"]+)">', html)
-            self.assertIsNotNone(image, page)
-            self.assertTrue(image[1].startswith(site), page)
-            self.assertTrue((ROOT / 'docs' / image[1][len(site):]).is_file(), page)
-            self.assertIn(f'<meta property="og:url" content="{site}{page}">', html)
-
     def test_key_facts_are_on_screen(self):
         for fact in ('1884', 'a·b − a − b', 'Winning Ways', 'GEORGE SICHERMAN', 'THOMAS BLOK', '403,200', '381,091',
                      '49,337', '633,734,956', '{16, 26, 54, 60, 62}', '{16, 28, 36, 38, 58}', 'OEIS A248380',
                      'Still open'):
             self.assertIn(fact, self.drawn, fact)
+
+
+def jpeg_size(data):
+    """(width, height) from a JPEG's start-of-frame segment."""
+    assert data[:2] == b'\xff\xd8', 'not a JPEG'
+    i = 2
+    while i + 9 <= len(data) and data[i] == 0xFF:
+        marker, length = data[i + 1], int.from_bytes(data[i + 2:i + 4], 'big')
+        if marker in (0xC0, 0xC1, 0xC2):
+            return int.from_bytes(data[i + 7:i + 9], 'big'), int.from_bytes(data[i + 5:i + 7], 'big')
+        i += 2 + length
+    raise ValueError('no start-of-frame segment')
+
+
+class SocialCardTests(unittest.TestCase):
+    # A link shared in chat or on social media shows the page's card; a missing
+    # tag or image, or a size that does not match the file, breaks it silently.
+    SITE = 'https://rudi-cilibrasi.github.io/sylver-coinage/'
+
+    def test_each_page_has_a_complete_card(self):
+        for page, url in (('story.html', 'story.html'), ('mint.html', 'mint.html'), ('index.html', '')):
+            html = (ROOT / 'docs' / page).read_text()
+            tags = re.findall(r'<meta (?:property|name)="([^"]+)" content="([^"]*)">', html)
+            meta = dict(tags)
+            self.assertEqual(len(meta), len(tags), (page, 'a repeated tag'))
+            for tag in ('description', 'og:type', 'og:title', 'og:description', 'og:image:alt', 'twitter:card',
+                        'twitter:image:alt'):
+                self.assertTrue(meta.get(tag), (page, tag))
+            self.assertEqual(meta['twitter:card'], 'summary_large_image', page)
+            self.assertEqual(meta['og:url'], self.SITE + url, page)
+            self.assertTrue(meta['og:image'].startswith(self.SITE), page)
+            image = ROOT / 'docs' / meta['og:image'][len(self.SITE):]
+            self.assertTrue(image.is_file(), page)
+            self.assertEqual(jpeg_size(image.read_bytes()), (int(meta['og:image:width']), int(meta['og:image:height'])),
+                             page)
 
 
 if __name__ == '__main__':
