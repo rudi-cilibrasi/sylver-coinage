@@ -194,21 +194,21 @@ class SocialCardTests(unittest.TestCase):
 
     def test_each_page_has_a_complete_card(self):
         for page, url in (('story.html', 'story.html'), ('mint.html', 'mint.html'), ('index.html', '')):
-            html = (ROOT / 'docs' / page).read_text()
-            tags = re.findall(r'<meta (?:property|name)="([^"]+)" content="([^"]*)">', html)
-            meta = dict(tags)
-            self.assertEqual(len(meta), len(tags), (page, 'a repeated tag'))
-            for tag in ('description', 'og:type', 'og:title', 'og:description', 'og:image:alt', 'twitter:card',
-                        'twitter:image:alt'):
-                self.assertTrue(meta.get(tag), (page, tag))
-            self.assertEqual(meta['twitter:card'], 'summary_large_image', page)
-            self.assertEqual(meta['og:url'], self.SITE + url, page)
-            self.assertTrue(meta['og:image'].startswith(self.SITE), page)
-            image = ROOT / 'docs' / meta['og:image'][len(self.SITE):]
-            self.assertTrue(image.is_file(), page)
-            self.assertEqual(jpeg_size(image.read_bytes()), (int(meta['og:image:width']), int(meta['og:image:height'])),
-                             page)
-
+            with self.subTest(page=page):
+                html = (ROOT / 'docs' / page).read_text()
+                tags = re.findall(r'<meta (?:property|name)="([^"]+)" content="([^"]*)">', html)
+                meta = dict(tags)
+                self.assertEqual(len(meta), len(tags), 'a repeated tag')
+                for tag in ('description', 'og:type', 'og:title', 'og:description', 'og:url', 'og:image',
+                            'og:image:width', 'og:image:height', 'og:image:alt', 'twitter:card', 'twitter:image:alt'):
+                    self.assertTrue(meta.get(tag), tag)
+                self.assertEqual(meta['twitter:card'], 'summary_large_image')
+                self.assertEqual(meta['twitter:image:alt'], meta['og:image:alt'])
+                self.assertEqual(meta['og:url'], self.SITE + url)
+                self.assertTrue(meta['og:image'].startswith(self.SITE))
+                image = ROOT / 'docs' / meta['og:image'][len(self.SITE):]
+                self.assertTrue(image.is_file())
+                self.assertEqual(jpeg_size(image.read_bytes()), (int(meta['og:image:width']), int(meta['og:image:height'])))
 
 if __name__ == '__main__':
     unittest.main()
