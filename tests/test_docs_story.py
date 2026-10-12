@@ -175,5 +175,40 @@ class StoryFilmTests(unittest.TestCase):
             self.assertIn(fact, self.drawn, fact)
 
 
+def jpeg_size(data):
+    """(width, height) from a JPEG's start-of-frame segment."""
+    assert data[:2] == b'\xff\xd8', 'not a JPEG'
+    i = 2
+    while i + 9 <= len(data) and data[i] == 0xFF:
+        marker, length = data[i + 1], int.from_bytes(data[i + 2:i + 4], 'big')
+        if marker in (0xC0, 0xC1, 0xC2):
+            return int.from_bytes(data[i + 7:i + 9], 'big'), int.from_bytes(data[i + 5:i + 7], 'big')
+        i += 2 + length
+    raise ValueError('no start-of-frame segment')
+
+
+class SocialCardTests(unittest.TestCase):
+    # A link shared in chat or on social media shows the page's card; a missing
+    # tag or image, or a size that does not match the file, breaks it silently.
+    SITE = 'https://rudi-cilibrasi.github.io/sylver-coinage/'
+
+    def test_each_page_has_a_complete_card(self):
+        for page, url in (('story.html', 'story.html'), ('mint.html', 'mint.html'), ('index.html', '')):
+            with self.subTest(page=page):
+                html = (ROOT / 'docs' / page).read_text()
+                tags = re.findall(r'<meta (?:property|name)="([^"]+)" content="([^"]*)">', html)
+                meta = dict(tags)
+                self.assertEqual(len(meta), len(tags), 'a repeated tag')
+                for tag in ('description', 'og:type', 'og:title', 'og:description', 'og:url', 'og:image',
+                            'og:image:width', 'og:image:height', 'og:image:alt', 'twitter:card', 'twitter:image:alt'):
+                    self.assertTrue(meta.get(tag), tag)
+                self.assertEqual(meta['twitter:card'], 'summary_large_image')
+                self.assertEqual(meta['twitter:image:alt'], meta['og:image:alt'])
+                self.assertEqual(meta['og:url'], self.SITE + url)
+                self.assertTrue(meta['og:image'].startswith(self.SITE))
+                image = ROOT / 'docs' / meta['og:image'][len(self.SITE):]
+                self.assertTrue(image.is_file())
+                self.assertEqual(jpeg_size(image.read_bytes()), (int(meta['og:image:width']), int(meta['og:image:height'])))
+
 if __name__ == '__main__':
     unittest.main()

@@ -1,0 +1,45 @@
+<!-- The Sylver Mint's social-preview card, docs/media/mint-og.jpg: node docs/render-cards.mjs renders it at 1200x630. -->
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<title>The Sylver Mint: social-preview card</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=IBM+Plex+Mono:wght@500;600&family=Spectral:ital,wght@0,400;1,400&display=swap">
+<style>
+  html, body { margin: 0; width: 1200px; height: 630px; background: #121821; color: #e9edf2; overflow: hidden; }
+  .card { display: grid; grid-template-columns: 560px 1fr; gap: 40px; padding: 64px 64px 0; }
+  .mark { font: 600 18px "Cinzel", serif; letter-spacing: .22em; color: #dcb46c; }
+  h1 { font: 700 72px/1.02 "Cinzel", serif; letter-spacing: .04em; margin: 14px 0 22px; }
+  p { font: 400 26px/1.45 "Spectral", serif; color: #9aa5b3; margin: 0 0 14px; max-width: 30ch; }
+  .url { font: 500 17px "IBM Plex Mono", monospace; color: #e09a63; margin-top: 30px; white-space: nowrap; }
+  .board { display: grid; grid-template-columns: repeat(6, 76px); gap: 10px; align-content: start; margin-top: 18px; }
+  .t { height: 64px; border-radius: 10px; display: grid; place-items: center; font: 600 24px "IBM Plex Mono", monospace; }
+  .u { border: 2px solid #e09a63; background: #3a2a1f; color: #e9edf2; }
+  .p { background: #232c3a; color: #6d7887; }
+  .c { border-radius: 50%; background: radial-gradient(circle at 35% 30%, #f6f8fa, #cfd5dd 55%, #8a94a2); color: #1b2230; }
+  .o { border: 2px solid #e57a63; background: #3b231e; }
+  .tag { font: 500 12px "IBM Plex Mono", monospace; color: #9aa5b3; display: block; margin-top: -6px; }
+  .t span { display: block; line-height: 1.1; text-align: center; }
+</style></head>
+<body><div class="card">
+  <div>
+    <div class="mark">ELEVEN SMALL GAMES</div>
+    <h1>The Sylver Mint</h1>
+    <p>Learn the history of Sylver Coinage by playing it: Sylvester's coins, the Quiet End Theorem, Sicherman's long positions, Blok's mirror and the open question of 16.</p>
+    <div class="url">rudi-cilibrasi.github.io/sylver-coinage/mint.html</div>
+  </div>
+  <div class="board" id="b"></div>
+</div>
+<script>
+  // Blok's mirror on {8, 12}, after the moves 9 and 11: unpaid amounts with their mates
+  const mate = (x) => x === 1 ? null : x === 2 || x === 3 ? 5 - x : x === 4 || x === 6 ? 10 - x : x % 2 ? (x % 4 === 1 ? x + 2 : x - 2) : (x % 8 === 2 ? x + 4 : x - 4);
+  const named = [8, 9, 11, 12], paid = new Set([8, 9, 11, 12, 16, 17, 18, 19, 20, 21, 22, 23, 24]);
+  const b = document.getElementById("b");
+  for (let n = 1; n <= 24; n++) {
+    const d = document.createElement("div");
+    const unpaid = !paid.has(n);
+    d.className = "t " + (named.includes(n) ? "c" : n === 1 ? "u o" : unpaid ? "u" : "p");
+    d.innerHTML = `<span>${n}</span>` + (unpaid && n > 1 ? `<span class="tag">↔${mate(n)}</span>` : "");
+    b.appendChild(d);
+  }
+</script>
+</body></html>
