@@ -787,7 +787,7 @@ function lessonAssay(root) {
 }
 
 // ---------------------------------------------------------------- lesson 11: the frontier
-// Every obligation of {16, 38}: k is the kind of move, s its status in the reply-38 record as of October 11, 2026
+// Every obligation of {16, 38}: k is the kind of move, s its status in the reply-38 record as of October 12, 2026
 // (sylver/campaigns/r38-2026-10-09); tests/test_docs_mint.py derives the same statuses from its scan logs.
 const FRONTIER = [
   {"m": 2, "k": "long", "s": "search", "why": "{16,38,2} is won by 3 (search)"},
@@ -824,10 +824,10 @@ const FRONTIER = [
   {"m": 39, "k": "odd", "s": "search", "why": "{16,38,39} has a winning reply (the ledger's scan)"},
   {"m": 40, "k": "short", "s": "certified", "why": "{16,38,40} moves by 28 to B28={16,28,38,40}, a certified losing position"},
   {"m": 41, "k": "odd", "s": "search", "why": "{16,38,41} has a winning reply (the ledger's scan)"},
-  {"m": 42, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
+  {"m": 42, "k": "long", "s": "search", "why": "{16,38,42} is won by 233 (search, a second deeper sweep)"},
   {"m": 44, "k": "short", "s": "certified", "why": "{16,38,44} moves by 24 to B24={16,24,38,44}, a certified losing position"},
   {"m": 45, "k": "odd", "s": "search", "why": "{16,38,45} has a winning reply (the ledger's scan)"},
-  {"m": 46, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
+  {"m": 46, "k": "long", "s": "search", "why": "{16,38,46} is won by 147 (search, a second deeper sweep)"},
   {"m": 47, "k": "odd", "s": "search", "why": "{16,38,47} has a winning reply (the ledger's scan)"},
   {"m": 49, "k": "odd", "s": "search", "why": "{16,38,49} has a winning reply (the ledger's scan)"},
   {"m": 50, "k": "long", "s": "search", "why": "{16,38,50} is won by 79 (search)"},
@@ -918,7 +918,7 @@ function lessonFrontier(root) {
     story("Every even reply to 16 up to 36 has an answer. The reply 38 does not, yet. Because {16, 38} is short, any answer must be one of these 98 moves.",
           `Certified losing positions rule out ${counts("certified")} of them, and search has ruled out ${counts("search")} more (struck through). The short candidates 72, 88, 104 and 120 form a <b>ladder</b> with 56 and 136: each rung leads back to the rungs below it, so at most one can be the answer.`),
     box,
-    el("p", { class: "note" }, "Status as of October 11, 2026, from the reply-38 record (sylver/campaigns/r38-2026-10-09 at github.com/rudi-cilibrasi/sylver-coinage). Search results are discovery output, not certificates."),
+    el("p", { class: "note" }, "Status as of October 12, 2026, from the reply-38 record (sylver/campaigns/r38-2026-10-09 at github.com/rudi-cilibrasi/sylver-coinage). Search results are discovery output, not certificates."),
   );
 }
 

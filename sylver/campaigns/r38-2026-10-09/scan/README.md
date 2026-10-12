@@ -23,7 +23,8 @@ The certificate's audit does not use this file.
 | each of the seven open odd candidates alone (October 10) | `./odd_queue.sh`: `kunz --threads 8 --stop-at-p --max-states 1700000000 --memo-stats --odd-list M 16 38` per candidate | `odd_queue.*`, `odd_queue_<M>.err` |
 | 109, 117 and 125 again, alone at 2.1 billion states | `./odd_retry.sh` (`--max-states 2100000000`) | `odd_retry.*`, `odd_retry_<M>.err` |
 | a deeper pass over the 27 long candidates the map searched with 150M batches (October 10–11) | `./deep_long.sh`: `deep_witness.py --done-count K --also SKIPPED --threads 4 --max-states 700000000 --max-skips 8 16 38 E`, an hour each, with K the map's `odd_tried` (so one to three replies the map had classified are run again) | `deep_long.*`, `deep_16-38-<E>.jsonl` |
-| 72's open long children: a round-robin witness hunt, each reply alone with the partner rule | `python hunt.py 1200000000` on October 10 from 03:55 to 07:32, then `python hunt.py 1000000000` from 13:21 (children and starts in the script and `hunt_children.json`) | `hunt.*` |
+| 72's open long children: a round-robin witness hunt, each reply alone with the partner rule | `python hunt.py 1200000000` on October 10 from 03:55 to 07:32, then `python hunt.py 1000000000` from 13:21, restarted on October 12 at 04:29 and 04:45 and stopped at 04:52 (children and starts in the script and `hunt_children.json`) | `hunt.*` |
+| a second deeper pass, first over the four long candidates the first pass had not covered (October 12) | `./deep_long2.sh`, stopped after it began 46, then `./deep_long2b.sh`: `deep_witness2.py --done-count K --also SKIPPED --exclude DONE --threads 4 --max-states 700000000 --max-skips 12 16 38 E`, two hours each, with DONE the replies the first pass classified or gave up on | `deep_long2.*`, `deep_16-38-<E>.jsonl` (E = 42, 46, 234, 250) |
 | even obligations of a candidate a | `python even_resolver.py A` | `even_A.jsonl` (A = 8, 24, 40, 56, 72, 88) |
 | even obligations of any short position | `python resolve_position.py G...` (`--only-long` skips short children) | `resolve_<G>.jsonl` |
 | even replies into short P-positions | `python pair_search.py G...` | `pair_*.log` |
@@ -66,12 +67,25 @@ Notes:
   the fourteen rows from 148 to 250. The log ends with the map's summary,
   which counts all 63 even obligations of {16,38}; only the 46 long ones
   were mapped. The map has finished.
-- `deep_long.*` are complete: the pass finished on October 11 at 15:15. `hunt.*` is a snapshot of a
-  run still going (taken at about 15:15). `deep_16-38-<E>.jsonl` is included for every candidate
+- `deep_long.*` are complete: the pass finished on October 11 at 15:15. `hunt.*` run to October 12
+  at 04:52, when the hunt was stopped. `deep_16-38-<E>.jsonl` is included for every candidate
   that finished a batch (all but 106, which has no file). `status.py` counts a batch with a P reply as a witness. `even_72.*`
   include the resumed resolver's last obligation, 170 (`even_resolver.py 72 --threads 2
-  --max-states 300000000`). `hunt.py` logs a witness found through the partner rule only in
-  `hunt.log` (as "WITNESS (partner)"), not as a P row in `hunt.jsonl`; none occurred here.
+  --max-states 300000000`). Until October 12 `hunt.py` logged a witness found through the
+  partner rule only in `hunt.log` (as "WITNESS (partner)"), not as a P row in `hunt.jsonl`; none
+  occurred.
+- `hunt.py` as committed (October 12):
+  - logs a partner-rule witness as a P row with `via`;
+  - gives the children it reads from `hunt_children.json` their recorded witnesses when it
+    restarts (the restart at 04:29 had queued 132 again; it was stopped before running any of
+    it);
+  - with `--retry-capped`, retries the replies it capped, at a higher cap, each row recording
+    its cap. No row here comes from that mode.
+- `deep_witness2.py` is `deep_witness.py` with `--exclude` and streamed rows: a sweep stopped
+  by `timeout` records the rows of its batch in progress, with `returncode` "timeout" (234's
+  last batch). `deep_long2.sh` set K to the map's `odd_tried`, which counts only classified
+  replies, so 42 and 46 ran again up to four replies the map had classified; `deep_long2b.sh`
+  adds the skipped count.
 - `odd_queue.out` and `odd_retry.out` hold only completed rows: a candidate
   stopped at `--max-states` prints only its "stopped" line, in its `.err`
   transcript, so `odd_retry.out` is empty. The `rc=` in the two `.log` files

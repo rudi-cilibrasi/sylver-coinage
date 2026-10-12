@@ -3,10 +3,14 @@
 Each reply is solved alone (kunz --stop-at-p --odd-list w C...) with a state cap, so hard
 replies are classified rather than skipped. The partner rule: when C+w is N with an odd
 winning reply v and w is a legal move of C+v, then {C,w,v} is P and C+v is N (winning
-reply w), so v needs no solve; if w is not legal there, C+v = {C,w,v} is P (a witness).
+reply w), so v needs no solve; if w is not legal there, C+v = {C,w,v} is P (a witness,
+logged as a P row with 'via').
 Appends one JSON line per reply to hunt.jsonl; a child stops at its first witness.
 
-Usage: hunt.py CAP  (the children and their starting points are in CHILDREN below)
+Usage: hunt.py CAP [--retry-capped]  (the children and their starting points are in CHILDREN below)
+With --retry-capped, each child's queue is instead the replies earlier runs left at a smaller
+cap, in the same order, each tried once at CAP. Rows record their cap; rows without one ran at
+1.2e9 (October 10, 03:55 to 07:32) or 1e9, and count as 1e9 here, below any retry cap.
 """
 import json, subprocess, sys, time
 from pathlib import Path
@@ -16,6 +20,7 @@ from sylver.solver import frobenius_number  # noqa: E402
 
 HERE = Path(__file__).resolve().parent
 CAP = int(sys.argv[1]) if len(sys.argv) > 1 else 1_000_000_000
+RETRY = '--retry-capped' in sys.argv[2:]
 WMAX = 801
 # child: (replies already classified N, by count of the resolver's Frobenius order or explicitly)
 CHILDREN = {
@@ -45,15 +50,29 @@ def queue(c, spec):
 
 records = [json.loads(l) for l in LOG.read_text().splitlines()] if LOG.exists() else []
 state = {}
-for c, spec in CHILDREN.items():
-    classified = {r['w'] for r in records if tuple(r['child']) == c}
-    witness = next((r['w'] for r in records if tuple(r['child']) == c and r['outcome'] == 'P'), None)
-    state[c] = {'queue': [w for w in queue(c, spec) if w not in classified], 'witness': witness}
+
+
+def start(c, spec):
+    """A child's state from its spec and the records: its witness, if found, and the replies left."""
+    mine = [r for r in records if tuple(r['child']) == c]
+    witness = next((r['w'] for r in mine if r['outcome'] == 'P'), None)
+    if RETRY:                   # replies capped below CAP and never classified
+        settled = {r['w'] for r in mine if r['outcome'] is not None}
+        at_cap = {r['w'] for r in mine if r['outcome'] is None and r.get('cap', 1_000_000_000) >= CAP}
+        lower = {r['w'] for r in mine if r['outcome'] is None} - settled - at_cap
+        state[c] = {'queue': sorted(lower, key=order_key(c)), 'witness': witness}
+    else:
+        classified = {r['w'] for r in mine}
+        state[c] = {'queue': [w for w in queue(c, spec) if w not in classified], 'witness': witness}
     for r in records:
         if tuple(r['child']) == c and r['outcome'] == 'N' and r.get('winning_move') and int(r['winning_move']) % 2:
             v = int(r['winning_move'])
             if v in state[c]['queue'] and legal(position((*c, v)), r['w']):
                 state[c]['queue'].remove(v)
+
+
+for c, spec in CHILDREN.items():
+    start(c, spec)
 
 
 def log(rec):
@@ -71,10 +90,9 @@ def load_extra():
         c = tuple(row['child'])
         if c in state:
             continue
-        spec = {k: v for k, v in row.items() if k != 'child'}
-        classified = {r['w'] for r in records if tuple(r['child']) == c}
-        state[c] = {'queue': [w for w in queue(c, spec) if w not in classified], 'witness': None}
-        print(time.strftime('%H:%M:%S'), 'added child', c, 'queue', len(state[c]['queue']), flush=True)
+        start(c, {k: v for k, v in row.items() if k != 'child'})
+        print(time.strftime('%H:%M:%S'), 'added child', c, 'queue', len(state[c]['queue']),
+              'witness', state[c]['witness'], flush=True)
 
 
 load_extra()
@@ -91,7 +109,7 @@ while any(s['witness'] is None and s['queue'] for s in state.values()):
         rec = {'child': list(c), 'w': w, 'outcome': rows[0][1] if rows else None,
                'winning_move': rows[0][2].split('=')[1] if rows else None,
                'states': int(rows[0][4].split('=')[1]) if rows else None,
-               'returncode': proc.returncode, 'seconds': round(time.monotonic() - start, 1)}
+               'returncode': proc.returncode, 'seconds': round(time.monotonic() - start, 1), 'cap': CAP}
         log(rec)
         if rec['outcome'] == 'P':
             s['witness'] = w
@@ -103,10 +121,13 @@ while any(s['witness'] is None and s['queue'] for s in state.values()):
                     s['queue'].remove(v)
                     log({'child': list(c), 'w': v, 'outcome': 'N', 'winning_move': str(w), 'states': None,
                          'via': f'partner of {w}'})
-                else:
+                else:                   # C+v = C+w+v as semigroups, and C+w+v is P
                     s['witness'] = v
+                    s['queue'].remove(v)
+                    log({'child': list(c), 'w': v, 'outcome': 'P', 'winning_move': None, 'states': None,
+                         'via': f'partner of {w}: {w} is generated in C+{v}, so C+{v} = C+{w}+{v}'})
                     print('WITNESS (partner)', c, v, flush=True)
-        elif rec['outcome'] is None:
+        elif rec['outcome'] is None and not RETRY:
             s['queue'].append(w)   # hit the cap: retry last
 for c, s in state.items():
     print('child', c, 'witness', s['witness'], 'queue left', len(s['queue']), flush=True)

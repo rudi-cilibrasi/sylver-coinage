@@ -5,7 +5,8 @@
 // parallel, each piped into its own ffmpeg; the slices are then concatenated
 // without re-encoding. Needs ffmpeg and Playwright: set PLAYWRIGHT to the
 // module's path if it is not installed here, and CHROME to a browser binary
-// if Playwright's own is missing. The fonts load from Google Fonts. The MP4
+// if Playwright's own is missing. The fonts load from Google Fonts; without
+// them (offline, say) it stops rather than render in fallback fonts. The MP4
 // carries the film's chapters as chapter markers. On any failure the other
 // encoders are stopped and the temporary files removed.
 import { createRequire } from 'module';
@@ -38,10 +39,14 @@ function ffmpeg(args, input) {
   return job;
 }
 
+const FAMILIES = ['Cinzel', 'Spectral', 'IBM Plex Mono'];   // the film's typefaces
 async function open(browser) {
   const page = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
   await page.goto(PAGE);
   await page.waitForFunction(() => window.filmReady === true, null, { timeout: 30000 });
+  const missing = await page.evaluate((names) => names.filter((name) =>
+    ![...document.fonts].some((f) => f.family.replace(/"/g, '') === name && f.status === 'loaded')), FAMILIES);
+  if (missing.length) throw new Error(`fonts not loaded: ${missing.join(', ')}`);
   return page;
 }
 
