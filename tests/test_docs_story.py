@@ -168,6 +168,17 @@ class StoryFilmTests(unittest.TestCase):
         tally = self.report['search38']
         self.assertIn(f"+ {tally['ruledOut']} more ruled out by search  ·  {tally['open']} still open", self.report['texts'])
 
+    def test_social_preview_images_exist(self):
+        # A link shared in chat or on social media shows og:image; a missing file breaks the card silently.
+        site = 'https://rudi-cilibrasi.github.io/sylver-coinage/'
+        for page in ('story.html', 'mint.html', 'index.html'):
+            html = (ROOT / 'docs' / page).read_text()
+            image = re.search(r'<meta property="og:image" content="([^"]+)">', html)
+            self.assertIsNotNone(image, page)
+            self.assertTrue(image[1].startswith(site), page)
+            self.assertTrue((ROOT / 'docs' / image[1][len(site):]).is_file(), page)
+            self.assertIn(f'<meta property="og:url" content="{site}{page}">', html)
+
     def test_key_facts_are_on_screen(self):
         for fact in ('1884', 'a·b − a − b', 'Winning Ways', 'GEORGE SICHERMAN', 'THOMAS BLOK', '403,200', '381,091',
                      '49,337', '633,734,956', '{16, 26, 54, 60, 62}', '{16, 28, 36, 38, 58}', 'OEIS A248380',
