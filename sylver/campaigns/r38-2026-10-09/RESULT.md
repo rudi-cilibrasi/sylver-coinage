@@ -105,7 +105,7 @@ discovery output, not certified.
 | --- | ---: | ---: | ---: |
 | odd | 35 | 32 | 3 |
 | even, short child | 17 | 13 | 4 |
-| even, long child | 46 | 18 | 28 |
+| even, long child | 46 | 20 | 26 |
 
 - **Odd.** The ledger's scan showed the 24 smallest odd candidates are N.
   One more shared-memo sweep here showed that 71, 69, 77 and 79 are N, then
@@ -150,14 +150,18 @@ discovery output, not certified.
       {16,38,72,84} won by 139 (`scan/hunt.*`). The open ones are 68, 78,
       100, 106, 116 and 154. So, by search, 72 answers 38 exactly when all six
       of them are N; one P among them refutes it.
+    - The hunt ran on until October 12 at 04:52 without another witness: of
+      its 87 later rows, 29 are N and 58 stopped at the 1,000,000,000-state
+      cap.
     - 88's obligation 72 leads back to {16,38,72}.
   - 104 and 120 have odd obligations that the sweeps could not finish.
 - **Long even.** A long candidate is N as soon as one winning reply is
   found.
   - Sweeps found a winning odd reply for 2 (3), 10 (9), 18 (5), 26 (97),
     30 (271), 34 (53), 36 (123), 50 (79), 58 (11), 78 (27), 94 (43),
-    98 (31), 100 (41) and 174 (45), and the deeper pass below found 52 (143),
-    110 (59) and 218 (49).
+    98 (31), 100 (41) and 174 (45). The deeper pass below found 52 (143),
+    110 (59) and 218 (49), and the second deeper pass found 42 (233) and
+    46 (147).
   - 14 moves to E by 8.
   - 31 stayed open within the sweeps' state caps: 42, 46, 52, 62, 66, 68,
     74, 82, 84, 90, 106, 110, 116, 122, 126, 132, 138 and 142, and, from the
@@ -165,7 +169,7 @@ discovery output, not certified.
     202, 212, 218, 234 and 250.
   - For 42, the 106 odd replies classified are all N, and four more (205,
     213, 215 and 221) were not classified: their batches stopped at the state
-    cap or the 1,800-second timeout.
+    cap or the 1,800-second timeout. The second deeper pass below found 233.
   - So every long candidate has been searched, but mostly shallowly. The map
     gave each batch of odd replies a cap of 300,000,000 states up to 36,
     500,000,000 from 42 to 50, 150,000,000 from 52 to 218, and 700,000,000
@@ -177,7 +181,16 @@ discovery output, not certified.
     replies it skipped, with a cap of 700,000,000 states per batch and an
     hour per candidate. It finished on October 11 at 15:15: 52 is won by 143,
     110 by 59 and 218 by 49 (in eight minutes), and the other 24 ran out of
-    time (106 without finishing a batch). 28 long candidates are open.
+    time (106 without finishing a batch).
+  - A second deeper pass on October 12 (`scan/deep_long2.*`) took first the
+    four long candidates the first pass had not covered, 42, 46, 234 and 250:
+    two hours each at the same cap per batch, leaving out the replies already
+    classified (but for three of the map's; see the scan README). 42 is won by
+    233 (found in 26 minutes) and 46 by 147 (in 12 minutes). 234 and 250 ran
+    out of time: they classified five and four replies (all N), and six
+    replies of each were skipped when their batch hit the 700,000,000-state
+    cap. 26 long candidates are open; the pass has not yet returned to the
+    other 24.
 
 ## Reproduction
 

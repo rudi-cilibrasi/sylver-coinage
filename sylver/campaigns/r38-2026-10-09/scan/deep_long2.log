@@ -1,0 +1,11 @@
+04:24:04 deep long 2 start (28 candidates, 2 h each, 700M cap)
+04:24:04 start 42
+04:49:39 end 42 rc=0
+04:49:39 start 46
+04:51:52 driver replaced: 46 continues, then 234 and 250 (deep_long2b.sh)
+05:01:22 end 46 (driver replaced; see deep_long2.out)
+05:01:22 start 234
+07:01:23 end 234 rc=124
+07:01:23 start 250
+09:01:25 end 250 rc=124
+deep long 2b done (234, 250); the 24 candidates of pass 1 are still to do

@@ -1,0 +1,24 @@
+04:24:05 C = (16, 38, 42) candidates 296 first [205, 213, 215, 217, 219, 221, 223, 225]
+04:49:39 batch 205..269: classified 12/30, P=233, 1534.1s
+WITNESS 233 classified 12 skipped []
+04:49:39 C = (16, 38, 46) candidates 333 first [129, 139, 141, 143, 145, 147, 149, 151]
+05:01:12 batch 129..195: classified 6/30, P=147, 693.1s
+WITNESS 147 classified 6 skipped []
+05:01:22 C = (16, 38, 234) candidates 362 first [71, 75, 85, 83, 87, 93, 89, 91]
+05:20:07 batch 71..137: classified 1/30, P=None, 1124.7s
+05:37:03 batch 85..141: classified 0/30, P=None, 1016.1s
+05:53:48 batch 83..143: classified 0/30, P=None, 1005.2s
+06:14:16 batch 87..145: classified 0/30, P=None, 1227.9s
+06:34:37 batch 93..147: classified 0/30, P=None, 1221.1s
+06:51:06 batch 89..149: classified 2/30, P=None, 988.5s
+07:01:23 batch 101..155: classified 2/30, P=None, 617.7s
+STOPPED by a signal after 5 classified; skipped [75, 85, 83, 87, 93, 95]
+07:01:24 C = (16, 38, 250) candidates 365 first [71, 79, 85, 93, 73, 75, 101, 81]
+07:18:41 batch 71..131: classified 1/30, P=None, 1037.8s
+07:37:05 batch 85..135: classified 0/30, P=None, 1103.2s
+07:54:00 batch 93..137: classified 0/30, P=None, 1015.0s
+08:15:14 batch 73..139: classified 1/30, P=None, 1274.6s
+08:31:08 batch 101..143: classified 2/30, P=None, 953.9s
+08:46:09 batch 87..149: classified 0/30, P=None, 900.6s
+09:01:25 batch 109..151: classified 0/30, P=None, 916.2s
+STOPPED by a signal after 4 classified; skipped [79, 85, 93, 75, 83, 87]

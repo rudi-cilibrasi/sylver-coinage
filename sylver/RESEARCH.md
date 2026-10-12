@@ -1811,6 +1811,29 @@ Overnight search for an answer to 38, recorded in
 - **Tally.** Of {16,38}'s 98 obligations, 63 are N (11 certified, 52 by
   search) and 35 are open. No answer to 38 is known.
 
+### Attempt 41 — a second deeper pass rules out 42 and 46 (2026-10-12)
+
+Search for an answer to 38, recorded in
+[the reply-38 record](campaigns/r38-2026-10-09/RESULT.md#the-search-for-an-answer-to-38)
+(discovery results, not certified).
+
+- **A second deeper pass.** The four long candidates the first deeper pass
+  had not covered, 42, 46, 234 and 250, were swept one at a time: two hours
+  each, 700-million-state batches, leaving out the replies already
+  classified (but for three).
+  - {16,38,42} is won by 233, found in 26 minutes, and {16,38,46} by 147, in
+    12 minutes.
+  - 234 and 250 ran out of time. They classified five and four replies, all
+    N, and six replies of each were skipped when their batch hit the
+    700-million-state cap.
+- **Tools.** The new sweep streams the solver's rows, so a batch stopped by
+  the time limit keeps the replies it had classified; the first pass lost
+  106's whole hour that way. The hunt now logs a witness found through the
+  partner rule as a P row, keeps known witnesses when it restarts, and can
+  retry the replies it capped at a higher cap.
+- **Tally.** Of {16,38}'s 98 obligations, 65 are N (11 certified, 54 by
+  search) and 33 are open. No answer to 38 is known.
+
 ### Sources
 
 - <https://math.colgate.edu/~integers/yg2/yg2.pdf>
