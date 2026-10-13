@@ -11,6 +11,7 @@ Appends one JSON line per run to child_<X>.jsonl, and on a SIGTERM records the r
 progress (returncode "timeout").
 
 Usage: child_sweep.py W [--max-states S] [--threads T] [--batch B] [--max-skips K] [--even-first]
+                      [--parity all|even|odd]
 With --even-first, every even child comes before the odd ones (even children are cheap to solve);
 --parity even (or odd) sweeps only those children.
 """
@@ -103,8 +104,9 @@ def record(rec):
 
 
 def partner(m, v):
-    """After X+m is N with winning move v: v's status, if the partner rule gives one."""
-    if v is None or v not in fro or v in done:
+    """After X+m is N with winning move v: v's status, if the partner rule gives one. A child that
+    only hit the cap ('skip') is settled too."""
+    if v is None or v not in fro or (v in done and done[v][0] != 'skip'):
         return None
     if legal(position((*X, v)), m):
         return ('N', m)                     # X+v+m = X+m+v is P
@@ -140,6 +142,8 @@ while queue and witness is None and not stopping:
         else:
             got = partner(child, v)
             if got:
+                if v in done:               # a capped child, now settled
+                    skips -= 1
                 done[v] = got
                 out.append([v, got[0], got[1]])
                 if got[0] == 'P':

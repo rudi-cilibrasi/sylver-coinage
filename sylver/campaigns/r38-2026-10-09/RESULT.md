@@ -120,16 +120,24 @@ discovery output, not certified.
     each needs more than 2.1 billion states, and the cap cannot rise much
     further here.
   - On October 12 the three were attacked from below. A winning move m of
-    X = {16,38,W} makes X+m P, so a sweep solved the children X+m one at a
-    time, cheapest first: the even ones (and, in a first run, some odd ones)
-    with a cap of 200,000,000 states, then the odd ones with 250,000,000
-    ([scan/child_sweep.py](scan/child_sweep.py),
-    which uses the partner rule to skip and settle children). It classified
-    75, 68 and 67 of the 173, 179 and 185 children of 109, 117 and 125 as N
-    and found none P; each sweep gave up after 40 children hit the cap, and
-    58, 71 and 78 were never tried. Two probes paired the three:
-    {16,38,109,117} is N (won by 22), and {16,38,117,125} stopped at
-    400,000,000 states (125 = 109 + 16 is not a move after 109).
+    X = {16,38,W} makes X+m P, so a sweep solved the children X+m, cheapest
+    first: the even ones singly and the odd ones in batches of 20 sharing
+    one memo and its cap, of 200,000,000 states for the even children (and,
+    in a first run, some odd ones) and then 250,000,000 for the odd ones
+    ([scan/child_sweep.py](scan/child_sweep.py), which applies the partner
+    rule to settle children without solving them).
+    - Of the 173, 179 and 185 children of 109, 117 and 125, 75, 70 and 69
+      are N, and none classified is P. Four of the N, 100 and 71 for 117 and
+      111 and 171 for 125, follow by the partner rule from rows the sweep
+      recorded after those children had hit the cap; the sweep as run left
+      them capped.
+    - Each sweep stopped after its 40th capped child, alone or partway
+      through a batch. 58, 71 and 78 children were never classified, among
+      them 106, 164 and 88, which the even sweeps' three-hour limit cut off
+      mid-solve.
+    - Two probes paired the three: {16,38,109,117} is N (won by 22), and
+      {16,38,117,125} stopped at 400,000,000 states (125 = 109 + 16 is not a
+      move after 109).
 - **Short even.**
   - For a = 6, 12, 20, 60 and 136, an odd move wins from {16,38,a}
     ([scan/odd_filter.jsonl](scan/odd_filter.jsonl)).

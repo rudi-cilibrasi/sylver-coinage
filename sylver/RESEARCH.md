@@ -1847,10 +1847,10 @@ Search for an answer to 38, recorded in
   72 answers 38 exactly when its four open long children, 68, 78, 100 and
   116, are all N.
 - **109, 117 and 125.** Each was attacked from below, by solving its
-  children one at a time, cheapest first, with caps of 200 and 250 million
-  states. Of 173, 179 and 185 children, 75, 68 and 67 are N and none is P;
-  the rest needed more than the cap or were never reached. {16,38,109,117}
-  is N (won by 22).
+  children cheapest first (the odd ones in batches sharing one memo), with
+  caps of 200 and 250 million states. Of 173, 179 and 185 children, 75, 70
+  and 69 are N, and none classified is P; the rest hit the cap, alone or in
+  a batch, or were never classified. {16,38,109,117} is N (won by 22).
 - **Tally.** Unchanged: of {16,38}'s 98 obligations, 65 are N (11 certified,
   54 by search) and 33 are open. No answer to 38 is known.
 

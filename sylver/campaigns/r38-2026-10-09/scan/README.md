@@ -24,7 +24,7 @@ The certificate's audit does not use this file.
 | 109, 117 and 125 again, alone at 2.1 billion states | `./odd_retry.sh` (`--max-states 2100000000`) | `odd_retry.*`, `odd_retry_<M>.err` |
 | a deeper pass over the 27 long candidates the map searched with 150M batches (October 10–11) | `./deep_long.sh`: `deep_witness.py --done-count K --also SKIPPED --threads 4 --max-states 700000000 --max-skips 8 16 38 E`, an hour each, with K the map's `odd_tried` (so one to three replies the map had classified are run again) | `deep_long.*`, `deep_16-38-<E>.jsonl` |
 | 72's open long children: a round-robin witness hunt, each reply alone with the partner rule | `python hunt.py 1200000000` on October 10 from 03:55 to 07:32, then `python hunt.py 1000000000` from 13:21, restarted on October 12 at 04:29 and 04:45 and stopped at 04:52 (children and starts in the script and `hunt_children.json`); from 09:01 `./hunt_retry.sh` (`python hunt.py 1600000000 --retry-capped`), restarted at 09:27 by `./hunt_restart.sh` | `hunt.*` |
-| the children of 109, 117 and 125, one at a time, cheapest first (October 12) | from 04:53 `./child_queue2.sh` (all children, 200M), stopped at 05:26; then `./child_queue3.sh` (`child_sweep.py W --parity even --max-states 200000000`, 3 h each) and `./child_queue4.sh` (`--parity odd --max-states 250000000`, 4 h each) | `child_16-38-<W>.jsonl`, `child_sweep*`, `pair_hard.log` |
+| the children of 109, 117 and 125, cheapest first (October 12) | from 04:53 `./child_queue2.sh` (all children, 200M), stopped at 05:26; then `./child_queue3.sh` (`child_sweep.py W --parity even --max-states 200000000`, 3 h each) and `./child_queue4.sh` (`--parity odd --max-states 250000000`, 4 h each) | `child_16-38-<W>.jsonl`, `child_sweep*`, `pair_hard.log` |
 | a second deeper pass, first over the four long candidates the first pass had not covered (October 12) | `./deep_long2.sh`, stopped after it began 46, then `./deep_long2b.sh`: `deep_witness2.py --done-count K --also SKIPPED --exclude DONE --threads 4 --max-states 700000000 --max-skips 12 16 38 E`, two hours each, with DONE the replies the first pass classified or gave up on | `deep_long2.*`, `deep_16-38-<E>.jsonl` (E = 42, 46, 234, 250) |
 | even obligations of a candidate a | `python even_resolver.py A` | `even_A.jsonl` (A = 8, 24, 40, 56, 72, 88) |
 | even obligations of any short position | `python resolve_position.py G...` (`--only-long` skips short children) | `resolve_<G>.jsonl` |
@@ -87,7 +87,7 @@ Notes:
     on the script before review's fixes; `hunt_restart.sh` restarted it on the committed one;
   - logs a partner witness even when it is not queued, and no longer names its timer `start`,
     which clashed with the function and would have crashed a run that added a child midway
-    (both found in review, after the rows here; none of the rows has such a witness).
+    (both found in review, after the rows before 09:27; none of the rows has such a witness).
 - `deep_witness2.py` is `deep_witness.py` with `--exclude` and streamed rows: a sweep stopped
   by `timeout` records the rows of its batch in progress, with `returncode` "timeout" (234's
   and 250's last batches). `deep_long2.sh` set K to the map's `odd_tried`, which counts only classified
@@ -97,15 +97,22 @@ Notes:
   `deep_witness2.py` also checks for a signal before each read and describes `--exclude`
   (classified or given up on) accurately. These runs used the earlier version; each of their
   signals came during a read, where the two behave alike.
-- `child_sweep.py` solves the children of {16,38,W} one at a time and appends each run to
+- `child_sweep.py` solves the children of {16,38,W}, the even ones singly and the odd ones in
+  batches of up to 20 sharing one memo and its cap, and appends each run to
   `child_16-38-<W>.jsonl` (rows of child, outcome and winning move; `skip` for a child whose
-  run hit the cap; partner-rule rows too), resuming from it. The first run (`child_queue2.sh`)
+  run hit the cap, alone or partway through a batch; partner-rule rows too), resuming from it.
+  As run, it left a capped child capped even when a later row settled it by the partner rule;
+  four children are N that way (100 and 71 for 117, 111 and 171 for 125). As committed, the
+  partner rule settles such a child, and a witness among them would end the sweep (found in
+  review). The even sweeps' three-hour limit cut off 106, 164 and 88 mid-solve (records with
+  `returncode` "timeout" and no rows). The first run (`child_queue2.sh`)
   used it before `--even-first` and `--parity` existed; it was stopped at 05:26 by SIGTERM to
   its `timeout` wrappers, so each sweep's last record there has `returncode` "timeout". Each
   sweep's skips count toward one limit of 40 across its runs, which is where all three
-  stopped. `pair_hard.log` holds the two pair probes: the first, `--odd-list 117,125 16 38 109`,
-  was refused because 125 = 109 + 16 is not a move there, so `{16,38,117}`+125 and then
-  `{16,38,109}`+117 ran alone.
+  stopped. `pair_hard.log` holds the pair probes. A shell loop at 04:32 ran
+  `kunz --threads 2 --stop-at-p --max-states 400000000 --odd-list 117,125 16 38 109`, which was
+  refused because 125 = 109 + 16 is not a move there, and then `--odd-list 125 16 38 117`;
+  `child_queue2.sh` then ran `--odd-list 117 16 38 109` with the same cap.
 - `odd_queue.out` and `odd_retry.out` hold only completed rows: a candidate
   stopped at `--max-states` prints only its "stopped" line, in its `.err`
   transcript, so `odd_retry.out` is empty. The `rc=` in the two `.log` files
