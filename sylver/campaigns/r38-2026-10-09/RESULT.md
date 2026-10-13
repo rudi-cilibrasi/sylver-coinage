@@ -119,6 +119,25 @@ discovery output, not certified.
     62.5 GiB host ([scan/odd_retry.sh](scan/odd_retry.sh)). They are open:
     each needs more than 2.1 billion states, and the cap cannot rise much
     further here.
+  - On October 12 the three were attacked from below. A winning move m of
+    X = {16,38,W} makes X+m P, so a sweep solved the children X+m, cheapest
+    first: the even ones singly and the odd ones in batches of 20 sharing
+    one memo and its cap, of 200,000,000 states for the even children (and,
+    in a first run, some odd ones) and then 250,000,000 for the odd ones
+    ([scan/child_sweep.py](scan/child_sweep.py), which applies the partner
+    rule to settle children without solving them).
+    - Of the 173, 179 and 185 children of 109, 117 and 125, 75, 70 and 69
+      are N, and none classified is P. Four of the N, 100 and 71 for 117 and
+      111 and 171 for 125, follow by the partner rule from rows the sweep
+      recorded after those children had hit the cap; the sweep as run left
+      them capped.
+    - Each sweep stopped after its 40th capped child, alone or partway
+      through a batch. 58, 71 and 78 children were never classified, among
+      them 106, 164 and 88, which the even sweeps' three-hour limit cut off
+      mid-solve.
+    - Two probes paired the three: {16,38,109,117} is N (won by 22), and
+      {16,38,117,125} stopped at 400,000,000 states (125 = 109 + 16 is not a
+      move after 109).
 - **Short even.**
   - For a = 6, 12, 20, 60 and 136, an odd move wins from {16,38,a}
     ([scan/odd_filter.jsonl](scan/odd_filter.jsonl)).
@@ -147,12 +166,17 @@ discovery output, not certified.
     - By October 11 every even obligation of {16,38,72} had been run:
       {16,38,72,170} is won by 71 (`scan/even_72.*`), and a round-robin hunt
       over its open long children found {16,38,72,132} won by 75 and
-      {16,38,72,84} won by 139 (`scan/hunt.*`). The open ones are 68, 78,
-      100, 106, 116 and 154. So, by search, 72 answers 38 exactly when all six
-      of them are N; one P among them refutes it.
+      {16,38,72,84} won by 139 (`scan/hunt.*`). The open ones were then 68,
+      78, 100, 106, 116 and 154.
     - The hunt ran on until October 12 at 04:52 without another witness: of
       its 87 later rows, 29 are N and 58 stopped at the 1,000,000,000-state
       cap.
+    - From 09:01 on October 12 it retried the replies it had capped, now
+      with a cap of 1,600,000,000 states. By 17:50 it had solved 24 of them,
+      each needing between 1.00 and 1.41 billion states; none stopped at the
+      new cap. {16,38,72,154} is won by 119 and {16,38,72,106} by 137.
+    - So, by search, 72 answers 38 exactly when its four open long children,
+      68, 78, 100 and 116, are all N; one P among them refutes it.
     - 88's obligation 72 leads back to {16,38,72}.
   - 104 and 120 have odd obligations that the sweeps could not finish.
 - **Long even.** A long candidate is N as soon as one winning reply is

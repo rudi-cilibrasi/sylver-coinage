@@ -1834,6 +1834,26 @@ Search for an answer to 38, recorded in
 - **Tally.** Of {16,38}'s 98 obligations, 65 are N (11 certified, 54 by
   search) and 33 are open. No answer to 38 is known.
 
+### Attempt 42 — 72 comes down to four children (2026-10-12)
+
+Search for an answer to 38, recorded in
+[the reply-38 record](campaigns/r38-2026-10-09/RESULT.md#the-search-for-an-answer-to-38)
+(discovery results, not certified).
+
+- **72.** The witness hunt retried the replies of 72's open children that
+  had stopped at its 1-billion-state cap, now with 1.6 billion. All 24 it
+  solved by 17:50 needed between 1.00 and 1.41 billion states, and two are
+  winners: {16,38,72,154} is won by 119 and {16,38,72,106} by 137. By search,
+  72 answers 38 exactly when its four open long children, 68, 78, 100 and
+  116, are all N.
+- **109, 117 and 125.** Each was attacked from below, by solving its
+  children cheapest first (the odd ones in batches sharing one memo), with
+  caps of 200 and 250 million states. Of 173, 179 and 185 children, 75, 70
+  and 69 are N, and none classified is P; the rest hit the cap, alone or in
+  a batch, or were never classified. {16,38,109,117} is N (won by 22).
+- **Tally.** Unchanged: of {16,38}'s 98 obligations, 65 are N (11 certified,
+  54 by search) and 33 are open. No answer to 38 is known.
+
 ### Sources
 
 - <https://math.colgate.edu/~integers/yg2/yg2.pdf>

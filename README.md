@@ -40,7 +40,7 @@ For the week of September 21–27, see the [progress summary](docs/progress/2026
   - No answer to 38 is known yet. It remains the lowest unanswered reply.
     Of its 98 candidates, certificates rule out 11 and, by October 12,
     search 54 more, leaving 33 open; by search, 72 answers 38 exactly when
-    its six open long children are all N.
+    its four open long children are all N.
   - I and B24 were already on Sicherman's
     [list of P-positions](https://sicherman.net/sylver/ppos.html) (last
     updated September 28), so these certificates confirm them independently. B28 and

@@ -279,3 +279,31 @@
 {"child": [16, 38, 68, 72], "w": 253, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 655.5}
 {"child": [16, 38, 72, 78], "w": 181, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 670.5}
 {"child": [16, 38, 72, 100], "w": 157, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 831.8}
+{"child": [16, 38, 68, 72], "w": 191, "outcome": "N", "winning_move": "199", "states": 1003685908, "returncode": 0, "seconds": 1538.3, "cap": 1600000000}
+{"child": [16, 38, 68, 72], "w": 199, "outcome": "N", "winning_move": "191", "states": null, "via": "partner of 191"}
+{"child": [16, 38, 68, 72], "w": 201, "outcome": "N", "winning_move": "149", "states": 1039984093, "returncode": 0, "seconds": 987.1, "cap": 1600000000}
+{"child": [16, 38, 72, 78], "w": 147, "outcome": "N", "winning_move": "213", "states": 1018813910, "returncode": 0, "seconds": 1034.0, "cap": 1600000000}
+{"child": [16, 38, 72, 100], "w": 127, "outcome": "N", "winning_move": "177", "states": 1071398855, "returncode": 0, "seconds": 1482.7, "cap": 1600000000}
+{"child": [16, 38, 72, 106], "w": 125, "outcome": "N", "winning_move": "113", "states": 1058869153, "returncode": 0, "seconds": 1008.0, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 119, "outcome": "N", "winning_move": "169", "states": 1066140535, "returncode": 0, "seconds": 973.2, "cap": 1600000000}
+{"child": [16, 38, 72, 154], "w": 119, "outcome": "P", "winning_move": "none", "states": 1119121060, "returncode": 0, "seconds": 1099.2, "cap": 1600000000}
+{"child": [16, 38, 68, 72], "w": 203, "outcome": "N", "winning_move": "301", "states": 1093772507, "returncode": 0, "seconds": 1355.6, "cap": 1600000000}
+{"child": [16, 38, 72, 78], "w": 149, "outcome": "N", "winning_move": "185", "states": 1041178891, "returncode": 0, "seconds": 966.9, "cap": 1600000000}
+{"child": [16, 38, 72, 100], "w": 135, "outcome": "N", "winning_move": "115", "states": 1163618958, "returncode": 0, "seconds": 997.7, "cap": 1600000000}
+{"child": [16, 38, 72, 106], "w": 127, "outcome": "N", "winning_move": "115", "states": 1088482816, "returncode": 0, "seconds": 972.2, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 127, "outcome": "N", "winning_move": "249", "states": 1205163338, "returncode": 0, "seconds": 1201.6, "cap": 1600000000}
+{"child": [16, 38, 68, 72], "w": 205, "outcome": "N", "winning_move": "229", "states": 1109411260, "returncode": 0, "seconds": 1123.5, "cap": 1600000000}
+{"child": [16, 38, 68, 72], "w": 229, "outcome": "N", "winning_move": "205", "states": null, "via": "partner of 205"}
+{"child": [16, 38, 72, 78], "w": 157, "outcome": "N", "winning_move": "167", "states": 1132181424, "returncode": 0, "seconds": 1453.4, "cap": 1600000000}
+{"child": [16, 38, 72, 78], "w": 167, "outcome": "N", "winning_move": "157", "states": null, "via": "partner of 157"}
+{"child": [16, 38, 72, 100], "w": 137, "outcome": "N", "winning_move": "161", "states": 1218504119, "returncode": 0, "seconds": 2293.0, "cap": 1600000000}
+{"child": [16, 38, 72, 106], "w": 131, "outcome": "N", "winning_move": "103", "states": 1125029593, "returncode": 0, "seconds": 1327.6, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 129, "outcome": "N", "winning_move": "58", "states": 1067447321, "returncode": 0, "seconds": 1471.7, "cap": 1600000000}
+{"child": [16, 38, 68, 72], "w": 207, "outcome": "N", "winning_move": "179", "states": 1099850005, "returncode": 0, "seconds": 1672.3, "cap": 1600000000}
+{"child": [16, 38, 72, 78], "w": 159, "outcome": "N", "winning_move": "66", "states": 1080765444, "returncode": 0, "seconds": 1244.9, "cap": 1600000000}
+{"child": [16, 38, 72, 100], "w": 149, "outcome": "N", "winning_move": "177", "states": 1408616257, "returncode": 0, "seconds": 1735.4, "cap": 1600000000}
+{"child": [16, 38, 72, 106], "w": 137, "outcome": "P", "winning_move": "none", "states": 1263036473, "returncode": 0, "seconds": 1558.0, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 135, "outcome": "N", "winning_move": "89", "states": 1176488643, "returncode": 0, "seconds": 1546.2, "cap": 1600000000}
+{"child": [16, 38, 68, 72], "w": 209, "outcome": "N", "winning_move": "211", "states": 1133297829, "returncode": 0, "seconds": 1144.0, "cap": 1600000000}
+{"child": [16, 38, 68, 72], "w": 211, "outcome": "N", "winning_move": "209", "states": null, "via": "partner of 209"}
+{"child": [16, 38, 72, 78], "w": 161, "outcome": "N", "winning_move": "169", "states": 1177571014, "returncode": 0, "seconds": 1527.3, "cap": 1600000000}

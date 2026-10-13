@@ -844,7 +844,7 @@ const FRONTIER = [
   {"m": 68, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
   {"m": 69, "k": "odd", "s": "search", "why": "{16,38,69} is won by 25 (search)"},
   {"m": 71, "k": "odd", "s": "search", "why": "{16,38,71} is won by 73 (search)"},
-  {"m": 72, "k": "short", "s": "ladder", "why": "a rung of the ladder 56, 72, 88, 104, 120, 136; by search every other obligation of {16,38,72} is N, so 72 answers 38 exactly when its six open long children, 68, 78, 100, 106, 116 and 154, are all N"},
+  {"m": 72, "k": "short", "s": "ladder", "why": "a rung of the ladder 56, 72, 88, 104, 120, 136; by search every other obligation of {16,38,72} is N, so 72 answers 38 exactly when its four open long children, 68, 78, 100 and 116, are all N"},
   {"m": 74, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
   {"m": 77, "k": "odd", "s": "search", "why": "{16,38,77} is won by 27 (search)"},
   {"m": 78, "k": "long", "s": "search", "why": "{16,38,78} is won by 27 (search)"},

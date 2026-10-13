@@ -1,0 +1,11 @@
+04:32:48 pair probes
+== base+list: 117,125 16 38 109
+kunz_solver: scanned move 125 is not a legal move of the base
+Command exited with non-zero status 1
+0.00 s 3904 KB
+== base+list: 125 16 38 117
+kunz_solver: sweep stopped during move=125 (memo holds 400003794 states)
+1352.99 s 9399920 KB
+04:55:28 probe 117 on {16,38,109}
+move=117 N winning_move=22 frobenius=215 cumulative_states=41367900
+149.18 s 1050548 KB

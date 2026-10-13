@@ -1,0 +1,68 @@
+04:57:58 X = (16, 38, 109) F = 321 moves 173 left 173 witness None
+05:06:18 m=3 chunk 20: classified 18, 32 N, witness None, 500s, left 140
+05:06:18 m=4 chunk 1: classified 1, 2 N, witness None, 0s, left 138
+05:06:18 m=14 chunk 1: classified 1, 2 N, witness None, 0s, left 136
+05:06:18 m=20 chunk 1: classified 1, 1 N, witness None, 0s, left 135
+05:14:38 m=63 chunk 20: classified 0, 0 N, witness None, 500s, left 134
+05:15:32 m=34 chunk 1: classified 1, 2 N, witness None, 54s, left 132
+05:16:00 m=26 chunk 1: classified 1, 2 N, witness None, 28s, left 130
+05:16:48 m=36 chunk 1: classified 1, 2 N, witness None, 48s, left 128
+05:24:54 m=69 chunk 20: classified 0, 0 N, witness None, 487s, left 127
+05:25:57 m=85 chunk 20: classified 0, 0 N, witness None, 63s, left 126
+STOPPED by a signal
+05:26:26 X = (16, 38, 109) F = 321 moves 173 left 49 witness None
+05:27:16 m=30 chunk 1: classified 1, 2 N, witness None, 51s, left 47
+05:27:17 m=8 chunk 1: classified 1, 2 N, witness None, 0s, left 46
+05:28:03 m=28 chunk 1: classified 1, 2 N, witness None, 46s, left 45
+05:28:55 m=24 chunk 1: classified 1, 2 N, witness None, 52s, left 44
+05:36:51 m=50 chunk 1: classified 0, 0 N, witness None, 476s, left 43
+05:43:52 m=52 chunk 1: classified 1, 1 N, witness None, 421s, left 42
+05:49:58 m=42 chunk 1: classified 1, 2 N, witness None, 366s, left 41
+05:59:01 m=46 chunk 1: classified 0, 0 N, witness None, 543s, left 40
+06:00:48 m=62 chunk 1: classified 1, 1 N, witness None, 107s, left 39
+06:01:58 m=22 chunk 1: classified 1, 2 N, witness None, 71s, left 38
+06:09:09 m=40 chunk 1: classified 1, 2 N, witness None, 431s, left 37
+06:09:21 m=78 chunk 1: classified 1, 2 N, witness None, 12s, left 36
+06:19:01 m=44 chunk 1: classified 0, 0 N, witness None, 581s, left 35
+06:20:12 m=56 chunk 1: classified 1, 1 N, witness None, 70s, left 34
+06:29:39 m=66 chunk 1: classified 0, 0 N, witness None, 567s, left 33
+06:37:38 m=94 chunk 1: classified 0, 0 N, witness None, 479s, left 32
+06:37:38 m=58 chunk 1: classified 1, 1 N, witness None, 0s, left 31
+06:45:20 m=68 chunk 1: classified 0, 0 N, witness None, 462s, left 30
+06:53:11 m=110 chunk 1: classified 0, 0 N, witness None, 471s, left 29
+07:01:54 m=74 chunk 1: classified 0, 0 N, witness None, 524s, left 28
+07:09:41 m=84 chunk 1: classified 0, 0 N, witness None, 467s, left 27
+07:17:00 m=90 chunk 1: classified 0, 0 N, witness None, 439s, left 26
+07:24:40 m=100 chunk 1: classified 0, 0 N, witness None, 460s, left 25
+07:33:21 m=116 chunk 1: classified 0, 0 N, witness None, 521s, left 24
+07:41:42 m=132 chunk 1: classified 0, 0 N, witness None, 501s, left 23
+07:49:18 m=148 chunk 1: classified 0, 0 N, witness None, 456s, left 22
+07:57:05 m=82 chunk 1: classified 0, 0 N, witness None, 467s, left 21
+08:07:52 m=88 chunk 1: classified 1, 1 N, witness None, 648s, left 20
+08:15:51 m=126 chunk 1: classified 0, 0 N, witness None, 479s, left 19
+08:23:21 m=164 chunk 1: classified 0, 0 N, witness None, 450s, left 18
+08:26:26 m=106 chunk 1: classified 0, 0 N, witness None, 185s, left 17
+STOPPED by a signal
+08:26:43 X = (16, 38, 109) F = 321 moves 173 left 71 witness None
+08:34:57 m=79 chunk 20: classified 0, 0 N, witness None, 494s, left 70
+08:44:30 m=45 chunk 20: classified 1, 2 N, witness None, 573s, left 67
+08:55:35 m=133 chunk 20: classified 0, 0 N, witness None, 665s, left 66
+09:05:58 m=75 chunk 20: classified 1, 1 N, witness None, 623s, left 64
+09:19:06 m=139 chunk 20: classified 0, 0 N, witness None, 788s, left 63
+09:27:52 m=155 chunk 20: classified 1, 1 N, witness None, 526s, left 61
+09:35:18 m=111 chunk 20: classified 0, 0 N, witness None, 446s, left 60
+09:44:15 m=149 chunk 20: classified 1, 1 N, witness None, 537s, left 58
+09:52:26 m=49 chunk 20: classified 1, 1 N, witness None, 490s, left 56
+10:01:47 m=127 chunk 20: classified 0, 0 N, witness None, 561s, left 55
+10:14:32 m=165 chunk 20: classified 1, 1 N, witness None, 765s, left 53
+10:25:07 m=65 chunk 20: classified 1, 1 N, witness None, 635s, left 51
+10:33:28 m=67 chunk 20: classified 2, 2 N, witness None, 501s, left 48
+10:42:43 m=219 chunk 20: classified 0, 0 N, witness None, 556s, left 47
+10:50:48 m=81 chunk 20: classified 0, 0 N, witness None, 485s, left 46
+10:59:11 m=97 chunk 20: classified 1, 1 N, witness None, 503s, left 44
+11:07:20 m=145 chunk 20: classified 0, 0 N, witness None, 488s, left 43
+11:16:20 m=161 chunk 20: classified 0, 0 N, witness None, 540s, left 42
+11:26:45 m=177 chunk 20: classified 0, 0 N, witness None, 625s, left 41
+11:35:42 m=193 chunk 20: classified 0, 0 N, witness None, 537s, left 40
+GAVE UP after 40 skips
+NO WITNESS; left 40
