@@ -1,0 +1,21 @@
+04:53:28 start child sweep 125
+04:53:28 start child sweep 117
+04:57:57 start child sweep 109
+05:25:57 end child sweep 109 rc=124
+05:25:57 end child sweep 125 rc=124
+05:25:57 end child sweep 117 rc=124
+child sweeps done
+05:26:26 start even child sweep 117
+05:26:26 start even child sweep 109
+05:26:26 start even child sweep 125
+08:26:26 end even child sweep 125 rc=124
+08:26:26 end even child sweep 117 rc=124
+08:26:26 end even child sweep 109 rc=124
+even child sweeps done
+08:26:43 start odd child sweep 109
+11:35:42 end odd child sweep 109 rc=0
+11:35:42 start odd child sweep 117
+14:38:07 end odd child sweep 117 rc=0
+14:38:07 start odd child sweep 125
+17:54:28 end odd child sweep 125 rc=0
+odd child sweeps done
