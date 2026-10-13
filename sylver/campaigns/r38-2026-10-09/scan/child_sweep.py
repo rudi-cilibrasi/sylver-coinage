@@ -149,7 +149,8 @@ while queue and witness is None and not stopping:
                 if got[0] == 'P':
                     witness = v
     finished = {c for c, _, _ in out}
-    if rc != 'timeout' and not stopping and witness is None and len(rows) < len(chunk):
+    if (rc != 'timeout' and not stopping and witness is None and len(rows) < len(chunk)
+            and chunk[len(rows)] not in done):   # not a child the partner rule has settled
         skipped = chunk[len(rows)]          # the move in progress when the cap was reached
         done[skipped] = ('skip', None)
         out.append([skipped, 'skip', None])
