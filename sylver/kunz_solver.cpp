@@ -37,6 +37,16 @@
 // native_solver.cpp, except where a position's memo is too large for it.
 // X+701's sequential replays (campaigns/x-2026-10-06) used this engine and
 // parallel_solver.cpp's Kunz-key build.
+//
+// --p-table keeps only P-positions in the memo, which is where most of the
+// memory goes otherwise: on {16,38,72,84}+109 they are 6% of the 125 million
+// states. N-positions, with their winning moves, go to a fixed-size cache
+// (--ncache-mb) that overwrites old entries; its keys are exact, so a hit is
+// always right. Before recursing, a state's moves are scanned for a child
+// already known P, which re-proves an evicted N-position in one pass (and
+// often cuts a first search short). --max-states then counts P-positions;
+// a winning move found by that scan need not be the least one, and
+// --verify-memo, which reads every N entry, is refused.
 
 #include <algorithm>
 #include <array>
@@ -285,6 +295,75 @@ class ShardedMemo {
     std::vector<Shard> shards_ = std::vector<Shard>(kShards);
 };
 
+// --p-table's cache of N-positions with their winning moves: 4-way buckets
+// under striped locks, each bucket replacing its entries in turn when full.
+class NCache {
+  public:
+    void resize(std::size_t bytes) {
+        buckets_ = bytes / sizeof(Bucket);
+        table_ = std::vector<Bucket>(buckets_);
+    }
+
+    [[nodiscard]] int lookup(const Key& key, std::size_t hash) {
+        if (buckets_ == 0) return -1;
+        const std::size_t index = bucket(hash);
+        const Bucket& b = table_[index];
+        std::lock_guard guard(locks_[index % kLocks]);
+        for (int way = 0; way < kWays; ++way) {
+            if (b.used[way] && (b.low[way] & kKeyBitsLow) == key.low && b.high[way] == key.high) {
+                hits_.fetch_add(1, std::memory_order_relaxed);
+                return value_in(b.low[way]);
+            }
+        }
+        return -1;
+    }
+
+    void insert(const Key& key, std::size_t hash, int value) {
+        if (buckets_ == 0) return;
+        const std::size_t index = bucket(hash);
+        Bucket& b = table_[index];
+        std::lock_guard guard(locks_[index % kLocks]);
+        int way = -1;
+        for (int w = 0; w < kWays; ++w) {
+            if (b.used[w] && (b.low[w] & kKeyBitsLow) == key.low && b.high[w] == key.high) return;
+            if (way < 0 && !b.used[w]) way = w;
+        }
+        if (way < 0) {
+            way = b.next;
+            b.next = static_cast<std::uint8_t>((b.next + 1) % kWays);
+            evictions_.fetch_add(1, std::memory_order_relaxed);
+        }
+        b.low[way] = with_value(key.low, value);
+        b.high[way] = key.high;
+        b.used[way] = 1;
+        inserts_.fetch_add(1, std::memory_order_relaxed);
+    }
+
+    [[nodiscard]] std::string report() const {
+        return "ncache capacity=" + std::to_string(buckets_ * kWays) + " inserts=" + std::to_string(inserts_.load()) +
+               " evictions=" + std::to_string(evictions_.load()) + " hits=" + std::to_string(hits_.load());
+    }
+
+  private:
+    static constexpr int kWays = 4;
+    static constexpr std::size_t kLocks = std::size_t{1} << 16;
+    struct Bucket {
+        std::uint64_t low[kWays]{};
+        std::uint64_t high[kWays]{};
+        std::uint8_t used[kWays]{};
+        std::uint8_t next = 0;
+    };
+    // Bits 16-63 of the hash pick the bucket.
+    [[nodiscard]] std::size_t bucket(std::size_t hash) const { return (hash >> 16) % buckets_; }
+
+    std::size_t buckets_ = 0;
+    std::vector<Bucket> table_;
+    std::vector<SpinLock> locks_ = std::vector<SpinLock>(kLocks);
+    std::atomic<std::uint64_t> hits_{0};
+    std::atomic<std::uint64_t> inserts_{0};
+    std::atomic<std::uint64_t> evictions_{0};
+};
+
 // How many threads are searching each (hashed) state near the root. A
 // collision only defers a child that nobody is searching, which costs order,
 // never correctness.
@@ -452,6 +531,14 @@ class Solver {
     [[nodiscard]] int solve_after_adjoining(int move) { return solve_from(adjoin(root_, move)); }
 
     [[nodiscard]] std::size_t states_evaluated() { return memo_.size(); }
+
+    // --p-table: the memo keeps only P-positions; N-positions go to a cache of ``ncache_bytes``.
+    void use_p_table(std::size_t ncache_bytes) {
+        p_table_ = true;
+        ncache_.resize(ncache_bytes);
+    }
+
+    [[nodiscard]] std::string ncache_report() const { return ncache_.report(); }
 
     [[nodiscard]] std::pair<std::size_t, std::size_t> memo_footprint() const { return memo_.footprint(); }
 
@@ -725,7 +812,9 @@ class Solver {
         auto run = [this, &errors, &root](int index) {
             try {
                 const Key key = key_of(root);
-                if (search(root, key, hash_key(key), 0) != kAborted) {
+                const int result = search(root, key, hash_key(key), 0);
+                if (result != kAborted) {
+                    root_result_.store(result, std::memory_order_relaxed);
                     done_.store(true, std::memory_order_relaxed);
                 }
             } catch (...) {
@@ -747,7 +836,7 @@ class Solver {
             if (error) std::rethrow_exception(error);
         }
         const Key key = key_of(root);
-        const int result = memo_.lookup(key, hash_key(key));
+        const int result = p_table_ ? root_result_.exchange(-1) : memo_.lookup(key, hash_key(key));
         if (result >= 0) return result;
         if (full_.load()) return kStopped;
         throw std::logic_error("the root was not decided");
@@ -755,6 +844,39 @@ class Solver {
 
     // Counts stored states in batches per thread; past the limit, every
     // search thread stops (as if the root were decided elsewhere).
+    // A known outcome: 0 for P, the winning move of an N-position, or -1.
+    [[nodiscard]] int lookup(const Key& key, std::size_t hash) {
+        if (!p_table_) return memo_.lookup(key, hash);
+        if (memo_.lookup(key, hash) == 0) return 0;
+        return ncache_.lookup(key, hash);
+    }
+
+    // --p-table: the least move from ``state`` to a child already known P, or 0.
+    [[nodiscard]] int known_winner(const State& state, int last) {
+        int quotient = 0;
+        int residue = 1;   // move 1 (m >= 2)
+        for (int move = 2; move <= last; ++move) {
+            if (++residue == modulus_) {
+                residue = 0;
+                ++quotient;
+            }
+            if (quotient >= state.k[residue]) continue;
+            const Key child_key = key_of(adjoin(state, quotient, residue));
+            if (memo_.lookup(child_key, hash_key(child_key)) == 0) return move;
+        }
+        return 0;
+    }
+
+    // Records a decided state: P in the memo; N in the memo, or with --p-table in the cache.
+    void store(const Key& key, std::size_t hash, int value) {
+        if (value > 0 && p_table_) {
+            ncache_.insert(key, hash, value);
+            return;
+        }
+        memo_.insert(key, hash, value);
+        count_insert();
+    }
+
     void count_insert() {
         thread_local std::size_t pending = 0;
         if (++pending < kCountBatch) return;
@@ -768,10 +890,16 @@ class Solver {
     // Winning move of ``state`` (0 when it is a P-position), or kAborted.
     [[nodiscard]] int search(const State& state, const Key& key, std::size_t hash, int depth) {
         if (done_.load(std::memory_order_relaxed)) return kAborted;
-        if (const int found = memo_.lookup(key, hash); found >= 0) {
+        if (const int found = lookup(key, hash); found >= 0) {
             return found;
         }
         const int last = largest_gap(state);
+        if (p_table_) {
+            if (const int move = known_winner(state, last); move > 0) {
+                store(key, hash, move);
+                return move;
+            }
+        }
         MoveSet paired_losers(last / 64 + 1);
         if (depth >= split_depth_) {
             // The sequential recurrence of native_solver.cpp, with the move's
@@ -797,16 +925,14 @@ class Solver {
                 const int response = search(child, child_key, hash_key(child_key), depth + 1);
                 if (response < 0) return kAborted;
                 if (response == 0) {
-                    memo_.insert(key, hash, move);
-                    count_insert();
+                    store(key, hash, move);
                     return move;
                 }
                 if (response > move) {
                     paired_losers.set(response);
                 }
             }
-            memo_.insert(key, hash, 0);
-            count_insert();
+            store(key, hash, 0);
             return 0;
         }
         // Near the root: the same recurrence in two passes. The first defers
@@ -832,7 +958,7 @@ class Solver {
                 const State child = adjoin(state, move);
                 const Key child_key = key_of(child);
                 const std::size_t child_hash = hash_key(child_key);
-                int response = memo_.lookup(child_key, child_hash);
+                int response = lookup(child_key, child_hash);
                 if (response < 0) {
                     if (pass == 0 && busy_.busy(child_hash)) {
                         deferred.push_back(move);
@@ -844,20 +970,18 @@ class Solver {
                 }
                 if (response < 0) return kAborted;
                 if (response == 0) {
-                    memo_.insert(key, hash, move);
-                    count_insert();
+                    store(key, hash, move);
                     return move;
                 }
                 if (response > move) {
                     paired_losers.set(response);
                 }
-                if (const int found = memo_.lookup(key, hash); found >= 0) {
+                if (const int found = lookup(key, hash); found >= 0) {
                     return found;  // decided by another thread meanwhile
                 }
             }
         }
-        memo_.insert(key, hash, 0);
-        count_insert();
+        store(key, hash, 0);
         return 0;
     }
 
@@ -873,6 +997,9 @@ class Solver {
     std::array<Lanes, kLanes> carries_{};
     State root_;
     ShardedMemo memo_;
+    bool p_table_ = false;
+    NCache ncache_;
+    std::atomic<int> root_result_{-1};
     BusyTable busy_;
     std::atomic<bool> done_{false};
     std::size_t state_limit_ = std::numeric_limits<std::size_t>::max();
@@ -908,6 +1035,8 @@ int main(int argc, char** argv) {
         bool stop_at_p = false;
         bool verify = false;
         bool memo_stats = false;
+        bool p_table = false;
+        int ncache_mb = -1;   // -1: unset
         std::size_t max_states = std::numeric_limits<std::size_t>::max();
         std::string stop_file;
         std::vector<int> moves;  // non-empty: a sweep of base+move for each listed odd move
@@ -933,6 +1062,12 @@ int main(int argc, char** argv) {
             } else if (option == "--verify-memo") {
                 verify = true;
                 first += 1;
+            } else if (option == "--p-table") {
+                p_table = true;
+                first += 1;
+            } else if (option == "--ncache-mb") {
+                ncache_mb = parse_int_option(option, value_of(1), 0, 1 << 22);
+                first += 2;
             } else if (option == "--memo-stats") {
                 memo_stats = true;
                 first += 1;
@@ -977,11 +1112,16 @@ int main(int argc, char** argv) {
         }
         if (argc <= first) {
             throw std::invalid_argument(
-                "usage: kunz_solver [--threads N] [--split-depth D] [--verify-memo [--verify-threads N]] [--memo-stats] "
+                "usage: kunz_solver [--threads N] [--split-depth D] [--verify-memo [--verify-threads N] | --p-table [--ncache-mb MB]] [--memo-stats] "
                 "[--odd-range START END | --odd-list MOVES [--stop-at-p] [--max-states N] [--stop-file PATH]] "
                 "GENERATOR... | kunz_solver --self-check");
         }
         if (verify_threads > 0 && !verify) throw std::invalid_argument("--verify-threads applies only with --verify-memo");
+        if (ncache_mb >= 0 && !p_table) throw std::invalid_argument("--ncache-mb applies only with --p-table");
+        if (p_table && verify) {
+            throw std::invalid_argument("--verify-memo reads every N entry, which --p-table does not keep");
+        }
+        const std::size_t ncache_bytes = static_cast<std::size_t>(ncache_mb < 0 ? 1024 : ncache_mb) << 20;
         if (threads > 1 && split_depth == 0) {
             throw std::invalid_argument("--split-depth 0 would make every thread repeat the same search");
         }
@@ -1013,6 +1153,7 @@ int main(int argc, char** argv) {
                 std::cout << "verified entries=" << entries << std::endl;
             }
             if (memo_stats) {
+                if (p_table) std::cerr << "kunz_solver: " << solver.ncache_report() << '\n';
                 const auto [slots, bytes] = solver.memo_footprint();
                 std::cerr << "kunz_solver: memo entries=" << solver.states_evaluated() << " slots=" << slots
                           << " bytes=" << bytes << '\n';
@@ -1052,6 +1193,7 @@ int main(int argc, char** argv) {
                 bound = std::max(bound, frobenius.back());
             }
             Solver solver(generators, bound, threads, split_depth);
+            if (p_table) solver.use_p_table(ncache_bytes);
             solver.limit_states(max_states);
             for (std::size_t i = 0; i < moves.size(); ++i) {
                 // A long sweep can end early at a row boundary, with its
@@ -1099,6 +1241,7 @@ int main(int argc, char** argv) {
                                         std::to_string(kMaximumBound));
         }
         Solver solver(generators, static_cast<int>(frobenius), threads, split_depth);
+        if (p_table) solver.use_p_table(ncache_bytes);
         solver.check_root(generators, static_cast<int>(frobenius));
         const int move = solver.solve();
         if (move < 0) throw std::logic_error("the root was not decided");
