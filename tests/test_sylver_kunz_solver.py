@@ -255,6 +255,70 @@ class KunzSolverTests(unittest.TestCase):
         # At most 7/8 of the slots are full; small shards may be far emptier.
         self.assertGreaterEqual(int(stats['slots']) * 7, states * 8)
 
+    def test_p_table_decides_every_position_like_native(self):
+        # --p-table keeps only P-positions. With a tiny N-cache, or none at
+        # all, an evicted N-position must be re-proved by the scan for a
+        # child already known P.
+        for index, gens in enumerate(random_positions(4141, 60, 110)):
+            options = ('--p-table', '--ncache-mb', (1, 0, 64)[index % 3], '--threads', (1, 2, 8)[index % 3],
+                       '--split-depth', (1, 3, 6)[index % 3])
+            self.assert_decides_like_native(gens, *options)
+            native = self.run_binary(self.native[2], *gens).split()
+            if native[0] == 'N':     # its child by the winning move is P: every one of its moves must be refuted
+                child = sorted({*gens, int(native[1].split('=')[1])})
+                self.assert_decides_like_native(child, *options)
+
+    def test_p_table_native_arch_build_decides_like_native(self):
+        for index, gens in enumerate(random_positions(4242, 20, 120)):
+            native = self.run_binary(self.native[2], *gens).split()
+            out = self.run_binary(self.kunz_arch, '--p-table', '--ncache-mb', 1, '--threads', 1 + index % 4, *gens).split()
+            self.assertEqual(out[0], native[0], gens)
+
+    def test_p_table_campaign_control(self):
+        # {16,26,33,62,89,102} is P with 1,721,485 states in the default mode;
+        # --p-table stores only its P-positions, a small fraction of them.
+        out = self.run_binary(self.kunz, '--p-table', '--threads', 1, 16, 26, 33, 62, 89, 102).split()   # the default cache
+        self.assertEqual(out[:3], ['P', 'winning_move=none', 'frobenius=119'])
+        self.assertLess(int(out[3].split('=')[1]), 1721485 // 5)
+        result = subprocess.run([str(self.kunz), '--p-table', '--ncache-mb', '1', '--memo-stats', '--threads', '4',
+                                 '16', '26', '33', '62', '89', '102'], capture_output=True, text=True, check=True)
+        self.assertEqual(result.stdout.split()[:3], ['P', 'winning_move=none', 'frobenius=119'])
+        cache = next(line for line in result.stderr.splitlines() if 'ncache' in line).split()
+        stats = dict(item.split('=') for item in cache[2:])
+        self.assertGreater(int(stats['evictions']), 0)     # a 1 MB cache overflows here
+        self.assertGreater(int(stats['hits']), 0)
+
+    def test_p_table_sweeps_decide_every_row_like_native(self):
+        for options in (('--threads', 1, '--ncache-mb', 16), ('--threads', 3, '--ncache-mb', 1)):
+            rows = self.run_binary(self.kunz, '--p-table', *options, '--odd-range', 3, 41, 16, 26).splitlines()
+            self.assertEqual(len(rows), 20)
+            for row in rows:
+                move, outcome, winning, frobenius = row.split()[:4]
+                move = move.split('=')[1]
+                single = self.run_binary(self.native[4], 16, 26, move).split()
+                self.assertEqual([outcome, frobenius], [single[0], single[2]], (options, row))
+                if outcome == 'N':   # the scan may name a winning move other than the least: its child must be P
+                    child = self.run_binary(self.native[4], 16, 26, move, winning.split('=')[1])
+                    self.assertEqual(child.split()[0], 'P', (options, row))
+        for threads in (1, 2):
+            rows = self.run_binary(self.kunz, '--p-table', '--ncache-mb', 1, '--threads', threads, '--stop-at-p',
+                                   '--odd-list', '5,11,7', 4, 6, 9).splitlines()
+            self.assertEqual([row.split()[:2] for row in rows], [['move=5', 'N'], ['move=11', 'P']])
+
+    def test_p_table_max_states_abandons_the_row_in_progress(self):
+        # --max-states counts P-positions. With one thread the sweep is
+        # deterministic, so a stopped sweep prints exactly the rows the full
+        # one prints first, and names the row it abandoned: no stale root
+        # result may stand in for it.
+        args = ['--p-table', '--threads', '1', '--ncache-mb', '1']
+        full = self.run_binary(self.kunz, *args, '--odd-range', 3, 41, 16, 26).splitlines()
+        stopped = subprocess.run([str(self.kunz), *args, '--max-states', '2000', '--odd-range', '3', '41', '16', '26'],
+                                 capture_output=True, text=True, check=True)
+        rows = stopped.stdout.splitlines()
+        self.assertTrue(0 < len(rows) < len(full), len(rows))
+        self.assertEqual(rows, full[:len(rows)])
+        self.assertRegex(stopped.stderr, rf'sweep stopped (during|before) move={3 + 2 * len(rows)} ')
+
     def test_rejects_bad_arguments(self):
         for args in (['--threads', '0', '4', '5'], ['--threads', 'x', '4', '5'], ['--split-depth', '-1', '4', '5'],
                      ['--bogus', '1', '4', '5'], ['4', '6'], ['--threads', '2'],
@@ -270,7 +334,10 @@ class KunzSolverTests(unittest.TestCase):
                      ['--max-states', '0', '--odd-list', '5', '4', '6', '9'],
                      ['--max-states', '12x', '--odd-list', '5', '4', '6', '9'], ['--max-states', '100', '4', '5'],
                      ['--stop-file', 'STOP', '4', '5'], ['--self-check', '4', '5'],
-                     ['--verify-threads', '2', '4', '5'], ['--verify-memo', '--verify-threads', '0', '4', '5']):
+                     ['--verify-threads', '2', '4', '5'], ['--verify-memo', '--verify-threads', '0', '4', '5'],
+                     # --ncache-mb needs --p-table, which cannot verify a memo it does not keep.
+                     ['--ncache-mb', '4', '4', '5'], ['--p-table', '--verify-memo', '4', '5'],
+                     ['--p-table', '--ncache-mb', '-1', '4', '5'], ['--p-table', '--ncache-mb', 'x', '4', '5']):
             result = subprocess.run([str(self.kunz), *args], capture_output=True, text=True)
             self.assertEqual(result.returncode, 1, args)
             self.assertEqual(result.stdout, '', args)
