@@ -44,9 +44,12 @@
 // (--ncache-mb) that overwrites old entries; its keys are exact, so a hit is
 // always right. Before recursing, a state's moves are scanned for a child
 // already known P, which re-proves an evicted N-position in one pass (and
-// often cuts a first search short). --max-states then counts P-positions;
-// a winning move found by that scan need not be the least one, and
-// --verify-memo, which reads every N entry, is refused.
+// often cuts a first search short). --max-states then counts P-positions,
+// as do states=, cumulative_states= and the "memo holds" messages. The cache
+// defaults to 1024 MB, allocated as it fills. A winning move found by the
+// scan need not be the least one, so with --threads 1 the output is no
+// longer native_solver.cpp's; --verify-memo, which reads every N entry, is
+// refused.
 
 #include <algorithm>
 #include <array>
@@ -299,15 +302,18 @@ class ShardedMemo {
 // under striped locks, each bucket replacing its entries in turn when full.
 class NCache {
   public:
+    // calloc: a large block comes straight from the kernel, whose zero pages
+    // are only touched (and counted) as buckets fill.
     void resize(std::size_t bytes) {
         buckets_ = bytes / sizeof(Bucket);
-        table_ = std::vector<Bucket>(buckets_);
+        table_.reset(buckets_ == 0 ? nullptr : static_cast<Bucket*>(std::calloc(buckets_, sizeof(Bucket))));
+        if (buckets_ != 0 && !table_) throw std::bad_alloc();
     }
 
     [[nodiscard]] int lookup(const Key& key, std::size_t hash) {
         if (buckets_ == 0) return -1;
         const std::size_t index = bucket(hash);
-        const Bucket& b = table_[index];
+        const Bucket& b = table_.get()[index];
         std::lock_guard guard(locks_[index % kLocks]);
         for (int way = 0; way < kWays; ++way) {
             if (b.used[way] && (b.low[way] & kKeyBitsLow) == key.low && b.high[way] == key.high) {
@@ -321,7 +327,7 @@ class NCache {
     void insert(const Key& key, std::size_t hash, int value) {
         if (buckets_ == 0) return;
         const std::size_t index = bucket(hash);
-        Bucket& b = table_[index];
+        Bucket& b = table_.get()[index];
         std::lock_guard guard(locks_[index % kLocks]);
         int way = -1;
         for (int w = 0; w < kWays; ++w) {
@@ -347,17 +353,20 @@ class NCache {
   private:
     static constexpr int kWays = 4;
     static constexpr std::size_t kLocks = std::size_t{1} << 16;
-    struct Bucket {
-        std::uint64_t low[kWays]{};
-        std::uint64_t high[kWays]{};
-        std::uint8_t used[kWays]{};
-        std::uint8_t next = 0;
+    struct Bucket {   // trivial, so calloc's zero bytes are an empty bucket
+        std::uint64_t low[kWays];
+        std::uint64_t high[kWays];
+        std::uint8_t used[kWays];
+        std::uint8_t next;
+    };
+    struct Free {
+        void operator()(Bucket* table) const { std::free(table); }
     };
     // Bits 16-63 of the hash pick the bucket.
     [[nodiscard]] std::size_t bucket(std::size_t hash) const { return (hash >> 16) % buckets_; }
 
     std::size_t buckets_ = 0;
-    std::vector<Bucket> table_;
+    std::unique_ptr<Bucket, Free> table_;
     std::vector<SpinLock> locks_ = std::vector<SpinLock>(kLocks);
     std::atomic<std::uint64_t> hits_{0};
     std::atomic<std::uint64_t> inserts_{0};
@@ -842,8 +851,6 @@ class Solver {
         throw std::logic_error("the root was not decided");
     }
 
-    // Counts stored states in batches per thread; past the limit, every
-    // search thread stops (as if the root were decided elsewhere).
     // A known outcome: 0 for P, the winning move of an N-position, or -1.
     [[nodiscard]] int lookup(const Key& key, std::size_t hash) {
         if (!p_table_) return memo_.lookup(key, hash);
@@ -877,6 +884,8 @@ class Solver {
         count_insert();
     }
 
+    // Counts stored states in batches per thread; past the limit, every
+    // search thread stops (as if the root were decided elsewhere).
     void count_insert() {
         thread_local std::size_t pending = 0;
         if (++pending < kCountBatch) return;

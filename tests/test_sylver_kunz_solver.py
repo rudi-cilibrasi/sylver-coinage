@@ -277,7 +277,7 @@ class KunzSolverTests(unittest.TestCase):
     def test_p_table_campaign_control(self):
         # {16,26,33,62,89,102} is P with 1,721,485 states in the default mode;
         # --p-table stores only its P-positions, a small fraction of them.
-        out = self.run_binary(self.kunz, '--p-table', '--threads', 1, 16, 26, 33, 62, 89, 102).split()
+        out = self.run_binary(self.kunz, '--p-table', '--ncache-mb', 16, '--threads', 1, 16, 26, 33, 62, 89, 102).split()
         self.assertEqual(out[:3], ['P', 'winning_move=none', 'frobenius=119'])
         self.assertLess(int(out[3].split('=')[1]), 1721485 // 5)
         result = subprocess.run([str(self.kunz), '--p-table', '--ncache-mb', '1', '--memo-stats', '--threads', '4',
@@ -289,7 +289,7 @@ class KunzSolverTests(unittest.TestCase):
         self.assertGreater(int(stats['hits']), 0)
 
     def test_p_table_sweeps_decide_every_row_like_native(self):
-        for options in (('--threads', 1), ('--threads', 3, '--ncache-mb', 1)):
+        for options in (('--threads', 1, '--ncache-mb', 16), ('--threads', 3, '--ncache-mb', 1)):
             rows = self.run_binary(self.kunz, '--p-table', *options, '--odd-range', 3, 41, 16, 26).splitlines()
             self.assertEqual(len(rows), 20)
             for row in rows:
@@ -301,9 +301,23 @@ class KunzSolverTests(unittest.TestCase):
                     child = self.run_binary(self.native[4], 16, 26, move, winning.split('=')[1])
                     self.assertEqual(child.split()[0], 'P', (options, row))
         for threads in (1, 2):
-            rows = self.run_binary(self.kunz, '--p-table', '--threads', threads, '--stop-at-p',
+            rows = self.run_binary(self.kunz, '--p-table', '--ncache-mb', 1, '--threads', threads, '--stop-at-p',
                                    '--odd-list', '5,11,7', 4, 6, 9).splitlines()
             self.assertEqual([row.split()[:2] for row in rows], [['move=5', 'N'], ['move=11', 'P']])
+
+    def test_p_table_max_states_abandons_the_row_in_progress(self):
+        # --max-states counts P-positions. With one thread the sweep is
+        # deterministic, so a stopped sweep prints exactly the rows the full
+        # one prints first, and names the row it abandoned: no stale root
+        # result may stand in for it.
+        args = ['--p-table', '--threads', '1', '--ncache-mb', '1']
+        full = self.run_binary(self.kunz, *args, '--odd-range', 3, 41, 16, 26).splitlines()
+        stopped = subprocess.run([str(self.kunz), *args, '--max-states', '2000', '--odd-range', '3', '41', '16', '26'],
+                                 capture_output=True, text=True, check=True)
+        rows = stopped.stdout.splitlines()
+        self.assertTrue(0 < len(rows) < len(full), len(rows))
+        self.assertEqual(rows, full[:len(rows)])
+        self.assertRegex(stopped.stderr, rf'sweep stopped (during|before) move={3 + 2 * len(rows)} ')
 
     def test_rejects_bad_arguments(self):
         for args in (['--threads', '0', '4', '5'], ['--threads', 'x', '4', '5'], ['--split-depth', '-1', '4', '5'],
