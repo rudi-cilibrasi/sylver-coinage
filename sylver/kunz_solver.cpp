@@ -46,7 +46,8 @@
 // already known P, which re-proves an evicted N-position in one pass (and
 // often cuts a first search short). --max-states then counts P-positions,
 // as do states=, cumulative_states= and the "memo holds" messages. The cache
-// defaults to 1024 MB, allocated as it fills. A winning move found by the
+// defaults to 1024 MB; its pages are touched as it fills, which in a large
+// search is soon all of them, so count it as resident. A winning move found by the
 // scan need not be the least one, so with --threads 1 the output is no
 // longer native_solver.cpp's; --verify-memo, which reads every N entry, is
 // refused.
@@ -65,12 +66,14 @@
 #include <limits>
 #include <memory>
 #include <mutex>
+#include <new>
 #include <numeric>
 #include <queue>
 #include <stdexcept>
 #include <string>
 #include <system_error>
 #include <thread>
+#include <type_traits>
 #include <utility>
 #include <vector>
 
@@ -305,9 +308,10 @@ class NCache {
     // calloc: a large block comes straight from the kernel, whose zero pages
     // are only touched (and counted) as buckets fill.
     void resize(std::size_t bytes) {
-        buckets_ = bytes / sizeof(Bucket);
-        table_.reset(buckets_ == 0 ? nullptr : static_cast<Bucket*>(std::calloc(buckets_, sizeof(Bucket))));
-        if (buckets_ != 0 && !table_) throw std::bad_alloc();
+        const std::size_t buckets = bytes / sizeof(Bucket);
+        table_.reset(buckets == 0 ? nullptr : static_cast<Bucket*>(std::calloc(buckets, sizeof(Bucket))));
+        if (buckets != 0 && !table_) throw std::bad_alloc();
+        buckets_ = buckets;
     }
 
     [[nodiscard]] int lookup(const Key& key, std::size_t hash) {
@@ -359,6 +363,7 @@ class NCache {
         std::uint8_t used[kWays];
         std::uint8_t next;
     };
+    static_assert(std::is_trivial_v<Bucket>, "calloc's zero bytes must be an empty bucket");
     struct Free {
         void operator()(Bucket* table) const { std::free(table); }
     };

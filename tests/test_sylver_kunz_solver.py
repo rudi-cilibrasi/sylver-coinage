@@ -277,7 +277,7 @@ class KunzSolverTests(unittest.TestCase):
     def test_p_table_campaign_control(self):
         # {16,26,33,62,89,102} is P with 1,721,485 states in the default mode;
         # --p-table stores only its P-positions, a small fraction of them.
-        out = self.run_binary(self.kunz, '--p-table', '--ncache-mb', 16, '--threads', 1, 16, 26, 33, 62, 89, 102).split()
+        out = self.run_binary(self.kunz, '--p-table', '--threads', 1, 16, 26, 33, 62, 89, 102).split()   # the default cache
         self.assertEqual(out[:3], ['P', 'winning_move=none', 'frobenius=119'])
         self.assertLess(int(out[3].split('=')[1]), 1721485 // 5)
         result = subprocess.run([str(self.kunz), '--p-table', '--ncache-mb', '1', '--memo-stats', '--threads', '4',
