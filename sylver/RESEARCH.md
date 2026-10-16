@@ -1854,6 +1854,27 @@ Search for an answer to 38, recorded in
 - **Tally.** Unchanged: of {16,38}'s 98 obligations, 65 are N (11 certified,
   54 by search) and 33 are open. No answer to 38 is known.
 
+### Attempt 43 — a P-table engine for the hunt (2026-10-16)
+
+Search for an answer to 38, recorded in
+[the reply-38 record](campaigns/r38-2026-10-09/RESULT.md#the-search-for-an-answer-to-38)
+(discovery results, not certified).
+
+- **The wall.** At 1.6 billion states (about 38 GB of memo) the witness hunt
+  over 72's four open children stalled: of 98 fresh replies, 85 stopped at
+  the cap.
+- **The engine.** Most of a memo is N-positions: on one 125-million-state
+  search, 6% of the entries are P. `kunz_solver.cpp --p-table` (PR #56) keeps
+  only P-positions, puts N-positions in a fixed-size cache, and re-proves an
+  evicted N through a child already known P. A prototype of it decided 13
+  recorded hunt results the same way (outcome and least winning move) with 3
+  to 11 percent as many memo entries, in about the same total time.
+- **The hunt.** With it and its prototype, the hunt settled 53 replies the cap had stopped, each
+  with 49 to 80 million P-positions, and 8 more by the partner rule. All are
+  N, so 72 still hinges on 68, 78, 100 and 116; the hunt goes on.
+- **Tally.** Unchanged: of {16,38}'s 98 obligations, 65 are N (11 certified,
+  54 by search) and 33 are open. No answer to 38 is known.
+
 ### Sources
 
 - <https://math.colgate.edu/~integers/yg2/yg2.pdf>

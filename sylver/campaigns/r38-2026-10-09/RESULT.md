@@ -175,6 +175,17 @@ discovery output, not certified.
       with a cap of 1,600,000,000 states. By 17:50 it had solved 24 of them,
       each needing between 1.00 and 1.41 billion states; none stopped at the
       new cap. {16,38,72,154} is won by 119 and {16,38,72,106} by 137.
+    - The retries went on to October 13 at 03:40 without another witness:
+      33 more replies are N, and 116+151 stopped at the new cap. A pass over
+      fresh replies at that cap, each step going to the child searched least
+      far in its order, ran from 03:42 to October 14 at 14:29: 13 N, and 85
+      stopped at the cap.
+    - From October 14 the hunt used the P-table engine
+      (`sylver/kunz_solver.cpp --p-table`, PR #56; a prototype of it until
+      October 15), which keeps only P-positions in its memo, on the replies
+      the cap had stopped. By October 16 at 12:40 it had settled 53 of them,
+      each with 49 to 80 million P-positions, and 8 more by the partner rule.
+      All are N: no witness.
     - So, by search, 72 answers 38 exactly when its four open long children,
       68, 78, 100 and 116, are all N; one P among them refutes it.
     - 88's obligation 72 leads back to {16,38,72}.
