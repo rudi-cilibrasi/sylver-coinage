@@ -1,0 +1,14 @@
+ok  [16, 38, 72, 132] 75 want ('P', 'none') got ('P', 'none') P-table 18365435 vs states 355076111 296s
+ok  [16, 38, 72, 78] 155 want ('N', '33') got ('N', '33') P-table 4308733 vs states 90549333 192s
+ok  [16, 38, 72, 116] 79 want ('N', '93') got ('N', '93') P-table 20075233 vs states 392927678 307s
+ok  [16, 38, 72, 132] 65 want ('N', '133') got ('N', '133') P-table 12077591 vs states 224118023 317s
+ok  [16, 38, 72, 100] 123 want ('N', '36') got ('N', '36') P-table 19028728 vs states 366671663 302s
+ok  [16, 38, 72, 100] 141 want ('N', '35') got ('N', '35') P-table 8786561 vs states 146621786 100s
+ok  [16, 38, 72, 78] 153 want ('N', '22') got ('N', '22') P-table 8554874 vs states 153516671 92s
+ok  [16, 38, 72, 154] 93 want ('N', '47') got ('N', '47') P-table 16500816 vs states 283015500 241s
+ok  [16, 38, 72, 100] 181 want ('N', '22') got ('N', '22') P-table 11119305 vs states 341270802 148s
+ok  [16, 38, 72, 106] 103 want ('N', '30') got ('N', '30') P-table 7171146 vs states 105830137 63s
+ok  [16, 38, 72, 106] 99 want ('N', '8') got ('N', '8') P-table 269668 vs states 2417104 2s
+ok  [16, 38, 72, 116] 121 want ('N', '26') got ('N', '26') P-table 5176151 vs states 79849838 47s
+ok  [16, 38, 72, 116] 109 want ('N', '30') got ('N', '30') P-table 7111831 vs states 112417635 99s
+mismatches: 0 of 13

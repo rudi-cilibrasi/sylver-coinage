@@ -10,11 +10,15 @@ Appends one JSON line per reply to hunt.jsonl; a child stops at its first witnes
 Usage: hunt.py CAP [--retry-capped] [--balance]  (the children and their starting points are in CHILDREN below)
 With --balance, each step goes to the child whose next queued reply comes earliest in its
 resolver order, so the children are searched to about the same depth; otherwise round-robin.
+The engine and limits come from the environment (HUNT_ENGINE, HUNT_NCACHE_MB, HUNT_THREADS,
+HUNT_TIMEOUT, HUNT_MIN_START_GB). Rows from the P-table engines carry 'engine' (their states and
+cap count P-positions), and in --retry-capped a cap counts only for the engine that hit it. A
+solve stopped by SIGTERM (memguard.sh) is logged 'interrupted' and tried again later.
 With --retry-capped, each child's queue is instead the replies earlier runs left at a smaller
 cap, in the same order, each tried once at CAP. Rows record their cap; rows without one ran at
 1.2e9 (October 10, 03:55 to 07:32) or 1e9, and count as 1e9 here, below any retry cap.
 """
-import json, os, subprocess, sys, time
+import json, os, signal, subprocess, sys, time
 from pathlib import Path
 sys.path.insert(0, '/home/ruclaw/src/sylver-coinage')
 from sylver.arena.common import legal, position  # noqa: E402
@@ -155,8 +159,9 @@ def step(c, s):
            'returncode': returncode, 'seconds': round(time.monotonic() - t0, 1), 'cap': CAP}
     if timed_out:
         rec['timeout'] = TIMEOUT
-    elif not rows and isinstance(returncode, int) and returncode < 0:
-        rec['interrupted'] = -returncode      # killed by a signal (the memory guard): not a cap; tried again later
+    elif not rows and returncode == -signal.SIGTERM:
+        rec['interrupted'] = signal.SIGTERM   # stopped by memguard.sh: not a cap; tried again later
+        # (a crash, such as SIGSEGV or SIGABRT, stays a capped row, so it is not retried forever)
     if ENGINE != 'kunz':        # rows from another engine say so; its states and cap count P entries
         rec['engine'] = ENGINE
     log(rec)

@@ -1866,9 +1866,10 @@ Search for an answer to 38, recorded in
 - **The engine.** Most of a memo is N-positions: on one 125-million-state
   search, 6% of the entries are P. `kunz_solver.cpp --p-table` (PR #56) keeps
   only P-positions, puts N-positions in a fixed-size cache, and re-proves an
-  evicted N through a child already known P; it decided the same outcomes
-  with 3 to 11 percent of the memo entries, at about the same speed.
-- **The hunt.** With it, the hunt settled 53 replies the cap had stopped, each
+  evicted N through a child already known P. A prototype of it decided 13
+  recorded hunt results the same way (outcome and least winning move) with 3
+  to 11 percent as many memo entries, in about the same total time.
+- **The hunt.** With it and its prototype, the hunt settled 53 replies the cap had stopped, each
   with 49 to 80 million P-positions, and 8 more by the partner rule. All are
   N, so 72 still hinges on 68, 78, 100 and 116; the hunt goes on.
 - **Tally.** Unchanged: of {16,38}'s 98 obligations, 65 are N (11 certified,

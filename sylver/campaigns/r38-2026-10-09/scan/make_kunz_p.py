@@ -7,6 +7,7 @@ always right. Before recursing, a state's moves are scanned for a child already 
 """
 from pathlib import Path
 
+# The source as it was before PR #56 (git show 76e19be:sylver/kunz_solver.cpp); the merged file fails the asserts.
 SRC = Path('/home/ruclaw/src/sylver-coinage/sylver/kunz_solver.cpp')
 OUT = Path(__file__).resolve().parent / 'kunz_p.cpp'
 s = SRC.read_text()
