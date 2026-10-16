@@ -23,7 +23,7 @@ The certificate's audit does not use this file.
 | each of the seven open odd candidates alone (October 10) | `./odd_queue.sh`: `kunz --threads 8 --stop-at-p --max-states 1700000000 --memo-stats --odd-list M 16 38` per candidate | `odd_queue.*`, `odd_queue_<M>.err` |
 | 109, 117 and 125 again, alone at 2.1 billion states | `./odd_retry.sh` (`--max-states 2100000000`) | `odd_retry.*`, `odd_retry_<M>.err` |
 | a deeper pass over the 27 long candidates the map searched with 150M batches (October 10–11) | `./deep_long.sh`: `deep_witness.py --done-count K --also SKIPPED --threads 4 --max-states 700000000 --max-skips 8 16 38 E`, an hour each, with K the map's `odd_tried` (so one to three replies the map had classified are run again) | `deep_long.*`, `deep_16-38-<E>.jsonl` |
-| 72's open long children: a round-robin witness hunt, each reply alone with the partner rule | `python hunt.py 1200000000` on October 10 from 03:55 to 07:32, then `python hunt.py 1000000000` from 13:21, restarted on October 12 at 04:29 and 04:45 and stopped at 04:52 (children and starts in the script and `hunt_children.json`); from 09:01 `./hunt_retry.sh` (`python hunt.py 1600000000 --retry-capped`), restarted at 09:27 by `./hunt_restart.sh` | `hunt.*` |
+| 72's open long children: a round-robin witness hunt, each reply alone with the partner rule | `python hunt.py 1200000000` on October 10 from 03:55 to 07:32, then `python hunt.py 1000000000` from 13:21, restarted on October 12 at 04:29 and 04:45 and stopped at 04:52 (children and starts in the script and `hunt_children.json`); from 09:01 `./hunt_retry.sh` (`python hunt.py 1600000000 --retry-capped`), restarted at 09:27 by `./hunt_restart.sh` and at 18:08 with 10 threads by `./hunt_restart2.sh`, to October 13 at 03:40; fresh replies (`python hunt.py 1600000000 --balance`) from 03:42 to October 14 at 14:33; then the P-table engine on the capped replies (`--retry-capped --balance`, 3 h per reply): `HUNT_ENGINE=kunz_p`, the prototype `make_kunz_p.py` derives, from 15:19 (8 GB cache) and 16:27 (24 GB); `HUNT_ENGINE=kunz_pt`, `sylver/kunz_solver.cpp --p-table` at e335ff0 (16 GB cache), from October 15 at 08:42, and from October 16 at 13:25 under `./hunt_supervisor.sh` with `./memguard.sh` | `hunt.*` |
 | the children of 109, 117 and 125, cheapest first (October 12) | from 04:53 `./child_queue2.sh` (all children, 200M), stopped at 05:26; then `./child_queue3.sh` (`child_sweep.py W --parity even --max-states 200000000`, 3 h each) and `./child_queue4.sh` (`--parity odd --max-states 250000000`, 4 h each) | `child_16-38-<W>.jsonl`, `child_sweep*`, `pair_hard.log` |
 | a second deeper pass, first over the four long candidates the first pass had not covered (October 12) | `./deep_long2.sh`, stopped after it began 46, then `./deep_long2b.sh`: `deep_witness2.py --done-count K --also SKIPPED --exclude DONE --threads 4 --max-states 700000000 --max-skips 12 16 38 E`, two hours each, with DONE the replies the first pass classified or gave up on | `deep_long2.*`, `deep_16-38-<E>.jsonl` (E = 42, 46, 234, 250) |
 | even obligations of a candidate a | `python even_resolver.py A` | `even_A.jsonl` (A = 8, 24, 40, 56, 72, 88) |
@@ -69,7 +69,10 @@ Notes:
   which counts all 63 even obligations of {16,38}; only the 46 long ones
   were mapped. The map has finished.
 - `deep_long.*` are complete: the pass finished on October 11 at 15:15. `hunt.*` is a snapshot of
-  the retry run, still going, taken on October 12 at about 17:55 (the last row is from 17:50).
+  a run still going, taken on October 16 at about 13:30. Two stops left no line in `hunt.log`:
+  Claude Code reclaimed memory at about 18:55 on October 14 (the `kunz_p` run's reply in
+  progress, 116+159, was lost), and a session exit stopped the `kunz_pt` run at about 12:45 on
+  October 16; each run resumed from the rows.
   `deep_16-38-<E>.jsonl` is included for every candidate
   that finished a batch (all but 106, which has no file). `status.py` counts a batch with a P reply as a witness. `even_72.*`
   include the resumed resolver's last obligation, 170 (`even_resolver.py 72 --threads 2
@@ -88,6 +91,19 @@ Notes:
   - logs a partner witness even when it is not queued, and no longer names its timer `start`,
     which clashed with the function and would have crashed a run that added a child midway
     (both found in review, after the rows before 09:27; none of the rows has such a witness).
+- `hunt.py` as of October 16 also:
+  - takes its engine and limits from the environment: `HUNT_ENGINE` (`kunz`, `kunz_p` or
+    `kunz_pt`), `HUNT_NCACHE_MB`, `HUNT_THREADS`, `HUNT_TIMEOUT` (seconds per reply; a reply
+    that runs out is a row with `timeout`) and `HUNT_MIN_START_GB` (a solve starts only with
+    that much memory available);
+  - with `--balance`, gives each step to the child whose next reply comes earliest in its order;
+  - marks rows from the P-table engines with `engine`; their `states` and `cap` count
+    P-positions, and in `--retry-capped` a cap counts only for the engine that hit it;
+  - logs a solve that a signal stopped (`memguard.sh`, below 6 GB available) as `interrupted`,
+    not a cap, and tries it again later.
+- `make_kunz_p.py` derived the prototype `kunz_p` (rows with `"engine": "kunz_p"`) from
+  `sylver/kunz_solver.cpp` as it was before PR #56, which merged the same idea as
+  `--p-table`.
 - `deep_witness2.py` is `deep_witness.py` with `--exclude` and streamed rows: a sweep stopped
   by `timeout` records the rows of its batch in progress, with `returncode` "timeout" (234's
   and 250's last batches). `deep_long2.sh` set K to the map's `odd_tried`, which counts only classified

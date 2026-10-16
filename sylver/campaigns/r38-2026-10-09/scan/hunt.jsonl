@@ -307,3 +307,196 @@
 {"child": [16, 38, 68, 72], "w": 209, "outcome": "N", "winning_move": "211", "states": 1133297829, "returncode": 0, "seconds": 1144.0, "cap": 1600000000}
 {"child": [16, 38, 68, 72], "w": 211, "outcome": "N", "winning_move": "209", "states": null, "via": "partner of 209"}
 {"child": [16, 38, 72, 78], "w": 161, "outcome": "N", "winning_move": "169", "states": 1177571014, "returncode": 0, "seconds": 1527.3, "cap": 1600000000}
+{"child": [16, 38, 72, 100], "w": 155, "outcome": "N", "winning_move": "103", "states": 1379386725, "returncode": 0, "seconds": 1092.6, "cap": 1600000000}
+{"child": [16, 38, 68, 72], "w": 213, "outcome": "N", "winning_move": "187", "states": 1146167352, "returncode": 0, "seconds": 890.2, "cap": 1600000000}
+{"child": [16, 38, 72, 78], "w": 163, "outcome": "N", "winning_move": "167", "states": 1197943152, "returncode": 0, "seconds": 1072.3, "cap": 1600000000}
+{"child": [16, 38, 72, 100], "w": 157, "outcome": "N", "winning_move": "159", "states": 1528897190, "returncode": 0, "seconds": 1946.2, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 137, "outcome": "N", "winning_move": "79", "states": 1146874214, "returncode": 0, "seconds": 680.9, "cap": 1600000000}
+{"child": [16, 38, 68, 72], "w": 215, "outcome": "N", "winning_move": "305", "states": 1183741961, "returncode": 0, "seconds": 989.9, "cap": 1600000000}
+{"child": [16, 38, 72, 78], "w": 165, "outcome": "N", "winning_move": "211", "states": 1223387456, "returncode": 0, "seconds": 1162.3, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 139, "outcome": "N", "winning_move": "84", "states": 1408999196, "returncode": 0, "seconds": 1069.3, "cap": 1600000000}
+{"child": [16, 38, 68, 72], "w": 217, "outcome": "N", "winning_move": "213", "states": 1191748529, "returncode": 0, "seconds": 1029.6, "cap": 1600000000}
+{"child": [16, 38, 72, 78], "w": 171, "outcome": "N", "winning_move": "121", "states": 1224722083, "returncode": 0, "seconds": 757.4, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 145, "outcome": "N", "winning_move": "84", "states": 1521326603, "returncode": 0, "seconds": 1053.4, "cap": 1600000000}
+{"child": [16, 38, 68, 72], "w": 219, "outcome": "N", "winning_move": "229", "states": 1211212968, "returncode": 0, "seconds": 1020.0, "cap": 1600000000}
+{"child": [16, 38, 72, 78], "w": 173, "outcome": "N", "winning_move": "191", "states": 1315344526, "returncode": 0, "seconds": 997.0, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 149, "outcome": "N", "winning_move": "131", "states": 1586062439, "returncode": 0, "seconds": 1173.7, "cap": 1600000000}
+{"child": [16, 38, 68, 72], "w": 221, "outcome": "N", "winning_move": "187", "states": 1198157466, "returncode": 0, "seconds": 754.3, "cap": 1600000000}
+{"child": [16, 38, 72, 78], "w": 175, "outcome": "N", "winning_move": "91", "states": 1110293577, "returncode": 0, "seconds": 944.1, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 151, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1238.9, "cap": 1600000000}
+{"child": [16, 38, 68, 72], "w": 223, "outcome": "N", "winning_move": "66", "states": 1241413094, "returncode": 0, "seconds": 803.1, "cap": 1600000000}
+{"child": [16, 38, 72, 78], "w": 179, "outcome": "N", "winning_move": "199", "states": 1381675778, "returncode": 0, "seconds": 1122.5, "cap": 1600000000}
+{"child": [16, 38, 68, 72], "w": 225, "outcome": "N", "winning_move": "185", "states": 1221121352, "returncode": 0, "seconds": 1281.7, "cap": 1600000000}
+{"child": [16, 38, 72, 78], "w": 181, "outcome": "N", "winning_move": "167", "states": 1397326892, "returncode": 0, "seconds": 982.5, "cap": 1600000000}
+{"child": [16, 38, 68, 72], "w": 227, "outcome": "N", "winning_move": "171", "states": 1211968971, "returncode": 0, "seconds": 899.2, "cap": 1600000000}
+{"child": [16, 38, 68, 72], "w": 231, "outcome": "N", "winning_move": "181", "states": 1237706845, "returncode": 0, "seconds": 779.2, "cap": 1600000000}
+{"child": [16, 38, 68, 72], "w": 233, "outcome": "N", "winning_move": "223", "states": 1308697413, "returncode": 0, "seconds": 997.4, "cap": 1600000000}
+{"child": [16, 38, 68, 72], "w": 235, "outcome": "N", "winning_move": "207", "states": 1305620785, "returncode": 0, "seconds": 1721.8, "cap": 1600000000}
+{"child": [16, 38, 68, 72], "w": 237, "outcome": "N", "winning_move": "209", "states": 1322773310, "returncode": 0, "seconds": 846.7, "cap": 1600000000}
+{"child": [16, 38, 68, 72], "w": 239, "outcome": "N", "winning_move": "181", "states": 1258808715, "returncode": 0, "seconds": 863.1, "cap": 1600000000}
+{"child": [16, 38, 68, 72], "w": 241, "outcome": "N", "winning_move": "217", "states": 1352616735, "returncode": 0, "seconds": 1175.3, "cap": 1600000000}
+{"child": [16, 38, 68, 72], "w": 243, "outcome": "N", "winning_move": "219", "states": 1367774497, "returncode": 0, "seconds": 1162.0, "cap": 1600000000}
+{"child": [16, 38, 68, 72], "w": 245, "outcome": "N", "winning_move": "303", "states": 1406496581, "returncode": 0, "seconds": 955.1, "cap": 1600000000}
+{"child": [16, 38, 68, 72], "w": 247, "outcome": "N", "winning_move": "165", "states": 1263702286, "returncode": 0, "seconds": 934.2, "cap": 1600000000}
+{"child": [16, 38, 68, 72], "w": 249, "outcome": "N", "winning_move": "229", "states": 1417156675, "returncode": 0, "seconds": 913.5, "cap": 1600000000}
+{"child": [16, 38, 68, 72], "w": 251, "outcome": "N", "winning_move": "153", "states": 1239457321, "returncode": 0, "seconds": 889.1, "cap": 1600000000}
+{"child": [16, 38, 68, 72], "w": 253, "outcome": "N", "winning_move": "347", "states": 1463939544, "returncode": 0, "seconds": 1190.4, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 153, "outcome": "N", "winning_move": "69", "states": 1088013474, "returncode": 0, "seconds": 722.0, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 155, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1512.5, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 157, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1012.3, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 159, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1032.1, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 161, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1108.4, "cap": 1600000000}
+{"child": [16, 38, 72, 100], "w": 163, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1794.3, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 163, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1406.5, "cap": 1600000000}
+{"child": [16, 38, 72, 100], "w": 165, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1267.5, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 165, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1424.2, "cap": 1600000000}
+{"child": [16, 38, 72, 100], "w": 167, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1255.1, "cap": 1600000000}
+{"child": [16, 38, 72, 100], "w": 169, "outcome": "N", "winning_move": "103", "states": 1548366482, "returncode": 0, "seconds": 1179.1, "cap": 1600000000}
+{"child": [16, 38, 72, 100], "w": 171, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1173.5, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 171, "outcome": "N", "winning_move": "81", "states": 1479021333, "returncode": 0, "seconds": 918.9, "cap": 1600000000}
+{"child": [16, 38, 72, 100], "w": 173, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1321.5, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 173, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1152.7, "cap": 1600000000}
+{"child": [16, 38, 72, 100], "w": 175, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1043.7, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 175, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 967.7, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 177, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1064.4, "cap": 1600000000}
+{"child": [16, 38, 72, 100], "w": 179, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1151.1, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 179, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1119.2, "cap": 1600000000}
+{"child": [16, 38, 72, 100], "w": 181, "outcome": "N", "winning_move": "22", "states": 341270802, "returncode": 0, "seconds": 141.8, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 181, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1131.4, "cap": 1600000000}
+{"child": [16, 38, 72, 78], "w": 183, "outcome": "N", "winning_move": "77", "states": 964087179, "returncode": 0, "seconds": 2196.9, "cap": 1600000000}
+{"child": [16, 38, 72, 100], "w": 183, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 6251.1, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 183, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 4392.4, "cap": 1600000000}
+{"child": [16, 38, 72, 100], "w": 185, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 3175.7, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 185, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 2259.1, "cap": 1600000000}
+{"child": [16, 38, 72, 78], "w": 187, "outcome": "N", "winning_move": "65", "states": 742244349, "returncode": 0, "seconds": 1411.9, "cap": 1600000000}
+{"child": [16, 38, 72, 100], "w": 187, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 2082.9, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 187, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1341.4, "cap": 1600000000}
+{"child": [16, 38, 72, 78], "w": 189, "outcome": "N", "winning_move": "159", "states": 1476792776, "returncode": 0, "seconds": 1295.4, "cap": 1600000000}
+{"child": [16, 38, 72, 100], "w": 189, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1369.5, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 189, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 2152.1, "cap": 1600000000}
+{"child": [16, 38, 72, 100], "w": 191, "outcome": "N", "winning_move": "85", "states": 1481746378, "returncode": 0, "seconds": 1423.6, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 191, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 2193.9, "cap": 1600000000}
+{"child": [16, 38, 72, 78], "w": 193, "outcome": "N", "winning_move": "159", "states": 1514266421, "returncode": 0, "seconds": 1564.3, "cap": 1600000000}
+{"child": [16, 38, 72, 100], "w": 193, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1267.0, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 193, "outcome": "N", "winning_move": "71", "states": 1373915692, "returncode": 0, "seconds": 1223.2, "cap": 1600000000}
+{"child": [16, 38, 72, 78], "w": 195, "outcome": "N", "winning_move": "89", "states": 1181216866, "returncode": 0, "seconds": 880.5, "cap": 1600000000}
+{"child": [16, 38, 72, 100], "w": 195, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1286.1, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 195, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1401.6, "cap": 1600000000}
+{"child": [16, 38, 72, 78], "w": 197, "outcome": "N", "winning_move": "163", "states": 1556567056, "returncode": 0, "seconds": 1179.0, "cap": 1600000000}
+{"child": [16, 38, 72, 100], "w": 197, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1084.6, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 197, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1085.7, "cap": 1600000000}
+{"child": [16, 38, 72, 100], "w": 199, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1676.0, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 199, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1232.9, "cap": 1600000000}
+{"child": [16, 38, 72, 78], "w": 201, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1137.7, "cap": 1600000000}
+{"child": [16, 38, 72, 100], "w": 201, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1016.9, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 201, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1056.7, "cap": 1600000000}
+{"child": [16, 38, 72, 78], "w": 203, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1031.7, "cap": 1600000000}
+{"child": [16, 38, 72, 100], "w": 203, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 997.6, "cap": 1600000000}
+{"child": [16, 38, 72, 78], "w": 205, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1106.9, "cap": 1600000000}
+{"child": [16, 38, 72, 78], "w": 207, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1026.9, "cap": 1600000000}
+{"child": [16, 38, 72, 100], "w": 207, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1123.0, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 207, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1226.6, "cap": 1600000000}
+{"child": [16, 38, 72, 78], "w": 209, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1226.2, "cap": 1600000000}
+{"child": [16, 38, 72, 100], "w": 209, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 957.7, "cap": 1600000000}
+{"child": [16, 38, 72, 100], "w": 211, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1065.3, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 211, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1193.4, "cap": 1600000000}
+{"child": [16, 38, 72, 100], "w": 213, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1175.4, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 213, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1300.5, "cap": 1600000000}
+{"child": [16, 38, 72, 78], "w": 215, "outcome": "N", "winning_move": "50", "states": 1455251098, "returncode": 0, "seconds": 1318.3, "cap": 1600000000}
+{"child": [16, 38, 72, 100], "w": 215, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1496.6, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 215, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1044.5, "cap": 1600000000}
+{"child": [16, 38, 72, 78], "w": 217, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1038.8, "cap": 1600000000}
+{"child": [16, 38, 72, 100], "w": 217, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1023.5, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 217, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1236.0, "cap": 1600000000}
+{"child": [16, 38, 72, 78], "w": 219, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1047.8, "cap": 1600000000}
+{"child": [16, 38, 72, 100], "w": 219, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 975.7, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 219, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1075.0, "cap": 1600000000}
+{"child": [16, 38, 72, 78], "w": 221, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1011.3, "cap": 1600000000}
+{"child": [16, 38, 72, 100], "w": 221, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 921.8, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 221, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 921.6, "cap": 1600000000}
+{"child": [16, 38, 72, 78], "w": 223, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1051.8, "cap": 1600000000}
+{"child": [16, 38, 72, 100], "w": 223, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 907.0, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 223, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 905.1, "cap": 1600000000}
+{"child": [16, 38, 72, 78], "w": 225, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 938.1, "cap": 1600000000}
+{"child": [16, 38, 72, 100], "w": 225, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1054.7, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 225, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1321.3, "cap": 1600000000}
+{"child": [16, 38, 72, 78], "w": 227, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1142.2, "cap": 1600000000}
+{"child": [16, 38, 72, 100], "w": 227, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1330.1, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 227, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 953.2, "cap": 1600000000}
+{"child": [16, 38, 72, 100], "w": 229, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 952.9, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 229, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 910.6, "cap": 1600000000}
+{"child": [16, 38, 72, 78], "w": 231, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 937.3, "cap": 1600000000}
+{"child": [16, 38, 72, 100], "w": 231, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 940.9, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 231, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 910.4, "cap": 1600000000}
+{"child": [16, 38, 72, 78], "w": 233, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1084.0, "cap": 1600000000}
+{"child": [16, 38, 72, 100], "w": 233, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 904.0, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 233, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 903.0, "cap": 1600000000}
+{"child": [16, 38, 72, 78], "w": 235, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 929.5, "cap": 1600000000}
+{"child": [16, 38, 72, 100], "w": 235, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 905.0, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 235, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 897.5, "cap": 1600000000}
+{"child": [16, 38, 72, 78], "w": 237, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 995.1, "cap": 1600000000}
+{"child": [16, 38, 72, 100], "w": 237, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1076.8, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 237, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1095.9, "cap": 1600000000}
+{"child": [16, 38, 72, 78], "w": 239, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 1163.9, "cap": 1600000000}
+{"child": [16, 38, 72, 100], "w": 239, "outcome": null, "winning_move": null, "states": null, "returncode": 0, "seconds": 911.0, "cap": 1600000000}
+{"child": [16, 38, 72, 116], "w": 151, "outcome": "N", "winning_move": "139", "states": 61265800, "returncode": 0, "seconds": 3569.4, "cap": 1200000000, "engine": "kunz_p"}
+{"child": [16, 38, 72, 116], "w": 155, "outcome": "N", "winning_move": "121", "states": 62298299, "returncode": 0, "seconds": 2441.3, "cap": 1200000000, "engine": "kunz_p"}
+{"child": [16, 38, 72, 116], "w": 157, "outcome": "N", "winning_move": "121", "states": 63107121, "returncode": 0, "seconds": 2120.4, "cap": 1200000000, "engine": "kunz_p"}
+{"child": [16, 38, 72, 116], "w": 159, "outcome": "N", "winning_move": "91", "states": 60745093, "returncode": 0, "seconds": 1372.5, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 116], "w": 161, "outcome": "N", "winning_move": "251", "states": 65212933, "returncode": 0, "seconds": 1759.7, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 100], "w": 163, "outcome": "N", "winning_move": "285", "states": 57817769, "returncode": 0, "seconds": 926.2, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 116], "w": 163, "outcome": "N", "winning_move": "117", "states": 65002541, "returncode": 0, "seconds": 1099.3, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 100], "w": 165, "outcome": "N", "winning_move": "185", "states": 58384622, "returncode": 0, "seconds": 903.9, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 100], "w": 185, "outcome": "N", "winning_move": "165", "states": null, "via": "partner of 165"}
+{"child": [16, 38, 72, 116], "w": 165, "outcome": "N", "winning_move": "159", "states": 66483921, "returncode": 0, "seconds": 1186.7, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 100], "w": 167, "outcome": "N", "winning_move": "203", "states": 59027289, "returncode": 0, "seconds": 1222.4, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 100], "w": 203, "outcome": "N", "winning_move": "167", "states": null, "via": "partner of 167"}
+{"child": [16, 38, 72, 100], "w": 171, "outcome": "N", "winning_move": "78", "states": 59811059, "returncode": 0, "seconds": 942.5, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 100], "w": 173, "outcome": "N", "winning_move": "171", "states": 60436626, "returncode": 0, "seconds": 905.5, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 116], "w": 173, "outcome": "N", "winning_move": "225", "states": 69270797, "returncode": 0, "seconds": 1111.0, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 116], "w": 225, "outcome": "N", "winning_move": "173", "states": null, "via": "partner of 173"}
+{"child": [16, 38, 72, 100], "w": 175, "outcome": "N", "winning_move": "173", "states": 60811928, "returncode": 0, "seconds": 1009.0, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 116], "w": 175, "outcome": "N", "winning_move": "281", "states": 69738314, "returncode": 0, "seconds": 1207.4, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 116], "w": 177, "outcome": "N", "winning_move": "299", "states": 70454181, "returncode": 0, "seconds": 1074.7, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 100], "w": 179, "outcome": "N", "winning_move": "197", "states": 61739622, "returncode": 0, "seconds": 962.0, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 100], "w": 197, "outcome": "N", "winning_move": "179", "states": null, "via": "partner of 179"}
+{"child": [16, 38, 72, 116], "w": 179, "outcome": "N", "winning_move": "129", "states": 69514384, "returncode": 0, "seconds": 1191.3, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 116], "w": 181, "outcome": "N", "winning_move": "147", "states": 70976615, "returncode": 0, "seconds": 1243.8, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 100], "w": 183, "outcome": "N", "winning_move": "105", "states": 58521725, "returncode": 0, "seconds": 933.3, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 116], "w": 183, "outcome": "N", "winning_move": "305", "states": 72146702, "returncode": 0, "seconds": 1338.2, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 116], "w": 185, "outcome": "N", "winning_move": "107", "states": 69358998, "returncode": 0, "seconds": 1076.6, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 100], "w": 187, "outcome": "N", "winning_move": "157", "states": 63299283, "returncode": 0, "seconds": 1188.2, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 116], "w": 187, "outcome": "N", "winning_move": "169", "states": 72748705, "returncode": 0, "seconds": 1492.1, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 100], "w": 189, "outcome": "N", "winning_move": "311", "states": 63947554, "returncode": 0, "seconds": 1363.3, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 116], "w": 189, "outcome": "N", "winning_move": "111", "states": 71509466, "returncode": 0, "seconds": 1260.0, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 116], "w": 191, "outcome": "N", "winning_move": "253", "states": 74151770, "returncode": 0, "seconds": 1613.0, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 100], "w": 193, "outcome": "N", "winning_move": "185", "states": 64605039, "returncode": 0, "seconds": 1882.5, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 100], "w": 195, "outcome": "N", "winning_move": "149", "states": 64194472, "returncode": 0, "seconds": 1376.6, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 116], "w": 195, "outcome": "N", "winning_move": "245", "states": 75070561, "returncode": 0, "seconds": 1706.8, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 116], "w": 197, "outcome": "N", "winning_move": "335", "states": 75561504, "returncode": 0, "seconds": 3568.8, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 100], "w": 199, "outcome": "N", "winning_move": "159", "states": 65069505, "returncode": 0, "seconds": 2755.6, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 116], "w": 199, "outcome": "N", "winning_move": "245", "states": 76129540, "returncode": 0, "seconds": 3473.8, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 78], "w": 201, "outcome": "N", "winning_move": "323", "states": 48846447, "returncode": 0, "seconds": 3591.0, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 100], "w": 201, "outcome": "N", "winning_move": "291", "states": 66114043, "returncode": 0, "seconds": 4002.2, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 116], "w": 201, "outcome": "N", "winning_move": "133", "states": 74659961, "returncode": 0, "seconds": 2866.6, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 78], "w": 203, "outcome": "N", "winning_move": "157", "states": 48536280, "returncode": 0, "seconds": 1170.1, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 78], "w": 205, "outcome": "N", "winning_move": "263", "states": 49299094, "returncode": 0, "seconds": 1731.8, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 78], "w": 207, "outcome": "N", "winning_move": "209", "states": 49501036, "returncode": 0, "seconds": 3696.0, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 78], "w": 209, "outcome": "N", "winning_move": "207", "states": null, "via": "partner of 207"}
+{"child": [16, 38, 72, 100], "w": 207, "outcome": "N", "winning_move": "221", "states": 66930450, "returncode": 0, "seconds": 2050.7, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 100], "w": 221, "outcome": "N", "winning_move": "207", "states": null, "via": "partner of 207"}
+{"child": [16, 38, 72, 116], "w": 207, "outcome": "N", "winning_move": "107", "states": 73976238, "returncode": 0, "seconds": 2337.5, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 100], "w": 209, "outcome": "N", "winning_move": "175", "states": 66880000, "returncode": 0, "seconds": 1093.1, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 100], "w": 211, "outcome": "N", "winning_move": "221", "states": 67463323, "returncode": 0, "seconds": 3157.4, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 116], "w": 211, "outcome": "N", "winning_move": "105", "states": 73178036, "returncode": 0, "seconds": 3464.5, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 100], "w": 213, "outcome": "N", "winning_move": "193", "states": 67491111, "returncode": 0, "seconds": 2241.1, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 116], "w": 213, "outcome": "N", "winning_move": "231", "states": 78795281, "returncode": 0, "seconds": 2565.3, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 116], "w": 231, "outcome": "N", "winning_move": "213", "states": null, "via": "partner of 213"}
+{"child": [16, 38, 72, 100], "w": 215, "outcome": "N", "winning_move": "281", "states": 68013478, "returncode": 0, "seconds": 2444.8, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 116], "w": 215, "outcome": "N", "winning_move": "181", "states": 78824690, "returncode": 0, "seconds": 4890.2, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 78], "w": 217, "outcome": "N", "winning_move": "159", "states": 50023241, "returncode": 0, "seconds": 1740.3, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 100], "w": 217, "outcome": "N", "winning_move": "159", "states": 67180593, "returncode": 0, "seconds": 2159.9, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 116], "w": 217, "outcome": "N", "winning_move": "323", "states": 79565858, "returncode": 0, "seconds": 9934.2, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 78], "w": 219, "outcome": "N", "winning_move": "199", "states": 50571223, "returncode": 0, "seconds": 1044.1, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 100], "w": 219, "outcome": "N", "winning_move": "227", "states": 68525353, "returncode": 0, "seconds": 1384.7, "cap": 1200000000, "engine": "kunz_pt"}
+{"child": [16, 38, 72, 100], "w": 227, "outcome": "N", "winning_move": "219", "states": null, "via": "partner of 219"}
