@@ -1,0 +1,6 @@
+start 2026-10-17 12:59:43
+move=257 P winning_move=none frobenius=355 cumulative_states=33806189
+kunz_solver: ncache capacity=238609292 inserts=652462176 evictions=414583737 hits=2706204102
+kunz_solver: memo entries=33806189 slots=47706461 bytes=811009837
+exit 0
+end 2026-10-17 14:39:32

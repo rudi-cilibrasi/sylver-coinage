@@ -1899,6 +1899,32 @@ Search for an answer to 38, recorded in
 - **Tally.** Unchanged: of {16,38}'s 98 obligations, 65 are N (11 certified,
   54 by search) and 33 are open. No answer to 38 is known.
 
+### Attempt 45 — {16,38,72,100} falls to 245, {16,38,68,72} to 257 (2026-10-17)
+
+Search for an answer to 38, recorded in
+[the reply-38 record](campaigns/r38-2026-10-09/RESULT.md#the-search-for-an-answer-to-38)
+(discovery results, not certified).
+
+- **The witnesses.** On fresh replies, from October 17 at 04:10, the P-table
+  hunt found {16,38,72,100}+245 P at 07:57, with 70,825,107 P-positions in
+  26 minutes, and {16,38,68,72}+257 P at 10:22, with 33,735,838 in 15
+  minutes. So {16,38,72,100} is N, won by 245, and {16,38,68,72} is N, won
+  by 257. In their children's orders they come 121st and 127th, counting
+  from 0, deeper than 229 (113th).
+- **The checks.** Reruns with the build and schedule that checked 229 also
+  found both P: 245 with 71,023,435 P-positions in 5 hours, 257 with
+  33,806,189 in 1 hour 40 minutes. Like that rerun, they guard against
+  faults of build and schedule, not of method. And none of the hunt's seven
+  witnesses contradicts its other rows: none wins a reply recorded N on its
+  child, and none is one move from another of the 305 P-positions the rows
+  name.
+- **72.** By search, 72 answers 38 exactly when its only open long child,
+  78, is N. By October 17 at 14:43, 78's first 138 replies in the hunt's
+  order (to 277, whose child has Frobenius number 415) were all N, and 12
+  later ones by the partner rule. The hunt goes on with 78 alone.
+- **Tally.** Unchanged: of {16,38}'s 98 obligations, 65 are N (11 certified,
+  54 by search) and 33 are open. No answer to 38 is known.
+
 ### Sources
 
 - <https://math.colgate.edu/~integers/yg2/yg2.pdf>
