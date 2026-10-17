@@ -287,6 +287,7 @@ class MintTests(unittest.TestCase):
         still_open = [e for e in even if e not in done]
         why = next(r['why'] for r in self.report['frontier'] if r['m'] == 72)
         m = re.search(r'its (\w+) open long (child|children), ([\d, and]+), (is|are all) N', why)
+        self.assertIsNotNone(m, why)
         listed = [int(x) for x in m[3].replace('and', ',').split(',') if x.strip()]
         self.assertEqual(listed, still_open)
         if len(listed) == 1:

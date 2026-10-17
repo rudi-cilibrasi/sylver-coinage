@@ -72,7 +72,7 @@ Notes:
   which counts all 63 even obligations of {16,38}; only the 46 long ones
   were mapped. The map has finished.
 - `deep_long.*` are complete: the pass finished on October 11 at 15:15. `hunt.*` is a snapshot of
-  a run still going, taken on October 17 at about 14:45. Two stops left no line in `hunt.log`:
+  a run still going, taken on October 17 at 14:43. Two stops left no line in `hunt.log`:
   Claude Code reclaimed memory at about 18:55 on October 14 (the `kunz_p` run's reply in
   progress, 116+159, was lost), and a session exit stopped the `kunz_pt` run at about 12:45 on
   October 16 (losing 116+219); each run resumed from the rows. `witness_watch.sh N` only waits

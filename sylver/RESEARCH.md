@@ -1916,8 +1916,8 @@ Search for an answer to 38, recorded in
   33,806,189 in 1 hour 40 minutes. Like that rerun, they guard against
   faults of build and schedule, not of method. And none of the hunt's seven
   witnesses contradicts its other rows: none wins a reply recorded N on its
-  child, and none is one move from another of the 305 P-positions the rows
-  name.
+  child that is still legal after it, and none is one move from another of
+  the 305 P-positions the rows name.
 - **72.** By search, 72 answers 38 exactly when its only open long child,
   78, is N. By October 17 at 14:43, 78's first 138 odd replies in the
   hunt's order (to 277, whose child has Frobenius number 415) were all N,

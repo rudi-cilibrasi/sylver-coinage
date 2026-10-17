@@ -155,11 +155,11 @@ discovery output, not certified.
     - 72's obligation 56 is answered through B56. The deep replies 129 and
       69 answer its obligations 58 and 66.
     - 72's long children 68, 78 and 84 have no even reply into a short
-      P-position. 68 and 78 have no odd winner found so far; the hunt below
-      found 139 for 84. The hardest of their odd
-      replies each need from about 300 million to over a billion states:
-      those from 81 on for 78, from 87 on for 84, and from about 150 on for
-      68 (in the hunt below, some of 68's replies from 191 on stopped at its
+      P-position. 78 has no odd winner found so far; the hunt below found
+      139 for 84 and 257 for 68. The hardest of their odd replies each need
+      from about 300 million to over a billion states: those from 81 on for
+      78, from 87 on for 84, and from about 150 on for 68 (in the hunt
+      below, some of 68's replies from 191 on stopped at its
       1,000,000,000-state cap).
     - Every short child of 72 is N, so a refutation of 72 would need a long
       P-position, which the Quiet End Theorem cannot certify.
@@ -216,8 +216,9 @@ discovery output, not certified.
       `scan/check_queue.sh`) also found both P, with 71,023,435 P-positions
       in 5 hours and 33,806,189 in 1 hour 40 minutes. `scan/witness_check.py`
       finds none of the hunt's seven witnesses at odds with its other rows:
-      none wins a reply recorded N on its child, and none is one move from
-      another of the 305 P-positions the rows name.
+      none wins a reply recorded N on its child that is still legal after
+      it, and none is one move from another of the 305 P-positions the rows
+      name.
     - So, by search, 72 answers 38 exactly when its only open long child,
       78, is N: one P reply of 78 settles it, and 78 being P refutes it.
       By October 17 at 14:43, 78's first 138 odd replies in the hunt's
