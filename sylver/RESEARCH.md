@@ -1875,23 +1875,25 @@ Search for an answer to 38, recorded in
 - **Tally.** Unchanged: of {16,38}'s 98 obligations, 65 are N (11 certified,
   54 by search) and 33 are open. No answer to 38 is known.
 
-### Attempt 44 — 116 falls to 229 (2026-10-16)
+### Attempt 44 — {16,38,72,116} falls to 229 (2026-10-16)
 
 Search for an answer to 38, recorded in
 [the reply-38 record](campaigns/r38-2026-10-09/RESULT.md#the-search-for-an-answer-to-38)
 (discovery results, not certified).
 
-- **The witness.** On the retry queue, after ten more N replies and one
-  timeout, the P-table hunt found {16,38,72,116}+229 P at 22:01, with
-  81,370,519 P-positions in 37 minutes. The plain memo had stopped on the
-  same reply at its 1.6-billion-state cap. So {16,38,72,116} is N, won by
-  229, the 113th of its odd replies counting from 0; the hunt's earlier
-  witnesses came 37th to 68th.
+- **The witness.** On the retry queue, after ten more replies N by search,
+  one by the partner rule and one timeout, the P-table hunt found
+  {16,38,72,116}+229 P at 22:01, with 81,370,519 P-positions in 37 minutes.
+  The plain memo had stopped on the same reply at its 1.6-billion-state cap.
+  So {16,38,72,116} is N, won by 229. That is 113th, counting from 0, in the
+  hunt's order of its odd replies (by the Frobenius number of the child
+  plus the reply); the hunt's earlier witnesses came 37th to 68th.
 - **The check.** A rerun of the same reply with another build of the same
   engine (`-O2` for any x86-64, 2 threads, split depth 4, a 4 GB cache) also
-  found it P, with 81,373,145 P-positions in 7 hours 37 minutes. It shares
-  the algorithm, so it guards against faults of build and schedule, not of
-  method.
+  found it P, with 81,373,145 P-positions in 7 hours 37 minutes. (Which
+  P-positions get stored depends on the search order, so the counts differ.)
+  It shares the algorithm, so it guards against faults of build and
+  schedule, not of method.
 - **72.** By search, 72 answers 38 exactly when its three open long
   children, 68, 78 and 100, are all N. The hunt goes on with them.
 - **Tally.** Unchanged: of {16,38}'s 98 obligations, 65 are N (11 certified,
