@@ -105,6 +105,14 @@ Notes:
     P-positions, and in `--retry-capped` a cap counts only for the engine that hit it;
   - logs a solve that a signal stopped (`memguard.sh`, below 6 GB available) as `interrupted`,
     not a cap, and tries it again later.
+- When it starts, `hunt.py` drops from a child's queue each reply the partner rule settles N
+  from the rows, without writing a row for it; it writes such a partner row only for a reply
+  still queued when the row that settles it comes in (a partner witness it always writes). So
+  78's first 138 odd replies in the hunt's order, all N by October 17 at 14:43 (Attempt 45),
+  are the 47 its spec counts as done (the earlier passes classified them), 85 with rows, and 6
+  settled by the partner rule without a row (185, 191, 199, 211, 261 and 263, won by 149, 173,
+  179, 165, 237 and 205); of the 12 later ones the partner rule settles, 323 and 371 have no
+  row.
 - `make_kunz_p.py` derived the prototype `kunz_p` (rows with `"engine": "kunz_p"`) from
   `sylver/kunz_solver.cpp` as it was before PR #56 (`git show 76e19be:sylver/kunz_solver.cpp`;
   its asserts fail on the merged file), which merged the same idea as `--p-table`. Both

@@ -1919,9 +1919,9 @@ Search for an answer to 38, recorded in
   child, and none is one move from another of the 305 P-positions the rows
   name.
 - **72.** By search, 72 answers 38 exactly when its only open long child,
-  78, is N. By October 17 at 14:43, 78's first 138 replies in the hunt's
-  order (to 277, whose child has Frobenius number 415) were all N, and 12
-  later ones by the partner rule. The hunt goes on with 78 alone.
+  78, is N. By October 17 at 14:43, 78's first 138 odd replies in the
+  hunt's order (to 277, whose child has Frobenius number 415) were all N,
+  and 12 later ones by the partner rule. The hunt goes on with 78 alone.
 - **Tally.** Unchanged: of {16,38}'s 98 obligations, 65 are N (11 certified,
   54 by search) and 33 are open. No answer to 38 is known.
 

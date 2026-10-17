@@ -1,11 +1,13 @@
 """Check each witness in hunt.jsonl (a row C+w found P) against the hunt's other rows.
 
 Two P-positions are never one move apart, so a witness P = C+w is inconsistent with the rows if
-- a row says C+x is N with winning move w (then C+x+w = P+x is P, one move from P), or
+- a row says C+x is N with winning move w, and x is legal in P (then C+x+w = P+x is P, one move
+  from P; when x is generated in P, C+x+w is P itself, which is how hunt.py's partner rule finds
+  a witness), or
 - a P-position the rows name (C+w of a P row, C+x+v of an N row won by v) is one move from P,
   either way.
 Also prints the witness's rank, counting from 0, among C's odd replies up to 801 in hunt.py's
-order (by the Frobenius number of C plus the reply).
+order (by the Frobenius number of C plus the reply), or "beyond" for a reply past 801.
 """
 import json, sys
 from pathlib import Path
@@ -37,12 +39,13 @@ for r in rows:
     c, w = tuple(r['child']), r['w']
     p = position((*c, w))
     won_by_w = [x['w'] for x in rows if tuple(x['child']) == c and x['outcome'] == 'N'
-                and str(x['winning_move']) == str(w)]
+                and str(x['winning_move']) == str(w) and legal(p, x['w'])]
     near = [q for q in named if q != p and (one_move(p, q) or one_move(q, p))]
     order = sorted((x for x in range(3, WMAX + 1, 2) if legal(c, x)),
                    key=lambda x: (frobenius_number(position((*c, x))), x))
     ok = not won_by_w and not near
     bad += not ok
-    print(f'{list(c)}+{w}: frobenius={frobenius_number(p)} rank={order.index(w)} of {len(order)}'
+    print(f'{list(c)}+{w}: frobenius={frobenius_number(p)}'
+          f' rank={order.index(w) if w in order else "beyond"} of {len(order)}'
           f' won_by_w={won_by_w} one_move={near} {"ok" if ok else "INCONSISTENT"}')
 sys.exit(1 if bad else 0)

@@ -210,8 +210,8 @@ discovery output, not certified.
       {16,38,72,100}+245 P at 07:57 (70,825,107 P-positions, 26 minutes),
       and after 255 of 68 was N, {16,38,68,72}+257 P at 10:22 (33,735,838
       P-positions, 15 minutes). So 245 wins {16,38,72,100} and 257 wins
-      {16,38,68,72}. They are 121st and 127th in their children's orders.
-      Reruns with the build and schedule that checked 229
+      {16,38,68,72}. They are 121st and 127th in their children's orders,
+      counting from 0. Reruns with the build and schedule that checked 229
       (`scan/check_100_245.*`, then `scan/check_68_257.*`, queued by
       `scan/check_queue.sh`) also found both P, with 71,023,435 P-positions
       in 5 hours and 33,806,189 in 1 hour 40 minutes. `scan/witness_check.py`
