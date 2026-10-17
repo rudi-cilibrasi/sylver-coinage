@@ -203,8 +203,9 @@ discovery output, not certified.
       and schedule, not of method.
     - 116's last three queued replies, 233, 235 and 237, were dropped once
       229 won it. The retry queue ran out on October 17 at 04:10: the nine
-      retries after the witness, of 78 and 100, are N. From then on the hunt takes fresh replies of 68,
-      78 and 100 (`hunt.py 1200000000 --balance`).
+      retries after the witness, of 78 and 100, are N. From then on the
+      hunt takes fresh replies of 68, 78 and 100 (`hunt.py 1200000000
+      --balance`).
     - So, by search, 72 answers 38 exactly when its three open long
       children, 68, 78 and 100, are all N; one P among them refutes it.
     - 88's obligation 72 leads back to {16,38,72}.

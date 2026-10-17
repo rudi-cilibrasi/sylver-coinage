@@ -107,13 +107,13 @@ Notes:
   `sylver/kunz_solver.cpp` as it was before PR #56 (`git show 76e19be:sylver/kunz_solver.cpp`;
   its asserts fail on the merged file), which merged the same idea as `--p-table`. Both
   `kunz_p` and `kunz_pt` were built with `g++ -std=c++20 -O3 -march=native -pthread`.
+  `kunz_p_validate.py` replayed 13 recorded hunt results with the prototype (`kunz_p_validate.out`):
+  every outcome and least winning move agreed, with 3 to 11 percent as many memo entries.
 - `kunz_check`, for `check_116_229.sh`, is 0717a1d's `sylver/kunz_solver.cpp` (the same file
   as e335ff0's, which `kunz_pt` was built from) built with `g++ -std=c++20 -O2 -pthread` (no
   `-march`; GCC 13.3.0). Its `--self-check` printed `self-check passed: 14929 moves`. It ran
   as `./check_116_229.sh > check_116_229.out 2>&1`. The script's opening comment was reworded
   after the run, in review: it had called the rerun independent, but it shares the algorithm.
-  `kunz_p_validate.py` replayed 13 recorded hunt results with the prototype (`kunz_p_validate.out`):
-  every outcome and least winning move agreed, with 3 to 11 percent as many memo entries.
 - `hunt.py` logs a solve as `interrupted` only for SIGTERM, which `memguard.sh` sends; a solve
   that crashes stays a capped row, so it is not retried without end (from review). The retry
   phase from October 16 at 13:25 to October 17 at 04:10 ran the script before this fix; none
