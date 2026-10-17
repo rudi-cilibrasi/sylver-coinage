@@ -186,8 +186,28 @@ discovery output, not certified.
       the cap had stopped. By October 16 at 12:40 it had settled 53 of them,
       each with 49 to 80 million P-positions, and 8 more by the partner rule.
       All are N: no witness.
-    - So, by search, 72 answers 38 exactly when its four open long children,
-      68, 78, 100 and 116, are all N; one P among them refutes it.
+    - From October 16 at 13:25 it went on through the 25 replies left in
+      that retry queue, three hours at most each. By 21:24 it had settled
+      ten more as N and one by the partner rule, and 116+219 had run out of
+      time. Then, at 22:01, it found {16,38,72,116}+229 P (81,370,519
+      P-positions, 37 minutes), so 229 wins {16,38,72,116}. It is the first
+      witness the P-table engine found, and the deepest in its child's
+      order: 113th counting from 0, where the hunt's four earlier witnesses
+      came 37th to 68th. A rerun with another build and schedule
+      (`scan/check_116_229.*`: the same source at `-O2` for any x86-64
+      instead of `-O3 -march=native`, 2 threads instead of 10, split depth 4
+      instead of 6, a 4 GB cache instead of 16 GB) also found it P, with
+      81,373,145 P-positions in 7 hours 37 minutes; which P-positions get
+      stored depends on the search order, so the counts differ. Both runs
+      use the same algorithm, so the rerun guards against faults of build
+      and schedule, not of method.
+    - 116's last three queued replies, 233, 235 and 237, were dropped once
+      229 won it. The retry queue ran out on October 17 at 04:10: the nine
+      retries after the witness, of 78 and 100, are N. From then on the
+      hunt takes fresh replies of 68, 78 and 100 (`hunt.py 1200000000
+      --balance`).
+    - So, by search, 72 answers 38 exactly when its three open long
+      children, 68, 78 and 100, are all N; one P among them refutes it.
     - 88's obligation 72 leads back to {16,38,72}.
   - 104 and 120 have odd obligations that the sweeps could not finish.
 - **Long even.** A long candidate is N as soon as one winning reply is

@@ -39,8 +39,9 @@ For the week of September 21–27, see the [progress summary](docs/progress/2026
     which settles the question the Y record left open.
   - No answer to 38 is known yet. It remains the lowest unanswered reply.
     Of its 98 candidates, certificates rule out 11 and, by October 12,
-    search 54 more, leaving 33 open; by search, 72 answers 38 exactly when
-    its four open long children are all N.
+    search 54 more, leaving 33 open. Since October 16, by search, 72
+    answers 38 exactly when its three open long children (68, 78 and 100)
+    are all N.
   - I and B24 were already on Sicherman's
     [list of P-positions](https://sicherman.net/sylver/ppos.html) (last
     updated September 28), so these certificates confirm them independently. B28 and
