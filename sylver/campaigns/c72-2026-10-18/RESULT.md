@@ -51,12 +51,12 @@ Each receipt records its limits, commands, hashes and counts; `c72_<m>.log`
 is the runner's log for the 35 replays it ran with Python (the large ones'
 runs printed to its own output, and `c72_3` was run by hand).
 `replay.py` checks the exit code only of the large native runs (c72_58,
-c72_132 and c72_170), not of the Python-path runs or the Kunz runs: the audit rejects any receipt that is
-not a complete, matching replay. [sizes.json](sizes.json)
-holds the state counts that `kunz --threads 8 <destination>` (the reply-38
-scan's build) found for each destination before the replays, used only to
-order them and size their memory limits; they differ slightly from the
-sequential counts.
+c72_132 and c72_170), not of the Python-path runs or the Kunz runs: the
+audit rejects any receipt that is not a complete, matching replay.
+[sizes.json](sizes.json) holds the state counts that `kunz --threads 8
+<destination>` (the reply-38 scan's build) found for each destination before
+the replays, used only to order them and size their memory limits; they
+differ slightly from the sequential counts.
 
 Eleven routes reach positions certified before. Seven reach the opening
 table's finite P-positions: {2,3} (by 3 → 2 and 2 → 3), {5,16,18} (5 → 18
@@ -73,7 +73,7 @@ smallest witness: 75, whose destination {16,38,72,75,132} the memo engine
 found P with 355,076,111 states. `make_certificates.py 132` wrote its
 certificate, and on October 18 it was replayed like the largest finite
 witnesses: `native_solver.cpp` from 12:50 to 13:33 (355,061,923 states; about
-28.5 GB resident, the largest reading of a 30-second log,
+29 GB resident, the largest reading of a 30-second log,
 [verification/c72_132-memory.log](verification/c72_132-memory.log)) and the
 sequential, memo-verified `kunz_solver.cpp` until 14:23, with the same
 count. So 132 is now certified too: 39
@@ -111,8 +111,9 @@ reruns used another build and schedule of the same engine, so they do not
 certify.
 
 A native replay needs memory in proportion to its states: about 80 bytes a
-state for Frobenius numbers below 320 (132 → 75 took about 28.5 GB), more
-for wider states (the solver's states have F/64 + 1 words). The three memo
+state for Frobenius numbers below 320 (132 → 75 took about 29 GB), more
+for wider states (the solver's states have ⌊F/64⌋ + 1 words; 4- and 5-word
+states take the same 64-byte hash node). The three memo
 witnesses left, at about a billion states or more, would need some 75 GB or
 more, beyond this 62 GiB host. For the P-table witnesses a plain-memo count
 was missing, so the smallest, 68 → 257, was counted with the memo engine

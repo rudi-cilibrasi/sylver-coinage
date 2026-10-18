@@ -2003,16 +2003,17 @@ Recorded in [the certification record](campaigns/c72-2026-10-18/RESULT.md).
 
 - **132.** The hunt's witness {16,38,72,132}+75 was replayed like the
   largest finite witnesses: `native_solver.cpp` (355,061,923 states, about
-  28.5 GB resident by a sampled log) and the sequential, memo-verified
-  `kunz_solver.cpp`, with the same count. The audit now certifies 61 of {16,38,72}'s 68 obligations;
-  39 destinations, 1,721,095,214 replayed states.
+  29 GB resident by a sampled log) and the sequential, memo-verified
+  `kunz_solver.cpp`, with the same count. The audit now certifies 61 of
+  {16,38,72}'s 68 obligations; 39 destinations, 1,721,095,214 replayed
+  states.
 - **68.** Counted with the memo engine (a build from before the P-table mode
   existed), {16,38,68,72,257} is P with 1,494,012,288 states. That checks
   the P-table hunt's witness for 68 without the P-table code, though both
   share the same search, so it is still search. With its wider states, a
   native replay would need some 135 GB or more. So Attempt 47's hope for
-  68 → 257, and the earlier estimate of about 690 million states, were
-  wrong.
+  68 → 257 was wrong, as was the record's earlier bound of about 690
+  million states, drawn from the P-table rerun's N-cache statistics.
 - **The rest.** The other memo witnesses (84, 106, 154) are about a billion
   states or more, and the other P-table ones (78, 100, 116) store more
   P-positions than 68's. Certifying the last seven obligations looks to need
