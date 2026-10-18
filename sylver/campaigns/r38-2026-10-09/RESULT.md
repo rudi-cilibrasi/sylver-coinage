@@ -1,6 +1,6 @@
 # Reply 38 after the opening 16: four P-positions refute five answers
 
-After the opening 16, the lowest reply with no known answer is 38
+After the opening 16, the lowest reply with no certified answer is 38
 ([the ledger](../o16-2026-10-09/RESULT.md)). {16,38} has gcd two and a short
 half, {8,19}. So by the Quiet End Theorem, a move answers 38 only if it is
 one of {16,38}'s 98 obligations: 35 odd moves and 63 even ones.
@@ -36,8 +36,9 @@ The audit also checks six refutations through certified nodes:
 whether 38 answers the reply 28, that is, whether {16,28,38} is P. It is N:
 its move 40 reaches B28.
 
-No answer to 38 is known, so **38 remains the lowest unanswered reply**.
-Opening 16 remains unresolved.
+No certified answer to 38 is known, so **38 remains the lowest reply
+without one**. By search, though, **72 answers 38** (October 18;
+[below](#the-search-for-an-answer-to-38)). Opening 16 remains unresolved.
 
 ## The certificate
 
@@ -101,11 +102,15 @@ The search is recorded in [scan/](scan/). Its sweeps ran without
 (through B24, B28, B56 and the nodes C, E, F and P0), this section is
 discovery output, not certified.
 
-| Obligations of {16,38} | Count | N so far | Open |
-| --- | ---: | ---: | ---: |
-| odd | 35 | 32 | 3 |
-| even, short child | 17 | 13 | 4 |
-| even, long child | 46 | 20 | 26 |
+| Obligations of {16,38} | Count | P | N so far | Open |
+| --- | ---: | ---: | ---: | ---: |
+| odd | 35 | 0 | 32 | 3 |
+| even, short child | 17 | 1 (72) | 16 | 0 |
+| even, long child | 46 | 0 | 20 | 26 |
+
+By search, 72 is P, so **72 answers 38**, and the other open obligations no
+longer matter to that question. `python scan/status.py` derives this table's
+statuses from the logs.
 
 - **Odd.** The ledger's scan showed the 24 smallest odd candidates are N.
   One more shared-memo sweep here showed that 71, 69, 77 and 79 are N, then
@@ -219,12 +224,28 @@ discovery output, not certified.
       none wins a reply recorded N on its child that is still legal after
       it, and none is one move from another of the 305 P-positions the rows
       name.
-    - So, by search, 72 answers 38 exactly when its only open long child,
-      78, is N: one P reply of 78 settles it, and 78 being P refutes it.
-      By October 17 at 14:43, 78's first 138 odd replies in the hunt's
-      order (to 277) were all N, and 12 later ones by the partner rule.
-    - 88's obligation 72 leads back to {16,38,72}.
-  - 104 and 120 have odd obligations that the sweeps could not finish.
+    - That left 78, 72's only open long child: one P reply of 78 would
+      settle that 72 answers 38, and 78 being P would refute it. The hunt
+      ran it alone from October 17 at 10:22: 37 more replies N by search
+      and 19 by the partner rule. Then, on October 18 at 01:51, it found
+      {16,38,72,78}+367 P (56,699,024 P-positions, 20 minutes), so 367 wins
+      {16,38,72,78}. 367 is 182nd in 78's order, counting from 0 (the
+      child's Frobenius number with it is 505), and every reply of 78
+      before it in that order is N. A rerun with the build and schedule
+      that checked 229 (`scan/check_78_367.*`, after the hunt had ended)
+      also found it P, with 56,854,380 P-positions in 2 hours 2 minutes.
+      `scan/witness_check.py` finds all eight of the hunt's witnesses
+      consistent with its 600 rows and the 335 P-positions they name.
+    - So, by search, every obligation of {16,38,72} is N: its 25 odd ones
+      (above) and its 43 even ones (32 by the even resolver, 56 through
+      B56, 58 and 66 by the deep replies 129 and 69, and eight long
+      children by the hunt's witnesses). **{16,38,72} is P, and 72 answers
+      38.** This is discovery output, not certified: the runs behind it
+      were not replayed, and the reruns of the last four witnesses share
+      their engine's algorithm.
+    - 88, 104 and 120 each move by 72 back to {16,38,72} (16 generates
+      them from 72), so they are N, whatever their unfinished odd
+      obligations.
 - **Long even.** A long candidate is N as soon as one winning reply is
   found.
   - Sweeps found a winning odd reply for 2 (3), 10 (9), 18 (5), 26 (97),

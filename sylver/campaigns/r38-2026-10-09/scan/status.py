@@ -46,6 +46,33 @@ for path in sorted(HERE.glob('deep_16-38-*.jsonl')):
         row = json.loads(line)
         if row.get('P'):
             status[int(rest[0])] = ('N', f"reply {row['P']} (deeper sweep)")
+# 72: {16,38,72} is P by search when each of its obligations is N. Its odd ones: the first sweep's
+# (odd_filter.jsonl, which classifies them in order) and the rest alone (odd72.out). Its even ones:
+# the even resolver (even_72.jsonl), B56 for 56 (the audit), a deeper sweep (deep_16-38-<e>-72 or
+# deep_16-38-72-<e>) or a hunt witness (hunt.jsonl). The rungs 88, 104 and 120 then move by 72 back
+# to {16,38,72}, which 16 keeps generating them in.
+p72 = profile(position((16, 38, 72)))
+row72 = next(r for r in map(json.loads, (HERE / 'odd_filter.jsonl').read_text().splitlines()) if r['r'] == 72)
+odd_n = set() if row72['P_moves'] else set(row72['odd_obligations'][:row72['classified']])
+for line in (HERE / 'odd72.out').read_text().splitlines():
+    m = re.match(r'move=(\d+) N ', line)
+    if m:
+        odd_n.add(int(m[1]))
+even_n = {r['e'] for r in map(json.loads, (HERE / 'even_72.jsonl').read_text().splitlines()) if r['status'] == 'resolved'}
+if '56' in json.loads((HERE.parent / 'audit.json').read_text())['refuted_answers_to_38']:
+    even_n.add(56)
+for path in HERE.glob('deep_16-38-*.jsonl'):
+    rest = [int(x) for x in path.stem.split('-')[2:]]
+    if len(rest) == 2 and 72 in rest and any(json.loads(l).get('P') for l in path.read_text().splitlines()):
+        even_n.add(next(x for x in rest if x != 72))
+for r in map(json.loads, (HERE / 'hunt.jsonl').read_text().splitlines()):
+    if r['outcome'] == 'P':
+        even_n.add(next(x for x in r['child'] if x not in (16, 38, 72)))
+open72 = [m for m in p72['moves'] if m not in (odd_n if m % 2 else even_n)]
+if not open72:
+    status[72] = ('P', 'every obligation of {16,38,72} is N: 72 answers 38')
+    for rung in (88, 104, 120):
+        status[rung] = ('N', 'even 72 -> {16,38,72}')
 rows = []
 for mv in info['moves']:
     st = status.get(mv, ('?', ''))
@@ -53,6 +80,8 @@ for mv in info['moves']:
     kind = 'odd' if mv % 2 else ('short' if ci['complete'] and ci['tail'] == 'quiet-end-v1' else 'long')
     rows.append((mv, kind, *st))
 todo = [r for r in rows if r[2] != 'N']
-print(f"{len(rows)} obligations; N: {sum(r[2] == 'N' for r in rows)}; not yet N: {len(todo)}")
+answers = [r[0] for r in rows if r[2] == 'P']
+print(f"{len(rows)} obligations; N: {sum(r[2] == 'N' for r in rows)}; P (answers to 38): {answers}; "
+      f"open: {len(todo) - len(answers)}")
 for r in todo:
     print(*r)

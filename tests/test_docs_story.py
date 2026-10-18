@@ -131,6 +131,7 @@ class StoryFilmTests(unittest.TestCase):
             'Y': re.search(r'Y=\{16,28,58\} is P, so the reply 28 to the opening 16 loses \((October \d+)\)', readme),
             'Z': re.search(r'Z=\{16,30,56\} is P, so the reply 30 to the opening 16 loses \((October \d+)\)', readme),
             'ledger': re.search(r'Every reply to the opening 16 up to 36 now has an answer \((October \d+)\)', readme),
+            'r38': re.search(r'Reply 38: by search, 72 answers it \((October \d+)\)', readme),
         }
         for name, match in headline.items():
             self.assertIsNotNone(match, name)
@@ -139,6 +140,7 @@ class StoryFilmTests(unittest.TestCase):
         self.assertTrue(any(n.startswith(f"Oct {day['U']}: 26 loses to 88") for n in notes), notes)
         self.assertTrue(any(n.startswith(f"Oct {day['Y']}–{day['Z']}: 28 loses to 58, and 30 to 56") for n in notes), notes)
         self.assertTrue(any(n.startswith(f"Oct {day['ledger']}: a ledger shows every reply up to 36") for n in notes), notes)
+        self.assertIn(f"On October {day['r38']}, search found one that works: 72.", ' '.join(self.report['captions']))
 
     def test_timeline_runs_forward(self):
         years = [y for y in self.report['years'] if y is not None]
@@ -160,10 +162,12 @@ class StoryFilmTests(unittest.TestCase):
             self.assertIn(quote, log, quote)
 
     def test_reply_38_tally_matches_the_scan_logs(self):
-        from tests.test_docs_mint import recorded_r38_status
+        from tests.test_docs_mint import open_obligations_of_72, recorded_r38_status
         moves, status = recorded_r38_status()
         certified = {int(m) for m in json.loads(R38.read_text())['refuted_answers_to_38']}
-        self.assertEqual(self.report['search38'], {'ruledOut': len(set(status) - certified), 'open': len(moves) - len(status)})
+        answers = [] if open_obligations_of_72() else [72]          # P by search: an answer, not an open move
+        expected = {'ruledOut': len(set(status) - certified), 'open': len(moves) - len(status) - len(answers)}
+        self.assertEqual(self.report['search38'], {**expected, **({'answer': answers[0]} if answers else {})})
         self.assertIn(f"search has ruled out {self.report['search38']['ruledOut']} more", self.drawn)
         tally = self.report['search38']
         self.assertIn(f"+ {tally['ruledOut']} more ruled out by search  ·  {tally['open']} still open", self.report['texts'])

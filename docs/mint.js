@@ -787,7 +787,7 @@ function lessonAssay(root) {
 }
 
 // ---------------------------------------------------------------- lesson 11: the frontier
-// Every obligation of {16, 38}: k is the kind of move, s its status in the reply-38 record as of October 17, 2026 (unchanged since October 12)
+// Every obligation of {16, 38}: k is the kind of move, s its status in the reply-38 record as of October 18, 2026
 // (sylver/campaigns/r38-2026-10-09); tests/test_docs_mint.py derives the same statuses from its scan logs.
 const FRONTIER = [
   {"m": 2, "k": "long", "s": "search", "why": "{16,38,2} is won by 3 (search)"},
@@ -844,7 +844,7 @@ const FRONTIER = [
   {"m": 68, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
   {"m": 69, "k": "odd", "s": "search", "why": "{16,38,69} is won by 25 (search)"},
   {"m": 71, "k": "odd", "s": "search", "why": "{16,38,71} is won by 73 (search)"},
-  {"m": 72, "k": "short", "s": "ladder", "why": "a rung of the ladder 56, 72, 88, 104, 120, 136; by search every other obligation of {16,38,72} is N, so 72 answers 38 exactly when its only open long child, 78, is N"},
+  {"m": 72, "k": "short", "s": "answer", "why": "the answer, by search: every obligation of {16,38,72} is N, so {16,38,72} is P. Its last open child, {16,38,72,78}, fell to 367 on October 18. A search result, not yet a certificate"},
   {"m": 74, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
   {"m": 77, "k": "odd", "s": "search", "why": "{16,38,77} is won by 27 (search)"},
   {"m": 78, "k": "long", "s": "search", "why": "{16,38,78} is won by 27 (search)"},
@@ -853,20 +853,20 @@ const FRONTIER = [
   {"m": 84, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
   {"m": 85, "k": "odd", "s": "search", "why": "{16,38,85} is won by 105 (search, alone with a large memo)"},
   {"m": 87, "k": "odd", "s": "search", "why": "{16,38,87} is won by 273 (search, alone with a large memo)"},
-  {"m": 88, "k": "short", "s": "ladder", "why": "a rung of the ladder 56, 72, 88, 104, 120, 136; its obligation 72 leads back to {16,38,72}, so it waits on 72"},
+  {"m": 88, "k": "short", "s": "search", "why": "{16,38,88} is won by 72, which leads back to {16,38,72} (search)"},
   {"m": 90, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
   {"m": 93, "k": "odd", "s": "search", "why": "{16,38,93} is won by 83 (search, alone with a large memo)"},
   {"m": 94, "k": "long", "s": "search", "why": "{16,38,94} is won by 43 (search)"},
   {"m": 98, "k": "long", "s": "search", "why": "{16,38,98} is won by 31 (search)"},
   {"m": 100, "k": "long", "s": "search", "why": "{16,38,100} is won by 41 (search)"},
   {"m": 101, "k": "odd", "s": "search", "why": "{16,38,101} is won by 33 (search, alone with a large memo)"},
-  {"m": 104, "k": "short", "s": "ladder", "why": "a rung of the ladder 56, 72, 88, 104, 120, 136; some of its odd obligations are not finished"},
+  {"m": 104, "k": "short", "s": "search", "why": "{16,38,104} is won by 72, which leads back to {16,38,72} (search)"},
   {"m": 106, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
   {"m": 109, "k": "odd", "s": "open", "why": "open: searched alone, it stopped at a 2.1-billion-state cap"},
   {"m": 110, "k": "long", "s": "search", "why": "{16,38,110} is won by 59 (search, a deeper sweep)"},
   {"m": 116, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
   {"m": 117, "k": "odd", "s": "open", "why": "open: searched alone, it stopped at a 2.1-billion-state cap"},
-  {"m": 120, "k": "short", "s": "ladder", "why": "a rung of the ladder 56, 72, 88, 104, 120, 136; some of its odd obligations are not finished"},
+  {"m": 120, "k": "short", "s": "search", "why": "{16,38,120} is won by 72, which leads back to {16,38,72} (search)"},
   {"m": 122, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
   {"m": 125, "k": "odd", "s": "open", "why": "open: searched alone, it stopped at a 2.1-billion-state cap"},
   {"m": 126, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
@@ -893,8 +893,8 @@ function lessonFrontier(root) {
   const detail = el("p", { class: "detail", "aria-live": "polite" }, "Click a tile to see what is known about it.");
   const groups = [["odd", "Odd answers"], ["short", "Even answers that leave a short position"], ["long", "Even answers that leave a long position"]];
   const box = el("div", { class: "game" });
-  const cls = { certified: "bad out", search: "paid out", open: "", ladder: "gold" };
-  const label = { certified: "ruled out, certified", search: "ruled out by search", open: "open", ladder: "ladder rung" };
+  const cls = { certified: "bad out", search: "paid out", open: "", ladder: "gold", answer: "good" };
+  const label = { certified: "ruled out, certified", search: "ruled out by search", open: "open", ladder: "ladder rung", answer: "the answer, by search" };
   const looked = new Set();
   for (const [k, title] of groups) {
     const tiles = el("div", { class: "tiles" });
@@ -907,18 +907,20 @@ function lessonFrontier(root) {
     box.append(el("p", { class: "note" }, title), tiles);
   }
   const counts = (s) => FRONTIER.filter((r) => r.s === s).length;
-  box.append(el("div", { class: "legend" },
-    el("span", {}, el("i", { style: "border-color: var(--oxide); background: var(--oxide-soft)" }), `ruled out, certified (${counts("certified")})`),
-    el("span", {}, el("i", { style: "border-color: transparent; background: var(--paid)" }), `ruled out by search (${counts("search")})`),
-    el("span", {}, el("i", { style: "border-color: var(--gilt); background: var(--gilt-soft)" }), `ladder rungs (${counts("ladder")})`),
-    el("span", {}, el("i", { style: "border-color: var(--copper); background: var(--copper-soft)" }), `open (${counts("open")})`)), detail);
+  const keys = [["answer", "var(--verdigris)", "var(--verdigris-soft)", "the answer, by search"],
+    ["certified", "var(--oxide)", "var(--oxide-soft)", "ruled out, certified"],
+    ["search", "transparent", "var(--paid)", "ruled out by search"],
+    ["ladder", "var(--gilt)", "var(--gilt-soft)", "ladder rungs"],
+    ["open", "var(--copper)", "var(--copper-soft)", "open"]];
+  box.append(el("div", { class: "legend" }, ...keys.filter(([s]) => counts(s)).map(([s, border, fill, text]) =>
+    el("span", {}, el("i", { style: `border-color: ${border}; background: ${fill}` }), `${text} (${counts(s)})`))), detail);
   root.append(
     eyebrow("OCTOBER 2026"),
     el("h2", {}, "The frontier: the reply 38"),
-    story("Every even reply to 16 up to 36 has an answer. The reply 38 does not, yet. Because {16, 38} is short, any answer must be one of these 98 moves.",
-          `Certified losing positions rule out ${counts("certified")} of them, and search has ruled out ${counts("search")} more (struck through). The short candidates 72, 88, 104 and 120 form a <b>ladder</b> with 56 and 136: each rung leads back to the rungs below it, so at most one can be the answer.`),
+    story("Every even reply to 16 up to 36 has a certified answer. For the reply 38, search found one on October 18: 72. Because {16, 38} is short, any answer must be one of these 98 moves.",
+          `Certified losing positions rule out ${counts("certified")} of them, and search has ruled out ${counts("search")} more (struck through). The short candidates 72, 88, 104 and 120 form a <b>ladder</b> with 56 and 136: each rung leads back to the rungs below it, so at most one can be the answer. By search, the lowest, 72, is it: {16, 38, 72} is a losing position for the player to move. That is a search result, not yet a certificate.`),
     box,
-    el("p", { class: "note" }, "Status as of October 17, 2026 (the statuses last changed on October 12), from the reply-38 record (sylver/campaigns/r38-2026-10-09 at github.com/rudi-cilibrasi/sylver-coinage). Search results are discovery output, not certificates."),
+    el("p", { class: "note" }, "Status as of October 18, 2026, from the reply-38 record (sylver/campaigns/r38-2026-10-09 at github.com/rudi-cilibrasi/sylver-coinage). Search results are discovery output, not certificates."),
   );
 }
 

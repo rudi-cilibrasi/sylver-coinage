@@ -1925,6 +1925,41 @@ Search for an answer to 38, recorded in
 - **Tally.** Unchanged: of {16,38}'s 98 obligations, 65 are N (11 certified,
   54 by search) and 33 are open. No answer to 38 is known.
 
+### Attempt 46 — {16,38,72,78} falls to 367: by search, 72 answers 38 (2026-10-18)
+
+Search for an answer to 38, recorded in
+[the reply-38 record](campaigns/r38-2026-10-09/RESULT.md#the-search-for-an-answer-to-38)
+(discovery results, not certified).
+
+- **The witness.** With 78 alone, after 37 more replies N by search and 19
+  by the partner rule, the P-table hunt found {16,38,72,78}+367 P on
+  October 18 at 01:51, with 56,699,024 P-positions in 20 minutes. So
+  {16,38,72,78} is N, won by 367, which is 182nd in 78's order, counting
+  from 0: far deeper than any earlier witness (127th at most).
+- **The checks.** A rerun with the build and schedule that checked 229,
+  245 and 257 also found it P, with 56,854,380 P-positions in 2 hours 2
+  minutes; like them, it guards against faults of build and schedule, not
+  of method. All eight of the hunt's witnesses agree with its 600 rows:
+  none wins a reply recorded N on its child that is still legal after it,
+  and none is one move from another of the 335 P-positions the rows name.
+- **72.** Every obligation of {16,38,72} is now N by search: its 25 odd
+  ones, and its 43 even ones, eight of them long children that the hunt
+  settled from October 10 to 18. So {16,38,72} is P, and **72 answers 38**,
+  by search. 88, 104 and 120 move by 72 back to {16,38,72}, so they
+  are N.
+- **What it rests on.** The Quiet End Theorem, which makes these 68
+  obligations all of {16,38,72}'s; B56 and certified nodes for a few of
+  them; and otherwise hundreds of search runs, none replayed. Each N result
+  names a winning move whose position the engine found P by exhaustive
+  search, as it found each witness. The reruns of the last four witnesses
+  share the engine's algorithm. Certifying 72 would need replays far beyond
+  this host, or a proof by other means.
+- **Tally.** Of {16,38}'s 98 obligations, 72 is P and 68 are N (11
+  certified, 57 by search); 29 are open, which no longer matters to whether
+  38 has an answer. The lowest reply to 16 with no known answer is now 40;
+  the lowest without a certified one is still 38. Opening 16 remains
+  unresolved.
+
 ### Sources
 
 - <https://math.colgate.edu/~integers/yg2/yg2.pdf>
