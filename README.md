@@ -16,17 +16,33 @@ eleven small games that end at the reply-38 frontier.
 
 This repository is the complete, auditable record of a computational
 campaign on **Sylver Coinage after the opening move 16** (Conway's prize
-question: does 16 have a winning reply, and which?).  Every claim below
-is backed by artifacts in this history: two independent solver
+question: does 16 have a winning reply, and which?).  Every certified
+claim below is backed by artifacts in this history: two independent solver
 implementations that agree on outcomes *and* exact evaluated-state
 counts, SHA-256-fingerprinted run records, and a conflict-checked cache
 of 267,000+ exact position outcomes whose cumulative solver work
-exceeds 10^12 states.
+exceeds 10^12 states. Results marked *by search* are discovery output:
+recorded and checked for consistency, but not replayed, so not certified.
 
 ## Headline results
 
 For the week of September 21–27, see the [progress summary](docs/progress/2026-09-28-week.md).
 
+- **Reply 38: by search, 72 answers it (October 18).**
+  - {16,38,72} is short, so it is P exactly when each of its 68 Quiet End
+    obligations (25 odd moves, 43 even ones) is N, and by search each is.
+    Eight of the even ones, long children of 72, fell to a witness hunt
+    from October 10 to 18; {16,38,72,78} fell last, to 367.
+  - This is a search result, not a certificate: the runs behind it were not
+    replayed. Each of the hunt's last four witnesses was rerun with another
+    build and schedule of the same engine, which guards against faults of
+    build and schedule, not of method.
+  - So, by search, the reply 38 to the opening 16 loses, and 88, 104 and
+    120, which move by 72 back to {16,38,72}, do not answer it. The lowest
+    reply with no answer even by search is now 40. Opening 16 remains
+    unresolved.
+
+  See the [record](sylver/campaigns/r38-2026-10-09/RESULT.md#the-search-for-an-answer-to-38).
 - **Reply 38: four P-positions refute five answers (October 9).**
   - I={16,20,22,24}, B28={16,28,38,40}, B24={16,24,38,44} and
     B56={16,38,56,60} are P. Each is short, and every one of its Quiet End
@@ -37,10 +53,9 @@ For the week of September 21–27, see the [progress summary](docs/progress/2026
     - or by another of these positions.
   - So 24, 28, 40, 44 and 56 do not answer the reply 38. {16,28,38} is N,
     which settles the question the Y record left open.
-  - No answer to 38 is known yet. It remains the lowest unanswered reply.
-    Of its 98 candidates, certificates rule out 11 and, by October 12,
-    search 54 more, leaving 33 open. Since October 17, by search, 72
-    answers 38 exactly when its only open long child, 78, is N.
+  - No certified answer to 38 is known; it remains the lowest reply
+    without one. Of its 98 candidates, certificates rule out 11 and search
+    57 more, and by search 72 answers it (October 18, above).
   - I and B24 were already on Sicherman's
     [list of P-positions](https://sicherman.net/sylver/ppos.html) (last
     updated September 28), so these certificates confirm them independently. B28 and
@@ -55,7 +70,8 @@ For the week of September 21–27, see the [progress summary](docs/progress/2026
   - **Finite answers.** A scan added seven finite answers, each replayed
     from empty memos: 36 → 23, 58 → 11, 62 → 37, 86 → 33, 90 → 17,
     140 → 13 and 156 → 21. {16,23,36} closes 36.
-  - **The frontier.** The lowest unanswered reply is 38.
+  - **The frontier.** The lowest reply without a certified answer is 38
+    (since October 18, by search, 72 answers it).
 
   See the [ledger](sylver/campaigns/o16-2026-10-09/RESULT.md).
 - **Z={16,30,56} is P, so the reply 30 to the opening 16 loses (October 8).**

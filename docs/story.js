@@ -531,8 +531,9 @@ const REPLIES = [2, 4, 6, 8, 10, 12, 14, 18, 20, 22, 24, 26, 28, 30, 34, 36, 38]
 const ANSWERS = { 2: 3, 4: 6, 6: 7, 8: 14, 10: 9, 12: 14, 14: 8, 18: 5, 20: 34, 22: 12, 24: 10, 26: 88, 28: 58, 30: 56, 34: 20, 36: 23 };
 const WHEN = { 26: 19, 28: 23, 30: 25.5, 34: 28, 36: 30 };
 const RULED_OUT_38 = [4, 6, 8, 12, 14, 22, 24, 28, 40, 44, 56];   // by certified P-positions
-// The rest of the reply-38 record (sylver/campaigns/r38-2026-10-09): ruled out by search, and still open
-const SEARCH_38 = { ruledOut: 54, open: 33 };
+// The rest of the reply-38 record (sylver/campaigns/r38-2026-10-09): ruled out by search, still open, and
+// the answer search found (not certified)
+const SEARCH_38 = { ruledOut: 57, open: 29, answer: 72 };
 // [seconds into the chapter, the dated note shown]; the tests check the dates against the README
 const NOTES = [
   [10.5, "July: replies 2 to 24 answered, each answer certified"],
@@ -569,7 +570,8 @@ chapter(50, 2026.6, "2026 · MACHINE-CHECKED CERTIFICATES", (ctx, t, d) => {
   text(ctx, `+ ${SEARCH_38.ruledOut} more ruled out by search  ·  ${SEARCH_38.open} still open`, 360, 700,
        { size: 28, color: C.muted, alpha: oa * seg(t, 40, 41) });
   const fa = a * seg(t, 42, 43);
-  text(ctx, "38 ?", 1500, 680, { size: 64, font: F.mono, weight: 700, color: C.gilt, alpha: fa });
+  text(ctx, SEARCH_38.answer ? `38 → ${SEARCH_38.answer}` : "38 ?", 1500, 680, { size: 64, font: F.mono, weight: 700, color: C.gilt, alpha: fa });
+  if (SEARCH_38.answer) text(ctx, "by search, not yet certified", 1500, 720, { size: 24, color: C.muted, alpha: fa });
   // ledger of dates
   const live = NOTES.filter(([at]) => t >= at).slice(-1)[0];
   if (live) text(ctx, live[1], 360, 520, { size: 30, style: "italic", color: C.silver, alpha: a * window_(t, live[0], live[0] + 6, 0.4) });
@@ -577,7 +579,7 @@ chapter(50, 2026.6, "2026 · MACHINE-CHECKED CERTIFICATES", (ctx, t, d) => {
   caption(ctx, "Replies 2 to 24 fell in July. The replies above 24 took months of computing and new engines.", a * window_(t, 10, 18.5, 0.5));
   caption(ctx, "The hardest step, 701 in {16, 26, 82, 88}, took 633,734,956 positions, counted identically by two engines.", a * window_(t, 18.5, 27, 0.5));
   caption(ctx, "By October 9 every reply up to 36 had an answer. The reply 38 is the frontier.", a * window_(t, 27, 35, 0.5));
-  caption(ctx, `Eleven possible answers to 38 are ruled out by certified losing positions, and search has ruled out ${SEARCH_38.ruledOut} more. None works yet.`, a * window_(t, 35, d, 0.5));
+  caption(ctx, `Eleven possible answers to 38 are ruled out by certified losing positions, and search has ruled out ${SEARCH_38.ruledOut} more. On October 18, search found one that works: 72.`, a * window_(t, 35, d, 0.5));
 }, "2026");
 
 // 11. Closing
@@ -585,13 +587,13 @@ chapter(16, 2026.8, null, (ctx, t, d) => {
   const a = window_(t, 0, d, 1.0);
   coin(ctx, W / 2, 400, 200, "16", { alpha: a, legend: "WHO · WINS ·" });
   text(ctx, "Who wins after 16? Still open.", W / 2, 700, { size: 56, font: F.display, weight: 600, color: C.silverHi, align: "center", spacing: 2, alpha: a * seg(t, 1, 2) });
-  text(ctx, "Play the game, check a certificate, or find an answer to 38.", W / 2, 770, { size: 36, style: "italic", color: C.muted, align: "center", alpha: a * seg(t, 2.5, 3.5) });
+  text(ctx, "Play the game, check a certificate, or certify 72 as an answer to 38.", W / 2, 770, { size: 36, style: "italic", color: C.muted, align: "center", alpha: a * seg(t, 2.5, 3.5) });
   const s = a * seg(t, 5, 6);
   text(ctx, "Sources: Winning Ways (1982) · Sicherman, Integers 2 (2002) and sicherman.net · Blok's reports (2021–2026)", W / 2, 880, { size: 24, color: C.faint, align: "center", alpha: s });
   text(ctx, "OEIS A248380 · Eaton et al. (2020) · Boyers et al. (2024) · github.com/rudi-cilibrasi/sylver-coinage", W / 2, 916, { size: 24, color: C.faint, align: "center", alpha: s });
 }, "Open");
 
-CH[CH.length - 1].text = ["Who wins after 16? Still open. Play the game, check a certificate, or find an answer to 38."];
+CH[CH.length - 1].text = ["Who wins after 16? Still open. Play the game, check a certificate, or certify 72 as an answer to 38."];
 CH[CH.length - 1].label = "WHO WINS AFTER 16? STILL OPEN";
 // ---------- the timeline ----------
 let acc = 0;

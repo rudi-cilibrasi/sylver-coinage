@@ -66,7 +66,39 @@ def recorded_r38_status():
             row = json.loads(line)
             if row.get('P'):
                 status[int(rest[0])] = int(row['P'])
+    if not open_obligations_of_72():       # {16,38,72} is P: each higher rung moves by 72 back to it
+        for rung in (88, 104, 120):
+            status[rung] = 72
     return moves, status
+
+
+def open_obligations_of_72():
+    """The obligations of {16,38,72} the committed outputs do not show N (as scan/status.py reads them)."""
+    from sylver.arena.common import legal, position, profile
+    moves = profile(position((16, 38, 72)))['moves']
+    done = set()
+    for name in ('odd72.out', 'odd72_all.out'):     # odd ones: sweep rows, each naming a winning move
+        for line in (SCAN / name).read_text().splitlines():
+            m = re.match(r'move=(\d+) N winning_move=(\d+) ', line)
+            if m:
+                assert legal(position((16, 38, 72, int(m[1]))), int(m[2])), line
+                done.add(int(m[1]))
+    for line in (SCAN / 'even_72.jsonl').read_text().splitlines():
+        row = json.loads(line)
+        if row['status'] == 'resolved':
+            done.add(row['e'])
+    if '56' in json.loads(R38.read_text())['refuted_answers_to_38']:
+        done.add(56)                    # {16,38,72,56} = {16,38,56}, which moves to the certified B56
+    for path in SCAN.glob('deep_16-38-*.jsonl'):
+        rest = [x for x in map(int, path.stem.split('_')[1].split('-')) if x not in (16, 38)]
+        if len(rest) == 2 and 72 in rest and any(json.loads(l).get('P') for l in path.read_text().splitlines()):
+            done.add(next(x for x in rest if x != 72))
+    for line in (SCAN / 'hunt.jsonl').read_text().splitlines():
+        row = json.loads(line)
+        if row['outcome'] == 'P':
+            assert len(row['child']) == 4 and 72 in row['child'], row
+            done.add(next(x for x in row['child'] if x not in (16, 38, 72)))
+    return [m for m in moves if m not in done]
 
 # Export the Mint's data, and solve the small finite destinations of its
 # answer table with the page's own evaluator (solver.js).
@@ -190,7 +222,7 @@ class MintTests(unittest.TestCase):
             m = row['m']
             kind = 'odd' if m % 2 else ('short' if is_short(minimal([8, 19, m // 2])) else 'long')
             self.assertEqual(row['k'], kind, m)
-            self.assertIn(row['s'], {'certified', 'search', 'ladder', 'open'}, m)
+            self.assertIn(row['s'], {'certified', 'search', 'ladder', 'open', 'answer'}, m)
             self.assertTrue(row['why'], m)
 
     def test_frontier_certified_moves_are_the_audited_refutations(self):
@@ -198,7 +230,9 @@ class MintTests(unittest.TestCase):
         certified = {r['m'] for r in self.report['frontier'] if r['s'] == 'certified'}
         self.assertEqual(certified, refuted)
         ladder = {r['m'] for r in self.report['frontier'] if r['s'] == 'ladder'}
-        self.assertEqual(ladder, {72, 88, 104, 120})
+        answer = {r['m'] for r in self.report['frontier'] if r['s'] == 'answer'}
+        self.assertEqual(answer, set() if open_obligations_of_72() else {72})
+        self.assertEqual(ladder, set() if answer else {72, 88, 104, 120})
 
     def test_blok_mirror_pairs_every_gap_of_8_12(self):
         mates = self.report['mates']
@@ -263,29 +297,16 @@ class MintTests(unittest.TestCase):
                 self.assertRegex(long_log, rf'r=16-38 e=\s*{m} open ', m)
                 self.assertEqual(row['why'], "open within the sweeps' state caps", m)
 
-    def test_72s_open_children_come_from_the_logs(self):
-        """The Mint names the children of {16,38,72} still open; derive them from the committed outputs."""
-        from sylver.arena.common import position, profile
-        even = [m for m in profile(position((16, 38, 72)))['moves'] if m % 2 == 0]
-        done = set()
-        for line in (SCAN / 'even_72.jsonl').read_text().splitlines():
-            row = json.loads(line)
-            if row['status'] == 'resolved':
-                done.add(row['e'])
-        refuted = json.loads(R38.read_text())['refuted_answers_to_38']
-        if '56' in refuted:             # {16,38,72,56} = {16,38,56}, which moves to the certified B56
-            done.add(56)
-        for path in SCAN.glob('deep_16-38-*.jsonl'):
-            parts = [int(x) for x in path.stem.split('_')[1].split('-')]
-            rest = [x for x in parts if x not in (16, 38)]
-            if len(rest) == 2 and 72 in rest and any(json.loads(l).get('P') for l in path.read_text().splitlines()):
-                done.add(next(x for x in rest if x != 72))
-        for line in (SCAN / 'hunt.jsonl').read_text().splitlines():
-            row = json.loads(line)
-            if row['outcome'] == 'P':
-                done.add(next(x for x in row['child'] if x not in (16, 38, 72)))
-        still_open = [e for e in even if e not in done]
-        why = next(r['why'] for r in self.report['frontier'] if r['m'] == 72)
+    def test_72s_status_comes_from_the_logs(self):
+        """The Mint says what is left of {16,38,72}: derive it from the committed outputs."""
+        still_open = open_obligations_of_72()
+        row = next(r for r in self.report['frontier'] if r['m'] == 72)
+        if not still_open:
+            self.assertEqual(row['s'], 'answer')
+            self.assertIn('every obligation of {16,38,72} is N', row['why'])
+            return
+        self.assertTrue(all(m % 2 == 0 for m in still_open), still_open)   # its odd ones were finished first
+        why = row['why']
         m = re.search(r'its (\w+) open long (child|children), ([\d, and]+), (is|are all) N', why)
         self.assertIsNotNone(m, why)
         listed = [int(x) for x in m[3].replace('and', ',').split(',') if x.strip()]
