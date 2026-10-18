@@ -722,7 +722,7 @@ function lessonAnswer(root) {
     after.append(el("button", { class: "ctrl primary", type: "button", onclick: () => {
       if (!last) { i++; ask(true); return; }
       q.innerHTML = `<p>All ${TABLE.length} replies done: you found ${score} of ${seen} answers.</p>`;
-      opts.replaceChildren(); msg.className = "msg win"; msg.textContent = "Every even reply up to 36 has a certified answer. The next one, 38, has none yet: see the last lesson.";
+      opts.replaceChildren(); msg.className = "msg win"; msg.textContent = "Every even reply up to 36 has a certified answer. The next one, 38, has no certified answer yet, but search found one: see the last lesson.";
       checked.textContent = "";
       after.replaceChildren(el("button", { class: "ctrl", type: "button", onclick: () => { i = 0; score = 0; seen = 0; ask(true); } }, "Start again"));
       markDone("answer");

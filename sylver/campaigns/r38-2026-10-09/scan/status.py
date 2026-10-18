@@ -2,7 +2,7 @@
 import json, re, sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[4]))
-from sylver.arena.common import position, profile, key  # noqa: E402
+from sylver.arena.common import legal, position, profile, key  # noqa: E402
 
 HERE = Path(__file__).resolve().parent
 info = profile(position((16, 38)))
@@ -55,8 +55,9 @@ p72 = profile(position((16, 38, 72)))
 odd_n = set()
 for name in ('odd72.out', 'odd72_all.out'):
     for line in (HERE / name).read_text().splitlines():
-        m = re.match(r'move=(\d+) N winning_move=\d+ ', line)
+        m = re.match(r'move=(\d+) N winning_move=(\d+) ', line)
         if m:
+            assert legal(position((16, 38, 72, int(m[1]))), int(m[2])), line
             odd_n.add(int(m[1]))
 even_n = {r['e'] for r in map(json.loads, (HERE / 'even_72.jsonl').read_text().splitlines()) if r['status'] == 'resolved'}
 if '56' in json.loads((HERE.parent / 'audit.json').read_text())['refuted_answers_to_38']:

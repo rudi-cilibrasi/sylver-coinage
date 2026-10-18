@@ -6,9 +6,9 @@ the even replies up to 200 that now have an answer, with the evidence for
 each. [audit.py](audit.py) checks every row ([audit.json](audit.json)).
 
 **Every even reply up to 36 now has an answer** (32 is not a legal reply,
-since it is a multiple of 16). The lowest unanswered reply is **38**.
-(Since October 18, by search, 72 answers 38; that is not certified, so it
-is not a row here, and 38 is the lowest reply without a certified answer. See the
+since it is a multiple of 16). The lowest reply without a certified answer
+is **38**. (Since October 18, by search, 72 answers 38; that is not
+certified, so it is not a row here. See the
 [reply-38 record](../r38-2026-10-09/RESULT.md#the-search-for-an-answer-to-38).)
 Opening 16 remains unresolved.
 

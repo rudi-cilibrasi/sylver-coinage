@@ -16,12 +16,13 @@ eleven small games that end at the reply-38 frontier.
 
 This repository is the complete, auditable record of a computational
 campaign on **Sylver Coinage after the opening move 16** (Conway's prize
-question: does 16 have a winning reply, and which?).  Every claim below
-is backed by artifacts in this history: two independent solver
+question: does 16 have a winning reply, and which?).  Every certified
+claim below is backed by artifacts in this history: two independent solver
 implementations that agree on outcomes *and* exact evaluated-state
 counts, SHA-256-fingerprinted run records, and a conflict-checked cache
 of 267,000+ exact position outcomes whose cumulative solver work
-exceeds 10^12 states.
+exceeds 10^12 states. Results marked *by search* are discovery output:
+recorded and checked for consistency, but not replayed, so not certified.
 
 ## Headline results
 

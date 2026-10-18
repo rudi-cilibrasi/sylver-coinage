@@ -74,13 +74,14 @@ def recorded_r38_status():
 
 def open_obligations_of_72():
     """The obligations of {16,38,72} the committed outputs do not show N (as scan/status.py reads them)."""
-    from sylver.arena.common import position, profile
+    from sylver.arena.common import legal, position, profile
     moves = profile(position((16, 38, 72)))['moves']
     done = set()
     for name in ('odd72.out', 'odd72_all.out'):     # odd ones: sweep rows, each naming a winning move
         for line in (SCAN / name).read_text().splitlines():
-            m = re.match(r'move=(\d+) N winning_move=\d+ ', line)
+            m = re.match(r'move=(\d+) N winning_move=(\d+) ', line)
             if m:
+                assert legal(position((16, 38, 72, int(m[1]))), int(m[2])), line
                 done.add(int(m[1]))
     for line in (SCAN / 'even_72.jsonl').read_text().splitlines():
         row = json.loads(line)
