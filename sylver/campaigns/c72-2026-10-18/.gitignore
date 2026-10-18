@@ -1,0 +1,3 @@
+# replay builds: the receipts record each binary's hash
+verification/*/build/
+verification/sources/kunz-243866d

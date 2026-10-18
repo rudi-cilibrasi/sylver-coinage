@@ -1,0 +1,42 @@
+{
+  "status": "verified",
+  "certificate_sha256": "17f2853cea31e86fe03505272605910d06fe17d4835d7c29daf860792cf4bc71",
+  "verifier_sha256": "420ebc11625188e51923e67953a3948b21fc3dcda8ef42ae7d01dd53a3c0fc06",
+  "native_words": 4,
+  "native_source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+  "binary_sha256": "62b51d342748810778fd454aed03e6e412c179f49eff5d578a8cbba3795ccfb3",
+  "python_source_sha256": "fe17c5fbb77b036131250af033b0bae7fa200daca4cadb01ceccb12fa6434a3d",
+  "semigroup_source_sha256": "7675fe927be6704ca7c60389061c61e82e5c3761b7086a1e5691b3bd9a5c5fd9",
+  "position": [
+    16,
+    38,
+    71,
+    72,
+    170
+  ],
+  "frobenius": 225,
+  "seconds_limit_per_solver": 86400.0,
+  "memory_gib": 80,
+  "structural_edges_checked": 2,
+  "runs": {
+    "native": {
+      "command": [
+        "/home/ruclaw/src/sylver-coinage/sylver/campaigns/c72-2026-10-18/verification/c72_170/build/native",
+        "16",
+        "38",
+        "71",
+        "72",
+        "170"
+      ],
+      "elapsed_seconds": 2078.934814563021,
+      "returncode": 0,
+      "timed_out": false,
+      "stdout_sha256": "3748bbbd603af0f0a3ecca0f6c97b005d10c74e8133c60fba30ac9940b410dc9",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outcome": "P",
+      "frobenius": 225,
+      "states": 299519162
+    }
+  },
+  "scope": "Fresh standalone memos, no cache or inherited outcome assumptions. Both moves are legal and their canonical destination matches the certificate."
+}

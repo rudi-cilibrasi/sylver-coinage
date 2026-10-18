@@ -844,7 +844,7 @@ const FRONTIER = [
   {"m": 68, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
   {"m": 69, "k": "odd", "s": "search", "why": "{16,38,69} is won by 25 (search)"},
   {"m": 71, "k": "odd", "s": "search", "why": "{16,38,71} is won by 73 (search)"},
-  {"m": 72, "k": "short", "s": "answer", "why": "every obligation of {16,38,72} is N, so {16,38,72} is P. Its last open child, {16,38,72,78}, fell to 367 on October 18. A search result, not yet a certificate"},
+  {"m": 72, "k": "short", "s": "answer", "why": "by search, every obligation of {16,38,72} is N, so {16,38,72} is P. Its last open child, {16,38,72,78}, fell to 367 on October 18. 60 of its 68 obligations are now certified; the other eight rest on search, so it is not yet a certificate"},
   {"m": 74, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
   {"m": 77, "k": "odd", "s": "search", "why": "{16,38,77} is won by 27 (search)"},
   {"m": 78, "k": "long", "s": "search", "why": "{16,38,78} is won by 27 (search)"},
@@ -918,7 +918,7 @@ function lessonFrontier(root) {
     eyebrow("OCTOBER 2026"),
     el("h2", {}, "The frontier: the reply 38"),
     story("Every even reply to 16 up to 36 has a certified answer. For the reply 38, search found one on October 18: 72. Because {16, 38} is short, any answer must be one of these 98 moves.",
-          `Certified losing positions rule out ${counts("certified")} of them, and search has ruled out ${counts("search")} more (struck through). The short candidates 72, 88, 104 and 120 form a <b>ladder</b> with 56 and 136: each rung leads back to the rungs below it, so at most one can be the answer. By search, it is 72: {16, 38, 72} is a losing position for the player to move. That is a search result, not yet a certificate.`),
+          `Certified losing positions rule out ${counts("certified")} of them, and search has ruled out ${counts("search")} more (struck through). The short candidates 72, 88, 104 and 120 form a <b>ladder</b> with 56 and 136: each rung leads back to the rungs below it, so at most one can be the answer. By search, it is 72: {16, 38, 72} is a losing position for the player to move. That is not yet a certificate: 60 of its 68 obligations are certified, and the other eight rest on search.`),
     box,
     el("p", { class: "note" }, "Status as of October 18, 2026, from the reply-38 record (sylver/campaigns/r38-2026-10-09 at github.com/rudi-cilibrasi/sylver-coinage). Search results are discovery output, not certificates."),
   );

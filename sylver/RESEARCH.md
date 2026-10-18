@@ -1,11 +1,11 @@
 # Sylver Coinage after 16: research log
 
 **October 18, the reply 38, by search:** {16,38,72} is P, so 72 answers 38.
-Every one of its 68 Quiet End obligations is N: 14 through certified
-positions, the other 54 by search, the last being {16,38,72,78}, which 367
-wins. This is a search result, not a certificate, so 38 is still the lowest
-reply without a certified answer; the lowest with no known answer is now
-40. See Attempt 46 and [the record](campaigns/r38-2026-10-09/RESULT.md#the-search-for-an-answer-to-38).
+Every one of its 68 Quiet End obligations is N, the last being
+{16,38,72,78}, which 367 wins. 60 of them are now certified (Attempt 47);
+the other eight rest on the hunt's search witnesses, so 38 is still the
+lowest reply without a certified answer; the lowest with no known answer is
+now 40. See Attempts 46 and 47 and [the record](campaigns/r38-2026-10-09/RESULT.md#the-search-for-an-answer-to-38).
 
 **October 9, the reply 38:** four short P-positions, I={16,20,22,24},
 B28={16,28,38,40}, B24={16,24,38,44} and B56={16,38,56,60}, show that 24,
@@ -1971,6 +1971,31 @@ Search for an answer to 38, recorded in
   38 has an answer. The lowest reply to 16 with no known answer is now 40;
   the lowest without a certified one is still 38. Opening 16 remains
   unresolved.
+
+### Attempt 47 — 60 of {16,38,72}'s 68 obligations certified (2026-10-18)
+
+Recorded in [the certification record](campaigns/c72-2026-10-18/RESULT.md).
+
+- **The certificates.** The search's 49 finite routes for {16,38,72}'s
+  obligations reach 38 distinct finite positions. Each got a certificate
+  and a replay from empty memos: 36 by `native_solver.cpp` and the Python
+  evaluator, the two largest (299,519,162 and 401,815,231 states) by
+  `native_solver.cpp` and a sequential, memo-verified `kunz_solver.cpp`,
+  1,366,033,291 states in all, from 05:34 to 11:41. Every replay reports P,
+  with equal counts.
+- **The audit.** `audit.py` lists the 68 obligations twice and covers 60:
+  49 finite witnesses, 6 through the nodes C, E, F and P0, and 5 through
+  B24, B28 and B56. The other eight, 68, 78, 84, 100, 106, 116, 132 and
+  154, rest on the hunt's search witnesses, so {16,38,72} is not yet
+  certified P. Attempt 46 counted 14 obligations reaching certified
+  positions; the right count was 22. The odd obligations 3, 5, 7 and 9 also
+  reach the opening table's {2,3}, {5,16,18}, {6,7,16} and {9,10,16}, and
+  13, 15, 20 and 23 reach destinations the reply-38 audit had replayed as
+  finite witnesses. All 49 finite routes are now replayed in any case.
+- **Next.** 132 → 75 (355 million states by the memo engine) is smaller than
+  the 401,815,231-state destination replayed here, so it looks within reach
+  of this host, and 68 → 257 may be; the other memo witnesses (a billion
+  states or more) look beyond it, and the other P-table ones are unmeasured.
 
 ### Sources
 
