@@ -244,9 +244,10 @@ statuses from the logs.
       children by the hunt's witnesses). **{16,38,72} is P, and 72 answers
       38.** This is discovery output, not certified: the runs behind it
       were not replayed, and the reruns of the last four witnesses share
-      their engine's algorithm. Since then 60 of the 68 obligations have
+      their engine's algorithm. Since then 61 of the 68 obligations have
       been certified ([the certification record](../c72-2026-10-18/RESULT.md));
-      the eight long children the hunt settled remain search results.
+      seven of the eight long children the hunt settled remain search
+      results.
     - 88, 104 and 120 each move by 72 back to {16,38,72} (16 generates
       them from 72), so they are N, whatever their unfinished odd
       obligations.

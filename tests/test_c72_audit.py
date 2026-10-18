@@ -14,7 +14,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 C72 = ROOT / 'sylver/campaigns/c72-2026-10-18'
 SCAN = ROOT / 'sylver/campaigns/r38-2026-10-09/scan'
-SEARCH_ONLY = [68, 78, 84, 100, 106, 116, 132, 154]    # the long children of 72 that the hunt settled
+SEARCH_ONLY = [68, 78, 84, 100, 106, 116, 154]    # long children of 72 the hunt settled, but for 132
 
 
 def load(name):
@@ -36,7 +36,7 @@ def scratch(audit, tmp, *names):
 
 
 class C72AuditTests(unittest.TestCase):
-    """Every obligation of {16,38,72} but the hunt's eight is certified N; those eight rest on search."""
+    """Every obligation of {16,38,72} but seven of the hunt's long children is certified N; those rest on search."""
 
     def test_the_committed_audit_is_reproducible(self):
         result = subprocess.run([sys.executable, str(C72 / 'audit.py')], capture_output=True, text=True, timeout=900)
@@ -44,7 +44,7 @@ class C72AuditTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stdout[-2000:])
         self.assertEqual(fresh, committed)
         self.assertEqual((fresh['failures'], fresh['search_only'], fresh['outcome']), ([], SEARCH_ONLY, 'unknown'))
-        self.assertEqual(fresh['summary']['certified'], 60)
+        self.assertEqual(fresh['summary']['certified'], 61)
         self.assertEqual(len(fresh['obligations']), 68)
 
     def test_routes_are_the_reply_38_logs(self):
@@ -100,7 +100,7 @@ class C72AuditTests(unittest.TestCase):
     def test_the_large_witnesses_need_their_kunz_replays(self):
         audit = load('c72_kunz')
         certs = audit.certificates()
-        for m, v in ((58, 129), (170, 71)):
+        for m, v in ((58, 129), (132, 75), (170, 71)):
             self.assertEqual(audit.finite_witness(m, v, certs)['evidence'], 'finite-witness-native-kunz', m)
         audit.NATIVE_KUNZ = set()            # without the exception a Python replay is required
         self.assertIsNone(audit.finite_witness(58, 129, certs))

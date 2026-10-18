@@ -2,10 +2,10 @@
 
 **October 18, the reply 38, by search:** {16,38,72} is P, so 72 answers 38.
 Every one of its 68 Quiet End obligations is N, the last being
-{16,38,72,78}, which 367 wins. 60 of them are now certified (Attempt 47);
-the other eight rest on the hunt's search witnesses, so 38 is still the
+{16,38,72,78}, which 367 wins. 61 of them are now certified (Attempts 47
+and 48); the other seven rest on the hunt's search witnesses, so 38 is still the
 lowest reply without a certified answer; the lowest with no known answer is
-now 40. See Attempts 46 and 47 and [the record](campaigns/r38-2026-10-09/RESULT.md#the-search-for-an-answer-to-38).
+now 40. See Attempts 46 to 48 and [the record](campaigns/r38-2026-10-09/RESULT.md#the-search-for-an-answer-to-38).
 
 **October 9, the reply 38:** four short P-positions, I={16,20,22,24},
 B28={16,28,38,40}, B24={16,24,38,44} and B56={16,38,56,60}, show that 24,
@@ -1996,6 +1996,28 @@ Recorded in [the certification record](campaigns/c72-2026-10-18/RESULT.md).
   the 401,815,231-state destination replayed here, so it looks within reach
   of this host, and 68 → 257 may be; the other memo witnesses (a billion
   states or more) look beyond it, and the other P-table ones are unmeasured.
+
+### Attempt 48 — 132 certified; the other seven look beyond this host (2026-10-18)
+
+Recorded in [the certification record](campaigns/c72-2026-10-18/RESULT.md).
+
+- **132.** The hunt's witness {16,38,72,132}+75 was replayed like the
+  largest finite witnesses: `native_solver.cpp` (355,061,923 states, about
+  29 GB resident by a sampled log) and the sequential, memo-verified
+  `kunz_solver.cpp`, with the same count. The audit now certifies 61 of
+  {16,38,72}'s 68 obligations; 39 destinations, 1,721,095,214 replayed
+  states.
+- **68.** Counted with the memo engine (a build from before the P-table mode
+  existed), {16,38,68,72,257} is P with 1,494,012,288 states. That checks
+  the P-table hunt's witness for 68 without the P-table code, though both
+  share the same search, so it is still search. With its wider states, a
+  native replay would need some 135 GB or more. So Attempt 47's hope for
+  68 → 257 was wrong, as was the record's earlier bound of about 690
+  million states, drawn from the P-table rerun's N-cache statistics.
+- **The rest.** The other memo witnesses (84, 106, 154) are about a billion
+  states or more, and the other P-table ones (78, 100, 116) store more
+  P-positions than 68's. Certifying the last seven obligations looks to need
+  a larger machine or another method.
 
 ### Sources
 
