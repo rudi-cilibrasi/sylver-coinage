@@ -69,8 +69,8 @@ For the week of September 21–27, see the [progress summary](docs/progress/2026
   - **Finite answers.** A scan added seven finite answers, each replayed
     from empty memos: 36 → 23, 58 → 11, 62 → 37, 86 → 33, 90 → 17,
     140 → 13 and 156 → 21. {16,23,36} closes 36.
-  - **The frontier.** The lowest unanswered reply is 38 (since October 18,
-    by search, 72 answers it).
+  - **The frontier.** The lowest reply without a certified answer is 38
+    (since October 18, by search, 72 answers it).
 
   See the [ledger](sylver/campaigns/o16-2026-10-09/RESULT.md).
 - **Z={16,30,56} is P, so the reply 30 to the opening 16 loses (October 8).**

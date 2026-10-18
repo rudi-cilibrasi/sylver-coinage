@@ -156,12 +156,14 @@ statuses from the logs.
       rung refutes every rung above it.
     - 136 falls to an odd obligation (37) and 56 to B56. An answer among the
       short candidates must be the first P rung among 72, 88, 104 and 120.
-  - 72 and 88 are odd-complete: every odd obligation is N.
+  - 72 and 88 are odd-complete: every odd obligation is N. For 72, one
+    sweep on October 18 named a winning move for each of the 25
+    (`scan/odd72_all.*`).
     - 72's obligation 56 is answered through B56. The deep replies 129 and
       69 answer its obligations 58 and 66.
     - 72's long children 68, 78 and 84 have no even reply into a short
-      P-position. 78 has no odd winner found so far; the hunt below found
-      139 for 84 and 257 for 68. The hardest of their odd replies each need
+      P-position. Their odd winners came from the hunt below: 139 for 84,
+      257 for 68 and, last, 367 for 78. The hardest of their odd replies each need
       from about 300 million to over a billion states: those from 81 on for
       78, from 87 on for 84, and from about 150 on for 68 (in the hunt
       below, some of 68's replies from 191 on stopped at its
@@ -209,7 +211,7 @@ statuses from the logs.
     - 116's last three queued replies, 233, 235 and 237, were dropped once
       229 won it. The retry queue ran out on October 17 at 04:10: the nine
       retries after the witness, of 78 and 100, are N. From then on the
-      hunt takes fresh replies of 68, 78 and 100 (`hunt.py 1200000000
+      hunt took fresh replies of 68, 78 and 100 (`hunt.py 1200000000
       --balance`).
     - On fresh replies, after 241 and 243 of 100 were N, it found
       {16,38,72,100}+245 P at 07:57 (70,825,107 P-positions, 26 minutes),

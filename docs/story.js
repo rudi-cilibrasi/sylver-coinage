@@ -587,13 +587,13 @@ chapter(16, 2026.8, null, (ctx, t, d) => {
   const a = window_(t, 0, d, 1.0);
   coin(ctx, W / 2, 400, 200, "16", { alpha: a, legend: "WHO · WINS ·" });
   text(ctx, "Who wins after 16? Still open.", W / 2, 700, { size: 56, font: F.display, weight: 600, color: C.silverHi, align: "center", spacing: 2, alpha: a * seg(t, 1, 2) });
-  text(ctx, "Play the game, check a certificate, or certify the answer to 38.", W / 2, 770, { size: 36, style: "italic", color: C.muted, align: "center", alpha: a * seg(t, 2.5, 3.5) });
+  text(ctx, "Play the game, check a certificate, or certify 72 as an answer to 38.", W / 2, 770, { size: 36, style: "italic", color: C.muted, align: "center", alpha: a * seg(t, 2.5, 3.5) });
   const s = a * seg(t, 5, 6);
   text(ctx, "Sources: Winning Ways (1982) · Sicherman, Integers 2 (2002) and sicherman.net · Blok's reports (2021–2026)", W / 2, 880, { size: 24, color: C.faint, align: "center", alpha: s });
   text(ctx, "OEIS A248380 · Eaton et al. (2020) · Boyers et al. (2024) · github.com/rudi-cilibrasi/sylver-coinage", W / 2, 916, { size: 24, color: C.faint, align: "center", alpha: s });
 }, "Open");
 
-CH[CH.length - 1].text = ["Who wins after 16? Still open. Play the game, check a certificate, or certify the answer to 38."];
+CH[CH.length - 1].text = ["Who wins after 16? Still open. Play the game, check a certificate, or certify 72 as an answer to 38."];
 CH[CH.length - 1].label = "WHO WINS AFTER 16? STILL OPEN";
 // ---------- the timeline ----------
 let acc = 0;

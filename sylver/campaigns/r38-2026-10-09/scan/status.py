@@ -46,18 +46,18 @@ for path in sorted(HERE.glob('deep_16-38-*.jsonl')):
         row = json.loads(line)
         if row.get('P'):
             status[int(rest[0])] = ('N', f"reply {row['P']} (deeper sweep)")
-# 72: {16,38,72} is P by search when each of its obligations is N. Its odd ones: the first sweep's
-# (odd_filter.jsonl, which classifies them in order) and the rest alone (odd72.out). Its even ones:
-# the even resolver (even_72.jsonl), B56 for 56 (the audit), a deeper sweep (deep_16-38-<e>-72 or
-# deep_16-38-72-<e>) or a hunt witness (hunt.jsonl). The rungs 88, 104 and 120 then move by 72 back
-# to {16,38,72}, which 16 keeps generating them in.
+# 72: {16,38,72} is P by search when each of its obligations is N. Its odd ones: a row of the sweep
+# over all of them (odd72_all.out) or of the earlier one over the last three (odd72.out), each naming
+# a winning move. Its even ones: the even resolver (even_72.jsonl), B56 for 56 (the audit), a deeper
+# sweep (deep_16-38-<e>-72 or deep_16-38-72-<e>) or a hunt witness (hunt.jsonl). The rungs 88, 104
+# and 120 then move by 72 back to {16,38,72}: 88, 104 and 120 are 72 plus multiples of 16.
 p72 = profile(position((16, 38, 72)))
-row72 = next(r for r in map(json.loads, (HERE / 'odd_filter.jsonl').read_text().splitlines()) if r['r'] == 72)
-odd_n = set() if row72['P_moves'] else set(row72['odd_obligations'][:row72['classified']])
-for line in (HERE / 'odd72.out').read_text().splitlines():
-    m = re.match(r'move=(\d+) N ', line)
-    if m:
-        odd_n.add(int(m[1]))
+odd_n = set()
+for name in ('odd72.out', 'odd72_all.out'):
+    for line in (HERE / name).read_text().splitlines():
+        m = re.match(r'move=(\d+) N winning_move=\d+ ', line)
+        if m:
+            odd_n.add(int(m[1]))
 even_n = {r['e'] for r in map(json.loads, (HERE / 'even_72.jsonl').read_text().splitlines()) if r['status'] == 'resolved'}
 if '56' in json.loads((HERE.parent / 'audit.json').read_text())['refuted_answers_to_38']:
     even_n.add(56)
@@ -67,9 +67,11 @@ for path in HERE.glob('deep_16-38-*.jsonl'):
         even_n.add(next(x for x in rest if x != 72))
 for r in map(json.loads, (HERE / 'hunt.jsonl').read_text().splitlines()):
     if r['outcome'] == 'P':
+        assert len(r['child']) == 4 and 72 in r['child'], r
         even_n.add(next(x for x in r['child'] if x not in (16, 38, 72)))
 open72 = [m for m in p72['moves'] if m not in (odd_n if m % 2 else even_n)]
 if not open72:
+    assert status.get(72, ('?',))[0] != 'N', status[72]
     status[72] = ('P', 'every obligation of {16,38,72} is N: 72 answers 38')
     for rung in (88, 104, 120):
         status[rung] = ('N', 'even 72 -> {16,38,72}')

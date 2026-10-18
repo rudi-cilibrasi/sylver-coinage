@@ -26,6 +26,7 @@ The certificate's audit does not use this file.
 | 72's open long children: a round-robin witness hunt, each reply alone with the partner rule | `python hunt.py 1200000000` on October 10 from 03:55 to 07:32, then `python hunt.py 1000000000` from 13:21, restarted on October 12 at 04:29 and 04:45 and stopped at 04:52 (children and starts in the script and `hunt_children.json`); from 09:01 `./hunt_retry.sh` (`python hunt.py 1600000000 --retry-capped`), restarted at 09:27 by `./hunt_restart.sh` and at 18:08 with 10 threads by `./hunt_restart2.sh`, to October 13 at 03:40; fresh replies (`HUNT_THREADS=10 python hunt.py 1600000000 --balance`) from 03:42 to October 14 at 14:33; then the P-table engine on the capped replies (`python hunt.py 1200000000 --retry-capped --balance`, the cap counting P-positions, 3 h per reply, 10 threads): `HUNT_ENGINE=kunz_p`, the prototype `make_kunz_p.py` derives, from 15:19 (8 GB cache) and 16:27 (24 GB); `HUNT_ENGINE=kunz_pt`, `sylver/kunz_solver.cpp --p-table` at e335ff0 (16 GB cache), from October 15 at 08:42, and from October 16 at 13:25 under `./hunt_supervisor.sh` with `./memguard.sh` (its retry phase ended on October 17 at 04:10, and its fresh phase, `--balance`, ran until every open child had a witness, on October 18 at 01:51) | `hunt.*` |
 | the witness {16,38,72,116}+229 again, with another build and schedule | `./check_116_229.sh`: `kunz_solver.cpp --p-table` from 0717a1d built with `-O2` for any x86-64 (`kunz_check`, after `--self-check`), 2 threads, split depth 4, a 4 GB cache | `check_116_229.*` |
 | the witnesses {16,38,72,100}+245 and {16,38,68,72}+257 again, the same way | `./check_100_245.sh`, then `./check_68_257.sh`, started by `./check_queue.sh` when the first had finished | `check_100_245.*`, `check_68_257.*` |
+| all 25 odd obligations of {16,38,72} in one sweep, naming a winning move for each (October 18, 04:06 to 04:09) | `./odd72_all.sh > odd72_all.out`: `kunz --threads 8 --stop-at-p --max-states 900000000 --odd-list 3,…,85 16 38 72` (all N, 354,661,924 states; the last three rows match `odd72.out`) | `odd72_all.*` |
 | the witness {16,38,72,78}+367 again, the same way, after the hunt had ended | `./check_78_367.sh` | `check_78_367.*` |
 | the hunt's witnesses against its other rows | `python witness_check.py > witness_check.out` | `witness_check.out` |
 | the children of 109, 117 and 125, cheapest first (October 12) | from 04:53 `./child_queue2.sh` (all children, 200M), stopped at 05:26; then `./child_queue3.sh` (`child_sweep.py W --parity even --max-states 200000000`, 3 h each) and `./child_queue4.sh` (`--parity odd --max-states 250000000`, 4 h each) | `child_16-38-<W>.jsonl`, `child_sweep*`, `pair_hard.log` |
@@ -116,9 +117,12 @@ Notes:
   row. By the end, the 182 replies before the witness 367 were the 47, 128 with rows, and 7
   settled by the partner rule without a row (those six and 323).
 - `status.py` also derives, from the same outputs, that every obligation of {16,38,72} is N: the
-  odd ones from `odd_filter.jsonl` (its sweep classifies them in order) and `odd72.out`, the even
+  odd ones from the rows of `odd72_all.out` and `odd72.out`, each naming a winning move, the even
   ones from `even_72.jsonl`, the audit (56), the deeper sweeps of 72's children and the hunt's
   witnesses. It then reports 72 as P, an answer to 38, and 88, 104 and 120 as N by 72.
+  `odd_filter.jsonl` keeps only a count of the odd obligations each sweep classified (22 of 72's
+  25, in the order listed), so `odd72_all.sh` swept all 25 again on October 18 to name a winning
+  move for each.
 - `make_kunz_p.py` derived the prototype `kunz_p` (rows with `"engine": "kunz_p"`) from
   `sylver/kunz_solver.cpp` as it was before PR #56 (`git show 76e19be:sylver/kunz_solver.cpp`;
   its asserts fail on the merged file), which merged the same idea as `--p-table`. Both

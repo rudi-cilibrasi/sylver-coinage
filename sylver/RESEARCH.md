@@ -1,10 +1,17 @@
 # Sylver Coinage after 16: research log
 
+**October 18, the reply 38, by search:** {16,38,72} is P, so 72 answers 38.
+Every one of its 68 Quiet End obligations is N: 11 through certified
+positions, the rest by search, the last being {16,38,72,78}, which 367 wins.
+This is a search result, not a certificate, so 38 is still the lowest reply
+without a certified answer; the lowest with no known answer is now 40. See
+Attempt 46 and [the record](campaigns/r38-2026-10-09/RESULT.md#the-search-for-an-answer-to-38).
+
 **October 9, the reply 38:** four short P-positions, I={16,20,22,24},
 B28={16,28,38,40}, B24={16,24,38,44} and B56={16,38,56,60}, show that 24,
 28, 40, 44 and 56 do not answer the reply 38. I and B24 were already on
 Sicherman's list (see the October 10 correction). B28 also settles the Y
-record's open question: {16,28,38} is N. No answer to 38 is known yet. See
+record's open question: {16,28,38} is N. No certified answer to 38 is known. See
 Attempts 37 to 39 and [the record](campaigns/r38-2026-10-09/RESULT.md). On
 October 10 search also ruled out 85, 87, 93, 101 and 174; 109, 117 and 125 need
 more than 2.1 billion states each.
@@ -1931,8 +1938,8 @@ Search for an answer to 38, recorded in
 [the reply-38 record](campaigns/r38-2026-10-09/RESULT.md#the-search-for-an-answer-to-38)
 (discovery results, not certified).
 
-- **The witness.** With 78 alone, after 37 more replies N by search and 19
-  by the partner rule, the P-table hunt found {16,38,72,78}+367 P on
+- **The witness.** With 78 alone from October 17 at 10:22, after 37 more
+  replies N by search and 19 by the partner rule, the P-table hunt found {16,38,72,78}+367 P on
   October 18 at 01:51, with 56,699,024 P-positions in 20 minutes. So
   {16,38,72,78} is N, won by 367, which is 182nd in 78's order, counting
   from 0: far deeper than any earlier witness (127th at most).
@@ -1948,12 +1955,15 @@ Search for an answer to 38, recorded in
   by search. 88, 104 and 120 move by 72 back to {16,38,72}, so they
   are N.
 - **What it rests on.** The Quiet End Theorem, which makes these 68
-  obligations all of {16,38,72}'s; B56 and certified nodes for a few of
-  them; and otherwise hundreds of search runs, none replayed. Each N result
-  names a winning move whose position the engine found P by exhaustive
-  search, as it found each witness. The reruns of the last four witnesses
-  share the engine's algorithm. Certifying 72 would need replays far beyond
-  this host, or a proof by other means.
+  obligations all of {16,38,72}'s. Eleven of them reach certified
+  positions: 4, 6, 8, 12, 14 and 22 the nodes C, E, F and P0; 24, 28, 40
+  and 44 B24 and B28; 56 B56. One, 2, reaches {2,3}. The other 56 are
+  search verdicts, none replayed: the 25 odd ones, 21 finite odd witnesses
+  of the even resolver, the deep replies 129 and 69, and the hunt's eight
+  witnesses. Each names a winning move whose position an engine found P by
+  exhaustive search. The reruns of the last four witnesses share their
+  engine's algorithm. Certifying 72 means certifying those 56, by replays
+  (the hunt's witnesses are far beyond this host's) or by other means.
 - **Tally.** Of {16,38}'s 98 obligations, 72 is P and 68 are N (11
   certified, 57 by search); 29 are open, which no longer matters to whether
   38 has an answer. The lowest reply to 16 with no known answer is now 40;
