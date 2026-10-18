@@ -48,10 +48,10 @@ budget:
 
 The replays total 1,366,033,291 states ([verification/](verification/)).
 Each receipt records its limits, commands, hashes and counts; `c72_<m>.log`
-is the runner's log for the 35 replays it ran with Python (the two large
-ones' runs printed to its own output, and `c72_3` was run by hand).
-`replay.py` checks the exit code only of the two large native runs, not of
-the Python-path runs or the Kunz runs: the audit rejects any receipt that is
+is the runner's log for the 35 replays it ran with Python (the large ones'
+runs printed to its own output, and `c72_3` was run by hand).
+`replay.py` checks the exit code only of the large native runs (c72_58,
+c72_132 and c72_170), not of the Python-path runs or the Kunz runs: the audit rejects any receipt that is
 not a complete, matching replay. [sizes.json](sizes.json)
 holds the state counts that `kunz --threads 8 <destination>` (the reply-38
 scan's build) found for each destination before the replays, used only to
@@ -72,9 +72,11 @@ Of the eight long children the hunt settled, {16,38,72,132} has the
 smallest witness: 75, whose destination {16,38,72,75,132} the memo engine
 found P with 355,076,111 states. `make_certificates.py 132` wrote its
 certificate, and on October 18 it was replayed like the largest finite
-witnesses: `native_solver.cpp` from 12:50 to 13:33 (355,061,923 states, at
-most 28.5 GB resident) and the sequential, memo-verified `kunz_solver.cpp`
-until 14:23, with the same count. So 132 is now certified too: 39
+witnesses: `native_solver.cpp` from 12:50 to 13:33 (355,061,923 states; about
+28.5 GB resident, the largest reading of a 30-second log,
+[verification/c72_132-memory.log](verification/c72_132-memory.log)) and the
+sequential, memo-verified `kunz_solver.cpp` until 14:23, with the same
+count. So 132 is now certified too: 39
 destinations, 1,721,095,214 replayed states in all.
 
 ## The other certified routes
@@ -109,16 +111,19 @@ reruns used another build and schedule of the same engine, so they do not
 certify.
 
 A native replay needs memory in proportion to its states: about 80 bytes a
-state, from the 28.5 GB that 132 → 75's took. The three memo witnesses left,
-at 1 billion states or more, would need 80 GB or more, beyond this 62 GiB
-host. For the P-table witnesses a plain-memo count was missing, so the
-smallest, 68 → 257, was counted with the memo engine (the reply-38 scan's
-`kunz`, 8 threads; [plain_68_257.out](plain_68_257.out)): its destination
-{16,38,68,72,257} is P, with 1,494,012,288 states (35 GB resident, 15
-minutes). That checks this witness with the memo engine as well as the
-P-table one, though it is still search, and a native replay of it would
-need about 120 GB. The other three P-table witnesses store more P-positions
-than 257's, so they are likely larger still. Certifying these seven needs a
+state for Frobenius numbers below 320 (132 → 75 took about 28.5 GB), more
+for wider states (the solver's states have F/64 + 1 words). The three memo
+witnesses left, at about a billion states or more, would need some 75 GB or
+more, beyond this 62 GiB host. For the P-table witnesses a plain-memo count
+was missing, so the smallest, 68 → 257, was counted with the memo engine
+(the reply-38 scan's `kunz` at 0668ae4, before the P-table mode existed,
+8 threads; [plain_68_257.out](plain_68_257.out)): its destination
+{16,38,68,72,257} is P, with 1,494,012,288 states (36 GB resident, 15
+minutes). That checks this witness without the P-table mode's code; it
+shares the search both modes use, so it is still search, not a certificate.
+With Frobenius number 355, a native replay of it would need some 135 GB or
+more. The other three P-table witnesses store more P-positions than 257's,
+so they are likely larger still. Certifying these seven looks to need a
 larger machine or another method.
 
 **What it rests on.** The Quiet End Theorem, which makes these 68

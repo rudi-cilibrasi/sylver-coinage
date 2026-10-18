@@ -47,6 +47,9 @@ def hunt_routes(moves):
     """{obligation m: the hunt's witness w} for the given long children of 72."""
     rows = [json.loads(line) for line in (SCAN / 'hunt.jsonl').read_text().splitlines()]
     witness = {next(x for x in r['child'] if x not in PARENT): r['w'] for r in rows if r['outcome'] == 'P'}
+    unknown = [m for m in moves if m not in witness]
+    if unknown:
+        raise SystemExit(f'no hunt witness for {unknown}; the hunt\'s children are {sorted(witness)}')
     return {m: witness[m] for m in moves}
 
 

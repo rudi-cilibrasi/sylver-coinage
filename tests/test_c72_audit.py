@@ -36,7 +36,7 @@ def scratch(audit, tmp, *names):
 
 
 class C72AuditTests(unittest.TestCase):
-    """Every obligation of {16,38,72} but the hunt's eight is certified N; those eight rest on search."""
+    """Every obligation of {16,38,72} but seven of the hunt's long children is certified N; those rest on search."""
 
     def test_the_committed_audit_is_reproducible(self):
         result = subprocess.run([sys.executable, str(C72 / 'audit.py')], capture_output=True, text=True, timeout=900)

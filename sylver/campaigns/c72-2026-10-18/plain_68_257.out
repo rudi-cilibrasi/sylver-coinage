@@ -1,4 +1,5 @@
-# kunz (the reply-38 scan build of sylver/kunz_solver.cpp at 0668ae4, plain memo), October 18, 14:24-14:39:
+# kunz (the reply-38 scan build of sylver/kunz_solver.cpp at 0668ae4, plain memo; binary sha256
+# ae92073f4c2ab43804c4c2796d9250d143df6e69d94d33b13d08a7e9dea4d846), October 18, 14:24-14:39:
 # /usr/bin/time -f "rss_kib=%M elapsed=%e" nice -n 10 prlimit --as=42949672960 timeout 3600 ./kunz --threads 8 16 38 68 72 257
 P winning_move=none frobenius=355 states=1494012288
 rss_kib=34866464 elapsed=913.96
