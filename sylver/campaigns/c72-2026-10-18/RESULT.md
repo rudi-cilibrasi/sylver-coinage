@@ -50,16 +50,20 @@ The replays total 1,366,033,291 states ([verification/](verification/)).
 Each receipt records its limits, commands, hashes and counts; `c72_<m>.log`
 is the runner's log for the 35 replays it ran with Python (the two large
 ones' runs printed to its own output, and `c72_3` was run by hand).
-`replay.py` does not check its children's exit codes: the audit rejects any
-receipt that is not a complete, matching replay. [sizes.json](sizes.json)
+`replay.py` checks the exit code only of the two large native runs, not of
+the Python-path runs or the Kunz runs: the audit rejects any receipt that is
+not a complete, matching replay. [sizes.json](sizes.json)
 holds the state counts that `kunz --threads 8 <destination>` (the reply-38
 scan's build) found for each destination before the replays, used only to
 order them and size their memory limits; they differ slightly from the
 sequential counts.
 
-Seven routes reach small positions the opening table already certifies:
-{2,3} (by 3 → 2 and 2 → 3), {5,16,18} (5 → 18 and 18 → 5), {6,7,16}
-(7 → 6) and {9,10,16} (9 → 10 and 10 → 9). They are replayed here like the
+Eleven routes reach positions certified before. Seven reach the opening
+table's finite P-positions: {2,3} (by 3 → 2 and 2 → 3), {5,16,18} (5 → 18
+and 18 → 5), {6,7,16} (7 → 6) and {9,10,16} (9 → 10 and 10 → 9). Four reach
+destinations the reply-38 audit replayed as finite witnesses: {13,15,16,38}
+(13 → 15), {7,15,16} (15 → 7), {13,16,20,38} (20 → 13) and {12,16,23,38}
+(23 → 12), with the same state counts here. They are replayed here like the
 others.
 
 ## The other certified routes
@@ -95,15 +99,17 @@ certify. A native replay needs memory in proportion to its states. 132 → 75,
 at 355 million states, is smaller than the 401,815,231-state destination
 replayed here, so it looks within reach on this 62 GiB host; the other three
 memo witnesses, at 1 billion states or more, look beyond it. The P-table
-runs give no total count: their N-cache statistics bound 68 → 257 at about
-690 million states, so it may be within reach too, and the other three are
-less clear.
+runs give no total count. The N-cache statistics of 68 → 257's rerun
+suggest that run decided about 690 million states at most, so it may be
+within reach too, though a native replay searches in another order; the
+other three are less clear.
 
 **What it rests on.** The Quiet End Theorem, which makes these 68
 obligations all of {16,38,72}'s; the nodes C, E, F and P0; the reply-38
-audit (B24, B28 and B56, which rest on the nodes C, D, E, F, J and P0); and
-the solvers that replayed each finite witness. None of it rests on
-Sicherman's {8,10,22}. The eight search witnesses rest on the reply-38
+audit (B24, B28 and B56, which rest on the nodes C, D, E, F, J and P0);
+through those nodes, as in the reply-38 record, the pairing family
+{8,10,12,14} and {8,12,18,22}; and the solvers that replayed each finite
+witness. None of it rests on Sicherman's {8,10,22}. The eight search witnesses rest on the reply-38
 search engines alone.
 
 ## Reproduction

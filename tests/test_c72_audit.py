@@ -90,6 +90,7 @@ class C72AuditTests(unittest.TestCase):
         audit = load('c72_counts')
         with tempfile.TemporaryDirectory() as tmp:
             here = scratch(audit, tmp, 'c72_5')
+            self.assertIsNotNone(audit.finite_witness(5, 18, audit.certificates()))   # the copy as it is passes
             receipt = here / 'verification/c72_5/receipt.json'
             data = json.loads(receipt.read_text())
             data['runs']['python']['states'] += 1
@@ -106,6 +107,8 @@ class C72AuditTests(unittest.TestCase):
         audit = load('c72_kunz_missing')
         with tempfile.TemporaryDirectory() as tmp:
             here = scratch(audit, tmp, 'c72_58')
+            (Path(tmp) / 'r38-2026-10-09').symlink_to(audit.R38)   # where the receipt's pinned source is
+            self.assertIsNotNone(audit.finite_witness(58, 129, audit.certificates()))   # the copy as it is passes
             (here / 'verification/c72_58/kunz-receipt.json').unlink()   # the native replay alone is not enough
             self.assertIsNone(audit.finite_witness(58, 129, audit.certificates()))
 
@@ -115,6 +118,25 @@ class C72AuditTests(unittest.TestCase):
         with contextlib.redirect_stdout(io.StringIO()) as out:
             self.assertEqual(audit.main(), 1)
         self.assertIn('move 9: no legal listed reply', json.loads(out.getvalue())['failures'])
+
+    def test_the_reply_38_positions_are_audited_afresh(self):
+        audit = load('c72_fresh')
+        self.assertEqual(audit.r38_outcomes(), {'I': 'P', 'B28': 'P', 'B24': 'P', 'B56': 'P'})
+        audit_position = audit.r38.audit_position
+
+        def b24_fails(name, outcomes):
+            section = audit_position(name, outcomes)
+            return {**section, 'outcome': 'unknown'} if name == 'B24' else section
+        audit.r38.audit_position = b24_fails
+        outcomes = audit.r38_outcomes()
+        self.assertEqual((outcomes['B24'], outcomes['B56']), ('unknown', 'unknown'))   # B56 uses B24
+        self.assertIsNone(audit.certified_position(24, 44, outcomes))
+
+    def test_a_node_route_must_reach_its_node(self):
+        audit = load('c72_nodes')
+        self.assertEqual(audit.certified_node(4, 6)['certificate'], 'node C of sylver/short_certificates.py')
+        self.assertIsNone(audit.certified_node(4, 7))     # {16,38,72,4,7} is not C={4,6}
+        self.assertIsNone(audit.certified_node(5, 18))    # no node route is listed for 5
 
     def test_a_position_the_reply_38_audit_does_not_find_p_is_not_certified(self):
         audit = load('c72_positions')
