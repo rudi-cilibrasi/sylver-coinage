@@ -33,10 +33,10 @@ For the week of September 21–27, see the [progress summary](docs/progress/2026
     obligations (25 odd moves, 43 even ones) is N, and by search each is.
     Eight of the even ones, long children of 72, fell to a witness hunt
     from October 10 to 18; {16,38,72,78} fell last, to 367.
-  - It is not yet a certificate. 60 of the 68 obligations are now certified
-    (October 18): 49 by finite witnesses replayed natively and in Python or
-    by Kunz, and 11 through certified nodes and positions. The other eight, long
-    children of 72, rest on the hunt's search witnesses, which were not
+  - It is not yet a certificate. 61 of the 68 obligations are now certified
+    (October 18): 50 by finite witnesses replayed natively and in Python or
+    by Kunz, and 11 through certified nodes and positions. The other seven,
+    long children of 72, rest on the hunt's search witnesses, which were not
     replayed; the last four were rerun with another build and schedule of
     the same engine, which guards against faults of build and schedule, not
     of method. See the [certification record](sylver/campaigns/c72-2026-10-18/RESULT.md).

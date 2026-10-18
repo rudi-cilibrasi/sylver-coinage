@@ -56,7 +56,7 @@ ROUTES = {
 }
 NODE_ROUTES = {4: 'C', 6: 'C', 8: 'E', 12: 'F', 14: 'E', 22: 'P0'}
 POSITION_ROUTES = {24: 'B24', 28: 'B28', 40: 'B28', 44: 'B24', 56: 'B56'}
-NATIVE_KUNZ = {'c72_58', 'c72_170'}     # destinations above 150 million states
+NATIVE_KUNZ = {'c72_58', 'c72_132', 'c72_170'}     # destinations above 150 million states
 
 
 def certificates():

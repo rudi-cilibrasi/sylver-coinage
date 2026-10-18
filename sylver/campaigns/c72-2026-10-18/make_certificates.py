@@ -7,7 +7,9 @@ reply v (odd obligations: ../r38-2026-10-09/scan/odd72_all.out; even ones: even_
 Each route reaches a finite destination {16,38,72,m,v}. Partner routes often share one (69 -> 66 and
 66 -> 69 both reach {16,38,66,69,72}), so this writes one certificate per destination, named after
 the first obligation that reaches it, and audit.py checks every other route against it.
-Usage: python make_certificates.py (writes c72_<m>-certificate.json, refusing to change one).
+Each obligation named on the command line also gets a certificate for the reply-38 hunt's witness
+(hunt.jsonl), whose destination {16,38,72,m,w} is finite too.
+Usage: python make_certificates.py [M ...] (writes c72_<m>-certificate.json, refusing to change one).
 """
 import json
 import re
@@ -41,9 +43,16 @@ def finite_routes():
     return routes
 
 
-def main():
+def hunt_routes(moves):
+    """{obligation m: the hunt's witness w} for the given long children of 72."""
+    rows = [json.loads(line) for line in (SCAN / 'hunt.jsonl').read_text().splitlines()]
+    witness = {next(x for x in r['child'] if x not in PARENT): r['w'] for r in rows if r['outcome'] == 'P'}
+    return {m: witness[m] for m in moves}
+
+
+def main(moves):
     seen = {}
-    for m, v in finite_routes().items():
+    for m, v in {**finite_routes(), **hunt_routes(moves)}.items():
         assert legal(PARENT, m) and legal(position((*PARENT, m)), v), (m, v)
         dest = position((*PARENT, m, v))
         if dest in seen:
@@ -63,4 +72,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    main([int(m) for m in sys.argv[1:]])

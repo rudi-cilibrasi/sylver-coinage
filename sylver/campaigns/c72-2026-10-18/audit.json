@@ -512,12 +512,11 @@
     },
     "132": {
       "reply": 75,
-      "evidence": "search-witness",
+      "evidence": "finite-witness-native-kunz",
       "destination": "16,38,72,75,132",
-      "search": "sylver/campaigns/r38-2026-10-09/scan/hunt.jsonl",
-      "engine": "kunz",
-      "search_states": 355076111,
-      "rerun": null
+      "certificate": "sylver/campaigns/c72-2026-10-18/c72_132-certificate.json",
+      "receipt": "sylver/campaigns/c72-2026-10-18/verification/c72_132/receipt.json",
+      "states": 355061923
     },
     "138": {
       "reply": 27,
@@ -548,16 +547,16 @@
   "failures": [],
   "summary": {
     "obligations": 68,
-    "certified": 60,
+    "certified": 61,
     "by_evidence": {
       "finite-witness": 47,
       "certified-node": 6,
       "certified-position": 5,
-      "finite-witness-native-kunz": 2,
-      "search-witness": 8
+      "finite-witness-native-kunz": 3,
+      "search-witness": 7
     },
-    "replayed_destinations": 38,
-    "replayed_states": 1366033291
+    "replayed_destinations": 39,
+    "replayed_states": 1721095214
   },
   "search_only": [
     68,
@@ -566,7 +565,6 @@
     100,
     106,
     116,
-    132,
     154
   ],
   "outcome": "unknown"
