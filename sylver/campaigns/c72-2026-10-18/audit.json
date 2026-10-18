@@ -162,7 +162,7 @@
       "evidence": "certified-position",
       "destination": "16,24,38,44",
       "section": "B24",
-      "certificate": "sylver/campaigns/r38-2026-10-09/audit.json"
+      "certificate": "sylver/campaigns/r38-2026-10-09/audit.py"
     },
     "25": {
       "reply": 52,
@@ -185,7 +185,7 @@
       "evidence": "certified-position",
       "destination": "16,28,38,40",
       "section": "B28",
-      "certificate": "sylver/campaigns/r38-2026-10-09/audit.json"
+      "certificate": "sylver/campaigns/r38-2026-10-09/audit.py"
     },
     "29": {
       "reply": 55,
@@ -256,7 +256,7 @@
       "evidence": "certified-position",
       "destination": "16,28,38,40",
       "section": "B28",
-      "certificate": "sylver/campaigns/r38-2026-10-09/audit.json"
+      "certificate": "sylver/campaigns/r38-2026-10-09/audit.py"
     },
     "41": {
       "reply": 87,
@@ -279,7 +279,7 @@
       "evidence": "certified-position",
       "destination": "16,24,38,44",
       "section": "B24",
-      "certificate": "sylver/campaigns/r38-2026-10-09/audit.json"
+      "certificate": "sylver/campaigns/r38-2026-10-09/audit.py"
     },
     "45": {
       "reply": 50,
@@ -342,7 +342,7 @@
       "evidence": "certified-position",
       "destination": "16,38,56,60",
       "section": "B56",
-      "certificate": "sylver/campaigns/r38-2026-10-09/audit.json"
+      "certificate": "sylver/campaigns/r38-2026-10-09/audit.py"
     },
     "58": {
       "reply": 129,

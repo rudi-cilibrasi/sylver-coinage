@@ -1987,12 +1987,14 @@ Recorded in [the certification record](campaigns/c72-2026-10-18/RESULT.md).
   49 finite witnesses, 6 through the nodes C, E, F and P0, and 5 through
   B24, B28 and B56. The other eight, 68, 78, 84, 100, 106, 116, 132 and
   154, rest on the hunt's search witnesses, so {16,38,72} is not yet
-  certified P. Attempt 46's count of 14 certified routes was low: some odd
-  obligations reach certified positions too, and all 49 finite routes are
-  now replayed.
-- **Next.** 132 → 75 (355 million states by the memo engine) is near the
-  size of B56's largest replay; the other seven need more memory than this
-  host has, or another method.
+  certified P. Attempt 46 counted 14 obligations reaching certified
+  positions; the right count was 18, since the odd obligations 3, 5, 7 and 9
+  also reach the opening table's {2,3}, {5,16,18}, {6,7,16} and {9,10,16}.
+  All 49 finite routes are now replayed in any case.
+- **Next.** 132 → 75 (355 million states by the memo engine) is smaller than
+  the 401,815,231-state destination replayed here, so it looks within reach
+  of this host, and 68 → 257 may be; the other memo witnesses (a billion
+  states or more) look beyond it, and the P-table ones are unmeasured.
 
 ### Sources
 

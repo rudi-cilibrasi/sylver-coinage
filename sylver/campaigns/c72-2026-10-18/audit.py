@@ -16,8 +16,8 @@ with the listed reply v:
    kunz_solver.cpp replay (--threads 1 --verify-memo, from the source the reply-38 audit pins) in place
    of the Python one, as for B56's largest witnesses.
 3. ``certified-node``: v reaches a P-position certified in ``sylver.short_certificates.NODES``.
-4. ``certified-position``: v reaches B24, B28 or B56, which the reply-38 audit finds P
-   (its committed audit.json, with no failures).
+4. ``certified-position``: v reaches B24, B28 or B56, which the reply-38 audit, run here afresh on its
+   own certificates and receipts, finds P.
 
 Any other listed route is ``search-witness``: the reply-38 hunt found {16,38,72,m,v} P by search
 (scan/hunt.jsonl), which is not certified. The outcome is "P" only if every obligation has evidence 1 to
@@ -111,14 +111,20 @@ def certified_node(m, v):
             'certificate': f'node {node.name} of sylver/short_certificates.py'}
 
 
-def certified_position(m, v, r38_report):
+def r38_outcomes():
+    """{name: outcome} for the reply-38 audit's positions, audited afresh in its order."""
+    outcomes = {}
+    for name in r38.POSITIONS:
+        outcomes[name] = r38.audit_position(name, outcomes)['outcome']
+    return outcomes
+
+
+def certified_position(m, v, outcomes):
     name = POSITION_ROUTES.get(m)
-    section = r38_report.get(name) if name else None
-    if (not section or section.get('outcome') != 'P' or section.get('failures') or r38_report.get('failures')
-            or position((*PARENT, m, v)) != tuple(section['position'])):
+    if name not in outcomes or outcomes[name] != 'P' or position((*PARENT, m, v)) != position(r38.POSITIONS[name][0]):
         return None
-    return {'evidence': 'certified-position', 'destination': key(section['position']), 'section': name,
-            'certificate': str((R38 / 'audit.json').relative_to(ROOT))}
+    return {'evidence': 'certified-position', 'destination': key(r38.POSITIONS[name][0]), 'section': name,
+            'certificate': str((R38 / 'audit.py').relative_to(ROOT))}
 
 
 def search_witness(m, v, hunt):
@@ -144,14 +150,14 @@ def main():
     if sorted(ROUTES) != info['moves']:
         report['failures'].append('ROUTES does not list exactly the obligations')
     certs = certificates()
-    r38_report = json.loads((R38 / 'audit.json').read_text())
+    outcomes = r38_outcomes()
     hunt = [json.loads(line) for line in (R38 / 'scan/hunt.jsonl').read_text().splitlines()]
     for m in info['moves']:
         v = ROUTES.get(m)
         if v is None or not (legal(PARENT, m) and legal(position((*PARENT, m)), v)):
             report['failures'].append(f'move {m}: no legal listed reply')
             continue
-        row = (finite_witness(m, v, certs) or certified_node(m, v) or certified_position(m, v, r38_report)
+        row = (finite_witness(m, v, certs) or certified_node(m, v) or certified_position(m, v, outcomes)
                or search_witness(m, v, hunt))
         if row is None:
             report['failures'].append(f'move {m}: the reply {v} has no accepted evidence')

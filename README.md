@@ -35,7 +35,7 @@ For the week of September 21–27, see the [progress summary](docs/progress/2026
     from October 10 to 18; {16,38,72,78} fell last, to 367.
   - It is not yet a certificate. 60 of the 68 obligations are now certified
     (October 18): 49 by finite witnesses replayed natively and in Python or
-    by Kunz, and 11 through certified positions. The other eight, long
+    by Kunz, and 11 through certified nodes and positions. The other eight, long
     children of 72, rest on the hunt's search witnesses, which were not
     replayed; the last four were rerun with another build and schedule of
     the same engine, which guards against faults of build and schedule, not

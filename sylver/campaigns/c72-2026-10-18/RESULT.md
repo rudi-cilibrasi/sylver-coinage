@@ -33,8 +33,10 @@ destination, `c72_<m>-certificate.json`, in the schema the campaign records
 use, named after the first obligation that reaches it. The audit checks
 each obligation's own move and reply against the certified destination.
 
-[replay.py](replay.py) replayed every destination from empty memos, several
-at a time within a memory budget, on October 18 from 05:34 to 11:41:
+Every destination was replayed from empty memos on October 18 from 05:34
+to 11:41: {2,3} (`c72_3`) by hand as a first check, the rest by
+[replay.py](replay.py) from 05:35, several at a time within a memory
+budget:
 - 36 destinations, up to 145,567,304 states, with
   `python -m sylver.verify_finite_reply --python`: `native_solver.cpp` and
   the Python reference evaluator, which report P with the same state count;
@@ -45,9 +47,15 @@ at a time within a memory budget, on October 18 from 05:34 to 11:41:
   witnesses. The counts agree.
 
 The replays total 1,366,033,291 states ([verification/](verification/)).
-[sizes.json](sizes.json) holds the state counts a parallel `kunz` run found
-before the replays, used only to order them and size their memory limits;
-they differ slightly from the sequential counts.
+Each receipt records its limits, commands, hashes and counts; `c72_<m>.log`
+is the runner's log for the 35 replays it ran with Python (the two large
+ones' runs printed to its own output, and `c72_3` was run by hand).
+`replay.py` does not check its children's exit codes: the audit rejects any
+receipt that is not a complete, matching replay. [sizes.json](sizes.json)
+holds the state counts that `kunz --threads 8 <destination>` (the reply-38
+scan's build) found for each destination before the replays, used only to
+order them and size their memory limits; they differ slightly from the
+sequential counts.
 
 Seven routes reach small positions the opening table already certifies:
 {2,3} (by 3 → 2 and 2 → 3), {5,16,18} (5 → 18 and 18 → 5), {6,7,16}
@@ -61,8 +69,8 @@ others.
   P0={12,16,22} (by 12), all certified in `sylver/short_certificates.py`.
 - **The reply-38 audit's positions.** 24 and 44 reach B24 (by 44 and 24),
   28 and 40 reach B28 (by 40 and 28), and 56 reaches B56 (by 60, since
-  {16,38,72,56} is {16,38,56}). The audit requires the reply-38 audit's
-  committed `audit.json` to find them P with no failures.
+  {16,38,72,56} is {16,38,56}). This audit runs the reply-38 audit afresh
+  on its own certificates and receipts, and requires it to find them P.
 
 ## What is left: the hunt's eight witnesses
 
@@ -83,9 +91,13 @@ The long children {16,38,72,e} for e in 68, 78, 84, 100, 106, 116, 132 and
 The memo engine counts every state it stores; the P-table engine stores
 only P-positions, typically a few percent of the states it visits. The
 reruns used another build and schedule of the same engine, so they do not
-certify. A native replay needs memory in proportion to the states, so on
-this 62 GiB host only 132 → 75, near the size of B56's largest replay, looks
-within reach; the others need a larger machine or another method.
+certify. A native replay needs memory in proportion to its states. 132 → 75,
+at 355 million states, is smaller than the 401,815,231-state destination
+replayed here, so it looks within reach on this 62 GiB host; the other three
+memo witnesses, at 1 billion states or more, look beyond it. The P-table
+runs give no total count: their N-cache statistics bound 68 → 257 at about
+690 million states, so it may be within reach too, and the other three are
+less clear.
 
 **What it rests on.** The Quiet End Theorem, which makes these 68
 obligations all of {16,38,72}'s; the nodes C, E, F and P0; the reply-38
