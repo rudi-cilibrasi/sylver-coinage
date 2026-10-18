@@ -155,11 +155,11 @@ discovery output, not certified.
     - 72's obligation 56 is answered through B56. The deep replies 129 and
       69 answer its obligations 58 and 66.
     - 72's long children 68, 78 and 84 have no even reply into a short
-      P-position. 68 and 78 have no odd winner found so far; the hunt below
-      found 139 for 84. The hardest of their odd
-      replies each need from about 300 million to over a billion states:
-      those from 81 on for 78, from 87 on for 84, and from about 150 on for
-      68 (in the hunt below, some of 68's replies from 191 on stopped at its
+      P-position. 78 has no odd winner found so far; the hunt below found
+      139 for 84 and 257 for 68. The hardest of their odd replies each need
+      from about 300 million to over a billion states: those from 81 on for
+      78, from 87 on for 84, and from about 150 on for 68 (in the hunt
+      below, some of 68's replies from 191 on stopped at its
       1,000,000,000-state cap).
     - Every short child of 72 is N, so a refutation of 72 would need a long
       P-position, which the Quiet End Theorem cannot certify.
@@ -191,7 +191,7 @@ discovery output, not certified.
       ten more as N and one by the partner rule, and 116+219 had run out of
       time. Then, at 22:01, it found {16,38,72,116}+229 P (81,370,519
       P-positions, 37 minutes), so 229 wins {16,38,72,116}. It is the first
-      witness the P-table engine found, and the deepest in its child's
+      witness the P-table engine found, and then the deepest in its child's
       order: 113th counting from 0, where the hunt's four earlier witnesses
       came 37th to 68th. A rerun with another build and schedule
       (`scan/check_116_229.*`: the same source at `-O2` for any x86-64
@@ -206,8 +206,23 @@ discovery output, not certified.
       retries after the witness, of 78 and 100, are N. From then on the
       hunt takes fresh replies of 68, 78 and 100 (`hunt.py 1200000000
       --balance`).
-    - So, by search, 72 answers 38 exactly when its three open long
-      children, 68, 78 and 100, are all N; one P among them refutes it.
+    - On fresh replies, after 241 and 243 of 100 were N, it found
+      {16,38,72,100}+245 P at 07:57 (70,825,107 P-positions, 26 minutes),
+      and after 255 of 68 was N, {16,38,68,72}+257 P at 10:22 (33,735,838
+      P-positions, 15 minutes). So 245 wins {16,38,72,100} and 257 wins
+      {16,38,68,72}. They are 121st and 127th in their children's orders,
+      counting from 0. Reruns with the build and schedule that checked 229
+      (`scan/check_100_245.*`, then `scan/check_68_257.*`, queued by
+      `scan/check_queue.sh`) also found both P, with 71,023,435 P-positions
+      in 5 hours and 33,806,189 in 1 hour 40 minutes. `scan/witness_check.py`
+      finds none of the hunt's seven witnesses at odds with its other rows:
+      none wins a reply recorded N on its child that is still legal after
+      it, and none is one move from another of the 305 P-positions the rows
+      name.
+    - So, by search, 72 answers 38 exactly when its only open long child,
+      78, is N: one P reply of 78 settles it, and 78 being P refutes it.
+      By October 17 at 14:43, 78's first 138 odd replies in the hunt's
+      order (to 277) were all N, and 12 later ones by the partner rule.
     - 88's obligation 72 leads back to {16,38,72}.
   - 104 and 120 have odd obligations that the sweeps could not finish.
 - **Long even.** A long candidate is N as soon as one winning reply is

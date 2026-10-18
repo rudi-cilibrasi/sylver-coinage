@@ -787,7 +787,7 @@ function lessonAssay(root) {
 }
 
 // ---------------------------------------------------------------- lesson 11: the frontier
-// Every obligation of {16, 38}: k is the kind of move, s its status in the reply-38 record as of October 12, 2026
+// Every obligation of {16, 38}: k is the kind of move, s its status in the reply-38 record as of October 17, 2026 (unchanged since October 12)
 // (sylver/campaigns/r38-2026-10-09); tests/test_docs_mint.py derives the same statuses from its scan logs.
 const FRONTIER = [
   {"m": 2, "k": "long", "s": "search", "why": "{16,38,2} is won by 3 (search)"},
@@ -844,7 +844,7 @@ const FRONTIER = [
   {"m": 68, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
   {"m": 69, "k": "odd", "s": "search", "why": "{16,38,69} is won by 25 (search)"},
   {"m": 71, "k": "odd", "s": "search", "why": "{16,38,71} is won by 73 (search)"},
-  {"m": 72, "k": "short", "s": "ladder", "why": "a rung of the ladder 56, 72, 88, 104, 120, 136; by search every other obligation of {16,38,72} is N, so 72 answers 38 exactly when its three open long children, 68, 78 and 100, are all N"},
+  {"m": 72, "k": "short", "s": "ladder", "why": "a rung of the ladder 56, 72, 88, 104, 120, 136; by search every other obligation of {16,38,72} is N, so 72 answers 38 exactly when its only open long child, 78, is N"},
   {"m": 74, "k": "long", "s": "open", "why": "open within the sweeps' state caps"},
   {"m": 77, "k": "odd", "s": "search", "why": "{16,38,77} is won by 27 (search)"},
   {"m": 78, "k": "long", "s": "search", "why": "{16,38,78} is won by 27 (search)"},
@@ -918,7 +918,7 @@ function lessonFrontier(root) {
     story("Every even reply to 16 up to 36 has an answer. The reply 38 does not, yet. Because {16, 38} is short, any answer must be one of these 98 moves.",
           `Certified losing positions rule out ${counts("certified")} of them, and search has ruled out ${counts("search")} more (struck through). The short candidates 72, 88, 104 and 120 form a <b>ladder</b> with 56 and 136: each rung leads back to the rungs below it, so at most one can be the answer.`),
     box,
-    el("p", { class: "note" }, "Status as of October 12, 2026, from the reply-38 record (sylver/campaigns/r38-2026-10-09 at github.com/rudi-cilibrasi/sylver-coinage). Search results are discovery output, not certificates."),
+    el("p", { class: "note" }, "Status as of October 17, 2026 (the statuses last changed on October 12), from the reply-38 record (sylver/campaigns/r38-2026-10-09 at github.com/rudi-cilibrasi/sylver-coinage). Search results are discovery output, not certificates."),
   );
 }
 

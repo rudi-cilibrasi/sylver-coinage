@@ -286,10 +286,15 @@ class MintTests(unittest.TestCase):
                 done.add(next(x for x in row['child'] if x not in (16, 38, 72)))
         still_open = [e for e in even if e not in done]
         why = next(r['why'] for r in self.report['frontier'] if r['m'] == 72)
-        listed = [int(x) for x in re.search(r'children, ([\d, and]+), are all N', why)[1].replace('and', ',').split(',') if x.strip()]
+        m = re.search(r'its (\w+) open long (child|children), ([\d, and]+), (is|are all) N', why)
+        self.assertIsNotNone(m, why)
+        listed = [int(x) for x in m[3].replace('and', ',').split(',') if x.strip()]
         self.assertEqual(listed, still_open)
-        count = re.search(r'its (\w+) open long children', why)[1]
-        self.assertEqual(count, ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'][len(listed)])
+        if len(listed) == 1:
+            self.assertEqual(m.group(1, 2, 4), ('only', 'child', 'is'))
+        else:
+            count = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'][len(listed)]
+            self.assertEqual(m.group(1, 2, 4), (count, 'children', 'are all'))
 
     def test_named_positions_are_certified(self):
         certified = certified_positions()
