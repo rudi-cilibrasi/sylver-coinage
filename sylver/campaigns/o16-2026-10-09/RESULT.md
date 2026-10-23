@@ -53,6 +53,11 @@ The finite answers come from one scan ([scan/](scan/)).
     besides 38's. It found no answer: it classified 114 more candidates, all
     N (by search, not replayed); every sweep that ran timed out, and 198's
     failed again.
+  - A third round (October 22–23, 3 hours a reply) resumed six of them: 68,
+    76, 84, 92, 100 and 42. It found no answer either. It finished the
+    sweeps for 68 and 76 and classified 20 more candidates, all N; the
+    other four stopped at the engine's P-position cap with 2 to 6
+    candidates left.
 
 Each finite answer has a certificate `o<r>-certificate.json`, in the schema
 the campaign records use, with parent [16].

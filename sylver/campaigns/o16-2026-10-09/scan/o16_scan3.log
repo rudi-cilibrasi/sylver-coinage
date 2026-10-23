@@ -1,0 +1,8 @@
+22:03:07 o16 round 3 start (kunz_pt --p-table, 10 threads, 16 GB cache, 3 h per reply): 68 76 84 92 100 42
+22:45:31 r=68: 1 more classified of 1, answer None, done, 2539s
+23:52:43 r=76: 2 more classified of 2, answer None, done, 4033s
+01:50:22 r=84: 2 more classified of 4, answer None, stopped, 7059s
+04:05:03 r=92: 0 more classified of 5, answer None, stopped, 8081s
+06:07:30 r=100: 1 more classified of 7, answer None, stopped, 7347s
+09:00:56 r=42: 14 more classified of 17, answer None, stopped, 10405s
+09:00:56 o16 round 3 done

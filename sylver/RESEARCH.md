@@ -2046,6 +2046,28 @@ Recorded in [the ledger's scan notes](campaigns/o16-2026-10-09/scan/README.md)
   one odd gap of its reduced pair {2,5} above 1), fails, and the Quiet End
   tools here do not cover gcd 8.
 
+### Attempt 50 — longer runs finish 68 and 76, with no answer (2026-10-23)
+
+Recorded in [the ledger's scan notes](campaigns/o16-2026-10-09/scan/README.md)
+(search results, not certified).
+
+- **The run.** The five gcd-4 replies with the fewest candidates left (68,
+  76, 84, 92 and 100) and 42 resumed where the rescan stopped, in the same
+  order, with 3 hours a reply and otherwise the same engine and limits:
+  10 threads, a 16 GB cache, at most 400,000,000 P-positions. It ran from
+  October 22 at 22:03 to October 23 at 09:00.
+- **The result.** No answer. The sweeps for 68 and 76 finished: every odd
+  gap above 1 of {4,17} and {4,19} is N after its reply, by search. Neither
+  reply has an answer among the scan's candidates, which still leaves both
+  open. The other four sweeps stopped at the P-position cap, none at the
+  time limit. 84 has 2 candidates left, 92 has 5, 100 has 6, and 42 has 3
+  (123, 131 and 139). The round classified 20 more candidates, all N.
+- **What it means.** The cap counts a sweep's shared memo, and 42's sweep
+  reached 123 with 381 million P-positions already held, out of 400
+  million. Separate runs with a fresh memo for each remaining candidate
+  would give each one the whole cap. 92's first candidate, 49, used the
+  whole cap by itself.
+
 ### Sources
 
 - <https://math.colgate.edu/~integers/yg2/yg2.pdf>
