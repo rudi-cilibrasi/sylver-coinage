@@ -2046,14 +2046,14 @@ Recorded in [the ledger's scan notes](campaigns/o16-2026-10-09/scan/README.md)
   one odd gap of its reduced pair {2,5} above 1), fails, and the Quiet End
   tools here do not cover gcd 8.
 
-### Attempt 50 — longer runs finish 68 and 76, with no answer (2026-10-23)
+### Attempt 50 — a third round finishes 68 and 76, with no answer (2026-10-23)
 
 Recorded in [the ledger's scan notes](campaigns/o16-2026-10-09/scan/README.md)
 (search results, not certified).
 
 - **The run.** The five gcd-4 replies with the fewest candidates left (68,
   76, 84, 92 and 100) and 42 resumed where the rescan stopped, in the same
-  order, with a 3-hour limit a reply, the same engine and cap (at most
+  candidate order, with a 3-hour limit a reply, the same engine and cap (at most
   400,000,000 P-positions), 10 threads and a 16 GB cache. That was 42's
   first run with those; its rescan had 4 threads and an 8 GB cache. It ran
   from October 22 at 22:03 to October 23 at 09:00.

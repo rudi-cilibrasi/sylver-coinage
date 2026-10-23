@@ -59,7 +59,7 @@ the reduced pair's odd gaps, so a reply without an answer here is still open.
   and done lines of `o16_scan2.log` came from the shell that launched it;
   `o16_watch.sh` waits for the done line or an answer in the jsonl.
 
-- `o16_scan3.py` gave six of those sweeps longer runs: the five gcd-4
+- `o16_scan3.py` gave six of those sweeps longer limits: the five gcd-4
   replies with 1 to 7 candidates left, and 42, the lowest reply rescanned.
   It resumed each at the candidate the rescan stopped in (the ledger's
   `swept` plus the candidates `o16_scan2.jsonl` classified), in the same
@@ -75,8 +75,9 @@ the reduced pair's odd gaps, so a reply without an answer here is still open.
   - The other four stopped at the cap of 400,000,000 P-positions, none at
     the time limit. 84 stopped in 55 (55 and 59 left), 92 in its first
     candidate, 49 (49 to 65, five left), 100 in 51 (51 to 71, six left),
-    and 42 in 123 (123, 131 and 139 left). On 10 threads, 42 went from
-    none classified to 14.
+    and 42 in 123 (123, 131 and 139 left). With 10 threads, a 16 GB cache
+    and up to 3 hours, 42 classified 14; its rescan (4 threads, 8 GB, 45
+    minutes) classified none.
   - The cap counts the P-positions in a sweep's shared memo, and the
     earlier candidates had used much of it: 42's sweep reached 123 with
     380,938,570 already held (95% of the cap), 100's reached 51 with
@@ -98,7 +99,9 @@ the reduced pair's odd gaps, so a reply without an answer here is still open.
   absolute path in the session's scratch directory; it reads
   `o16_scan2.jsonl` from its own directory and skips every reply already in
   `o16_scan3.jsonl` (all six, as committed). With no replies named it takes
-  every stopped reply in the ledger except 38, 198 included.
+  every stopped reply in the ledger except 38, 198 included. It resumes from
+  `o16_scan2.jsonl` only, so another round of 84, 92, 100 or 42 would also
+  need to count the candidates `o16_scan3.jsonl` classified.
 
 The scripts point at the main checkout (`/home/ruclaw/src/sylver-coinage`)
 and the working directory they ran in.
