@@ -8,7 +8,7 @@
 | native replays of 62 and 86 | `REPLAY_PYTHON=0 python replay.py evidence_o16_native.json o o16 "{16}"` | `../verification/o62/`, `../verification/o86/` |
 | sequential Kunz replays of 62 and 86 | `python kunz_receipts.py 62 86` | the same directories |
 | the stopped sweeps again, with the P-table engine (October 14 and 18–20) | `python o16_scan2.py` (4 threads, an 8 GB cache: 42, then killed on 46), then `python o16_scan2.py --threads 10 --ncache-mb 16384 --timeout 2700`; `o16_watch.sh` waited for an answer | `o16_scan2.*` |
-| six of those sweeps again, 3 hours each (October 22–23) | `python o16_scan3.py --threads 10 --ncache-mb 16384 --timeout 10800 68 76 84 92 100 42`; `o16_watch3.sh` waited for an answer | `o16_scan3.*` |
+| six of those sweeps again, with a 3-hour limit each (October 22–23) | `python o16_scan3.py --threads 10 --ncache-mb 16384 --timeout 10800 68 76 84 92 100 42`; `o16_watch3.sh` waited for an answer | `o16_scan3.*` |
 
 `kunz` is `sylver/kunz_solver.cpp` built with `-O3 -march=native -pthread`.
 The scan's sweeps ran on 8 threads without `--verify-memo`, stopping at the
@@ -63,32 +63,42 @@ the reduced pair's odd gaps, so a reply without an answer here is still open.
   replies with 1 to 7 candidates left, and 42, the lowest reply rescanned.
   It resumed each at the candidate the rescan stopped in (the ledger's
   `swept` plus the candidates `o16_scan2.jsonl` classified), in the same
-  order, with the same engine, cap, 10 threads and 16 GB cache, and 3 hours
-  a reply, from October 22 at 22:03 to October 23 at 09:00.
+  order, with the same engine and cap, on 10 threads with a 16 GB cache (42's
+  first run with them: its rescan had 4 threads and an 8 GB cache), and a
+  3-hour limit a reply, from October 22 at 22:03 to October 23 at 09:00.
 - Round 3 found no answer (by search). It classified 20 more candidates,
   all N:
   - The sweeps for 68 and 76 finished. Every candidate for them is N: the
-    odd gaps above 1 of {4,17} and {4,19} (15 and 17), all legal after
-    the reply.
-    Like the complete sweeps for 40 and 44 in `finite_answers.jsonl`, this
-    leaves both replies open, since a complete sweep tries only those gaps.
+    odd gaps above 1 of {4,17} and {4,19} (15 for 68, 17 for 76), all legal
+    after its reply. That still leaves both replies open, since a complete
+    sweep tries only those gaps.
   - The other four stopped at the cap of 400,000,000 P-positions, none at
     the time limit. 84 stopped in 55 (55 and 59 left), 92 in its first
     candidate, 49 (49 to 65, five left), 100 in 51 (51 to 71, six left),
-    and 42 in 123 (123, 131 and 139 left).
+    and 42 in 123 (123, 131 and 139 left). On 10 threads, 42 went from
+    none classified to 14.
   - The cap counts the P-positions in a sweep's shared memo, and the
-    earlier candidates had used most of it. 42's sweep reached 123 with
-    380,938,570 already held, 100's reached 51 with 297,542,575 and 84's
-    reached 55 with 181,772,273 (the last row's `states` in each record).
-    Only 92's 49 had the whole cap.
+    earlier candidates had used much of it: 42's sweep reached 123 with
+    380,938,570 already held (95% of the cap), 100's reached 51 with
+    297,542,575 (74%) and 84's reached 55 with 181,772,273 (45%). These are
+    the last number in each record's last row, the engine's
+    `cumulative_states`. Only 92's 49 had the whole cap.
 - `o16_scan3.py`'s docstring repeats `o16_scan2.py`'s below "The earlier
-  notes follow", with its note that rows stream to `o16_scan2.jsonl`;
-  `o16_scan3.py` writes `o16_scan3.jsonl`, one record per reply when its
-  sweep ends. In `o16_scan3.log`, "stopped" means the cap stopped the sweep
-  (each such record has `timed_out` false and the engine's message in
-  `stderr_tail`), and "done" that every candidate was classified. The start
-  and done lines came from the shell that launched the script, and
-  `o16_watch3.sh` waited for the done line or an answer.
+  notes follow", with its usage line and its note that rows stream to
+  `o16_scan2.jsonl`; `o16_scan3.py` writes `o16_scan3.jsonl`, one record
+  per reply when its sweep ends. Each sweep `o16_scan3.log` calls "stopped"
+  stopped at the cap (its record has `timed_out` false and the engine's
+  message in `stderr_tail`); the script prints "stopped" for any early end
+  that is neither a timeout nor an answer, a failure included. Here "done"
+  means every candidate was classified (the script also prints it after an
+  answer; this round found none). The start and done lines came from the
+  shell that launched the script, and `o16_watch3.sh` waited for the done
+  line or an answer.
+- To run `o16_scan3.py` again: like `o16_scan2.py`, it calls `kunz_pt` at an
+  absolute path in the session's scratch directory; it reads
+  `o16_scan2.jsonl` from its own directory and skips every reply already in
+  `o16_scan3.jsonl` (all six, as committed). With no replies named it takes
+  every stopped reply in the ledger except 38, 198 included.
 
 The scripts point at the main checkout (`/home/ruclaw/src/sylver-coinage`)
 and the working directory they ran in.
