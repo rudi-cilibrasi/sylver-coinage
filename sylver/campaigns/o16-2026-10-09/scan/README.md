@@ -23,23 +23,36 @@ the reduced pair's odd gaps, so a reply without an answer here is still open.
   memo, so none was classified. The script did not record return codes; it
   does now.
 
-- `o16_scan2.py` resumed each of the 50 stopped sweeps but 38's (which has its
-  own campaign, `../../r38-2026-10-09`) at the candidate in progress, in the
-  same order, with `kunz_pt`: `sylver/kunz_solver.cpp --p-table` at e335ff0,
-  built like `kunz` (the reply-38 scan's build), whose `--max-states` counts
-  P-positions (400,000,000 here). One P-table and N-cache served each reply's
-  sweep, and each sweep had 45 minutes. 42 ran on October 14 with 4 threads
-  and an 8 GB cache; the run was then stopped for the reply-38 hunt, and
-  resumed on October 18 at 15:31 with 10 threads and a 16 GB cache for the
-  other 49, until October 20 at 03:33. Rows stream to `o16_scan2.jsonl` as
-  the engine prints them, so a sweep the time limit stopped keeps what it
-  classified.
-- The rescan found no answer. All 49 sweeps that ran timed out, and 198's
-  again failed at once (Frobenius bound 2039). They classified 114 more
-  candidates, all N; 42, 98, 122, 154, 162, 178, 190 and 194 classified
-  none. Many candidates left take over 45 minutes on 10 threads each, and
-  most replies above 94 have 80 or more, so sweeping them all in order this
-  way is out of reach.
+- `o16_scan2.py` resumed the 50 stopped sweeps besides 38's (which has its
+  own campaign, `../../r38-2026-10-09`; 51 sweeps had stopped early), each at
+  its candidate in progress and in the same order, with `kunz_pt`:
+  `sylver/kunz_solver.cpp --p-table` at e335ff0, built like `kunz` (the
+  reply-38 scan's build), whose `--max-states` counts P-positions
+  (400,000,000 here). One P-table and N-cache served each reply's sweep, and
+  each sweep had 45 minutes. 42 ran on October 14 from 18:07 with 4 threads
+  and an 8 GB cache, sharing the host with the reply-38 hunt. At about 18:55
+  Claude Code reclaimed memory and killed the run on 46 (which left no
+  record), and it stayed paused for the reply-38 hunt. It resumed on October
+  18 at 15:31 with 10 threads and a 16 GB cache for the other 49, until
+  October 20 at 03:33. The script reads each sweep's rows as the engine
+  prints them and writes one record per reply to `o16_scan2.jsonl` when the
+  sweep ends, so a sweep the time limit stopped keeps what it classified, but
+  a killed script loses its reply in progress.
+- The rescan found no answer (by search; nothing here is replayed). All 49
+  sweeps that ran timed out, and 198's again failed at once (Frobenius bound
+  2039). They classified 114 more candidates, all N; eight of the timed-out
+  sweeps (42, 98, 122, 154, 162, 178, 190 and 194) classified none.
+- What is left differs by gcd. The gcd-2 replies have 17 to 195 candidates
+  left each (80 or more left for most above 94), and some single candidates
+  took over 45 minutes on 10 threads, so sweeping them all in order this way
+  is out of reach. The gcd-4 replies have fewer: 68 has 1 left, 76 has 2, 84
+  has 4, 92 has 5 and 100 has 7, so longer runs of this sweep could finish
+  those.
+- To run `o16_scan2.py` again: it calls `kunz_pt` at an absolute path in the
+  session's scratch directory, it skips every reply already in
+  `o16_scan2.jsonl` (so all of them, as committed), and the start, resume
+  and done lines of `o16_scan2.log`, which `o16_watch.sh` waits for, came
+  from the shell that launched it.
 
 The scripts point at the main checkout (`/home/ruclaw/src/sylver-coinage`)
 and the working directory they ran in.

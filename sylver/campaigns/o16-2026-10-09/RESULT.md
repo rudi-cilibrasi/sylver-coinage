@@ -50,8 +50,9 @@ The finite answers come from one scan ([scan/](scan/)).
     the engine's limit of 127, and the sweep's candidates share one memo.
   - A rescan with the P-table engine (October 14 and 18–20, 45 minutes a
     reply; [scan/README.md](scan/README.md)) resumed the 50 stopped sweeps
-    but 38's. It found no answer: it classified 114 more candidates, all N,
-    and every sweep timed out (198's failed again).
+    besides 38's. It found no answer: it classified 114 more candidates, all
+    N (by search, not replayed); every sweep that ran timed out, and 198's
+    failed again.
 
 Each finite answer has a certificate `o<r>-certificate.json`, in the schema
 the campaign records use, with parent [16].
