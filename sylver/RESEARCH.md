@@ -2036,11 +2036,12 @@ Recorded in [the ledger's scan notes](campaigns/o16-2026-10-09/scan/README.md)
   coordinates). They classified 114 more candidates, all N; eight of the
   timed-out sweeps classified none. 42, the lowest reply rescanned, had the
   weakest run; a 10-thread rerun would cost 45 minutes.
-- **What it means.** The gcd-2 replies have 17 to 195 candidates left each,
-  and some single candidates took over 45 minutes, so sweeping them in order
-  with a shared memo is out of reach; finite answers to them need another
-  method. The gcd-4 replies 68, 76, 84, 92 and 100 have 1 to 7 left, so
-  longer runs of this sweep could finish those. 40 itself, the lowest reply
+- **What it means.** The 35 gcd-2 replies have 17 to 195 candidates left
+  each, and some single candidates took over 45 minutes, so sweeping them in
+  order with a shared memo is out of reach; finite answers to them need
+  another method. Of the 15 gcd-4 replies, 68, 76, 84, 92 and 100 have 1 to
+  7 left, so longer runs of this sweep could finish those; the ten from 108
+  to 196 have 9 to 32. 40 itself, the lowest reply
   with no known answer, has gcd 8; the scan's only candidate for it, 3 (the
   one odd gap of its reduced pair {2,5} above 1), fails, and the Quiet End
   tools here do not cover gcd 8.

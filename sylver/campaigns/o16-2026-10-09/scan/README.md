@@ -7,7 +7,7 @@
 | certificates and native + Python replays | `python replay.py evidence_o16_py.json o o16 "{16}"` | `../o*-certificate.json`, `../verification/` |
 | native replays of 62 and 86 | `REPLAY_PYTHON=0 python replay.py evidence_o16_native.json o o16 "{16}"` | `../verification/o62/`, `../verification/o86/` |
 | sequential Kunz replays of 62 and 86 | `python kunz_receipts.py 62 86` | the same directories |
-| the stopped sweeps again, with the P-table engine (October 14 and 18–20) | `python o16_scan2.py` (4 threads, an 8 GB cache, for 42), then `python o16_scan2.py --threads 10 --ncache-mb 16384 --timeout 2700`; `o16_watch.sh` waited for an answer | `o16_scan2.*` |
+| the stopped sweeps again, with the P-table engine (October 14 and 18–20) | `python o16_scan2.py` (4 threads, an 8 GB cache: 42, then killed on 46), then `python o16_scan2.py --threads 10 --ncache-mb 16384 --timeout 2700`; `o16_watch.sh` waited for an answer | `o16_scan2.*` |
 
 `kunz` is `sylver/kunz_solver.cpp` built with `-O3 -march=native -pthread`.
 The scan's sweeps ran on 8 threads without `--verify-memo`, stopping at the
@@ -42,17 +42,21 @@ the reduced pair's odd gaps, so a reply without an answer here is still open.
   sweeps that ran timed out, and 198's again failed at once (Frobenius bound
   2039). They classified 114 more candidates, all N; eight of the timed-out
   sweeps (42, 98, 122, 154, 162, 178, 190 and 194) classified none.
-- What is left differs by gcd. The gcd-2 replies have 17 to 195 candidates
-  left each (80 or more left for most above 94), and some single candidates
-  took over 45 minutes on 10 threads, so sweeping them all in order this way
-  is out of reach. The gcd-4 replies have fewer: 68 has 1 left, 76 has 2, 84
-  has 4, 92 has 5 and 100 has 7, so longer runs of this sweep could finish
-  those.
+- What is left: the 35 gcd-2 replies have 17 to 195 candidates left each
+  (all 25 above 94 have 80 or more), and some single candidates took over
+  45 minutes on 10 threads, so sweeping them all in order this way is out of
+  reach. The 15 gcd-4 replies have fewer: 68 has 1 left, 76 has 2, 84 has
+  4, 92 has 5 and 100 has 7, so longer runs of this sweep could finish
+  those; the ten from 108 to 196 have 9 to 32 each.
+- `o16_scan2.py`'s docstring says rows stream to `o16_scan2.jsonl`; they
+  stream to the script, which writes the file as described above. The log
+  calls 198's sweep "stopped": the script has no label for a failure, which
+  its record shows (return code 1, and the engine's message).
 - To run `o16_scan2.py` again: it calls `kunz_pt` at an absolute path in the
   session's scratch directory, it skips every reply already in
   `o16_scan2.jsonl` (so all of them, as committed), and the start, resume
-  and done lines of `o16_scan2.log`, which `o16_watch.sh` waits for, came
-  from the shell that launched it.
+  and done lines of `o16_scan2.log` came from the shell that launched it;
+  `o16_watch.sh` waits for the done line or an answer in the jsonl.
 
 The scripts point at the main checkout (`/home/ruclaw/src/sylver-coinage`)
 and the working directory they ran in.
