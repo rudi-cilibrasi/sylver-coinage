@@ -2019,6 +2019,27 @@ Recorded in [the certification record](campaigns/c72-2026-10-18/RESULT.md).
   P-positions than 68's. Certifying the last seven obligations looks to need
   a larger machine or another method.
 
+### Attempt 49 — the opening-16 rescan finds no answer (2026-10-20)
+
+Recorded in [the ledger's scan notes](campaigns/o16-2026-10-09/scan/README.md)
+(search results, not certified).
+
+- **The run.** The ledger's finite-answer scan had stopped 50 sweeps (all but
+  38's) at its memo cap. A rescan resumed each at its candidate in progress,
+  in the same order, with the P-table engine: 45 minutes a reply, 42 on
+  October 14 and the other 49 from October 18 at 15:31 to October 20 at
+  03:33, on 10 threads.
+- **The result.** No answer. Every sweep timed out (198's failed at once
+  again: its candidate 685 is beyond the engine's Kunz coordinates). They
+  classified 114 more candidates, all N; eight replies classified none.
+- **What it means.** In-order sweeps that share a memo stall on the first
+  hard candidate, and the candidates left take 45 minutes or more each, by
+  the dozen per reply. Finding finite answers above 40 needs a different
+  method, not more of this sweep. 40 itself, the lowest reply with no known
+  answer, has gcd 8; the scan's only candidate for it, 3 (the one odd gap of
+  its reduced pair {2,5} above 1), fails, and the Quiet End tools here do not
+  cover gcd 8.
+
 ### Sources
 
 - <https://math.colgate.edu/~integers/yg2/yg2.pdf>
