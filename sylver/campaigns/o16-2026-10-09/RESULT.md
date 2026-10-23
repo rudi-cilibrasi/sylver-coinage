@@ -48,6 +48,11 @@ The finite answers come from one scan ([scan/](scan/)).
   - The sweep for 38 classified 24 of its 35 odd candidates.
   - The sweep for 198 failed. Its candidate 685 needs a Kunz coordinate above
     the engine's limit of 127, and the sweep's candidates share one memo.
+  - A rescan with the P-table engine (October 14 and 18–20, 45 minutes a
+    reply; [scan/README.md](scan/README.md)) resumed the 50 stopped sweeps
+    besides 38's. It found no answer: it classified 114 more candidates, all
+    N (by search, not replayed); every sweep that ran timed out, and 198's
+    failed again.
 
 Each finite answer has a certificate `o<r>-certificate.json`, in the schema
 the campaign records use, with parent [16].

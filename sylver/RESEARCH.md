@@ -2019,6 +2019,33 @@ Recorded in [the certification record](campaigns/c72-2026-10-18/RESULT.md).
   P-positions than 68's. Certifying the last seven obligations looks to need
   a larger machine or another method.
 
+### Attempt 49 — the opening-16 rescan finds no answer (2026-10-20)
+
+Recorded in [the ledger's scan notes](campaigns/o16-2026-10-09/scan/README.md)
+(search results, not certified).
+
+- **The run.** The ledger's finite-answer scan had stopped 51 sweeps early,
+  at its memo cap or by failing. A rescan resumed the 50 besides 38's, each
+  at its candidate in progress and in the same order, with the P-table
+  engine and 45 minutes a reply: 42 on October 14 (4 threads, an 8 GB cache,
+  beside the reply-38 hunt; a memory reclaim then killed the run on 46), and
+  the other 49 from October 18 at 15:31 to October 20 at 03:33 on 10
+  threads.
+- **The result.** No answer. All 49 sweeps that ran timed out, and 198's
+  failed at once again (its candidate 685 is beyond the engine's Kunz
+  coordinates). They classified 114 more candidates, all N; eight of the
+  timed-out sweeps classified none. 42, the lowest reply rescanned, had the
+  weakest run; a 10-thread rerun would cost 45 minutes.
+- **What it means.** The 35 gcd-2 replies have 17 to 195 candidates left
+  each, and some single candidates took over 45 minutes, so sweeping them in
+  order with a shared memo is out of reach; finite answers to them need
+  another method. Of the 15 gcd-4 replies, 68, 76, 84, 92 and 100 have 1 to
+  7 left, so longer runs of this sweep could finish those; the ten from 108
+  to 196 have 9 to 32. 40 itself, the lowest reply
+  with no known answer, has gcd 8; the scan's only candidate for it, 3 (the
+  one odd gap of its reduced pair {2,5} above 1), fails, and the Quiet End
+  tools here do not cover gcd 8.
+
 ### Sources
 
 - <https://math.colgate.edu/~integers/yg2/yg2.pdf>
