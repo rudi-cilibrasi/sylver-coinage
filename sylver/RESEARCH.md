@@ -2110,6 +2110,24 @@ Recorded in [the reply-40 record](campaigns/r40-2026-10-23/RESULT.md).
   stopped early; their short children are next. The other answers
   a ≡ 0 (mod 4) give gcd-four positions, which the tools here do not cover.
 
+### Attempt 52 — reply 40: B58 certified, so 36 and 58 fail (2026-10-24)
+
+Recorded in [the reply-40 record](campaigns/r40-2026-10-23/RESULT.md).
+
+- **The certificate.** B58={16,36,40,58} is now certified the way Q is. Its
+  half is {8,18,20,29}, the half's Frobenius number is 59, and it has 51
+  obligations. The audit accepts 44 finite witnesses (all 21 odd
+  obligations, and 23 even ones), replayed natively and in Python, and 7
+  routes to the certified nodes C, E, F, P0 and K. The replays total
+  517,445,319 states; the largest, 132,607,400, took about four hours in
+  Python. B58 is not on Sicherman's list.
+- **Two more refutations.** 58's move 36 and 36's move 58 both reach B58.
+  So the audit now refutes twenty-three answers to 40: every legal even
+  answer up to 50, and 58 and 70.
+- **What it means.** 40 is still unanswered. 52 and 54 (through B54) and 62
+  remain refuted by search only, as do the odd answers 3 to 57. B54's three
+  largest witnesses and 62's need native and sequential Kunz replays.
+
 ### Sources
 
 - <https://math.colgate.edu/~integers/yg2/yg2.pdf>
