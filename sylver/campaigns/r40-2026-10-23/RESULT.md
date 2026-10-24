@@ -83,10 +83,10 @@ positions:
 - **Sicherman's {8,10,22}** (the node H), whose P outcome comes from a
   periodicity computation. Q reaches it through G and O; the refutations
   through K, and through T, which uses G and K.
-- **Parameter 3 of Blok's pairing family**, {8,12,26,30}. Q reaches it
-  through G and O, and the refutations through T.
-- **The pairing family {8,10,12,14}**, through E and F.
-- **The pairing strategy for {8,12,18,22}**, through P0.
+- **Blok's pairing family {8,12,8n+2,8n+6}**, at three of its members:
+  n=1, {8,10,12,14}, through E and F; n=2, {8,12,18,22}, through P0; and
+  n=3, {8,12,26,30}, through G and O for Q and through T for the
+  refutations.
 
 B28 and Z′ rest on what their records list: the nodes C, E, F, J and P0 for
 B28, and C, E and F for Z′.
@@ -137,8 +137,8 @@ For 46, 54 and 58, the even obligations decide:
   search over the even replies of {16,40,46,60}, one of 46's children,
   found Q's 16 odd and 23 even obligations all leading to N. The audit
   checks the same position, with the two finite routes above.
-- **54.** 18 of its even children are short. The short-first pass settled
-  all but five: its moves 52, 60, 68 and 76 reach positions whose odd
+- **54.** 18 of its even children are short. The triage and short-first
+  passes settled all but five: its moves 52, 60, 68 and 76 reach positions whose odd
   obligations all lead to N, and 92's sweep stopped early. The first of
   those, **B54={16,40,52,54}**, had all 33 of its even obligations answered
   too. (Its half is {8,20,26,27}, the half's Frobenius number is 65, and it

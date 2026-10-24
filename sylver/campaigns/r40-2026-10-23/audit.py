@@ -45,9 +45,10 @@ OPENING, REPLY = 16, 40
 POSITIONS = {
     'Q': ((16, 20, 46), 'q', {4: (6, 'C'), 6: (4, 'C'), 8: (26, 'G'), 14: (26, 'R'), 26: (8, 'G'), 30: (8, 'O')}),
 }
-# positions another record certifies: name -> (generators, that record's audit)
-EXTERNAL = {'B28': ((16, 28, 38, 40), HERE.parent / 'r38-2026-10-09' / 'audit.py'),
-            "Z'": ((16, 30, 40, 44), HERE.parent / 'z-2026-10-08' / 'audit.py')}
+# positions another record certifies: name -> (generators, that record's audit, the extra arguments
+# its audit_position takes after the name)
+EXTERNAL = {'B28': ((16, 28, 38, 40), HERE.parent / 'r38-2026-10-09' / 'audit.py', ({},)),
+            "Z'": ((16, 30, 40, 44), HERE.parent / 'z-2026-10-08' / 'audit.py', ())}
 # answer a to the reply 40: (the move that takes {16,40,a} to a P-position, and how that position is known P)
 REFUTED = {2: (3, 'finite'), 4: (6, 'C'), 6: (4, 'C'), 8: (14, 'E'), 10: (9, 'finite'), 12: (14, 'F'),
            14: (8, 'E'), 18: (5, 'finite'), 20: (34, 'T'), 22: (12, 'P0'), 24: (10, 'K'), 26: (11, 'finite'),
@@ -163,11 +164,11 @@ def audit_position(name):
 
 def audit_external(name):
     """A position by its own record's audit (that record's certificates, in its directory)."""
-    generators, path = EXTERNAL[name]
+    generators, path, extra = EXTERNAL[name]
     spec = importlib.util.spec_from_file_location(f'audit_{path.parent.name}', path)
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
-    section = module.audit_position(name, {}) if name == 'B28' else module.audit_position(name)
+    section = module.audit_position(name, *extra)
     failures = list(section['failures'])
     if section['position'] != list(position(generators)):
         failures.append(f'{name}: that audit checked {section["position"]}, not {list(position(generators))}')
