@@ -37,7 +37,8 @@ certified.
 | B54's evidence | `THREADS=8 python collect.py resolve_16-40-52-54.jsonl '{"36": [21, "finite"], "26": [11, "finite"]}' 16 40 52 54` (the two rows the resolver took from `even_54.jsonl`) | `collect_B54.log`, `evidence_16-40-52-54.json` |
 | 58's even obligations, short children first | `./run58.sh` (`even_resolver.py 58 --short-first`, same settings), from 17:41; `./stop_on.sh PID even_triage.log 'r=58 e= 100'` stopped it after its last short child | `even_triage.log`, `even_58.jsonl` |
 | is a short child of 58 P? | `./test_children.sh 58 36 44 60 68 84`, which now stops at the first child with every obligation resolved: {16,36,40,58}, at 18:02 | `test_children.log`, `resolve_16-36-40-58.jsonl` |
-| B58's evidence | `THREADS=8 python collect.py resolve_16-36-40-58.jsonl '{"20": [15, "finite"]}' 16 36 40 58` | `collect_B58.log`, `evidence_16-36-40-58.json` |
+| B58's evidence | `THREADS=8 python collect.py resolve_16-36-40-58.jsonl '{"20": [15, "finite"]}' 16 36 40 58` (the row the resolver took from `even_58.jsonl`) | `collect_B58.log`, `evidence_16-36-40-58.json` |
+| B58's certificates and replays | `REPLAY_MAX_JOBS=2 REPLAY_BUDGET_GIB=22 nice python replay.py evidence_16-36-40-58.json b58_ DIR B58` (DIR as above), October 23, 19:27, to October 24, 06:10. The largest, move 118, took 1,302 seconds natively and 14,941 in Python | `replay_B58.log`, `../b58_*-certificate.json`, `../verification/` (the per-job logs moved there too) |
 | odd answers to 40 | `kunz_pt --p-table --ncache-mb 8192 --threads 8 --stop-at-p --max-states 200000000 --odd-list 5,7,…,33 16 40`; then `timeout 3600 kunz_pt ... --threads 10 --max-states 300000000 --odd-list 35,37,…,99 16 40`, which reached 59 | `odd_answers.*`, `odd_answers2.*` |
 
 The shell scripts log "(exit N)" after each run. Until the review of this
