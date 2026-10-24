@@ -1,0 +1,13 @@
+2026-10-23 10:06:09 r40 odd screen pass A start (kunz_pt --p-table, 10 threads, 8 GB cache, 100M P-positions, 30 min per candidate): 46-198, redo partials
+46 odd ODD-COMPLETE 25 138.5
+54 odd ODD-COMPLETE 29 320.7
+58 odd ODD-COMPLETE 31 1175.9
+62 odd REFUTED by 61 (odd child P) 24 308.3
+66 odd open 32 1801.6
+70 odd REFUTED by 37 (odd child P) 17 66.9
+74 odd open 31 1801.3
+78 odd open 28 1801.3
+82 odd open 28 1801.4
+86 odd open 29 1538.3
+2026-10-23 13:05:25 r40 odd screen pass A done
+2026-10-23 13:05:27 stopped pass A after candidate >= 86 (resume with --amin 90)

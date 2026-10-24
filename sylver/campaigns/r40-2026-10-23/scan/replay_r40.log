@@ -1,0 +1,15 @@
+16:19:28 start r40_70 (38,439,250 states, 5.977894604206085 GiB cap)
+16:19:28 start r40_42 (748,706 states, 0.36156588792800903 GiB cap)
+16:20:08 r40_42 done rc=0 40s
+16:20:08 start r40_30 (65,251 states, 0.25972315669059753 GiB cap)
+16:20:18 r40_30 done rc=0 10s
+16:20:18 start r40_50 (7,432 states, 0.25110745429992676 GiB cap)
+16:20:23 r40_50 done rc=0 5s
+16:20:23 start r40_26 (3,740 states, 0.2505573034286499 GiB cap)
+16:20:28 r40_26 done rc=0 5s
+16:20:28 start r40_10 (213 states, 0.2500317394733429 GiB cap)
+16:20:33 r40_10 done rc=0 5s
+16:20:33 start r40_18 (50 states, 0.2500074505805969 GiB cap)
+16:20:38 r40_18 done rc=0 5s
+17:08:18 r40_70 done rc=0 2930s
+finished: 7 failed: {}

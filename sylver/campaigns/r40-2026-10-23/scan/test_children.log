@@ -1,0 +1,93 @@
+2026-10-23 16:05:30 test child {16,40,54}+52 start
+r=None e=   4 resolved  reply=6 via=node C tried=- 0.0s
+r=None e=   6 resolved  reply=4 via=node C tried=- 0.0s
+r=None e=   8 resolved  reply=14 via=node E tried=- 0.0s
+r=None e=  12 resolved  reply=14 via=node F tried=- 0.0s
+r=None e=  18 resolved  reply=5 via=opening table tried=- 0.0s
+r=None e=  20 resolved  reply=34 via=node T tried=- 0.0s
+r=None e=  24 resolved  reply=10 via=node K tried=- 0.0s
+r=None e=  36 resolved  reply=21 via=even_54.jsonl: finite odd witness tried=- 0.0s
+r=None e=   2 resolved  reply=3 via=opening table tried=- 0.0s
+r=None e=  10 resolved  reply=9 via=opening table tried=- 0.0s
+r=None e=  14 resolved  reply=8 via=node E tried=- 0.0s
+r=None e=  22 resolved  reply=12 via=node P0 tried=- 0.0s
+r=None e=  26 resolved  reply=11 via=even_54.jsonl: finite odd witness tried=- 0.0s
+r=None e=  28 resolved  reply=81 via=finite odd witness tried=40 9.3s
+r=None e=  30 resolved  reply=161 via=finite odd witness tried=80 20.9s
+r=None e=  34 resolved  reply=20 via=node T tried=- 0.0s
+r=None e=  38 resolved  reply=173 via=finite odd witness tried=86 79.3s
+r=None e=  42 resolved  reply=69 via=finite odd witness tried=34 12.9s
+r=None e=  44 resolved  reply=37 via=finite odd witness tried=15 4.3s
+r=None e=  46 resolved  reply=57 via=finite odd witness tried=28 14.0s
+r=None e=  50 resolved  reply=67 via=finite odd witness tried=33 19.5s
+r=None e=  58 resolved  reply=95 via=finite odd witness tried=47 40.2s
+r=None e=  60 resolved  reply=229 via=finite odd witness tried=114 209.4s
+r=None e=  62 resolved  reply=39 via=finite odd witness tried=20 8.3s
+r=None e=  66 resolved  reply=95 via=finite odd witness tried=47 50.2s
+r=None e=  74 resolved  reply=55 via=finite odd witness tried=27 17.8s
+r=None e=  76 resolved  reply=23 via=finite odd witness tried=12 1.9s
+r=None e=  78 resolved  reply=127 via=finite odd witness tried=63 237.3s
+r=None e=  82 resolved  reply=23 via=finite odd witness tried=13 1.9s
+r=None e=  90 resolved  reply=51 via=finite odd witness tried=26 25.9s
+r=None e=  98 resolved  reply=175 via=finite odd witness tried=87 327.1s
+r=None e= 114 resolved  reply=85 via=finite odd witness tried=42 195.2s
+r=None e= 130 resolved  reply=63 via=finite odd witness tried=31 47.1s
+summary: {'resolved': 33, 'short: needs even': 0, 'open': 0, 'REFUTES r': 0} of 33
+2026-10-23 16:27:32 test child {16,40,54}+52 end (exit 0)
+2026-10-23 16:27:32 test child {16,40,54}+60 start
+r=None e=   4 resolved  reply=6 via=node C tried=- 0.0s
+r=None e=   6 resolved  reply=4 via=node C tried=- 0.0s
+r=None e=   8 resolved  reply=14 via=node E tried=- 0.0s
+r=None e=  12 resolved  reply=14 via=node F tried=- 0.0s
+r=None e=  14 resolved  reply=8 via=node E tried=- 0.0s
+r=None e=  20 resolved  reply=34 via=node T tried=- 0.0s
+r=None e=  22 resolved  reply=12 via=node P0 tried=- 0.0s
+r=None e=  24 resolved  reply=10 via=node K tried=- 0.0s
+r=None e=  28 resolved  reply=38 via=search: P (resolve_16-28-38-40) tried=- 0.0s
+r=None e=  38 resolved  reply=28 via=search: P (resolve_16-28-38-40) tried=- 0.0s
+r=None e=  44 resolved  reply=21 via=even_54.jsonl: finite odd witness tried=- 0.0s
+r=None e=   2 resolved  reply=3 via=opening table tried=- 0.0s
+r=None e=  10 resolved  reply=9 via=opening table tried=- 0.0s
+r=None e=  18 resolved  reply=5 via=opening table tried=- 0.0s
+r=None e=  26 resolved  reply=11 via=finite odd witness tried=5 0.1s
+r=None e=  30 resolved  reply=21 via=even_54.jsonl: finite odd witness tried=- 0.0s
+r=None e=  34 resolved  reply=20 via=node T tried=- 0.0s
+r=None e=  36 resolved  reply=27 via=finite odd witness tried=17 3.2s
+r=None e=  42 resolved  reply=39 via=finite odd witness tried=16 6.1s
+2026-10-23 16:27:51 stopped: {16,40,52,54} found P, so 54 is refuted; the other children are not needed
+r=None e=  46 resolved  reply=49 via=finite odd witness tried=21 12.1s
+r=None e=  50 resolved  reply=11 via=finite odd witness tried=6 0.1s
+2026-10-23 17:54:06 test child {16,40,58}+36 start
+r=None e=   4 resolved  reply=6 via=node C tried=- 0.0s
+r=None e=   6 resolved  reply=4 via=node C tried=- 0.0s
+r=None e=   8 resolved  reply=14 via=node E tried=- 0.0s
+r=None e=  10 resolved  reply=9 via=opening table tried=- 0.0s
+r=None e=  12 resolved  reply=14 via=node F tried=- 0.0s
+r=None e=  18 resolved  reply=5 via=opening table tried=- 0.0s
+r=None e=  20 resolved  reply=15 via=even_58.jsonl: finite odd witness tried=- 0.0s
+r=None e=  24 resolved  reply=10 via=node K tried=- 0.0s
+r=None e=  26 resolved  reply=27 via=finite odd witness tried=9 0.3s
+r=None e=  42 resolved  reply=15 via=finite odd witness tried=5 0.1s
+r=None e=   2 resolved  reply=3 via=opening table tried=- 0.0s
+r=None e=  14 resolved  reply=8 via=node E tried=- 0.0s
+r=None e=  22 resolved  reply=12 via=node P0 tried=- 0.0s
+r=None e=  28 resolved  reply=29 via=finite odd witness tried=14 0.7s
+r=None e=  30 resolved  reply=13 via=finite odd witness tried=6 0.1s
+r=None e=  34 resolved  reply=95 via=finite odd witness tried=47 5.7s
+r=None e=  38 resolved  reply=17 via=finite odd witness tried=8 0.2s
+r=None e=  44 resolved  reply=21 via=finite odd witness tried=10 0.5s
+r=None e=  46 resolved  reply=67 via=finite odd witness tried=33 7.8s
+r=None e=  50 resolved  reply=51 via=finite odd witness tried=25 6.7s
+r=None e=  54 resolved  reply=21 via=finite odd witness tried=8 0.4s
+r=None e=  60 resolved  reply=115 via=finite odd witness tried=57 46.0s
+r=None e=  62 resolved  reply=47 via=finite odd witness tried=23 12.5s
+r=None e=  66 resolved  reply=217 via=finite odd witness tried=108 83.0s
+r=None e=  70 resolved  reply=23 via=finite odd witness tried=9 0.9s
+r=None e=  78 resolved  reply=53 via=finite odd witness tried=26 10.9s
+r=None e=  82 resolved  reply=107 via=finite odd witness tried=53 39.0s
+r=None e=  86 resolved  reply=97 via=finite odd witness tried=48 78.6s
+r=None e= 102 resolved  reply=71 via=finite odd witness tried=35 36.8s
+r=None e= 118 resolved  reply=161 via=finite odd witness tried=80 197.4s
+summary: {'resolved': 30, 'short: needs even': 0, 'open': 0, 'REFUTES r': 0} of 30
+2026-10-23 18:02:54 test child {16,40,58}+36 end (exit 0)
+2026-10-23 18:02:54 {16,40,58}+36 is P: 58 is refuted; stopping

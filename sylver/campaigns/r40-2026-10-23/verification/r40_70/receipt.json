@@ -1,0 +1,65 @@
+{
+  "status": "verified",
+  "certificate_sha256": "106b2b5b0fe05a8c5ca03e5a011e2dc03f64254edb797ff70fe49bc693d9e6dc",
+  "verifier_sha256": "420ebc11625188e51923e67953a3948b21fc3dcda8ef42ae7d01dd53a3c0fc06",
+  "native_words": 3,
+  "native_source_sha256": "aded19fa091b57b6bb307c60824d44655a02353b6bc87c5b2ad0a996fda71c66",
+  "binary_sha256": "e14fe74dd05d7e82b8af20c0d4435a2f534dbc10b753f5d81e26a810e81f05ad",
+  "python_source_sha256": "fe17c5fbb77b036131250af033b0bae7fa200daca4cadb01ceccb12fa6434a3d",
+  "semigroup_source_sha256": "7675fe927be6704ca7c60389061c61e82e5c3761b7086a1e5691b3bd9a5c5fd9",
+  "position": [
+    16,
+    37,
+    40,
+    70
+  ],
+  "frobenius": 169,
+  "seconds_limit_per_solver": 4804.0,
+  "memory_gib": 9,
+  "structural_edges_checked": 2,
+  "runs": {
+    "native": {
+      "command": [
+        "/home/ruclaw/src/sylver-coinage/sylver/campaigns/r40-2026-10-23/verification/r40_70/build/native",
+        "16",
+        "37",
+        "40",
+        "70"
+      ],
+      "elapsed_seconds": 253.14518090011552,
+      "returncode": 0,
+      "timed_out": false,
+      "stdout_sha256": "3a4ce18c3aa84d8dbbf669682e4ed381c28dcc50c9a429f37ad2c56c25f11468",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outcome": "P",
+      "frobenius": 169,
+      "states": 38439250
+    },
+    "python": {
+      "command": [
+        "/usr/bin/python3",
+        "/home/ruclaw/src/sylver-coinage/sylver/verify_finite_reply.py",
+        "--python-worker",
+        "16",
+        "37",
+        "40",
+        "70"
+      ],
+      "elapsed_seconds": 2669.736957760062,
+      "returncode": 0,
+      "timed_out": false,
+      "stdout_sha256": "8627a609939c5040a95fd9c54b867e363b7b842edb1097c25c0a34fd0d60c891",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "position": [
+        16,
+        37,
+        40,
+        70
+      ],
+      "outcome": "P",
+      "frobenius": 169,
+      "states": 38439250
+    }
+  },
+  "scope": "Fresh standalone memos, no cache or inherited outcome assumptions. Both moves are legal and their canonical destination matches the certificate."
+}

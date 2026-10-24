@@ -1,0 +1,595 @@
+{
+  "Q": {
+    "position": [
+      16,
+      20,
+      46
+    ],
+    "gcd": 2,
+    "tail": "quiet-end-v1",
+    "complete": true,
+    "half_frobenius": 45,
+    "obligations": {
+      "2": {
+        "destination_of_move": "2",
+        "evidence": "finite-witness",
+        "reply": 3,
+        "destination": "2,3",
+        "certificate": "sylver/campaigns/r40-2026-10-23/q2-certificate.json",
+        "receipt": "sylver/campaigns/r40-2026-10-23/verification/q2/receipt.json",
+        "states": 1
+      },
+      "3": {
+        "destination_of_move": "3,16,20",
+        "evidence": "finite-witness",
+        "reply": 2,
+        "destination": "2,3",
+        "certificate": "sylver/campaigns/r40-2026-10-23/q3-certificate.json",
+        "receipt": "sylver/campaigns/r40-2026-10-23/verification/q3/receipt.json",
+        "states": 1
+      },
+      "4": {
+        "destination_of_move": "4,46",
+        "evidence": "certified-node",
+        "reply": 6,
+        "destination": "4,6",
+        "certificate": "node C of sylver/short_certificates.py",
+        "source": "sylver/short_certificates.py"
+      },
+      "5": {
+        "destination_of_move": "5,16",
+        "evidence": "finite-witness",
+        "reply": 18,
+        "destination": "5,16,18",
+        "certificate": "sylver/campaigns/r40-2026-10-23/q5-certificate.json",
+        "receipt": "sylver/campaigns/r40-2026-10-23/verification/q5/receipt.json",
+        "states": 50
+      },
+      "6": {
+        "destination_of_move": "6,16,20",
+        "evidence": "certified-node",
+        "reply": 4,
+        "destination": "4,6",
+        "certificate": "node C of sylver/short_certificates.py",
+        "source": "sylver/short_certificates.py"
+      },
+      "7": {
+        "destination_of_move": "7,16,20",
+        "evidence": "finite-witness",
+        "reply": 6,
+        "destination": "6,7,16",
+        "certificate": "sylver/campaigns/r40-2026-10-23/q7-certificate.json",
+        "receipt": "sylver/campaigns/r40-2026-10-23/verification/q7/receipt.json",
+        "states": 21
+      },
+      "8": {
+        "destination_of_move": "8,20,46",
+        "evidence": "certified-node",
+        "reply": 26,
+        "destination": "8,20,26",
+        "certificate": "node G of sylver/short_certificates.py",
+        "source": "sylver/short_certificates.py"
+      },
+      "9": {
+        "destination_of_move": "9,16,20,46",
+        "evidence": "finite-witness",
+        "reply": 6,
+        "destination": "6,9,16,20",
+        "certificate": "sylver/campaigns/r40-2026-10-23/q9-certificate.json",
+        "receipt": "sylver/campaigns/r40-2026-10-23/verification/q9/receipt.json",
+        "states": 35
+      },
+      "10": {
+        "destination_of_move": "10,16",
+        "evidence": "finite-witness",
+        "reply": 9,
+        "destination": "9,10,16",
+        "certificate": "sylver/campaigns/r40-2026-10-23/q10-certificate.json",
+        "receipt": "sylver/campaigns/r40-2026-10-23/verification/q10/receipt.json",
+        "states": 213
+      },
+      "11": {
+        "destination_of_move": "11,16,20,46",
+        "evidence": "finite-witness",
+        "reply": 17,
+        "destination": "11,16,17,20,46",
+        "certificate": "sylver/campaigns/r40-2026-10-23/q11-certificate.json",
+        "receipt": "sylver/campaigns/r40-2026-10-23/verification/q11/receipt.json",
+        "states": 649
+      },
+      "12": {
+        "destination_of_move": "12,16,20,46",
+        "evidence": "finite-witness",
+        "reply": 19,
+        "destination": "12,16,19,20,46",
+        "certificate": "sylver/campaigns/r40-2026-10-23/q12-certificate.json",
+        "receipt": "sylver/campaigns/r40-2026-10-23/verification/q12/receipt.json",
+        "states": 2567
+      },
+      "13": {
+        "destination_of_move": "13,16,20",
+        "evidence": "finite-witness",
+        "reply": 38,
+        "destination": "13,16,20,38",
+        "certificate": "sylver/campaigns/r40-2026-10-23/q13-certificate.json",
+        "receipt": "sylver/campaigns/r40-2026-10-23/verification/q13/receipt.json",
+        "states": 4646
+      },
+      "14": {
+        "destination_of_move": "14,16,20",
+        "evidence": "certified-node",
+        "reply": 26,
+        "destination": "14,16,20,26",
+        "certificate": "node R of sylver/short_certificates.py",
+        "source": "sylver/short_certificates.py"
+      },
+      "15": {
+        "destination_of_move": "15,16,20",
+        "evidence": "finite-witness",
+        "reply": 37,
+        "destination": "15,16,20,37",
+        "certificate": "sylver/campaigns/r40-2026-10-23/q15-certificate.json",
+        "receipt": "sylver/campaigns/r40-2026-10-23/verification/q15/receipt.json",
+        "states": 8117
+      },
+      "17": {
+        "destination_of_move": "16,17,20,46",
+        "evidence": "finite-witness",
+        "reply": 6,
+        "destination": "6,16,17,20",
+        "certificate": "sylver/campaigns/r40-2026-10-23/q17-certificate.json",
+        "receipt": "sylver/campaigns/r40-2026-10-23/verification/q17/receipt.json",
+        "states": 108
+      },
+      "18": {
+        "destination_of_move": "16,18,20,46",
+        "evidence": "finite-witness",
+        "reply": 5,
+        "destination": "5,16,18",
+        "certificate": "sylver/campaigns/r40-2026-10-23/q18-certificate.json",
+        "receipt": "sylver/campaigns/r40-2026-10-23/verification/q18/receipt.json",
+        "states": 50
+      },
+      "19": {
+        "destination_of_move": "16,19,20,46",
+        "evidence": "finite-witness",
+        "reply": 12,
+        "destination": "12,16,19,20,46",
+        "certificate": "sylver/campaigns/r40-2026-10-23/q19-certificate.json",
+        "receipt": "sylver/campaigns/r40-2026-10-23/verification/q19/receipt.json",
+        "states": 2567
+      },
+      "21": {
+        "destination_of_move": "16,20,21,46",
+        "evidence": "finite-witness",
+        "reply": 75,
+        "destination": "16,20,21,46,75",
+        "certificate": "sylver/campaigns/r40-2026-10-23/q21-certificate.json",
+        "receipt": "sylver/campaigns/r40-2026-10-23/verification/q21/receipt.json",
+        "states": 51988
+      },
+      "22": {
+        "destination_of_move": "16,20,22,46",
+        "evidence": "finite-witness",
+        "reply": 45,
+        "destination": "16,20,22,45,46",
+        "certificate": "sylver/campaigns/r40-2026-10-23/q22-certificate.json",
+        "receipt": "sylver/campaigns/r40-2026-10-23/verification/q22/receipt.json",
+        "states": 100468
+      },
+      "24": {
+        "destination_of_move": "16,20,24,46",
+        "evidence": "finite-witness",
+        "reply": 29,
+        "destination": "16,20,24,29,46",
+        "certificate": "sylver/campaigns/r40-2026-10-23/q24-certificate.json",
+        "receipt": "sylver/campaigns/r40-2026-10-23/verification/q24/receipt.json",
+        "states": 56425
+      },
+      "25": {
+        "destination_of_move": "16,20,25,46",
+        "evidence": "finite-witness",
+        "reply": 74,
+        "destination": "16,20,25,46,74",
+        "certificate": "sylver/campaigns/r40-2026-10-23/q25-certificate.json",
+        "receipt": "sylver/campaigns/r40-2026-10-23/verification/q25/receipt.json",
+        "states": 113750
+      },
+      "26": {
+        "destination_of_move": "16,20,26",
+        "evidence": "certified-node",
+        "reply": 8,
+        "destination": "8,20,26",
+        "certificate": "node G of sylver/short_certificates.py",
+        "source": "sylver/short_certificates.py"
+      },
+      "27": {
+        "destination_of_move": "16,20,27,46",
+        "evidence": "finite-witness",
+        "reply": 49,
+        "destination": "16,20,27,46,49",
+        "certificate": "sylver/campaigns/r40-2026-10-23/q27-certificate.json",
+        "receipt": "sylver/campaigns/r40-2026-10-23/verification/q27/receipt.json",
+        "states": 128927
+      },
+      "28": {
+        "destination_of_move": "16,20,28,46",
+        "evidence": "finite-witness",
+        "reply": 35,
+        "destination": "16,20,28,35,46",
+        "certificate": "sylver/campaigns/r40-2026-10-23/q28-certificate.json",
+        "receipt": "sylver/campaigns/r40-2026-10-23/verification/q28/receipt.json",
+        "states": 131488
+      },
+      "29": {
+        "destination_of_move": "16,20,29,46",
+        "evidence": "finite-witness",
+        "reply": 24,
+        "destination": "16,20,24,29,46",
+        "certificate": "sylver/campaigns/r40-2026-10-23/q29-certificate.json",
+        "receipt": "sylver/campaigns/r40-2026-10-23/verification/q29/receipt.json",
+        "states": 56425
+      },
+      "30": {
+        "destination_of_move": "16,20,30",
+        "evidence": "certified-node",
+        "reply": 8,
+        "destination": "8,20,30",
+        "certificate": "node O of sylver/short_certificates.py",
+        "source": "sylver/short_certificates.py"
+      },
+      "34": {
+        "destination_of_move": "16,20,34,46",
+        "evidence": "finite-witness",
+        "reply": 19,
+        "destination": "16,19,20,34,46",
+        "certificate": "sylver/campaigns/r40-2026-10-23/q34-certificate.json",
+        "receipt": "sylver/campaigns/r40-2026-10-23/verification/q34/receipt.json",
+        "states": 26829
+      },
+      "35": {
+        "destination_of_move": "16,20,35,46",
+        "evidence": "finite-witness",
+        "reply": 28,
+        "destination": "16,20,28,35,46",
+        "certificate": "sylver/campaigns/r40-2026-10-23/q35-certificate.json",
+        "receipt": "sylver/campaigns/r40-2026-10-23/verification/q35/receipt.json",
+        "states": 131488
+      },
+      "37": {
+        "destination_of_move": "16,20,37,46",
+        "evidence": "finite-witness",
+        "reply": 15,
+        "destination": "15,16,20,37",
+        "certificate": "sylver/campaigns/r40-2026-10-23/q37-certificate.json",
+        "receipt": "sylver/campaigns/r40-2026-10-23/verification/q37/receipt.json",
+        "states": 8117
+      },
+      "38": {
+        "destination_of_move": "16,20,38,46",
+        "evidence": "finite-witness",
+        "reply": 13,
+        "destination": "13,16,20,38",
+        "certificate": "sylver/campaigns/r40-2026-10-23/q38-certificate.json",
+        "receipt": "sylver/campaigns/r40-2026-10-23/verification/q38/receipt.json",
+        "states": 4646
+      },
+      "42": {
+        "destination_of_move": "16,20,42,46",
+        "evidence": "finite-witness",
+        "reply": 89,
+        "destination": "16,20,42,46,89",
+        "certificate": "sylver/campaigns/r40-2026-10-23/q42-certificate.json",
+        "receipt": "sylver/campaigns/r40-2026-10-23/verification/q42/receipt.json",
+        "states": 1626244
+      },
+      "44": {
+        "destination_of_move": "16,20,44,46",
+        "evidence": "finite-witness",
+        "reply": 13,
+        "destination": "13,16,20,44",
+        "certificate": "sylver/campaigns/r40-2026-10-23/q44-certificate.json",
+        "receipt": "sylver/campaigns/r40-2026-10-23/verification/q44/receipt.json",
+        "states": 5210
+      },
+      "45": {
+        "destination_of_move": "16,20,45,46",
+        "evidence": "finite-witness",
+        "reply": 22,
+        "destination": "16,20,22,45,46",
+        "certificate": "sylver/campaigns/r40-2026-10-23/q45-certificate.json",
+        "receipt": "sylver/campaigns/r40-2026-10-23/verification/q45/receipt.json",
+        "states": 100468
+      },
+      "50": {
+        "destination_of_move": "16,20,46,50",
+        "evidence": "finite-witness",
+        "reply": 49,
+        "destination": "16,20,46,49,50",
+        "certificate": "sylver/campaigns/r40-2026-10-23/q50-certificate.json",
+        "receipt": "sylver/campaigns/r40-2026-10-23/verification/q50/receipt.json",
+        "states": 719321
+      },
+      "54": {
+        "destination_of_move": "16,20,46,54",
+        "evidence": "finite-witness",
+        "reply": 37,
+        "destination": "16,20,37,46,54",
+        "certificate": "sylver/campaigns/r40-2026-10-23/q54-certificate.json",
+        "receipt": "sylver/campaigns/r40-2026-10-23/verification/q54/receipt.json",
+        "states": 348658
+      },
+      "58": {
+        "destination_of_move": "16,20,46,58",
+        "evidence": "finite-witness",
+        "reply": 15,
+        "destination": "15,16,20,58",
+        "certificate": "sylver/campaigns/r40-2026-10-23/q58-certificate.json",
+        "receipt": "sylver/campaigns/r40-2026-10-23/verification/q58/receipt.json",
+        "states": 10901
+      },
+      "70": {
+        "destination_of_move": "16,20,46,70",
+        "evidence": "finite-witness",
+        "reply": 43,
+        "destination": "16,20,43,46,70",
+        "certificate": "sylver/campaigns/r40-2026-10-23/q70-certificate.json",
+        "receipt": "sylver/campaigns/r40-2026-10-23/verification/q70/receipt.json",
+        "states": 676550
+      },
+      "74": {
+        "destination_of_move": "16,20,46,74",
+        "evidence": "finite-witness",
+        "reply": 25,
+        "destination": "16,20,25,46,74",
+        "certificate": "sylver/campaigns/r40-2026-10-23/q74-certificate.json",
+        "receipt": "sylver/campaigns/r40-2026-10-23/verification/q74/receipt.json",
+        "states": 113750
+      },
+      "90": {
+        "destination_of_move": "16,20,46,90",
+        "evidence": "finite-witness",
+        "reply": 23,
+        "destination": "16,20,23,90",
+        "certificate": "sylver/campaigns/r40-2026-10-23/q90-certificate.json",
+        "receipt": "sylver/campaigns/r40-2026-10-23/verification/q90/receipt.json",
+        "states": 95009
+      }
+    },
+    "failures": [],
+    "summary": {
+      "obligations": 39,
+      "covered": 39,
+      "by_evidence": {
+        "finite-witness": 33,
+        "certified-node": 6
+      },
+      "replayed_states": 4525687
+    },
+    "outcome": "P"
+  },
+  "B28": {
+    "position": [
+      16,
+      28,
+      38,
+      40
+    ],
+    "outcome": "P",
+    "summary": {
+      "obligations": 38,
+      "covered": 38,
+      "by_evidence": {
+        "finite-witness": 30,
+        "certified-node": 8
+      },
+      "replayed_states": 26727761
+    },
+    "failures": [],
+    "audit": "sylver/campaigns/r38-2026-10-09/audit.py"
+  },
+  "Z'": {
+    "position": [
+      16,
+      30,
+      40,
+      44
+    ],
+    "outcome": "P",
+    "summary": {
+      "obligations": 40,
+      "covered": 40,
+      "by_evidence": {
+        "finite-witness": 35,
+        "certified-node": 5
+      },
+      "replayed_states": 83555568
+    },
+    "failures": [],
+    "audit": "sylver/campaigns/z-2026-10-08/audit.py"
+  },
+  "refuted_answers_to_40": {
+    "2": {
+      "position": "2",
+      "move": 3,
+      "destination": "2,3",
+      "route": "finite",
+      "certificate": "sylver/campaigns/r40-2026-10-23/r40_2-certificate.json",
+      "receipt": "sylver/campaigns/r40-2026-10-23/verification/r40_2/receipt.json",
+      "states": 1,
+      "outcome": "N"
+    },
+    "4": {
+      "position": "4",
+      "move": 6,
+      "destination": "4,6",
+      "route": "C",
+      "certificate": "node C of sylver/short_certificates.py",
+      "outcome": "N"
+    },
+    "6": {
+      "position": "6,16",
+      "move": 4,
+      "destination": "4,6",
+      "route": "C",
+      "certificate": "node C of sylver/short_certificates.py",
+      "outcome": "N"
+    },
+    "8": {
+      "position": "8",
+      "move": 14,
+      "destination": "8,14",
+      "route": "E",
+      "certificate": "node E of sylver/short_certificates.py",
+      "outcome": "N"
+    },
+    "10": {
+      "position": "10,16",
+      "move": 9,
+      "destination": "9,10,16",
+      "route": "finite",
+      "certificate": "sylver/campaigns/r40-2026-10-23/r40_10-certificate.json",
+      "receipt": "sylver/campaigns/r40-2026-10-23/verification/r40_10/receipt.json",
+      "states": 213,
+      "outcome": "N"
+    },
+    "12": {
+      "position": "12,16",
+      "move": 14,
+      "destination": "12,14,16",
+      "route": "F",
+      "certificate": "node F of sylver/short_certificates.py",
+      "outcome": "N"
+    },
+    "14": {
+      "position": "14,16,40",
+      "move": 8,
+      "destination": "8,14",
+      "route": "E",
+      "certificate": "node E of sylver/short_certificates.py",
+      "outcome": "N"
+    },
+    "18": {
+      "position": "16,18,40",
+      "move": 5,
+      "destination": "5,16,18",
+      "route": "finite",
+      "certificate": "sylver/campaigns/r40-2026-10-23/r40_18-certificate.json",
+      "receipt": "sylver/campaigns/r40-2026-10-23/verification/r40_18/receipt.json",
+      "states": 50,
+      "outcome": "N"
+    },
+    "20": {
+      "position": "16,20",
+      "move": 34,
+      "destination": "16,20,34",
+      "route": "T",
+      "certificate": "node T of sylver/short_certificates.py",
+      "outcome": "N"
+    },
+    "22": {
+      "position": "16,22,40",
+      "move": 12,
+      "destination": "12,16,22",
+      "route": "P0",
+      "certificate": "node P0 of sylver/short_certificates.py",
+      "outcome": "N"
+    },
+    "24": {
+      "position": "16,24",
+      "move": 10,
+      "destination": "10,16,24",
+      "route": "K",
+      "certificate": "node K of sylver/short_certificates.py",
+      "outcome": "N"
+    },
+    "26": {
+      "position": "16,26,40",
+      "move": 11,
+      "destination": "11,16,26,40",
+      "route": "finite",
+      "certificate": "sylver/campaigns/r40-2026-10-23/r40_26-certificate.json",
+      "receipt": "sylver/campaigns/r40-2026-10-23/verification/r40_26/receipt.json",
+      "states": 3740,
+      "outcome": "N"
+    },
+    "28": {
+      "position": "16,28,40",
+      "move": 38,
+      "destination": "16,28,38,40",
+      "route": "B28",
+      "outcome": "N"
+    },
+    "30": {
+      "position": "16,30,40",
+      "move": 17,
+      "destination": "16,17,30,40",
+      "route": "finite",
+      "certificate": "sylver/campaigns/r40-2026-10-23/r40_30-certificate.json",
+      "receipt": "sylver/campaigns/r40-2026-10-23/verification/r40_30/receipt.json",
+      "states": 65251,
+      "outcome": "N"
+    },
+    "34": {
+      "position": "16,34,40",
+      "move": 20,
+      "destination": "16,20,34",
+      "route": "T",
+      "certificate": "node T of sylver/short_certificates.py",
+      "outcome": "N"
+    },
+    "38": {
+      "position": "16,38,40",
+      "move": 28,
+      "destination": "16,28,38,40",
+      "route": "B28",
+      "outcome": "N"
+    },
+    "42": {
+      "position": "16,40,42",
+      "move": 23,
+      "destination": "16,23,40,42",
+      "route": "finite",
+      "certificate": "sylver/campaigns/r40-2026-10-23/r40_42-certificate.json",
+      "receipt": "sylver/campaigns/r40-2026-10-23/verification/r40_42/receipt.json",
+      "states": 748706,
+      "outcome": "N"
+    },
+    "44": {
+      "position": "16,40,44",
+      "move": 30,
+      "destination": "16,30,40,44",
+      "route": "Z'",
+      "outcome": "N"
+    },
+    "46": {
+      "position": "16,40,46",
+      "move": 20,
+      "destination": "16,20,46",
+      "route": "Q",
+      "outcome": "N"
+    },
+    "50": {
+      "position": "16,40,50",
+      "move": 11,
+      "destination": "11,16,40,50",
+      "route": "finite",
+      "certificate": "sylver/campaigns/r40-2026-10-23/r40_50-certificate.json",
+      "receipt": "sylver/campaigns/r40-2026-10-23/verification/r40_50/receipt.json",
+      "states": 7432,
+      "outcome": "N"
+    },
+    "70": {
+      "position": "16,40,70",
+      "move": 37,
+      "destination": "16,37,40,70",
+      "route": "finite",
+      "certificate": "sylver/campaigns/r40-2026-10-23/r40_70-certificate.json",
+      "receipt": "sylver/campaigns/r40-2026-10-23/verification/r40_70/receipt.json",
+      "states": 38439250,
+      "outcome": "N"
+    }
+  },
+  "failures": [],
+  "verdict": "verified"
+}

@@ -1,0 +1,24 @@
+r=None e=   2 resolved  reply=3 via=opening table tried=- 0.0s
+r=None e=   4 resolved  reply=6 via=node C tried=- 0.0s
+r=None e=   6 resolved  reply=4 via=node C tried=- 0.0s
+r=None e=   8 resolved  reply=26 via=node G tried=- 0.0s
+r=None e=  10 resolved  reply=9 via=opening table tried=- 0.0s
+r=None e=  12 resolved  reply=19 via=finite odd witness tried=9 0.1s
+r=None e=  14 resolved  reply=26 via=node R tried=- 0.0s
+r=None e=  18 resolved  reply=5 via=opening table tried=- 0.0s
+r=None e=  22 resolved  reply=24 via=search: P candidate (pair search of {16,20,24,38}) tried=- 0.0s
+r=None e=  24 resolved  reply=10 via=node K tried=- 0.0s
+r=None e=  26 resolved  reply=8 via=node G tried=- 0.0s
+r=None e=  28 resolved  reply=35 via=finite odd witness tried=14 0.4s
+r=None e=  30 resolved  reply=8 via=node O tried=- 0.0s
+r=None e=  34 resolved  reply=19 via=finite odd witness tried=7 0.1s
+r=None e=  38 resolved  reply=13 via=finite odd witness tried=8 0.1s
+r=None e=  42 resolved  reply=89 via=finite odd witness tried=44 2.3s
+r=None e=  44 resolved  reply=13 via=finite odd witness tried=6 0.1s
+r=None e=  50 resolved  reply=49 via=finite odd witness tried=24 1.3s
+r=None e=  54 resolved  reply=37 via=finite odd witness tried=18 1.6s
+r=None e=  58 resolved  reply=15 via=finite odd witness tried=7 0.1s
+r=None e=  70 resolved  reply=43 via=finite odd witness tried=21 1.4s
+r=None e=  74 resolved  reply=25 via=finite odd witness tried=10 0.3s
+r=None e=  90 resolved  reply=23 via=finite odd witness tried=12 0.4s
+summary: {'resolved': 23, 'short: needs even': 0, 'open': 0, 'REFUTES r': 0} of 23
