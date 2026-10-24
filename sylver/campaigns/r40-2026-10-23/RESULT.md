@@ -1,4 +1,4 @@
-# Reply 40 after the opening 16: thirteen answers fail
+# Reply 40 after the opening 16: twenty-one answers fail
 
 After the opening 16, the lowest reply without a certified answer is 38, and
 by search 72 answers it
@@ -7,32 +7,42 @@ The next reply, **40, has no known answer**. {16,40} has gcd eight (it is
 8·{2,5}), and the Quiet End tools here cover gcd two. So no finite list of
 obligations bounds the answers to 40: any legal move may answer it.
 
-This record certifies one P-position, **Q={16,20,46}**, with half {8,10,23},
-Frobenius number 45 and 39 obligations. Q is on George Sicherman's
-[list of P-positions](https://sicherman.net/sylver/ppos.html) (last updated
-September 28), so this is an independent confirmation.
+This record certifies one P-position, **Q={16,20,46}**. Its half is
+{8,10,23}, the half's Frobenius number is 45, and Q has 39 obligations. Q is
+on George Sicherman's [list of P-positions](https://sicherman.net/sylver/ppos.html)
+(last updated September 28), so this is an independent confirmation.
 
-With it, the audit refutes thirteen answers to 40:
+With it, the audit refutes twenty-one answers to 40:
 
-| Answer a | Move from {16,40,a} | Reaches | Known P by |
-| ---: | ---: | --- | --- |
-| 6 | 4 | C={4,6} | certified node |
-| 10 | 9 | {9,10,16} | finite witness |
-| 14 | 8 | E={8,14} | certified node |
-| 18 | 5 | {5,16,18} | finite witness |
-| 22 | 12 | P0={12,16,22} | certified node |
-| 26 | 11 | {11,16,26,40} | finite witness |
-| 30 | 17 | {16,17,30,40} | finite witness |
-| 34 | 20 | T={16,20,34} | certified node |
-| 38 | 28 | B28={16,28,38,40} | the [reply-38 record](../r38-2026-10-09/RESULT.md) (its audit, run here) |
-| 42 | 23 | {16,23,40,42} | finite witness |
-| 46 | 20 | Q | here |
-| 50 | 11 | {11,16,40,50} | finite witness |
-| 70 | 37 | {16,37,40,70} | finite witness |
+| Answer a | {16,40,a} | Move | Reaches | Known P by |
+| ---: | --- | ---: | --- | --- |
+| 2 | {2} | 3 | {2,3} | finite witness |
+| 4 | {4} | 6 | C={4,6} | certified node |
+| 6 | {6,16} | 4 | C | certified node |
+| 8 | {8} | 14 | E={8,14} | certified node |
+| 10 | {10,16} | 9 | {9,10,16} | finite witness |
+| 12 | {12,16} | 14 | F={12,14,16} | certified node |
+| 14 | {14,16,40} | 8 | E | certified node |
+| 18 | {16,18,40} | 5 | {5,16,18} | finite witness |
+| 20 | {16,20} | 34 | T={16,20,34} | certified node |
+| 22 | {16,22,40} | 12 | P0={12,16,22} | certified node |
+| 24 | {16,24} | 10 | K={10,16,24} | certified node |
+| 26 | {16,26,40} | 11 | {11,16,26,40} | finite witness |
+| 28 | {16,28,40} | 38 | B28={16,28,38,40} | the [reply-38 record](../r38-2026-10-09/RESULT.md) (its audit, run here) |
+| 30 | {16,30,40} | 17 | {16,17,30,40} | finite witness |
+| 34 | {16,34,40} | 20 | T | certified node |
+| 38 | {16,38,40} | 28 | B28 | the reply-38 record |
+| 42 | {16,40,42} | 23 | {16,23,40,42} | finite witness |
+| 44 | {16,40,44} | 30 | Z′={16,30,40,44} | the [Z record](../z-2026-10-08/RESULT.md) (its audit, run here) |
+| 46 | {16,40,46} | 20 | Q | here |
+| 50 | {16,40,50} | 11 | {11,16,40,50} | finite witness |
+| 70 | {16,40,70} | 37 | {16,37,40,70} | finite witness |
 
-So every answer a ≡ 2 (mod 4) from 6 to 50 fails, and so does 70. By search,
-54, 58 and 62 fail too ([below](#the-search-for-an-answer-to-40)). **40 remains
-unanswered**, and opening 16 remains unresolved.
+16, 32, 40 and 48 are not legal answers. So **every legal even answer up to
+50 fails except 36**, and 70 fails too. By search, 36, 52, 54, 58, 62 and
+the odd answers 3 to 57 fail as well
+([below](#the-search-for-an-answer-to-40)). **40 remains unanswered**, and
+opening 16 remains unresolved.
 
 ## The certificate
 
@@ -55,21 +65,31 @@ memos with `native_solver.cpp` and the Python reference evaluator
 count.
 - Q's replays total 4,525,687 states. The largest is its move 42 answered
   by 89, {16,20,42,46,89}, at 1,626,244.
-- The refutations' total 39,264,642. The largest is 70's,
+- The refutations' replays total 39,264,643. The largest is 70's,
   {16,37,40,70}, at 38,439,250.
 
-The audit then checks the thirteen refutations: each move is legal and
-reaches a finite witness, a certified node, Q, or B28. For B28 it runs the
-reply-38 record's own audit of B28.
+The audit then checks the twenty-one refutations: each move is legal and
+reaches a finite witness, a certified node, Q, B28 or Z′. For B28 and Z′ it
+runs the reply-38 and Z records' own audits of those positions.
 
-**What it rests on.** The certified nodes used are C, E, G, O, P0, R and T.
-Through G and O, Q's certificate rests on Sicherman's {8,10,22}, whose P
-outcome comes from a periodicity computation, and on parameter 3 of Blok's
-pairing family. The search looked for finite answers in their place. Q's
-move 24 has one, 29, which replaces the node K. Q's moves 8, 26 and 30 have
-no odd reply up to 201 that wins. B28's certificate rests on what the
-reply-38 record lists. Like the other records, this one rests on the Quiet
-End Theorem.
+**Two routes differ from the search's.** The resolver answered Q's move 22
+through the reply-38 record's I={16,20,22,24}, and its move 24 through the
+node K. Finite replies replace both: 45 and 29. The other node routes stay:
+Q's moves 8, 26 and 30 have no odd reply up to 201 that wins.
+
+**What it rests on.** Like the other records, this one rests on the Quiet
+End Theorem. Through the certified nodes, it also rests on these published
+positions:
+- **Sicherman's {8,10,22}** (the node H), whose P outcome comes from a
+  periodicity computation. Q reaches it through G and O; the refutations
+  through K, and through T, which uses G and K.
+- **Parameter 3 of Blok's pairing family**, {8,12,26,30}. Q reaches it
+  through G and O, and the refutations through T.
+- **The pairing family {8,10,12,14}**, through E and F.
+- **The pairing strategy for {8,12,18,22}**, through P0.
+
+B28 and Z′ rest on what their records list: the nodes C, E, F, J and P0 for
+B28, and C, E and F for Z′.
 
 No mathematical priority claim is made.
 
@@ -83,16 +103,17 @@ discovery output, not certified.
 - **a ≡ 2 (mod 4).** These give {16,40,a} gcd two and a short half, so the
   Quiet End Theorem lists the obligations, and the search can show the
   position P.
-- **a ≡ 4 (mod 8).** These give gcd four, which the tools here do not cover.
-- **Multiples of 8.** Only 8 and 24 are legal. They reach {8} and
-  {16,24,40}, the gcd-eight positions 8·{1} and 8·{2,3}.
+- **a ≡ 0 (mod 4).** These give gcd four or eight, which the tools here do
+  not cover. Some fail anyway, by one move to a known P-position: those in
+  the table above, 36 (by 58, to B58 below), and 52 (by 54, to B54 below).
 - **Odd answers.** These give finite positions.
 
 **Odd answers.** The ledger's scan tried 3, the one odd gap above 1 of the
 reduced pair {2,5}, and it fails. Here, one P-table sweep found that 5
 through 33 all fail (3,167,594 P-positions, about a minute). A second found
-that 35 through 57 fail too (156,248,856 P-positions); it stopped at its
-one-hour limit during 59.
+that 35 through 57 fail too (156,248,856 P-positions). It stopped at its
+one-hour limit during 59: it started at 16:41:36 and its log ends at
+17:41:37.
 
 **Even answers a ≡ 2 (mod 4).** `screen.py` first looked for an obligation
 reaching a known P-position, for every a up to 398. It then swept the odd
@@ -100,26 +121,29 @@ obligations of the survivors, stopping at the first P:
 
 | a | Result |
 | --- | --- |
-| 6, 10, 14, 18, 22, 30, 34, 38 | an obligation reaches a known P-position (the table above) |
+| 6, 10, 14, 18, 22, 30, 34, 38 | an obligation reaches a known P-position (as in the table above, except 30, which the screen refuted by 44 to Z′) |
 | 26, 42, 50, 62, 70 | an odd obligation reaches a finite P-position: 11, 23, 11, 61, 37 |
 | 46, 54, 58 | every odd obligation leads to N |
 | 66, 74, 78, 82, 86 | stopped with 3 to 16 odd obligations left: 86 at the cap of 100,000,000 P-positions, the others at the 30-minute limit |
 | 90 to 398 | not swept |
 
 62's finite witness, {16,40,61,62}, needs 286,533,125 states when solved
-alone. A Python replay would need about 46 GB of this 62 GB host, so 62 is
-refuted only by search.
+alone. A Python replay would need about 43 GiB of this host's 62 GiB, so 62
+is refuted by search here. Certifying it would take a native replay and a
+sequential Kunz replay instead, as the ledger did for {16,37,62}.
 
 For 46, 54 and 58, the even obligations decide:
 - **46.** Its move 20 reaches {16,20,40,46} = Q, since 40 = 20+20. A pair
   search over the even replies of {16,40,46,60}, one of 46's children,
-  found Q's 16 odd and 23 even obligations all leading to N. The audit now
-  checks that proof.
-- **54.** Five of its children are short. Its moves 52, 60, 68 and 76 reach
-  positions whose odd obligations all lead to N, and 92's sweep stopped
-  early. The first, **B54={16,40,52,54}** (half {8,20,26,27}, Frobenius
-  number 65, 55 obligations), had all 33 of its even obligations answered
-  too. So B54 is P by search, and 54 fails. B54 is not on Sicherman's list.
+  found Q's 16 odd and 23 even obligations all leading to N. The audit
+  checks the same position, with the two finite routes above.
+- **54.** 18 of its even children are short. The short-first pass settled
+  all but five: its moves 52, 60, 68 and 76 reach positions whose odd
+  obligations all lead to N, and 92's sweep stopped early. The first of
+  those, **B54={16,40,52,54}**, had all 33 of its even obligations answered
+  too. (Its half is {8,20,26,27}, the half's Frobenius number is 65, and it
+  has 55 obligations.) So B54 is P by search, and 54 fails. B54 is not on
+  Sicherman's list.
   - Its evidence is in `scan/evidence_16-40-52-54.json`: 46 finite
     witnesses, 1,650,024,795 states in all when each is solved alone, and
     nine routes to certified nodes.
@@ -129,9 +153,10 @@ For 46, 54 and 58, the even obligations decide:
     Kunz replays, as the reply-38 record did for B56's largest witnesses.
 - **58.** The same way: its moves 36, 44, 60, 68 and 84 reach short
   positions whose odd obligations all lead to N. The first,
-  **B58={16,36,40,58}** (half {8,18,20,29}, Frobenius number 59, 51
-  obligations), had all 30 of its even obligations answered too. So B58 is P
-  by search, and 58 fails. B58 is not on Sicherman's list either.
+  **B58={16,36,40,58}**, had all 30 of its even obligations answered too.
+  (Its half is {8,18,20,29}, the half's Frobenius number is 59, and it has
+  51 obligations.) So B58 is P by search, and 58 fails. B58 is not on
+  Sicherman's list either.
   - Its evidence is in `scan/evidence_16-36-40-58.json`: 44 finite
     witnesses, 517,445,319 states in all when each is solved alone, and
     seven routes to certified nodes. The largest witness is its move 118
@@ -140,6 +165,15 @@ For 46, 54 and 58, the even obligations decide:
     certified the way Q is.
 
 Each of 46, 54 and 58 thus fell to a short child that is P: the first one
-tested, every time. The answers left below 90 are 66, 74, 78, 82 and 86.
+tested, every time. Below 90, the answers a ≡ 2 (mod 4) still open are 66,
+74, 78, 82 and 86.
 
 No answer to 40 is known.
+
+## Reproduction
+
+```sh
+python sylver/campaigns/r40-2026-10-23/audit.py > /tmp/r40-audit.json
+python -m sylver.verify_finite_reply --certificate sylver/campaigns/r40-2026-10-23/q42-certificate.json \
+    --output /tmp/q42 --python
+```

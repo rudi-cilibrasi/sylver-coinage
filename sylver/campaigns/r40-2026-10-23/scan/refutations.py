@@ -1,8 +1,7 @@
 """Evidence for the finite refutations of answers to the reply 40: {16,40,a}+m is a finite P-position.
 
-Usage: refutations.py A:M ... (THREADS from the environment, default 2). Each destination
-{16,40,a,m} is solved alone, sequentially (kunz --threads 1, the state count native_solver.cpp
-would report). Writes evidence_16-40.json in collect.py's format (position [16,40]; each row an
+Usage: refutations.py A:M ... Each destination {16,40,a,m} is solved alone, sequentially
+(kunz --threads 1, the state count native_solver.cpp would report). Writes evidence_16-40.json in collect.py's format (position [16,40]; each row an
 answer a as the obligation and m as its reply), for replay.py.
 """
 import json, subprocess, sys, time

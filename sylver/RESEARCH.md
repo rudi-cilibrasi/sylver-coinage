@@ -2079,29 +2079,36 @@ Recorded in [the reply-40 record](campaigns/r40-2026-10-23/RESULT.md).
   of its answers. The search took the answers a ≡ 2 (mod 4), whose positions
   {16,40,a} have gcd two and short halves, and the odd answers, whose
   positions are finite.
-- **The screen** (search). For a up to 398, a known P-position one move away
-  refuted 6, 10, 14, 18, 22, 30, 34 and 38. Odd sweeps from 26 to 86 refuted
-  26, 42, 50, 62 and 70 by finite P-positions. 46, 54 and 58 had every odd
-  obligation N, and 66 to 86 stopped early. The odd answers 3 and 5 to 57
-  all fail.
+- **The screen** (search). For a ≡ 2 (mod 4) up to 398, a known P-position
+  one move away refuted 6, 10, 14, 18, 22, 30, 34 and 38. Odd sweeps from 26
+  to 86 refuted 26, 42, 50, 62 and 70 by finite P-positions. 46, 54 and 58
+  had every odd obligation N, and 66, 74, 78, 82 and 86 stopped early. The
+  odd answers 3 and 5 to 57 all fail.
 - **Q** (certified). 46's move 20 reaches Q={16,20,46}, since 40 = 20+20. A
   pair search found all of Q's obligations N, so 46 fails. Q is on
   Sicherman's list, so the audit confirms it independently: 33 finite
-  witnesses replayed natively and in Python, and six certified nodes. The
-  audit also certifies thirteen refuted answers: every a ≡ 2 (mod 4) from 6
-  to 50, and 70.
+  witnesses replayed natively and in Python, and six certified nodes.
+- **Twenty-one refutations** (certified). With Q, certified nodes, finite
+  witnesses, and B28 and Z′ (whose records' audits it runs), the audit
+  refutes every legal even answer up to 50 except 36, and 70. The answers
+  a ≡ 0 (mod 4) among them (4, 8, 12, 20, 24, 28 and 44) each fall by one
+  move to a certified P-position, though their positions have gcd four or
+  eight.
 - **B54** (search). 54's move 52 reaches B54={16,40,52,54}, whose
-  obligations all led to N, so 54 fails by search. B54 is not on that list.
-  Its move 60's finite witness needs 365,742,433 states, so certifying it
-  needs the native and Kunz replays the reply-38 record used for B56. 62 is
-  also refuted by search only: its witness needs 286,533,125 states.
+  obligations all led to N, so 54 fails by search, and so does 52 (by 54).
+  B54 is not on that list. Three of its finite witnesses are above 175
+  million states (up to 395,092,803), so certifying it needs the native and
+  Kunz replays the reply-38 record used for B56. 62 is also refuted by
+  search only: its witness needs 286,533,125 states.
 - **B58** (search). 58's move 36 reaches B58={16,36,40,58}, whose
-  obligations all led to N too, so 58 fails by search. B58 is not on the
-  list either. Each of 46, 54 and 58 fell to the first short child tested.
-- **What it means.** No answer to 40 is known. Below 90, the candidates
-  a ≡ 2 (mod 4) left are 66, 74, 78, 82 and 86, whose odd sweeps stopped
-  early; their short children are next. The answers a ≡ 4 (mod 8) give
-  gcd-four positions, which the tools here do not cover.
+  obligations all led to N too, so 58 fails by search, and so does 36 (by
+  58). B58 is not on the list either. Its largest witness is 132,607,400
+  states, so it can be certified the way Q is. Each of 46, 54 and 58 fell to
+  the first short child tested.
+- **What it means.** No answer to 40 is known. Below 90, the answers
+  a ≡ 2 (mod 4) still open are 66, 74, 78, 82 and 86, whose odd sweeps
+  stopped early; their short children are next. The other answers
+  a ≡ 0 (mod 4) give gcd-four positions, which the tools here do not cover.
 
 ### Sources
 

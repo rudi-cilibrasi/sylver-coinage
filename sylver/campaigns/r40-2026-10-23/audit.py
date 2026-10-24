@@ -21,9 +21,10 @@ obligation m:
 The audit fails unless every obligation is covered. It then checks the
 refutations: for each answer a in REFUTED, {16,40,a} is N because a listed
 move reaches a P-position: a finite witness (a certificate with parent
-{16,40}, replayed the same way), a certified node, Q, or B28={16,28,38,40},
-which the reply-38 record certifies (its audit is run here for B28). So a does
-not answer the reply 40. Output: ``python audit.py > audit.json``.
+{16,40}, replayed the same way), a certified node, Q, B28={16,28,38,40} or
+Z'={16,30,40,44}. The reply-38 and Z records certify B28 and Z'; their own
+audits are run here for those two positions. So a does not answer the reply
+40. Output: ``python audit.py > audit.json``.
 """
 import hashlib
 import importlib.util
@@ -44,11 +45,14 @@ OPENING, REPLY = 16, 40
 POSITIONS = {
     'Q': ((16, 20, 46), 'q', {4: (6, 'C'), 6: (4, 'C'), 8: (26, 'G'), 14: (26, 'R'), 26: (8, 'G'), 30: (8, 'O')}),
 }
-R38_AUDIT = HERE.parent / 'r38-2026-10-09' / 'audit.py'
+# positions another record certifies: name -> (generators, that record's audit)
+EXTERNAL = {'B28': ((16, 28, 38, 40), HERE.parent / 'r38-2026-10-09' / 'audit.py'),
+            "Z'": ((16, 30, 40, 44), HERE.parent / 'z-2026-10-08' / 'audit.py')}
 # answer a to the reply 40: (the move that takes {16,40,a} to a P-position, and how that position is known P)
-REFUTED = {6: (4, 'C'), 10: (9, 'finite'), 14: (8, 'E'), 18: (5, 'finite'), 22: (12, 'P0'), 26: (11, 'finite'),
-           30: (17, 'finite'), 34: (20, 'T'), 38: (28, 'B28'), 42: (23, 'finite'), 46: (20, 'Q'),
-           50: (11, 'finite'), 70: (37, 'finite')}
+REFUTED = {2: (3, 'finite'), 4: (6, 'C'), 6: (4, 'C'), 8: (14, 'E'), 10: (9, 'finite'), 12: (14, 'F'),
+           14: (8, 'E'), 18: (5, 'finite'), 20: (34, 'T'), 22: (12, 'P0'), 24: (10, 'K'), 26: (11, 'finite'),
+           28: (38, 'B28'), 30: (17, 'finite'), 34: (20, 'T'), 38: (28, 'B28'), 42: (23, 'finite'),
+           44: (30, "Z'"), 46: (20, 'Q'), 50: (11, 'finite'), 70: (37, 'finite')}
 REFUTATION_PREFIX = 'r40_'
 
 
@@ -157,14 +161,18 @@ def audit_position(name):
     return section
 
 
-def audit_b28():
-    """B28 by the reply-38 record's own audit (its certificates, in that record's directory)."""
-    spec = importlib.util.spec_from_file_location('r38_audit', R38_AUDIT)
-    r38 = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(r38)
-    section = r38.audit_position('B28', {})
-    return {'position': section['position'], 'outcome': section['outcome'], 'summary': section['summary'],
-            'failures': section['failures'], 'audit': str(R38_AUDIT.relative_to(ROOT))}
+def audit_external(name):
+    """A position by its own record's audit (that record's certificates, in its directory)."""
+    generators, path = EXTERNAL[name]
+    spec = importlib.util.spec_from_file_location(f'audit_{path.parent.name}', path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    section = module.audit_position(name, {}) if name == 'B28' else module.audit_position(name)
+    failures = list(section['failures'])
+    if section['position'] != list(position(generators)):
+        failures.append(f'{name}: that audit checked {section["position"]}, not {list(position(generators))}')
+    return {'position': section['position'], 'outcome': section['outcome'] if not failures else 'unknown',
+            'summary': section['summary'], 'failures': failures, 'audit': str(path.relative_to(ROOT))}
 
 
 def refutations(known):
@@ -195,12 +203,12 @@ def refutations(known):
 
 def main():
     report = {name: audit_position(name) for name in POSITIONS}
-    report['B28'] = audit_b28()
+    report.update({name: audit_external(name) for name in EXTERNAL})
     known = {name: (POSITIONS[name][0], report[name]['outcome'] == 'P') for name in POSITIONS}
-    known['B28'] = ((16, 28, 38, 40), report['B28']['outcome'] == 'P')
+    known.update({name: (EXTERNAL[name][0], report[name]['outcome'] == 'P') for name in EXTERNAL})
     report['refuted_answers_to_40'], refutation_failures = refutations(known)
-    report['failures'] = [f for name in (*POSITIONS, 'B28') for f in report[name]['failures']] + refutation_failures
-    report['outcome'] = 'P' if all(report[name]['outcome'] == 'P' for name in POSITIONS) else 'unknown'   # of Q
+    report['failures'] = [f for name in (*POSITIONS, *EXTERNAL) for f in report[name]['failures']] + refutation_failures
+    report['verdict'] = 'verified' if not report['failures'] else 'failed'   # Q, B28, Z' and every refutation
     print(json.dumps(report, indent=2))
     return 0 if not report['failures'] else 1
 

@@ -388,13 +388,59 @@
     "failures": [],
     "audit": "sylver/campaigns/r38-2026-10-09/audit.py"
   },
+  "Z'": {
+    "position": [
+      16,
+      30,
+      40,
+      44
+    ],
+    "outcome": "P",
+    "summary": {
+      "obligations": 40,
+      "covered": 40,
+      "by_evidence": {
+        "finite-witness": 35,
+        "certified-node": 5
+      },
+      "replayed_states": 83555568
+    },
+    "failures": [],
+    "audit": "sylver/campaigns/z-2026-10-08/audit.py"
+  },
   "refuted_answers_to_40": {
+    "2": {
+      "position": "2",
+      "move": 3,
+      "destination": "2,3",
+      "route": "finite",
+      "certificate": "sylver/campaigns/r40-2026-10-23/r40_2-certificate.json",
+      "receipt": "sylver/campaigns/r40-2026-10-23/verification/r40_2/receipt.json",
+      "states": 1,
+      "outcome": "N"
+    },
+    "4": {
+      "position": "4",
+      "move": 6,
+      "destination": "4,6",
+      "route": "C",
+      "certificate": "node C of sylver/short_certificates.py",
+      "outcome": "N"
+    },
     "6": {
       "position": "6,16",
       "move": 4,
       "destination": "4,6",
       "route": "C",
       "certificate": "node C of sylver/short_certificates.py",
+      "outcome": "N"
+    },
+    "8": {
+      "position": "8",
+      "move": 14,
+      "destination": "8,14",
+      "route": "E",
+      "certificate": "node E of sylver/short_certificates.py",
       "outcome": "N"
     },
     "10": {
@@ -405,6 +451,14 @@
       "certificate": "sylver/campaigns/r40-2026-10-23/r40_10-certificate.json",
       "receipt": "sylver/campaigns/r40-2026-10-23/verification/r40_10/receipt.json",
       "states": 213,
+      "outcome": "N"
+    },
+    "12": {
+      "position": "12,16",
+      "move": 14,
+      "destination": "12,14,16",
+      "route": "F",
+      "certificate": "node F of sylver/short_certificates.py",
       "outcome": "N"
     },
     "14": {
@@ -425,12 +479,28 @@
       "states": 50,
       "outcome": "N"
     },
+    "20": {
+      "position": "16,20",
+      "move": 34,
+      "destination": "16,20,34",
+      "route": "T",
+      "certificate": "node T of sylver/short_certificates.py",
+      "outcome": "N"
+    },
     "22": {
       "position": "16,22,40",
       "move": 12,
       "destination": "12,16,22",
       "route": "P0",
       "certificate": "node P0 of sylver/short_certificates.py",
+      "outcome": "N"
+    },
+    "24": {
+      "position": "16,24",
+      "move": 10,
+      "destination": "10,16,24",
+      "route": "K",
+      "certificate": "node K of sylver/short_certificates.py",
       "outcome": "N"
     },
     "26": {
@@ -441,6 +511,13 @@
       "certificate": "sylver/campaigns/r40-2026-10-23/r40_26-certificate.json",
       "receipt": "sylver/campaigns/r40-2026-10-23/verification/r40_26/receipt.json",
       "states": 3740,
+      "outcome": "N"
+    },
+    "28": {
+      "position": "16,28,40",
+      "move": 38,
+      "destination": "16,28,38,40",
+      "route": "B28",
       "outcome": "N"
     },
     "30": {
@@ -478,6 +555,13 @@
       "states": 748706,
       "outcome": "N"
     },
+    "44": {
+      "position": "16,40,44",
+      "move": 30,
+      "destination": "16,30,40,44",
+      "route": "Z'",
+      "outcome": "N"
+    },
     "46": {
       "position": "16,40,46",
       "move": 20,
@@ -507,5 +591,5 @@
     }
   },
   "failures": [],
-  "outcome": "P"
+  "verdict": "verified"
 }

@@ -5,6 +5,16 @@
  ],
  "rows": [
   {
+   "obligation": 2,
+   "kind": "even",
+   "reply": 3,
+   "via": "finite",
+   "destination": "2,3",
+   "frobenius": 1,
+   "states": 1,
+   "seconds": 0.0
+  },
+  {
    "obligation": 10,
    "kind": "even",
    "reply": 9,
@@ -32,7 +42,7 @@
    "destination": "11,16,26,40",
    "frobenius": 61,
    "states": 3740,
-   "seconds": 0.0
+   "seconds": 0.1
   },
   {
    "obligation": 30,
@@ -52,7 +62,7 @@
    "destination": "16,23,40,42",
    "frobenius": 99,
    "states": 748706,
-   "seconds": 1.2
+   "seconds": 1.6
   },
   {
    "obligation": 50,
@@ -72,7 +82,7 @@
    "destination": "16,37,40,70",
    "frobenius": 169,
    "states": 38439250,
-   "seconds": 116.7
+   "seconds": 172.4
   }
  ]
 }

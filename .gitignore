@@ -1,1 +1,3 @@
 __pycache__/
+# replay builds (verify_finite_reply.py compiles the native solver into each output directory)
+sylver/campaigns/*/verification/*/build/

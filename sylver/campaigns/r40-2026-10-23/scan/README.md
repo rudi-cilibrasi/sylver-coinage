@@ -29,9 +29,9 @@ certified.
 | the odd obligations of {16,40,30} and {16,40,38} | `./small_sweeps.sh` (`kunz --threads 2 --stop-at-p --max-states 60000000`) | `odd_16-40-30.*`, `odd_16-40-38.*` |
 | finite replies for Q's moves 8, 24, 26 and 30, in place of the nodes G, K and O | `./q_finite.sh` (`kunz --threads 2 --stop-at-p --max-states 100000000`, odd w up to 201 in the resolver's order): 24 is answered by 29; 8, 26 and 30 have none | `q_finite_<move>.out`, `.err` |
 | Q's evidence, each finite destination solved alone | `THREADS=2 python collect.py resolve_16-20-46.jsonl '{"22": [45, "finite"], "24": [29, "finite"]}' 16 20 46` | `collect_Q.log`, `evidence_16-20-46.json` |
-| the finite refutations of answers to 40 | `THREADS=2 python refutations.py 10:9 18:5 26:11 30:17 42:23 50:11 70:37 62:61`, then again without `62:61`, whose destination took 286,533,125 states | `refutations_with_62.log`; `refutations.log`, `evidence_16-40.json` |
-| certificates and replays | `REPLAY_MAX_JOBS=2 REPLAY_BUDGET_GIB=8 python replay.py evidence_16-20-46.json q DIR Q`, and `REPLAY_BUDGET_GIB=10 ... evidence_16-40.json r40_ DIR '{16,40}'` (DIR the record's directory) | `replay_Q.log`, `replay_r40.log`, `../q*-certificate.json`, `../r40_*-certificate.json`, `../verification/` (each job's log, which `replay.py` writes beside the certificates, was moved there) |
-| 54's even obligations, short children first | `./short_first.sh` (`even_resolver.py 54 --short-first --p-table --ncache-mb 8192 --threads 10 --max-states 100000000 --timeout 300`), from 15:53; `./stop_on.sh PID even_triage.log 'r=54 e=  92'` stopped it after its last short child | `even_triage.log`, `even_54.jsonl` |
+| the finite refutations of answers to 40 | `python refutations.py 10:9 18:5 26:11 30:17 42:23 50:11 70:37 62:61`; again without `62:61`, whose destination took 286,533,125 states; and after review with `2:3` first | `refutations_with_62.log`, `refutations_without_62.log`, `refutations.log` (the last run), `evidence_16-40.json` |
+| certificates and replays | `REPLAY_MAX_JOBS=2 REPLAY_BUDGET_GIB=8 python replay.py evidence_16-20-46.json q DIR Q`, and `REPLAY_BUDGET_GIB=10 ... evidence_16-40.json r40_ DIR '{16,40}'` (DIR the record's directory), run again after each new evidence file. `replay.py` skips a receipt already verified, so `replay_Q.log` shows only the last run (q24, at 16:07); the per-job logs give the times of the others (16:00 to 16:03) | `replay_Q.log`, `replay_r40.log`, `replay_r40_2.log`, `../q*-certificate.json`, `../r40_*-certificate.json`, `../verification/` (each job's log, which `replay.py` writes beside the certificates, was moved there) |
+| 54's even obligations, short children first | `./short_first.sh` (`even_resolver.py 54 --short-first --p-table --ncache-mb 8192 --threads 10 --max-states 100000000 --timeout 300`), from 15:53; `./stop_on.sh PID even_triage.log 'r=54 e=  92'` stopped it after its last short child, and with it the script's loop, so `run58.sh` ran 58 later | `even_triage.log`, `even_54.jsonl` |
 | is a short child of 54, with every odd obligation N, itself P? | `./test_children.sh 54 52 60 68 76` (`even_resolver.py --position 16 40 54 E --short-first`, same settings), from 16:05; stopped by hand at 16:28, once {16,40,52,54} was P | `test_children.log`, `resolve_16-40-52-54.jsonl`, `resolve_16-40-54-60.jsonl` (partial) |
 | a finite reply for B54's move 24, in place of the node K | `kunz --threads 8 --stop-at-p --max-states 100000000 --odd-list W 16 40 52 54 24` (W as above): none | `b54_finite_24.out`, `.err` |
 | B54's evidence | `THREADS=8 python collect.py resolve_16-40-52-54.jsonl '{"36": [21, "finite"], "26": [11, "finite"]}' 16 40 52 54` (the two rows the resolver took from `even_54.jsonl`) | `collect_B54.log`, `evidence_16-40-52-54.json` |
@@ -39,6 +39,13 @@ certified.
 | is a short child of 58 P? | `./test_children.sh 58 36 44 60 68 84`, which now stops at the first child with every obligation resolved: {16,36,40,58}, at 18:02 | `test_children.log`, `resolve_16-36-40-58.jsonl` |
 | B58's evidence | `THREADS=8 python collect.py resolve_16-36-40-58.jsonl '{"20": [15, "finite"]}' 16 36 40 58` | `collect_B58.log`, `evidence_16-36-40-58.json` |
 | odd answers to 40 | `kunz_pt --p-table --ncache-mb 8192 --threads 8 --stop-at-p --max-states 200000000 --odd-list 5,7,…,33 16 40`; then `timeout 3600 kunz_pt ... --threads 10 --max-states 300000000 --odd-list 35,37,…,99 16 40`, which reached 59 | `odd_answers.*`, `odd_answers2.*` |
+
+The shell scripts log "(exit N)" after each run. Until the review of this
+record, they took N from `$?` inside the `$(date ...)` line, which is
+`date`'s status, so every such line in the logs here says 0 whatever the run
+did; the scripts now save the run's status first. The same holds for the
+"exit" lines of the `odd_answers*.err` files, written by hand-run commands:
+the second sweep ended at its one-hour `timeout`.
 
 `even_triage.log` and `test_children.log` are kept up to the start of the
 next step, a short-children pass over 66, 74, 78, 82 and 86 (`--short-only`

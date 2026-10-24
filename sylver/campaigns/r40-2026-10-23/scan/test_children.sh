@@ -7,7 +7,8 @@ for e in "$@"; do
   echo "$(date '+%F %T') test child {16,40,$r}+$e start" >> test_children.log
   nice -n 10 /usr/bin/python3 even_resolver.py --position 16 40 $r $e --short-first --p-table --ncache-mb 8192 \
       --threads 10 --max-states 100000000 --timeout 300 >> test_children.log 2>&1
-  echo "$(date '+%F %T') test child {16,40,$r}+$e end (exit $?)" >> test_children.log
+  rc=$?
+  echo "$(date '+%F %T') test child {16,40,$r}+$e end (exit $rc)" >> test_children.log
   # every even obligation resolved: the child is P, so the candidate is refuted; the rest are not needed
   if tail -n 2 test_children.log | /usr/bin/python3 -c "
 import re, sys
