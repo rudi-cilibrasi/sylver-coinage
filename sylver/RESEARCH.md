@@ -2124,9 +2124,9 @@ Recorded in [the reply-40 record](campaigns/r40-2026-10-23/RESULT.md).
 - **Two more refutations.** 58's move 36 and 36's move 58 both reach B58.
   So the audit now refutes twenty-three answers to 40: every legal even
   answer up to 50, and 58 and 70.
-- **What it means.** 40 is still unanswered. B54 (so 52 and 54) and 62
-  remain refuted by search only: their largest witnesses need native and
-  sequential Kunz replays.
+- **What it means.** 40 is still unanswered. 52 and 54 (through B54) and 62
+  remain refuted by search only, as do the odd answers 3 to 57. B54's three
+  largest witnesses and 62's need native and sequential Kunz replays.
 
 ### Sources
 

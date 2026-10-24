@@ -85,7 +85,8 @@ Z′ it runs the reply-38 and Z records' own audits of those positions.
 **Two routes differ from the search's.** The resolver answered Q's move 22
 through the reply-38 record's I={16,20,22,24}, and its move 24 through the
 node K. Finite replies replace both: 45 and 29. The other node routes stay:
-Q's moves 8, 26 and 30 have no odd reply up to 201 that wins.
+Q's moves 8, 26 and 30 have no odd reply up to 201 that wins. B58's routes
+are all the search's.
 
 **What it rests on.** Like the other records, this one rests on the Quiet
 End Theorem. Through the certified nodes, it also rests on these published
@@ -94,9 +95,9 @@ positions:
   periodicity computation. Q reaches it through G and O, B58 through K,
   and the refutations through K and through T, which uses G and K.
 - **Blok's pairing family {8,12,8n+2,8n+6}**, at three of its members:
-  n=1, {8,10,12,14}, through E and F; n=2, {8,12,18,22}, through P0; and
-  n=3, {8,12,26,30}, through G and O for Q and through T for the
-  refutations.
+  n=1, {8,10,12,14}, through E and F, for B58 and the refutations; n=2,
+  {8,12,18,22}, through P0, for the same; and n=3, {8,12,26,30}, through G
+  and O for Q and through T for the refutations.
 
 B28 and Z′ rest on what their records list: the nodes C, E, F, J and P0 for
 B28, and C, E and F for Z′.
@@ -172,9 +173,10 @@ For 46, 54 and 58, the even obligations decide:
     witnesses, 517,445,319 states in all when each is solved alone, and
     seven routes to certified nodes. The largest witness is its move 118
     answered by 161, at 132,607,400 states. All are below the 175 million
-    states up to which earlier records replayed in Python, so B58 is
-    certified the way Q is. Its replays ran from October 23, 19:27, to
-    October 24, 06:10, two at a time within a 22 GiB memory budget.
+    states up to which earlier records replayed in Python, so each was
+    replayed in Python too, and the audit certifies B58 the way it does Q.
+    The replays ran from October 23, 19:27, to October 24, 06:10, two at a
+    time within a 22 GiB memory budget.
 
 Each of 46, 54 and 58 thus fell to a short child that is P: the first one
 tested, every time. Below 90, the answers a ≡ 2 (mod 4) still open are 66,
