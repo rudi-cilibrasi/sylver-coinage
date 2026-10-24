@@ -1,0 +1,17 @@
+2026-10-23 15:51:32 start
+C = (16, 40, 46, 60) even moves: [2, 6, 4, 18, 10, 12, 14, 26, 34, 42, 22, 50, 58, 20, 36, 38, 52, 66, 82, 98, 8, 28, 54, 68, 74, 114, 24, 30, 44, 70, 84, 90, 130]
+e'=2: D=(2,) long; skipped
+e'=6: D=(6, 16) N (odd obligation 7 wins)
+e'=4: D=(4, 46) odd-complete (10); even 10/11 refuted; 1 open; open: [(6, 'is a known P-position')]
+e'=18: D=(16, 18, 40, 46, 60) long; skipped
+e'=10: D=(10, 16) N (odd obligation 9 wins)
+e'=12: D=(12, 16, 46) odd-complete (13); even 13/17 refuted; 4 open; open: [(8, 'short, odd-complete'), (14, 'is a known P-position'), (18, 'short, odd-complete'), (22, 'is a known P-position')]
+e'=14: D=(14, 16, 40) N (odd obligation 9 wins)
+e'=26: D=(16, 26, 40, 46, 60) long; skipped
+e'=34: D=(16, 34, 40, 46, 60) long; skipped
+e'=42: D=(16, 40, 42, 46, 60) long; skipped
+e'=22: D=(16, 22, 40, 46) long; skipped
+e'=50: D=(16, 40, 46, 50, 60) long; skipped
+e'=58: D=(16, 40, 46, 58, 60) long; skipped
+e'=20: D=(16, 20, 46) odd-complete (16); even 23/23 refuted; P CANDIDATE; open: []
+2026-10-23 15:51:40 end (exit 0)

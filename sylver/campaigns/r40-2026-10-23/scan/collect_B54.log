@@ -1,0 +1,57 @@
+{"obligation": 3, "kind": "odd", "reply": 2, "via": "finite", "destination": "2,3", "seconds": 0.0, "frobenius": 1, "states": 1}
+{"obligation": 5, "kind": "odd", "reply": 18, "via": "finite", "destination": "5,16,18", "seconds": 0.0, "frobenius": 29, "states": 50}
+{"obligation": 7, "kind": "odd", "reply": 6, "via": "finite", "destination": "6,7,16", "seconds": 0.0, "frobenius": 17, "states": 21}
+{"obligation": 9, "kind": "odd", "reply": 10, "via": "finite", "destination": "9,10,16", "seconds": 0.0, "frobenius": 33, "states": 213}
+{"obligation": 11, "kind": "odd", "reply": 26, "via": "finite", "destination": "11,16,26,40", "seconds": 0.0, "frobenius": 61, "states": 3740}
+{"obligation": 13, "kind": "odd", "reply": 18, "via": "finite", "destination": "13,16,18,40", "seconds": 0.0, "frobenius": 59, "states": 3760}
+{"obligation": 15, "kind": "odd", "reply": 19, "via": "finite", "destination": "15,16,19,40,52", "seconds": 0.0, "frobenius": 58, "states": 4162}
+{"obligation": 17, "kind": "odd", "reply": 41, "via": "finite", "destination": "16,17,40,41,52,54", "seconds": 0.1, "frobenius": 79, "states": 114271}
+{"obligation": 19, "kind": "odd", "reply": 15, "via": "finite", "destination": "15,16,19,40,52", "seconds": 0.0, "frobenius": 58, "states": 4162}
+{"obligation": 21, "kind": "odd", "reply": 36, "via": "finite", "destination": "16,21,36,40,54", "seconds": 0.2, "frobenius": 87, "states": 276933}
+{"obligation": 23, "kind": "odd", "reply": 49, "via": "finite", "destination": "16,23,40,49,52,54", "seconds": 0.6, "frobenius": 99, "states": 631815}
+{"obligation": 25, "kind": "odd", "reply": 15, "via": "finite", "destination": "15,16,25,52,54", "seconds": 0.0, "frobenius": 74, "states": 19818}
+{"obligation": 29, "kind": "odd", "reply": 15, "via": "finite", "destination": "15,16,29,40,52,54", "seconds": 0.0, "frobenius": 66, "states": 20103}
+{"obligation": 31, "kind": "odd", "reply": 41, "via": "finite", "destination": "16,31,40,41,52,54", "seconds": 1.8, "frobenius": 107, "states": 1440154}
+{"obligation": 33, "kind": "odd", "reply": 22, "via": "finite", "destination": "16,22,33,40,52", "seconds": 0.4, "frobenius": 91, "states": 357568}
+{"obligation": 37, "kind": "odd", "reply": 44, "via": "finite", "destination": "16,37,40,44,52,54", "seconds": 6.1, "frobenius": 119, "states": 3956759}
+{"obligation": 39, "kind": "odd", "reply": 17, "via": "finite", "destination": "16,17,39,40,52,54", "seconds": 0.1, "frobenius": 77, "states": 101494}
+{"obligation": 41, "kind": "odd", "reply": 11, "via": "finite", "destination": "11,16,40,41", "seconds": 0.0, "frobenius": 69, "states": 6015}
+{"obligation": 45, "kind": "odd", "reply": 127, "via": "finite", "destination": "16,40,45,52,54,127", "seconds": 33.5, "frobenius": 123, "states": 18266753}
+{"obligation": 49, "kind": "odd", "reply": 23, "via": "finite", "destination": "16,23,40,49,52,54", "seconds": 0.6, "frobenius": 99, "states": 631815}
+{"obligation": 57, "kind": "odd", "reply": 46, "via": "finite", "destination": "16,40,46,52,54,57", "seconds": 25.7, "frobenius": 147, "states": 14575447}
+{"obligation": 65, "kind": "odd", "reply": 59, "via": "finite", "destination": "16,40,52,54,59,65", "seconds": 55.8, "frobenius": 141, "states": 26339608}
+{"obligation": 2, "kind": "even", "reply": 3, "via": "finite", "destination": "2,3", "seconds": 0.0, "frobenius": 1, "states": 1}
+{"obligation": 4, "kind": "even", "reply": 6, "via": "C", "destination": "4,6"}
+{"obligation": 6, "kind": "even", "reply": 4, "via": "C", "destination": "4,6"}
+{"obligation": 8, "kind": "even", "reply": 14, "via": "E", "destination": "8,14"}
+{"obligation": 10, "kind": "even", "reply": 9, "via": "finite", "destination": "9,10,16", "seconds": 0.0, "frobenius": 33, "states": 213}
+{"obligation": 12, "kind": "even", "reply": 14, "via": "F", "destination": "12,14,16"}
+{"obligation": 14, "kind": "even", "reply": 8, "via": "E", "destination": "8,14"}
+{"obligation": 18, "kind": "even", "reply": 5, "via": "finite", "destination": "5,16,18", "seconds": 0.0, "frobenius": 29, "states": 50}
+{"obligation": 20, "kind": "even", "reply": 34, "via": "T", "destination": "16,20,34"}
+{"obligation": 22, "kind": "even", "reply": 12, "via": "P0", "destination": "12,16,22"}
+{"obligation": 24, "kind": "even", "reply": 10, "via": "K", "destination": "10,16,24"}
+{"obligation": 26, "kind": "even", "reply": 11, "via": "finite", "destination": "11,16,26,40", "seconds": 0.0, "frobenius": 61, "states": 3740}
+{"obligation": 28, "kind": "even", "reply": 81, "via": "finite", "destination": "16,28,40,52,54,81", "seconds": 15.9, "frobenius": 171, "states": 10143720}
+{"obligation": 30, "kind": "even", "reply": 161, "via": "finite", "destination": "16,30,40,52,54,161", "seconds": 61.4, "frobenius": 235, "states": 22561378}
+{"obligation": 34, "kind": "even", "reply": 20, "via": "T", "destination": "16,20,34"}
+{"obligation": 36, "kind": "even", "reply": 21, "via": "finite", "destination": "16,21,36,40,54", "seconds": 0.7, "frobenius": 87, "states": 276933}
+{"obligation": 38, "kind": "even", "reply": 173, "via": "finite", "destination": "16,38,40,52,173", "seconds": 521.7, "frobenius": 271, "states": 103503337}
+{"obligation": 42, "kind": "even", "reply": 69, "via": "finite", "destination": "16,40,42,52,54,69", "seconds": 51.9, "frobenius": 147, "states": 16746285}
+{"obligation": 44, "kind": "even", "reply": 37, "via": "finite", "destination": "16,37,40,44,52,54", "seconds": 20.3, "frobenius": 119, "states": 3956759}
+{"obligation": 46, "kind": "even", "reply": 57, "via": "finite", "destination": "16,40,46,52,54,57", "seconds": 66.9, "frobenius": 147, "states": 14575447}
+{"obligation": 50, "kind": "even", "reply": 67, "via": "finite", "destination": "16,40,50,52,54,67", "seconds": 83.8, "frobenius": 145, "states": 25280691}
+{"obligation": 58, "kind": "even", "reply": 95, "via": "finite", "destination": "16,40,52,54,58,95", "seconds": 230.6, "frobenius": 177, "states": 69821889}
+{"obligation": 60, "kind": "even", "reply": 229, "via": "finite", "destination": "16,40,52,54,60,229", "seconds": 1747.6, "frobenius": 327, "states": 365742433}
+{"obligation": 62, "kind": "even", "reply": 39, "via": "finite", "destination": "16,39,40,52,54,62", "seconds": 21.2, "frobenius": 137, "states": 8404858}
+{"obligation": 66, "kind": "even", "reply": 95, "via": "finite", "destination": "16,40,52,54,66,95", "seconds": 344.6, "frobenius": 185, "states": 92519599}
+{"obligation": 74, "kind": "even", "reply": 55, "via": "finite", "destination": "16,40,52,54,55,74", "seconds": 91.7, "frobenius": 153, "states": 29430155}
+{"obligation": 76, "kind": "even", "reply": 23, "via": "finite", "destination": "16,23,40,52,54,76", "seconds": 1.7, "frobenius": 113, "states": 921374}
+{"obligation": 78, "kind": "even", "reply": 127, "via": "finite", "destination": "16,40,52,54,78,127", "seconds": 969.0, "frobenius": 241, "states": 219812546}
+{"obligation": 82, "kind": "even", "reply": 23, "via": "finite", "destination": "16,23,40,52,54,82", "seconds": 1.6, "frobenius": 113, "states": 930737}
+{"obligation": 90, "kind": "even", "reply": 51, "via": "finite", "destination": "16,40,51,52,54,90", "seconds": 86.2, "frobenius": 165, "states": 29010637}
+{"obligation": 98, "kind": "even", "reply": 175, "via": "finite", "destination": "16,40,52,54,98,175", "seconds": 1925.8, "frobenius": 265, "states": 395092803}
+{"obligation": 114, "kind": "even", "reply": 85, "via": "finite", "destination": "16,40,52,54,85,114", "seconds": 607.6, "frobenius": 183, "states": 119760268}
+{"obligation": 130, "kind": "even", "reply": 63, "via": "finite", "destination": "16,40,52,54,63,130", "seconds": 201.8, "frobenius": 177, "states": 54774280}
+largest destinations: [(98, 175, '395,092,803'), (60, 229, '365,742,433'), (78, 127, '219,812,546'), (114, 85, '119,760,268'), (38, 173, '103,503,337'), (66, 95, '92,519,599'), (58, 95, '69,821,889'), (130, 63, '54,774,280')]
+exit 0

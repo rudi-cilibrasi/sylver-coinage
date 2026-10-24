@@ -10,7 +10,9 @@ since it is a multiple of 16). The lowest reply without a certified answer
 is **38**. (Since October 18, by search, 72 answers 38; that is not
 certified, so it is not a row here. See the
 [reply-38 record](../r38-2026-10-09/RESULT.md#the-search-for-an-answer-to-38).)
-Opening 16 remains unresolved.
+The next reply, 40, has no known answer; the
+[reply-40 record](../r40-2026-10-23/RESULT.md) (October 23) refutes thirteen
+candidate answers, and three more by search. Opening 16 remains unresolved.
 
 | Reply | Answer | Position reached | Evidence |
 | ---: | ---: | --- | --- |

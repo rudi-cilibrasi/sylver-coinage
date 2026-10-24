@@ -1,0 +1,116 @@
+{"a": 6, "stage": "known", "base": [6, 16], "obligations": 10, "refuted": true, "by": 4, "child": "4,6", "source": "node C"}
+{"a": 10, "stage": "known", "base": [10, 16], "obligations": 21, "refuted": true, "by": 9, "child": "9,10,16", "source": "opening table"}
+{"a": 14, "stage": "known", "base": [14, 16, 40], "obligations": 26, "refuted": true, "by": 8, "child": "8,14", "source": "node E"}
+{"a": 18, "stage": "known", "base": [16, 18, 40], "obligations": 31, "refuted": true, "by": 5, "child": "5,16,18", "source": "opening table"}
+{"a": 22, "stage": "known", "base": [16, 22, 40], "obligations": 36, "refuted": true, "by": 12, "child": "12,16,22", "source": "node P0"}
+{"a": 26, "stage": "known", "base": [16, 26, 40], "obligations": 41, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 30, "stage": "known", "base": [16, 30, 40], "obligations": 46, "refuted": true, "by": 44, "child": "16,30,40,44", "source": "Z'"}
+{"a": 34, "stage": "known", "base": [16, 34, 40], "obligations": 51, "refuted": true, "by": 20, "child": "16,20,34", "source": "node T"}
+{"a": 38, "stage": "known", "base": [16, 38, 40], "obligations": 56, "refuted": true, "by": 28, "child": "16,28,38,40", "source": "search: P (resolve_16-28-38-40)"}
+{"a": 42, "stage": "known", "base": [16, 40, 42], "obligations": 61, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 46, "stage": "known", "base": [16, 40, 46], "obligations": 66, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 50, "stage": "known", "base": [16, 40, 50], "obligations": 71, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 54, "stage": "known", "base": [16, 40, 54], "obligations": 76, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 58, "stage": "known", "base": [16, 40, 58], "obligations": 81, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 62, "stage": "known", "base": [16, 40, 62], "obligations": 86, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 66, "stage": "known", "base": [16, 40, 66], "obligations": 91, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 70, "stage": "known", "base": [16, 40, 70], "obligations": 96, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 74, "stage": "known", "base": [16, 40, 74], "obligations": 101, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 78, "stage": "known", "base": [16, 40, 78], "obligations": 106, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 82, "stage": "known", "base": [16, 40, 82], "obligations": 111, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 86, "stage": "known", "base": [16, 40, 86], "obligations": 116, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 90, "stage": "known", "base": [16, 40, 90], "obligations": 121, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 94, "stage": "known", "base": [16, 40, 94], "obligations": 126, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 98, "stage": "known", "base": [16, 40, 98], "obligations": 131, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 102, "stage": "known", "base": [16, 40, 102], "obligations": 136, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 106, "stage": "known", "base": [16, 40, 106], "obligations": 141, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 110, "stage": "known", "base": [16, 40, 110], "obligations": 146, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 114, "stage": "known", "base": [16, 40, 114], "obligations": 151, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 118, "stage": "known", "base": [16, 40, 118], "obligations": 156, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 122, "stage": "known", "base": [16, 40, 122], "obligations": 161, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 126, "stage": "known", "base": [16, 40, 126], "obligations": 166, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 130, "stage": "known", "base": [16, 40, 130], "obligations": 171, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 134, "stage": "known", "base": [16, 40, 134], "obligations": 176, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 138, "stage": "known", "base": [16, 40, 138], "obligations": 181, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 142, "stage": "known", "base": [16, 40, 142], "obligations": 186, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 146, "stage": "known", "base": [16, 40, 146], "obligations": 191, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 150, "stage": "known", "base": [16, 40, 150], "obligations": 196, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 154, "stage": "known", "base": [16, 40, 154], "obligations": 201, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 158, "stage": "known", "base": [16, 40, 158], "obligations": 206, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 162, "stage": "known", "base": [16, 40, 162], "obligations": 211, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 166, "stage": "known", "base": [16, 40, 166], "obligations": 216, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 170, "stage": "known", "base": [16, 40, 170], "obligations": 221, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 174, "stage": "known", "base": [16, 40, 174], "obligations": 226, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 178, "stage": "known", "base": [16, 40, 178], "obligations": 231, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 182, "stage": "known", "base": [16, 40, 182], "obligations": 236, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 186, "stage": "known", "base": [16, 40, 186], "obligations": 241, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 190, "stage": "known", "base": [16, 40, 190], "obligations": 246, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 194, "stage": "known", "base": [16, 40, 194], "obligations": 251, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 198, "stage": "known", "base": [16, 40, 198], "obligations": 256, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 202, "stage": "known", "base": [16, 40, 202], "obligations": 261, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 206, "stage": "known", "base": [16, 40, 206], "obligations": 266, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 210, "stage": "known", "base": [16, 40, 210], "obligations": 271, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 214, "stage": "known", "base": [16, 40, 214], "obligations": 276, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 218, "stage": "known", "base": [16, 40, 218], "obligations": 281, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 222, "stage": "known", "base": [16, 40, 222], "obligations": 286, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 226, "stage": "known", "base": [16, 40, 226], "obligations": 291, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 230, "stage": "known", "base": [16, 40, 230], "obligations": 296, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 234, "stage": "known", "base": [16, 40, 234], "obligations": 301, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 238, "stage": "known", "base": [16, 40, 238], "obligations": 306, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 242, "stage": "known", "base": [16, 40, 242], "obligations": 311, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 246, "stage": "known", "base": [16, 40, 246], "obligations": 316, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 250, "stage": "known", "base": [16, 40, 250], "obligations": 321, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 254, "stage": "known", "base": [16, 40, 254], "obligations": 326, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 258, "stage": "known", "base": [16, 40, 258], "obligations": 331, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 262, "stage": "known", "base": [16, 40, 262], "obligations": 336, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 266, "stage": "known", "base": [16, 40, 266], "obligations": 341, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 270, "stage": "known", "base": [16, 40, 270], "obligations": 346, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 274, "stage": "known", "base": [16, 40, 274], "obligations": 351, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 278, "stage": "known", "base": [16, 40, 278], "obligations": 356, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 282, "stage": "known", "base": [16, 40, 282], "obligations": 361, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 286, "stage": "known", "base": [16, 40, 286], "obligations": 366, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 290, "stage": "known", "base": [16, 40, 290], "obligations": 371, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 294, "stage": "known", "base": [16, 40, 294], "obligations": 376, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 298, "stage": "known", "base": [16, 40, 298], "obligations": 381, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 302, "stage": "known", "base": [16, 40, 302], "obligations": 386, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 306, "stage": "known", "base": [16, 40, 306], "obligations": 391, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 310, "stage": "known", "base": [16, 40, 310], "obligations": 396, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 314, "stage": "known", "base": [16, 40, 314], "obligations": 401, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 318, "stage": "known", "base": [16, 40, 318], "obligations": 406, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 322, "stage": "known", "base": [16, 40, 322], "obligations": 411, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 326, "stage": "known", "base": [16, 40, 326], "obligations": 416, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 330, "stage": "known", "base": [16, 40, 330], "obligations": 421, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 334, "stage": "known", "base": [16, 40, 334], "obligations": 426, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 338, "stage": "known", "base": [16, 40, 338], "obligations": 431, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 342, "stage": "known", "base": [16, 40, 342], "obligations": 436, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 346, "stage": "known", "base": [16, 40, 346], "obligations": 441, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 350, "stage": "known", "base": [16, 40, 350], "obligations": 446, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 354, "stage": "known", "base": [16, 40, 354], "obligations": 451, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 358, "stage": "known", "base": [16, 40, 358], "obligations": 456, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 362, "stage": "known", "base": [16, 40, 362], "obligations": 461, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 366, "stage": "known", "base": [16, 40, 366], "obligations": 466, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 370, "stage": "known", "base": [16, 40, 370], "obligations": 471, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 374, "stage": "known", "base": [16, 40, 374], "obligations": 476, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 378, "stage": "known", "base": [16, 40, 378], "obligations": 481, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 382, "stage": "known", "base": [16, 40, 382], "obligations": 486, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 386, "stage": "known", "base": [16, 40, 386], "obligations": 491, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 390, "stage": "known", "base": [16, 40, 390], "obligations": 496, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 394, "stage": "known", "base": [16, 40, 394], "obligations": 501, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 398, "stage": "known", "base": [16, 40, 398], "obligations": 506, "refuted": false, "by": null, "child": null, "source": null}
+{"a": 26, "stage": "odd", "base": [16, 26, 40], "odd_obligations": 15, "refuted": true, "by": 11, "classified": 5, "P_moves": [11], "complete": false, "status": "ok", "stopped_early": false, "states": 4085, "seconds": 0.0}
+{"a": 42, "stage": "odd", "base": [16, 40, 42], "odd_obligations": 23, "refuted": true, "by": 23, "classified": 10, "P_moves": [23], "complete": false, "status": "ok", "stopped_early": false, "states": 949735, "seconds": 0.6}
+{"a": 46, "stage": "odd", "base": [16, 40, 46], "odd_obligations": 25, "refuted": false, "by": null, "classified": 20, "P_moves": [], "complete": false, "status": "ok", "stopped_early": true, "states": 46395697, "seconds": 55.3}
+{"a": 50, "stage": "odd", "base": [16, 40, 50], "odd_obligations": 27, "refuted": true, "by": 11, "classified": 5, "P_moves": [11], "complete": false, "status": "ok", "stopped_early": false, "states": 7741, "seconds": 0.0}
+{"a": 54, "stage": "odd", "base": [16, 40, 54], "odd_obligations": 29, "refuted": false, "by": null, "classified": 18, "P_moves": [], "complete": false, "status": "ok", "stopped_early": true, "states": 48135328, "seconds": 66.5}
+{"a": 58, "stage": "odd", "base": [16, 40, 58], "odd_obligations": 31, "refuted": false, "by": null, "classified": 17, "P_moves": [], "complete": false, "status": "ok", "stopped_early": true, "states": 49635609, "seconds": 59.1}
+{"a": 62, "stage": "odd", "base": [16, 40, 62], "odd_obligations": 33, "refuted": false, "by": null, "classified": 20, "P_moves": [], "complete": false, "status": "ok", "stopped_early": true, "states": 45819941, "seconds": 52.0}
+{"a": 46, "stage": "odd", "base": [16, 40, 46], "odd_obligations": 25, "refuted": false, "by": null, "classified": 25, "P_moves": [], "complete": true, "status": "ok", "stopped_early": false, "states": 13302964, "seconds": 138.5, "engine": "kunz_pt --p-table (e335ff0)", "max_states": 100000000, "threads": 10, "ncache_mb": 8192, "timeout": 1800.0}
+{"a": 54, "stage": "odd", "base": [16, 40, 54], "odd_obligations": 29, "refuted": false, "by": null, "classified": 29, "P_moves": [], "complete": true, "status": "ok", "stopped_early": false, "states": 28599069, "seconds": 320.7, "engine": "kunz_pt --p-table (e335ff0)", "max_states": 100000000, "threads": 10, "ncache_mb": 8192, "timeout": 1800.0}
+{"a": 58, "stage": "odd", "base": [16, 40, 58], "odd_obligations": 31, "refuted": false, "by": null, "classified": 31, "P_moves": [], "complete": true, "status": "ok", "stopped_early": false, "states": 65212260, "seconds": 1175.9, "engine": "kunz_pt --p-table (e335ff0)", "max_states": 100000000, "threads": 10, "ncache_mb": 8192, "timeout": 1800.0}
+{"a": 62, "stage": "odd", "base": [16, 40, 62], "odd_obligations": 33, "refuted": true, "by": 61, "classified": 24, "P_moves": [61], "complete": false, "status": "ok", "stopped_early": false, "states": 24052184, "seconds": 308.3, "engine": "kunz_pt --p-table (e335ff0)", "max_states": 100000000, "threads": 10, "ncache_mb": 8192, "timeout": 1800.0}
+{"a": 66, "stage": "odd", "base": [16, 40, 66], "odd_obligations": 35, "refuted": false, "by": null, "classified": 32, "P_moves": [], "complete": false, "status": "timeout", "stopped_early": false, "states": 82757904, "seconds": 1801.6, "engine": "kunz_pt --p-table (e335ff0)", "max_states": 100000000, "threads": 10, "ncache_mb": 8192, "timeout": 1800.0}
+{"a": 70, "stage": "odd", "base": [16, 40, 70], "odd_obligations": 37, "refuted": true, "by": 37, "classified": 17, "P_moves": [37], "complete": false, "status": "ok", "stopped_early": false, "states": 4246654, "seconds": 66.9, "engine": "kunz_pt --p-table (e335ff0)", "max_states": 100000000, "threads": 10, "ncache_mb": 8192, "timeout": 1800.0}
+{"a": 74, "stage": "odd", "base": [16, 40, 74], "odd_obligations": 39, "refuted": false, "by": null, "classified": 31, "P_moves": [], "complete": false, "status": "timeout", "stopped_early": false, "states": 80018980, "seconds": 1801.3, "engine": "kunz_pt --p-table (e335ff0)", "max_states": 100000000, "threads": 10, "ncache_mb": 8192, "timeout": 1800.0}
+{"a": 78, "stage": "odd", "base": [16, 40, 78], "odd_obligations": 41, "refuted": false, "by": null, "classified": 28, "P_moves": [], "complete": false, "status": "timeout", "stopped_early": false, "states": 79809303, "seconds": 1801.3, "engine": "kunz_pt --p-table (e335ff0)", "max_states": 100000000, "threads": 10, "ncache_mb": 8192, "timeout": 1800.0}
+{"a": 82, "stage": "odd", "base": [16, 40, 82], "odd_obligations": 43, "refuted": false, "by": null, "classified": 28, "P_moves": [], "complete": false, "status": "timeout", "stopped_early": false, "states": 82904615, "seconds": 1801.4, "engine": "kunz_pt --p-table (e335ff0)", "max_states": 100000000, "threads": 10, "ncache_mb": 8192, "timeout": 1800.0}
+{"a": 86, "stage": "odd", "base": [16, 40, 86], "odd_obligations": 45, "refuted": false, "by": null, "classified": 29, "P_moves": [], "complete": false, "status": "ok", "stopped_early": true, "states": 94635398, "seconds": 1538.3, "engine": "kunz_pt --p-table (e335ff0)", "max_states": 100000000, "threads": 10, "ncache_mb": 8192, "timeout": 1800.0}

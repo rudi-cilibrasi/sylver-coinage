@@ -1,0 +1,95 @@
+2026-10-23 13:06:07 even triage 46 start
+r=46 e=   2 resolved  reply=3 via=opening table tried=- 0.0s
+r=46 e=   4 resolved  reply=6 via=node C tried=- 0.0s
+r=46 e=   6 resolved  reply=4 via=node C tried=- 0.0s
+r=46 e=   8 resolved  reply=14 via=node E tried=- 0.0s
+r=46 e=  10 resolved  reply=9 via=opening table tried=- 0.0s
+r=46 e=  12 resolved  reply=14 via=node F tried=- 0.0s
+r=46 e=  14 resolved  reply=8 via=node E tried=- 0.0s
+r=46 e=  18 resolved  reply=5 via=opening table tried=- 0.0s
+r=46 e=  20 short: needs even reply=None via=None tried=16 0.6s
+r=46 e=  22 resolved  reply=12 via=node P0 tried=- 0.0s
+r=46 e=  24 resolved  reply=10 via=node K tried=- 0.0s
+r=46 e=  26 resolved  reply=177 via=finite odd witness tried=88 10.5s
+r=46 e=  28 resolved  reply=21 via=finite odd witness tried=9 0.3s
+r=46 e=  30 resolved  reply=44 via=Z' tried=- 0.0s
+r=46 e=  34 resolved  reply=59 via=finite odd witness tried=29 7.5s
+r=46 e=  36 resolved  reply=37 via=finite odd witness tried=14 3.4s
+r=46 e=  38 resolved  reply=33 via=finite odd witness tried=12 3.0s
+r=46 e=  42 resolved  reply=23 via=finite odd witness tried=11 1.5s
+r=46 e=  44 resolved  reply=30 via=Z' tried=- 0.0s
+r=46 e=  50 resolved  reply=43 via=finite odd witness tried=21 9.1s
+r=46 e=  52 resolved  reply=33 via=finite odd witness tried=15 5.3s
+r=46 e=  54 resolved  reply=51 via=finite odd witness tried=26 20.9s
+r=46 e=  58 resolved  reply=65 via=finite odd witness tried=32 26.4s
+r=46 e=  60 short: needs even reply=None via=None tried=21 34.3s
+r=46 e=  66 resolved  reply=185 via=finite odd witness tried=92 267.4s
+r=46 e=  68 resolved  reply=25 via=finite odd witness tried=10 2.1s
+r=46 e=  70 resolved  reply=139 via=finite odd witness tried=68 807.3s
+r=46 e=  74 open      reply=None via=None tried=120 1671.9s
+r=46 e=  76 resolved  reply=13 via=finite odd witness tried=5 0.1s
+r=46 e=  82 resolved  reply=61 via=finite odd witness tried=30 46.6s
+r=46 e=  84 resolved  reply=75 via=finite odd witness tried=37 157.3s
+r=46 e=  90 resolved  reply=101 via=finite odd witness tried=49 499.4s
+r=46 e=  98 open      reply=None via=None tried=72 1493.9s
+r=46 e= 100 open      reply=None via=None tried=62 1494.4s
+r=46 e= 106 resolved  reply=111 via=finite odd witness tried=54 532.9s
+r=46 e= 114 resolved  reply=81 via=finite odd witness tried=40 187.5s
+r=46 e= 116 resolved  reply=45 via=finite odd witness tried=17 14.0s
+r=46 e= 122 open      reply=None via=None tried=56 1205.6s
+r=46 e= 130 open      reply=None via=None tried=46 1205.5s
+r=46 e= 146 resolved  reply=69 via=finite odd witness tried=34 104.9s
+r=46 e= 162 resolved  reply=47 via=finite odd witness tried=27 85.8s
+summary: {'resolved': 34, 'short: needs even': 2, 'open': 5, 'REFUTES r': 0} of 41
+2026-10-23 15:51:06 even triage 46 end (exit 0)
+2026-10-23 15:51:06 even triage 54 start
+r=54 e=   2 resolved  reply=3 via=opening table tried=- 0.0s
+r=54 e=   4 resolved  reply=6 via=node C tried=- 0.0s
+r=54 e=   6 resolved  reply=4 via=node C tried=- 0.0s
+r=54 e=   8 resolved  reply=14 via=node E tried=- 0.0s
+r=54 e=  10 resolved  reply=9 via=opening table tried=- 0.0s
+r=54 e=  12 resolved  reply=14 via=node F tried=- 0.0s
+r=54 e=  14 resolved  reply=8 via=node E tried=- 0.0s
+r=54 e=  18 resolved  reply=5 via=opening table tried=- 0.0s
+r=54 e=  20 resolved  reply=34 via=node T tried=- 0.0s
+r=54 e=  22 resolved  reply=12 via=node P0 tried=- 0.0s
+r=54 e=  24 resolved  reply=10 via=node K tried=- 0.0s
+r=54 e=  26 resolved  reply=11 via=finite odd witness tried=5 0.1s
+r=54 e=  28 resolved  reply=38 via=search: P (resolve_16-28-38-40) tried=- 0.0s
+r=54 e=  30 resolved  reply=21 via=finite odd witness tried=8 0.4s
+r=54 e=  34 resolved  reply=20 via=node T tried=- 0.0s
+r=54 e=  36 resolved  reply=21 via=finite odd witness tried=7 0.5s
+r=54 e=  38 resolved  reply=28 via=search: P (resolve_16-28-38-40) tried=- 0.0s
+2026-10-23 15:51:11 stopped the run after 'even triage 46 end'
+2026-10-23 15:53:46 even short-first 54 start
+r=54 e=  44 resolved  reply=21 via=finite odd witness tried=8 0.5s
+r=54 e=  52 short: needs even reply=None via=None tried=22 32.7s
+r=54 e=  60 short: needs even reply=None via=None tried=23 56.7s
+r=54 e=  68 short: needs even reply=None via=None tried=24 96.3s
+r=54 e=  76 short: needs even reply=None via=None tried=25 198.9s
+r=54 e=  92 open      reply=None via=None tried=26 301.3s
+2026-10-23 16:05:17 stopped the run after 'r=54 e=  92'
+2026-10-23 17:41:49 even short-first 58 start
+r=58 e=   4 resolved  reply=6 via=node C tried=- 0.0s
+r=58 e=   6 resolved  reply=4 via=node C tried=- 0.0s
+r=58 e=   8 resolved  reply=14 via=node E tried=- 0.0s
+r=58 e=  10 resolved  reply=9 via=opening table tried=- 0.0s
+r=58 e=  12 resolved  reply=14 via=node F tried=- 0.0s
+r=58 e=  14 resolved  reply=8 via=node E tried=- 0.0s
+r=58 e=  18 resolved  reply=5 via=opening table tried=- 0.0s
+r=58 e=  20 resolved  reply=15 via=finite odd witness tried=5 0.1s
+r=58 e=  24 resolved  reply=10 via=node K tried=- 0.0s
+r=58 e=  26 resolved  reply=11 via=screen.jsonl: odd child P (search) tried=- 0.0s
+r=58 e=  28 resolved  reply=33 via=finite odd witness tried=13 2.5s
+r=58 e=  36 short: needs even reply=None via=None tried=21 9.7s
+r=58 e=  42 resolved  reply=23 via=screen.jsonl: odd child P (search) tried=- 0.0s
+r=58 e=  44 short: needs even reply=None via=None tried=22 29.8s
+r=58 e=  52 resolved  reply=35 via=finite odd witness tried=14 9.3s
+r=58 e=  60 short: needs even reply=None via=None tried=24 86.8s
+r=58 e=  68 short: needs even reply=None via=None tried=25 138.1s
+r=58 e=  76 resolved  reply=35 via=finite odd witness tried=14 15.1s
+r=58 e=  84 short: needs even reply=None via=None tried=27 198.9s
+r=58 e= 100 resolved  reply=55 via=finite odd witness tried=21 94.1s
+r=58 e=   2 resolved  reply=3 via=opening table tried=- 0.0s
+r=58 e=  22 resolved  reply=12 via=node P0 tried=- 0.0s
+2026-10-23 17:51:35 stopped the run after 'r=58 e= 100'

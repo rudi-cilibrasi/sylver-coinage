@@ -2070,6 +2070,39 @@ Recorded in [the ledger's scan notes](campaigns/o16-2026-10-09/scan/README.md)
   would give each one the whole cap. 92's first candidate, 49, used the
   whole cap by itself.
 
+### Attempt 51 — reply 40: Q, B54 and B58 refute 46, 54 and 58 (2026-10-23)
+
+Recorded in [the reply-40 record](campaigns/r40-2026-10-23/RESULT.md).
+
+- **The question.** 40 is the lowest reply to the opening 16 with no known
+  answer. {16,40} has gcd eight, so the Quiet End tools give no finite list
+  of its answers. The search took the answers a ≡ 2 (mod 4), whose positions
+  {16,40,a} have gcd two and short halves, and the odd answers, whose
+  positions are finite.
+- **The screen** (search). For a up to 398, a known P-position one move away
+  refuted 6, 10, 14, 18, 22, 30, 34 and 38. Odd sweeps from 26 to 86 refuted
+  26, 42, 50, 62 and 70 by finite P-positions. 46, 54 and 58 had every odd
+  obligation N, and 66 to 86 stopped early. The odd answers 3 and 5 to 57
+  all fail.
+- **Q** (certified). 46's move 20 reaches Q={16,20,46}, since 40 = 20+20. A
+  pair search found all of Q's obligations N, so 46 fails. Q is on
+  Sicherman's list, so the audit confirms it independently: 33 finite
+  witnesses replayed natively and in Python, and six certified nodes. The
+  audit also certifies thirteen refuted answers: every a ≡ 2 (mod 4) from 6
+  to 50, and 70.
+- **B54** (search). 54's move 52 reaches B54={16,40,52,54}, whose
+  obligations all led to N, so 54 fails by search. B54 is not on that list.
+  Its move 60's finite witness needs 365,742,433 states, so certifying it
+  needs the native and Kunz replays the reply-38 record used for B56. 62 is
+  also refuted by search only: its witness needs 286,533,125 states.
+- **B58** (search). 58's move 36 reaches B58={16,36,40,58}, whose
+  obligations all led to N too, so 58 fails by search. B58 is not on the
+  list either. Each of 46, 54 and 58 fell to the first short child tested.
+- **What it means.** No answer to 40 is known. Below 90, the candidates
+  a ≡ 2 (mod 4) left are 66, 74, 78, 82 and 86, whose odd sweeps stopped
+  early; their short children are next. The answers a ≡ 4 (mod 8) give
+  gcd-four positions, which the tools here do not cover.
+
 ### Sources
 
 - <https://math.colgate.edu/~integers/yg2/yg2.pdf>
