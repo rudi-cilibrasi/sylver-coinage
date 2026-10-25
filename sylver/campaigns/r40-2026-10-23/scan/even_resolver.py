@@ -16,7 +16,8 @@ move that refuted c); both are search-grade, and the row says which it used.
 With --p-table the sweeps use kunz_pt --p-table (the cap then counts P-positions).
 With --redo-open, obligations whose latest row is 'open' are tried again (the latest row per e counts).
 With --short-first, the obligations whose child is short come first (their odd sweeps are bounded);
-with --short-only, only those.
+with --short-only, only those. With --stop-at-needs-even, it stops after the first new row whose child is
+short with every odd obligation N (status 'short: needs even'), so that child can be tested for P first.
 With --position G..., it resolves the even obligations of that short position instead, writing resolve_<G>.jsonl.
 """
 import argparse, json, subprocess, sys, time
@@ -80,6 +81,7 @@ def main():
     ap.add_argument('--redo-open', action='store_true')
     ap.add_argument('--short-first', action='store_true')
     ap.add_argument('--short-only', action='store_true')
+    ap.add_argument('--stop-at-needs-even', action='store_true')
     args = ap.parse_args()
     ENGINE_ARGS[:] = ([str(ENGINE_PT), '--p-table', '--ncache-mb', str(args.ncache_mb)] if args.p_table
                       else [str(ENGINE)])
@@ -142,7 +144,7 @@ def main():
             fh.write(json.dumps(row) + '\n')
         print(f"r={args.r} e={e:4} {row['status']:9} reply={row.get('reply')} via={row.get('via')} "
               f"tried={row.get('odd_tried', '-')} {row['seconds']}s", flush=True)
-        if row['status'] == 'REFUTES r':
+        if row['status'] == 'REFUTES r' or (args.stop_at_needs_even and row['status'] == 'short: needs even'):
             break
     rows = list({x['e']: x for x in map(json.loads, out.read_text().splitlines())}.values())
     print('summary:', {s: sum(1 for x in rows if x['status'] == s) for s in ('resolved', 'short: needs even', 'open', 'REFUTES r')},

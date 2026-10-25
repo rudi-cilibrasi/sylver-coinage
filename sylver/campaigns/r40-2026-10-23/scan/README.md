@@ -39,6 +39,13 @@ certified.
 | is a short child of 58 P? | `./test_children.sh 58 36 44 60 68 84`, which now stops at the first child with every obligation resolved: {16,36,40,58}, at 18:02 | `test_children.log`, `resolve_16-36-40-58.jsonl` |
 | B58's evidence | `THREADS=8 python collect.py resolve_16-36-40-58.jsonl '{"20": [15, "finite"]}' 16 36 40 58` (the row the resolver took from `even_58.jsonl`) | `collect_B58.log`, `evidence_16-36-40-58.json` |
 | B58's certificates and replays | `REPLAY_MAX_JOBS=2 REPLAY_BUDGET_GIB=22 nice python replay.py evidence_16-36-40-58.json b58_ DIR B58` (DIR as above), October 23, 19:27, to October 24, 06:10. The largest, move 118, took 1,302 seconds natively and 14,941 in Python | `replay_B58.log`, `../b58_*-certificate.json`, `../verification/` (the per-job logs moved there too) |
+| the short children of 66, 74, 78, 82 and 86 | `./short_route.sh 66 74 78 82 86` (for each R, `even_resolver.py R --short-only`, then `test_children.sh R E...` for the children E whose odd obligations are all N; same settings), from October 23, 18:03. {16,40,60,74}'s test was stopped by hand, and `./stop_on.sh PID even_triage.log 'even short-only 78 start'` stopped the run there, on October 24 at 08:59 | `even_triage.log`, `test_children.log`, `even_66.jsonl`, `even_74.jsonl`, `resolve_16-36-40-66.jsonl`, `resolve_16-40-44-66.jsonl`, `resolve_16-40-52-66.jsonl`, `resolve_16-40-66-68.jsonl`, `resolve_16-28-40-74.jsonl`, `resolve_16-36-40-74.jsonl`, `resolve_16-40-60-74.jsonl` |
+| even replies from the unresolved children of {16,28,40,74} | `./deep74.sh PID` (`pair_search_any.py C --p-table --ncache-mb 8192 --threads 10 --max-states 150000000 --timeout 600`), 08:59 to 09:01. Its first two C reduce to {16,28,34,40} and {16,28,40,42}, which turned out P: the first is on Sicherman's list, and the third search found the second | `deep74.log`, `pair_any_16-28-34-40-74.log`, `pair_any_16-28-40-42-74.log`, `pair_any_16-28-40-74-98.log` (its last line was added by hand, after the search ended) |
+| a larger list of known P-positions | from October 24, 09:04, `screen.py`, and so every script that imports it, adds Sicherman's list, Blok's pairing family {8,12,8n+2,8n+6} for n < 200, and the P-positions found here, each as it was found. Until 20:40 it read Sicherman's saved page; `sicherman_ppos.json` is the extract it reads now, the 265 lists on the page as updated 2026-09-28, with the same result. `route_scan.py 398` lists, for each legal even a up to 398, a move from {16,40,a} to a known P-position, if there is one | `sicherman_ppos.json`, `route_scan.txt` |
+| 78, 82 and 86, with that list | `./short_route.sh 78 82 86`, from 09:04 (a run from 09:01 was stopped at 09:03 to restart with the list). 78's child {16,36,40,78} was P at 12:14. Stopped by hand at 13:27, during 82's move 84 | `even_78.jsonl`, `resolve_16-36-40-78.jsonl` |
+| 82 and 86, testing each child as soon as it is found | `./short_route2.sh 82 86` (`even_resolver.py R --short-only --stop-at-needs-even`, and `route_state.py R` to see what is left), from 13:27. {16,40,44,82}'s test was stopped by hand at 14:59 | `even_82.jsonl`, `even_86.jsonl`, `resolve_16-40-44-82.jsonl`, `resolve_16-36-40-86.jsonl` |
+| {16,36,40,50} and {16,36,40,70} | `./queue_family.sh PID` stopped `short_route2.sh` once {16,36,40,86}'s test ended (18:32), ran `./family36.sh 50 70` (`even_resolver.py --position 16 36 40 X --short-first`, same settings), and resumed 86's pass with `./short_route2.sh 86` at 18:54, which ended at 21:32 | `resolve_16-36-40-50.jsonl`, `resolve_16-36-40-70.jsonl` |
+| unresolved obligations against the larger list, without a solver | `recheck_known.py FILE...`: at 10:15 for 66's and 74's tested children, and at 19:30, with B50 and B70, for the children still unresolved | `recheck_known.txt`, `recheck_known2.txt` |
 | odd answers to 40 | `kunz_pt --p-table --ncache-mb 8192 --threads 8 --stop-at-p --max-states 200000000 --odd-list 5,7,…,33 16 40`; then `timeout 3600 kunz_pt ... --threads 10 --max-states 300000000 --odd-list 35,37,…,99 16 40`, which reached 59 | `odd_answers.*`, `odd_answers2.*` |
 
 The shell scripts log "(exit N)" after each run. Until the review of this
@@ -48,9 +55,9 @@ did; the scripts now save the run's status first. The same holds for the
 "exit" lines of the `odd_answers*.err` files, written by hand-run commands:
 the second sweep ended at its one-hour `timeout`.
 
-`even_triage.log` and `test_children.log` are kept up to the start of the
-next step, a short-children pass over 66, 74, 78, 82 and 86 (`--short-only`
-and `short_route.sh`, which will be recorded with its results).
+`even_triage.log` and `test_children.log` are complete through 86's
+pass. Their "stopped" lines were written by hand or by the stopping
+scripts, as were those of the pair-search logs.
 `even_known.py R...` lists, without a solver, the even obligations of
 {16,40,R} that no known reply settles. `pair_search_any.py` is the reply-38
 search's, with `--p-table` added. `collect.py` and `replay.py` are the
