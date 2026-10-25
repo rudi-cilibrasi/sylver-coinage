@@ -46,6 +46,7 @@ certified.
 | 82 and 86, testing each child as soon as it is found | `./short_route2.sh 82 86` (`even_resolver.py R --short-only --stop-at-needs-even`, and `route_state.py R` to see what is left), from 13:27. {16,40,44,82}'s test was stopped by hand at 14:59 | `even_82.jsonl`, `even_86.jsonl`, `resolve_16-40-44-82.jsonl`, `resolve_16-36-40-86.jsonl` |
 | {16,36,40,50} and {16,36,40,70} | `./queue_family.sh PID` stopped `short_route2.sh` once {16,36,40,86}'s test ended (18:32), ran `./family36.sh 50 70` (`even_resolver.py --position 16 36 40 X --short-first`, same settings), and resumed 86's pass with `./short_route2.sh 86` at 18:54, which ended at 21:32 | `resolve_16-36-40-50.jsonl`, `resolve_16-36-40-70.jsonl` |
 | unresolved obligations against the larger list, without a solver | `recheck_known.py FILE...`: at 10:15 for 66's and 74's tested children, and at 19:30, with B50 and B70, for the children still unresolved | `recheck_known.txt`, `recheck_known2.txt` |
+| is {16,40,44,66} P? even replies from its three open children (36, 90, 134) | `./settle4466.sh` (`pair_search_any.py C`, the settings of `deep74.sh`), October 24, 21:34: none found | `settle4466.sh`, `settle4466.log`, `pair_any_16-36-40-44-66.log`, `pair_any_16-40-44-66-90.log`, `pair_any_16-40-44-66-134.log` |
 | odd answers to 40 | `kunz_pt --p-table --ncache-mb 8192 --threads 8 --stop-at-p --max-states 200000000 --odd-list 5,7,…,33 16 40`; then `timeout 3600 kunz_pt ... --threads 10 --max-states 300000000 --odd-list 35,37,…,99 16 40`, which reached 59 | `odd_answers.*`, `odd_answers2.*` |
 
 The shell scripts log "(exit N)" after each run. Until the review of this
@@ -53,7 +54,11 @@ record, they took N from `$?` inside the `$(date ...)` line, which is
 `date`'s status, so every such line in the logs here says 0 whatever the run
 did; the scripts now save the run's status first. The same holds for the
 "exit" lines of the `odd_answers*.err` files, written by hand-run commands:
-the second sweep ended at its one-hour `timeout`.
+the second sweep ended at its one-hour `timeout`. After the review of the
+66-to-86 pass, `deep74.sh` forgets a child of 74 once another candidate's
+test starts, and `short_route2.sh` stops a candidate if `route_state.py`
+fails; neither changed the runs here. `route_scan.py` now counts B58 as
+certified, and `route_scan.txt` is its output after that change.
 
 `even_triage.log` and `test_children.log` are complete through 86's
 pass. Their "stopped" lines were written by hand or by the stopping

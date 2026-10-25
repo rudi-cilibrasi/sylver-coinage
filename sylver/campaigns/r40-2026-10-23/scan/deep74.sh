@@ -7,8 +7,8 @@ found=$(/usr/bin/python3 -c "
 import re
 cur, found = None, False
 for line in open('test_children.log'):
-    m = re.search(r'test child \{16,40,74\}\+(\d+) start', line)
-    if m: cur = m.group(1)
+    m = re.search(r'test child \{16,40,(\d+)\}\+(\d+) start', line)
+    if m: cur = m.group(2) if m.group(1) == '74' else None
     elif cur and line.startswith('summary:') and \"'short: needs even': 0, 'open': 0\" in line: found = True
 print(found)")
 echo "$(date '+%F %T') deep74 start (a P child of 74 found: $found)" >> deep74.log

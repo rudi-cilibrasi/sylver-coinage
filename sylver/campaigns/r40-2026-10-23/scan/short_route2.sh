@@ -5,7 +5,8 @@
 for r in "$@"; do
   prev=-1
   while :; do
-    eval "$(/usr/bin/python3 route_state.py $r)"
+    state=$(/usr/bin/python3 route_state.py $r) || { echo "$(date '+%F %T') route_state.py $r failed" >> even_triage.log; break; }
+    eval "$state"
     if [ "$found" = True ] || [ "$refuted" = True ]; then break; fi
     if [ -n "$kids" ]; then ./test_children.sh $r $kids; continue; fi
     if [ "$left" = 0 ] || [ "$left" = "$prev" ]; then break; fi

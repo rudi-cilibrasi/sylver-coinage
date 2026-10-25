@@ -4,7 +4,9 @@ For a = 2 mod 4, {16,40,a} has gcd two and (for a > 2) a quiet-ender half, so by
 Theorem it is P exactly when each obligation b (profile(...)['moves']) leads to an N-position.
 Stage 1 (known): an obligation b whose child {16,40,a,b} is a known P-position refutes a. The list is
 the reply-38 campaign's known_p.json plus the finite P-positions of the opening-16 table and ledger,
-and the search-grade {16,38,72}; each refutation names its source.
+and the search-grade {16,38,72}; then the P-positions this search found, each as it was found; and from
+October 24, for search only, Sicherman's published list (sicherman_ppos.json) and Blok's pairing family.
+Each refutation names its source.
 Stage 2 (odd, with --odd): for each candidate stage 1 leaves, sweep its odd obligations (finite children)
 with kunz in one shared memo, stopping at the first P: a P child refutes a.
 Writes screen.jsonl (one row per candidate and stage).

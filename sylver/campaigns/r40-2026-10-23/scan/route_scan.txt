@@ -13,7 +13,7 @@
 28 4 (16, 28, 40) ('certified', (38, 'B28 (r38 audit)'))
 30 6 (16, 30, 40) ('certified', (44, "Z' (Z audit)"))
 34 2 (16, 34, 40) ('certified', (20, 'node T'))
-36 4 (16, 36, 40) ('search/known', (50, 'r40 search: B50 P (resolve_16-36-40-50.jsonl)'))
+36 4 (16, 36, 40) ('certified', (58, 'B58 (here)'))
 38 6 (16, 38, 40) ('certified', (28, 'B28 (r38 audit)'))
 42 2 (16, 40, 42) ('search/known', (28, 'r40 search: P (pair_any_16-28-40-74-98.log)'))
 44 4 (16, 40, 44) ('certified', (30, "Z' (Z audit)"))
@@ -21,7 +21,7 @@
 50 2 (16, 40, 50) ('search/known', (36, 'r40 search: B50 P (resolve_16-36-40-50.jsonl)'))
 52 4 (16, 40, 52) ('search/known', (54, 'r40 search: B54 P (resolve_16-40-52-54.jsonl)'))
 54 6 (16, 40, 54) ('search/known', (52, 'r40 search: B54 P (resolve_16-40-52-54.jsonl)'))
-58 2 (16, 40, 58) ('search/known', (36, 'r40 record: B58 P (certified, PR #67)'))
+58 2 (16, 40, 58) ('certified', (36, 'B58 (here)'))
 60 4 (16, 40, 60) -
 62 6 (16, 40, 62) -
 66 2 (16, 40, 66) -

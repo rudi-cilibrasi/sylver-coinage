@@ -184,11 +184,14 @@ tested, every time.
 **66 to 86** (October 23 to 24). For these five the odd sweeps had stopped
 early, so the search went to the even side, as for 54 and 58: it resolved
 each even obligation whose child is short, and tested each short child
-whose odd obligations all lead to N. A child's sweep gave up once four of
-its odd replies had each hit the limit of five minutes or 100 million
-P-positions without one winning.
+whose odd obligations all lead to N. A child stayed open when none of its
+odd replies was found to win and at least one had hit the limit of five
+minutes or 100 million P-positions; its sweep gave up once four had. The
+table gives the counts as the pass found them. With the known list as it
+now stands, one more child is settled: 74's open child {16,40,58,74} plays
+36 and reaches B58.
 
-| a | Short children | Resolved | Odd obligations all N | Gave up | Those children |
+| a | Short children | Resolved | Odd obligations all N | Open | Those children |
 | ---: | ---: | ---: | --- | ---: | --- |
 | 66 | 23 | 16 | 36, 44, 52, 68 | 3 | none shown P; {16,36,40,66} is N (by 50, to B50 below) |
 | 74 | 26 | 16 | 28, 36, 60 | 7 | {16,28,40,74} is N (by 34, to {16,28,34,40} on Sicherman's list); {16,36,40,74} is N (by 58, to B58); {16,40,60,74} not shown P |
@@ -207,7 +210,7 @@ Four new P-positions came out of the pass, all by search and none on
 Sicherman's list:
 - **B78={16,36,40,78}.** Its half is {8,18,20,39}, the half's Frobenius
   number is 69, and it has 61 obligations: 26 odd and 35 even, all leading
-  to N. So 78 fails, and 36 with it.
+  to N. So 78 fails, and 36 again.
 - **B50={16,36,40,50}** and **B70={16,36,40,70}**, which two of
   {16,36,40,86}'s obligations reach. Their halves' Frobenius numbers are 55
   and 65, and they have 47 and 57 obligations. So {16,36,40,x} is P for
@@ -221,7 +224,13 @@ Sicherman's list:
 Below 90, the answers a ≡ 2 (mod 4) still open are 66, 74, 82 and 86. One
 position bears on two of them: {16,40,44,66}, 66's child 44, is also
 where {16,40,44,82}'s obligation 66 leads. If it is P, 66 fails; if it is
-N, {16,40,44,82} may still be P, and then 82 fails.
+N, {16,40,44,82} may still be P, and then 82 fails. Three of
+{16,40,44,66}'s obligations are open, and their children (its moves 36, 90
+and 134) are long. A search for even replies from them (October 24, 21:34)
+found none: each such reply whose position is short leads to an
+N-position, and the others are beyond the method. The obligation 36 is
+the obstacle: its child {16,36,40,44,66} has no winning odd reply up to
+401 either, so these methods cannot show {16,40,44,66} P.
 
 No answer to 40 is known.
 

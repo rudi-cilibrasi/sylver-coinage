@@ -24,4 +24,4 @@ e'=12: D=(12, 16, 74) N (odd obligation 27 wins)
 e'=36: D=(16, 28, 36, 40, 74, 98) long; skipped
 e'=42: D=(16, 28, 40, 42) odd-complete (16); even 24/24 refuted; P CANDIDATE; open: []
 2026-10-24 09:01:06 end (exit 0)
-2026-10-24 09:03:10 stopped by hand: {16,28,40,74} is N by 34 to {16,28,34,40}, on Sicherman's list, so this search is not needed
+2026-10-24 09:03:10 note added by hand, after the search had ended: {16,28,40,74} is N by 34 to {16,28,34,40}, on Sicherman's list, so this search was not needed
