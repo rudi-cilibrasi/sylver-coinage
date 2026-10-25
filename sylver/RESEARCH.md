@@ -2160,6 +2160,35 @@ Recorded in [the reply-40 record](campaigns/r40-2026-10-23/RESULT.md#the-search-
   and 46, whose resolver replies reach Q, and 34, whose reply reaches
   {8,34,36}, on Sicherman's list.
 
+### Attempt 54 — reply 40: B78 certified, so 78 fails; 94 and 102 fail; by search, the odd answers to 73 fail (2026-10-25)
+
+Recorded in [the reply-40 record](campaigns/r40-2026-10-23/RESULT.md#the-certificate).
+
+- **The certificate.** B78={16,36,40,78} is now certified like Q and B58,
+  with two differences (below). Its 61 obligations have 53 finite witnesses (all 26 odd obligations,
+  and 27 even ones) and 7 routes to the certified nodes C, E, F, P0 and K.
+  The remaining one, its move 20, is answered by 46, which reaches Q. By
+  search, no odd reply up to 601 wins there, so the audit now accepts a route to a
+  position it certified earlier in the same run. Finite replies, 93 and
+  37, replace the search's routes for its moves 34 and 46.
+- **Native and Kunz replays.** B78's witnesses total 1,586,171,937 states.
+  Three are above 150 million: its moves 90, 102 and 86, at 392,105,455,
+  349,532,359 and 189,187,613. Those were replayed natively and by a
+  sequential, memo-verified `kunz_solver.cpp`, as for the reply-38 record's
+  B56 and the
+  [{16,38,72} certification record](campaigns/c72-2026-10-18/RESULT.md);
+  the others natively and in Python.
+- **Twenty-six refutations.** 78's move 36 reaches B78. A light sweep of
+  the odd obligations of 90 to 398 found that 94 fails by 21 and 102 by 33,
+  and finite witnesses for both are replayed. So the audit now refutes
+  every legal even answer up to 50, and 58, 70, 78, 94 and 102. The sweep
+  left the other 76 answers it tried open.
+- **Odd answers.** A third sweep found that the odd answers 59 to 73 fail
+  too, so by search every odd answer from 3 to 73 fails. It stopped at its
+  six-hour limit during 75.
+- **What it means.** No answer to 40 is known. Below 90, 66, 74, 82 and 86
+  remain open.
+
 ### Sources
 
 - <https://math.colgate.edu/~integers/yg2/yg2.pdf>

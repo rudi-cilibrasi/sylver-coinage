@@ -6,7 +6,7 @@ from sylver.short_certificates import NODES
 from screen import KNOWN
 CERT = {key(n.generators): f'node {n.name}' for n in NODES}
 CERT.update({key((16, 28, 38, 40)): 'B28 (r38 audit)', key((16, 30, 40, 44)): "Z' (Z audit)", key((16, 20, 46)): 'Q (here)',
-             key((16, 36, 40, 58)): 'B58 (here)', key((2, 3)): 'finite {2,3}'})
+             key((16, 36, 40, 58)): 'B58 (here)', key((16, 36, 40, 78)): 'B78 (here)', key((2, 3)): 'finite {2,3}'})
 SEARCH = {key((16, 40, 52, 54)): 'B54 (search)'}
 amax = int(sys.argv[1])
 for a in range(2, amax + 1, 2):

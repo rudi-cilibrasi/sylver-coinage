@@ -1,0 +1,4 @@
+20: move=201 N winning_move=207 frobenius=323 cumulative_states=32611005
+34: move=93 P winning_move=none frobenius=155 cumulative_states=9486516
+46: move=37 P winning_move=none frobenius=107 cumulative_states=3374811
+20 (203 to 601): move=601 N winning_move=591 frobenius=723 cumulative_states=78306650

@@ -1,0 +1,1 @@
+P winning_move=none frobenius=189 states=27971381

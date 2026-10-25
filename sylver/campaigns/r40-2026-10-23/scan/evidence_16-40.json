@@ -42,7 +42,7 @@
    "destination": "11,16,26,40",
    "frobenius": 61,
    "states": 3740,
-   "seconds": 0.1
+   "seconds": 0.0
   },
   {
    "obligation": 30,
@@ -62,7 +62,7 @@
    "destination": "16,23,40,42",
    "frobenius": 99,
    "states": 748706,
-   "seconds": 1.6
+   "seconds": 1.1
   },
   {
    "obligation": 50,
@@ -82,7 +82,27 @@
    "destination": "16,37,40,70",
    "frobenius": 169,
    "states": 38439250,
-   "seconds": 172.4
+   "seconds": 88.9
+  },
+  {
+   "obligation": 94,
+   "kind": "even",
+   "reply": 21,
+   "via": "finite",
+   "destination": "16,21,40,94",
+   "frobenius": 139,
+   "states": 1199603,
+   "seconds": 1.6
+  },
+  {
+   "obligation": 102,
+   "kind": "even",
+   "reply": 33,
+   "via": "finite",
+   "destination": "16,33,40,102",
+   "frobenius": 189,
+   "states": 27971381,
+   "seconds": 56.6
   }
  ]
 }
