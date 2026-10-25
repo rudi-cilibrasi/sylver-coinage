@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
-"""The P-positions Q={16,20,46} and B58={16,36,40,58}, and the answers to the reply 40 after the opening 16
-they and others refute.
+"""The P-positions Q={16,20,46}, B58={16,36,40,58} and B78={16,36,40,78}, and the answers to the reply 40
+after the opening 16 they and others refute.
 
-(Q is on Sicherman's list of P-positions; B58 is not. See the record.)
+(Q is on Sicherman's list of P-positions; B58 and B78 are not. See the record.)
 
-Each has gcd two and a short (quiet ender) half: {8,10,23} for Q, {8,18,20,29} for B58. So by the Quiet
-End Theorem each is P exactly when each of its obligations leads to an N-position:
-the even moves 2g for the gaps g of its half, and the half's odd gaps above 1.
+Each has gcd two and a short (quiet ender) half: {8,10,23} for Q, {8,18,20,29}
+for B58, {8,18,20,39} for B78. So by the Quiet End Theorem each is P exactly
+when each of its obligations leads to an N-position: the even moves 2g for the
+gaps g of its half, and the half's odd gaps above 1.
 The audit lists them twice, with the arena referee's profile and with an
 independent coin-sum count, and accepts exactly these kinds of evidence for an
 obligation m:
@@ -16,14 +17,24 @@ obligation m:
    receipt of that certificate (outcomes P, matching state counts, return
    codes, re-hashed transcripts whose own lines state P, the destination's
    Frobenius number and that count);
-2. ``certified-node``: the listed reply reaches a P-position certified in
-   ``sylver.short_certificates.NODES`` (legality and identity checked).
+2. ``finite-witness-native-kunz`` (the certificates in NATIVE_KUNZ only, whose
+   destinations are above 150 million states): as 1, with a sequential
+   kunz_solver.cpp replay (--threads 1 --verify-memo, from the source the
+   reply-38 audit pins, checked by that audit's ``kunz_states``) in place of
+   the Python one, as for the reply-38 record's B56 and the {16,38,72}
+   certification record (c72-2026-10-18);
+3. ``certified-node``: the listed reply reaches a P-position certified in
+   ``sylver.short_certificates.NODES`` (legality and identity checked);
+4. ``nested-p``, as in the reply-38 audit: the listed reply reaches another
+   position of POSITIONS that this audit has already found P (it must be listed
+   earlier). Only B78's move 20 uses it: its reply 46 reaches Q, and by search
+   no odd reply up to 601 wins there (scan/b78_finite_20.out, _20b.out).
 
 The audit fails unless every obligation is covered. It then checks the
 refutations: for each answer a in REFUTED, {16,40,a} is N because a listed
 move reaches a P-position: a finite witness (a certificate with parent
-{16,40}, replayed the same way), a certified node, Q, B58, B28={16,28,38,40}
-or Z'={16,30,40,44}. The reply-38 and Z records certify B28 and Z'; their own
+{16,40}, replayed the same way), a certified node, Q, B58, B78,
+B28={16,28,38,40} or Z'={16,30,40,44}. The reply-38 and Z records certify B28 and Z'; their own
 audits are run here for those two positions. So a does not answer the reply
 40. Output: ``python audit.py > audit.json``.
 """
@@ -41,12 +52,18 @@ from sylver.arena.common import key, legal, position, profile  # noqa: E402
 from sylver.short_certificates import NODES  # noqa: E402
 from sylver.solver import frobenius_number  # noqa: E402
 
+_spec = importlib.util.spec_from_file_location('r38_audit', HERE.parent / 'r38-2026-10-09' / 'audit.py')
+r38 = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(r38)
+
 OPENING, REPLY = 16, 40
-# name: (generators, certificate prefix, node routes {move: (reply, node)})
+# name: (generators, certificate prefix, routes {move: (reply, a certified node, or a position listed before)})
 POSITIONS = {
     'Q': ((16, 20, 46), 'q', {4: (6, 'C'), 6: (4, 'C'), 8: (26, 'G'), 14: (26, 'R'), 26: (8, 'G'), 30: (8, 'O')}),
     'B58': ((16, 36, 40, 58), 'b58_', {4: (6, 'C'), 6: (4, 'C'), 8: (14, 'E'), 12: (14, 'F'), 14: (8, 'E'),
                                      22: (12, 'P0'), 24: (10, 'K')}),
+    'B78': ((16, 36, 40, 78), 'b78_', {4: (6, 'C'), 6: (4, 'C'), 8: (14, 'E'), 12: (14, 'F'), 14: (8, 'E'),
+                                     20: (46, 'Q'), 22: (12, 'P0'), 24: (10, 'K')}),
 }
 # positions another record certifies: name -> (generators, that record's audit, the extra arguments
 # its audit_position takes after the name)
@@ -57,8 +74,10 @@ REFUTED = {2: (3, 'finite'), 4: (6, 'C'), 6: (4, 'C'), 8: (14, 'E'), 10: (9, 'fi
            14: (8, 'E'), 18: (5, 'finite'), 20: (34, 'T'), 22: (12, 'P0'), 24: (10, 'K'), 26: (11, 'finite'),
            28: (38, 'B28'), 30: (17, 'finite'), 34: (20, 'T'), 36: (58, 'B58'), 38: (28, 'B28'),
            42: (23, 'finite'), 44: (30, "Z'"), 46: (20, 'Q'), 50: (11, 'finite'), 58: (36, 'B58'),
-           70: (37, 'finite')}
+           70: (37, 'finite'), 78: (36, 'B78'), 94: (21, 'finite'), 102: (33, 'finite')}
 REFUTATION_PREFIX = 'r40_'
+# certificate prefix: the moves whose destinations are too large for the Python evaluator here
+NATIVE_KUNZ = {'b78_': {86, 90, 102}}
 
 
 def coin_sum_obligations(p):
@@ -102,15 +121,18 @@ def finite_witness(p, prefix, m):
         return None
     c, r = json.loads(cert.read_text()), json.loads(receipt.read_text())
     native, python = r.get('runs', {}).get('native'), r.get('runs', {}).get('python')
-    if (r.get('status') != 'verified' or native is None or python is None
-            or type(native.get('states')) is not int or type(python.get('states')) is not int):
+    native_kunz = m in NATIVE_KUNZ.get(prefix, ())
+    if (r.get('status') != 'verified' or native is None or (python is None) != native_kunz
+            or type(native.get('states')) is not int or (python is not None and type(python.get('states')) is not int)):
         return None
     dest = position((*p, m, c['reply']))
     ok = (r['certificate_sha256'] == hashlib.sha256(cert.read_bytes()).hexdigest() and c['parent'] == list(p)
           and c['opponent_move'] == m and legal(position(p), m) and legal(position((*p, m)), c['reply'])
           and gcd(*dest) == 1 and list(dest) == c['destination'] == r['position'] and c['destination_outcome'] == 'P'
-          and frobenius_number(dest) == c['frobenius'] == r['frobenius'] and native['states'] == python['states'])
-    for solver, run in (('native', native), ('python', python)):
+          and frobenius_number(dest) == c['frobenius'] == r['frobenius']
+          and native['states'] == (r38.kunz_states(receipt.parent, dest, c['frobenius']) if native_kunz
+                                   else python['states']))
+    for solver, run in (('native', native),) + ((() if native_kunz else (('python', python),))):
         files = [HERE / f'verification/{prefix}{m}/{solver}-{stream}.txt' for stream in ('stdout', 'stderr')]
         ok = ok and (run['outcome'] == 'P' and run['returncode'] == 0 and not run['timed_out']
                      and run['frobenius'] == c['frobenius'] and run['command'][-len(dest):] == list(map(str, dest))
@@ -120,7 +142,8 @@ def finite_witness(p, prefix, m):
         ok = ok and transcript_states(solver, files[0].read_text(), dest, c['frobenius']) == native['states']
     if not ok:
         return None
-    return {'evidence': 'finite-witness', 'reply': c['reply'], 'destination': key(dest),
+    return {'evidence': 'finite-witness-native-kunz' if native_kunz else 'finite-witness', 'reply': c['reply'],
+            'destination': key(dest),
             'certificate': str(cert.relative_to(ROOT)), 'receipt': str(receipt.relative_to(ROOT)),
             'states': native['states']}
 
@@ -137,7 +160,21 @@ def certified_node(p, routes, m):
             'certificate': f'node {node_name} of sylver/short_certificates.py', 'source': 'sylver/short_certificates.py'}
 
 
-def audit_position(name):
+def nested_p(p, routes, m, certified):
+    """The listed reply reaches a position this audit certified before this one, or None."""
+    if m not in routes or routes[m][1] not in certified:
+        return None
+    reply, name = routes[m]
+    generators, ok = certified[name]
+    child = position((*p, m))
+    if not ok or not legal(child, reply) or key((*child, reply)) != key(generators):
+        return None
+    return {'evidence': 'nested-p', 'reply': reply, 'destination': key(generators), 'section': name,
+            'certificate': f'{name}, certified earlier in this audit'}
+
+
+def audit_position(name, certified=None):
+    """One position of POSITIONS; ``certified`` maps the names audited before it to (generators, outcome is P)."""
     generators, prefix, node_routes = POSITIONS[name]
     p = position(generators)
     info = profile(p)
@@ -149,7 +186,8 @@ def audit_position(name):
     if info['moves'] != recount:
         section['failures'].append(f'{name}: the referee profile and the coin-sum recount disagree')
     for m in info['moves']:
-        row = finite_witness(p, prefix, m) or certified_node(p, node_routes, m)
+        row = (finite_witness(p, prefix, m) or certified_node(p, node_routes, m)
+               or nested_p(p, node_routes, m, certified or {}))
         if row is None:
             section['failures'].append(f'{name}: move {m} has no accepted evidence')
             continue
@@ -169,9 +207,12 @@ def audit_position(name):
 def audit_external(name):
     """A position by its own record's audit (that record's certificates, in its directory)."""
     generators, path, extra = EXTERNAL[name]
-    spec = importlib.util.spec_from_file_location(f'audit_{path.parent.name}', path)
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
+    if path == Path(r38.__file__):
+        module = r38
+    else:
+        spec = importlib.util.spec_from_file_location(f'audit_{path.parent.name}', path)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
     section = module.audit_position(name, *extra)
     failures = list(section['failures'])
     if section['position'] != list(position(generators)):
@@ -207,13 +248,15 @@ def refutations(known):
 
 
 def main():
-    report = {name: audit_position(name) for name in POSITIONS}
+    report, known = {}, {}
+    for name in POSITIONS:   # in order: B78 uses Q
+        report[name] = audit_position(name, known)
+        known[name] = (POSITIONS[name][0], report[name]['outcome'] == 'P')
     report.update({name: audit_external(name) for name in EXTERNAL})
-    known = {name: (POSITIONS[name][0], report[name]['outcome'] == 'P') for name in POSITIONS}
     known.update({name: (EXTERNAL[name][0], report[name]['outcome'] == 'P') for name in EXTERNAL})
     report['refuted_answers_to_40'], refutation_failures = refutations(known)
     report['failures'] = [f for name in (*POSITIONS, *EXTERNAL) for f in report[name]['failures']] + refutation_failures
-    report['verdict'] = 'verified' if not report['failures'] else 'failed'   # Q, B58, B28, Z' and every refutation
+    report['verdict'] = 'verified' if not report['failures'] else 'failed'   # Q, B58, B78, B28, Z', every refutation
     print(json.dumps(report, indent=2))
     return 0 if not report['failures'] else 1
 

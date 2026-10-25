@@ -1,4 +1,4 @@
-# Reply 40 after the opening 16: twenty-three answers fail
+# Reply 40 after the opening 16: twenty-six answers fail
 
 After the opening 16, the lowest reply without a certified answer is 38, and
 by search 72 answers it
@@ -7,15 +7,18 @@ The next reply, **40, has no known answer**. {16,40} has gcd eight (it is
 8·{2,5}), and the Quiet End tools here cover gcd two. So no finite list of
 obligations bounds the answers to 40: any legal move may answer it.
 
-This record certifies two P-positions:
+This record certifies three P-positions:
 - **Q={16,20,46}**. Its half is {8,10,23}, the half's Frobenius number is
   45, and Q has 39 obligations. Q is on George Sicherman's
   [list of P-positions](https://sicherman.net/sylver/ppos.html) (last
   updated September 28), so this is an independent confirmation.
 - **B58={16,36,40,58}**. Its half is {8,18,20,29}, the half's Frobenius
   number is 59, and B58 has 51 obligations. B58 is not on Sicherman's list.
+- **B78={16,36,40,78}**. Its half is {8,18,20,39}, the half's Frobenius
+  number is 69, and B78 has 61 obligations. B78 is not on Sicherman's list
+  either.
 
-With them, the audit refutes twenty-three answers to 40:
+With them, the audit refutes twenty-six answers to 40:
 
 | Answer a | {16,40,a} | Move | Reaches | Known P by |
 | ---: | --- | ---: | --- | --- |
@@ -42,16 +45,19 @@ With them, the audit refutes twenty-three answers to 40:
 | 50 | {16,40,50} | 11 | {11,16,40,50} | finite witness |
 | 58 | {16,40,58} | 36 | B58 | here |
 | 70 | {16,40,70} | 37 | {16,37,40,70} | finite witness |
+| 78 | {16,40,78} | 36 | B78 | here |
+| 94 | {16,40,94} | 21 | {16,21,40,94} | finite witness |
+| 102 | {16,40,102} | 33 | {16,33,40,102} | finite witness |
 
 16, 32, 40 and 48 are not legal answers. So **every legal even answer up to
-50 fails**, and 58 and 70 fail too. By search, 52, 54, 62, 78 and the odd
-answers 3 to 57 fail as well
+50 fails**, and 58, 70, 78, 94 and 102 fail too. By search, 52, 54, 62
+and the odd answers 3 to 73 fail as well
 ([below](#the-search-for-an-answer-to-40)). **40 remains unanswered**, and
 opening 16 remains unresolved.
 
 ## The certificate
 
-Q and B58 are short, so each is P exactly when each of its obligations
+Q, B58 and B78 are short, so each is P exactly when each of its obligations
 leads to N. The obligations are the even moves 2g for the gaps g of its
 half, and the half's odd gaps above 1. [audit.py](audit.py) lists them
 twice, with the arena referee's profile and with an independent coin-sum
@@ -61,43 +67,66 @@ count ([audit.json](audit.json)), and accepts:
   reach C, 8 and 26 reach G, 14 reaches R, and 30 reaches O;
 - for B58, 44 finite witnesses (all 21 odd obligations, and 23 even ones),
   replayed the same way, and 7 certified nodes: moves 4 and 6 reach C, 8
-  and 14 reach E, 12 reaches F, 22 reaches P0, and 24 reaches K.
+  and 14 reach E, 12 reaches F, 22 reaches P0, and 24 reaches K;
+- for B78, 53 finite witnesses (all 26 odd obligations, and 27 even ones),
+  the same 7 certified nodes as B58, and its move 20, whose reply 46 reaches
+  Q, which the audit certifies first. By search, no odd reply up to 601
+  wins after 20 (`scan/b78_finite_20.out` and `scan/b78_finite_20b.out`).
 
 Each finite witness is a certificate `<prefix><move>-certificate.json`, in
 the schema the campaign records use: prefix `q` for Q's obligations, `b58_`
-for B58's, and `r40_` for the refutations, with parent {16,40}.
+for B58's, `b78_` for B78's, and `r40_` for the refutations, with parent
+{16,40}.
 `python -m sylver.verify_finite_reply --python` replayed each from empty
 memos with `native_solver.cpp` and the Python reference evaluator
 ([verification/](verification/)), and both report P with the same state
-count.
+count; three of B78's were replayed another way (below).
 - Q's replays total 4,525,687 states. The largest is its move 42 answered
   by 89, {16,20,42,46,89}, at 1,626,244.
 - B58's replays total 517,445,319 states. The largest is its move 118
   answered by 161, {16,36,40,58,118,161}, at 132,607,400; its Python replay
   took 14,941 seconds, about four hours.
-- The refutations' replays total 39,264,643. The largest is 70's,
+- B78's replays total 1,586,171,937 states. Three are above 150 million
+  states, the limit this record's `replay.py` sets for the Python evaluator
+  here (as the {16,38,72} certification record did; the reply-38 record's
+  limit was 175 million): its moves 90, 102 and 86,
+  answered by 217, 181 and 135, at 392,105,455, 349,532,359 and 189,187,613.
+  Those three were replayed with `native_solver.cpp` and a sequential,
+  memo-verified `kunz_solver.cpp` (`--threads 1 --verify-memo`) built from
+  the source snapshot the reply-38 audit pins, as the reply-38 record did
+  for B56's largest witnesses and the
+  [{16,38,72} certification record](../c72-2026-10-18/RESULT.md) for its
+  own. The audit
+  checks the Kunz receipts with the reply-38 audit's checker. The other 50,
+  up to 131,731,309 states (its move 122 answered by 99), were replayed in
+  Python. B78's replays ran on October 25, from 04:57 to 15:20.
+- The refutations' replays total 68,435,627. The largest is 70's,
   {16,37,40,70}, at 38,439,250.
 
-The audit then checks the twenty-three refutations: each move is legal and
-reaches a finite witness, a certified node, Q, B58, B28 or Z′. For B28 and
+The audit then checks the twenty-six refutations: each move is legal and
+reaches a finite witness, a certified node, Q, B58, B78, B28 or Z′. For B28 and
 Z′ it runs the reply-38 and Z records' own audits of those positions.
 
-**Two routes differ from the search's.** The resolver answered Q's move 22
+**Four routes differ from the search's.** The resolver answered Q's move 22
 through the reply-38 record's I={16,20,22,24}, and its move 24 through the
 node K. Finite replies replace both: 45 and 29. The other node routes stay:
 Q's moves 8, 26 and 30 have no odd reply up to 201 that wins. B58's routes
-are all the search's.
+are all the search's. So are B78's, except two: the resolver answered its
+move 34 by 8, reaching {8,34,36} on Sicherman's list, and its move 46 by
+20, reaching Q; finite replies replace both, 93 and 37. Its move 20 keeps
+the route through Q.
 
 **What it rests on.** Like the other records, this one rests on the Quiet
 End Theorem. Through the certified nodes, it also rests on these published
 positions:
 - **Sicherman's {8,10,22}** (the node H), whose P outcome comes from a
   periodicity computation. Q reaches it through G and O, B58 through K,
-  and the refutations through K and through T, which uses G and K.
+  B78 through K and Q, and the refutations through K and through T, which
+  uses G and K.
 - **Blok's pairing family {8,12,8n+2,8n+6}**, at three of its members:
-  n=1, {8,10,12,14}, through E and F, for B58 and the refutations; n=2,
-  {8,12,18,22}, through P0, for the same; and n=3, {8,12,26,30}, through G
-  and O for Q and through T for the refutations.
+  n=1, {8,10,12,14}, through E and F, for B58, B78 and the refutations;
+  n=2, {8,12,18,22}, through P0, for the same; and n=3, {8,12,26,30},
+  through G and O for Q (and so for B78) and through T for the refutations.
 
 B28 and Z′ rest on what their records list: the nodes C, E, F, J and P0 for
 B28, and C, E and F for Z′.
@@ -125,7 +154,10 @@ reduced pair {2,5}, and it fails. Here, one P-table sweep found that 5
 through 33 all fail (3,167,594 P-positions, about a minute). A second found
 that 35 through 57 fail too (156,248,856 P-positions). It stopped at its
 one-hour limit during 59: it started at 16:41:36 and its log ends at
-17:41:37.
+17:41:37. A third, from 59 with a six-hour limit (October 24, 21:37, to
+October 25, 03:37), found that 59 through 73 fail as well (530,988,925
+P-positions after 73). Their winning replies are 330, 62, 163, 19, 103, 25,
+45 and 78. It stopped at the limit during 75.
 
 **Even answers a ≡ 2 (mod 4).** `screen.py` first looked for an obligation
 reaching a known P-position, for every a up to 398. It then swept the odd
@@ -137,7 +169,8 @@ obligations of the survivors, stopping at the first P:
 | 26, 42, 50, 62, 70 | an odd obligation reaches a finite P-position: 11, 23, 11, 61, 37 |
 | 46, 54, 58 | every odd obligation leads to N |
 | 66, 74, 78, 82, 86 | stopped with 3 to 16 odd obligations left: 86 at the cap of 100,000,000 P-positions, the others at the 30-minute limit |
-| 90 to 398 | not swept |
+| 94, 102 | an odd obligation reaches a finite P-position: 21, 33 (light sweep, below) |
+| the other 76 from 90 to 398 | stopped with 20 to 23 odd obligations classified, out of 47 to 201 (light sweep) |
 
 62's finite witness, {16,40,61,62}, needs 286,533,125 states when solved
 alone. A Python replay would need about 43 GiB of this host's 62 GiB, so 62
@@ -206,11 +239,13 @@ seven of {16,40,52,66}'s 36, fourteen of {16,40,66,68}'s 40, five of
 {16,40,44,82}'s 38 (and three more not tried). The last two tests were
 stopped by hand once they could no longer succeed.
 
-Four new P-positions came out of the pass, all by search and none on
-Sicherman's list:
+Four new P-positions came out of the pass, none on Sicherman's list. The
+audit has since certified the first; the other three are P by search:
 - **B78={16,36,40,78}.** Its half is {8,18,20,39}, the half's Frobenius
   number is 69, and it has 61 obligations: 26 odd and 35 even, all leading
-  to N. So 78 fails, and 36 again.
+  to N. So 78 fails, and 36 again. Its evidence is in
+  `scan/evidence_16-36-40-78.json`, and the audit certifies it
+  ([above](#the-certificate)).
 - **B50={16,36,40,50}** and **B70={16,36,40,70}**, which two of
   {16,36,40,86}'s obligations reach. Their halves' Frobenius numbers are 55
   and 65, and they have 47 and 57 obligations. So {16,36,40,x} is P for
@@ -231,6 +266,16 @@ found none: each such reply whose position is short leads to an
 N-position, and the others are beyond the method. The obligation 36 is
 the obstacle: its child {16,36,40,44,66} has no winning odd reply up to
 401 either, so these methods cannot show {16,40,44,66} P.
+
+**90 to 398** (October 25, 06:00 to 12:21). A light sweep of the odd
+obligations ran beside B78's replays: for each a, five minutes or
+20,000,000 P-positions, with four threads and a 1 GiB N-cache. It found
+that 94 fails by 21 and 102 by 33, and the audit certifies both with finite
+witnesses: {16,21,40,94} at 1,199,603 states and {16,33,40,102} at
+27,971,381, each replayed natively and in Python. Each of the other 76
+stopped with 20 to 23 of its odd obligations classified, all N: 110 at the
+cap, the rest at the time limit. So no a from 90 to 398 is yet known to
+have all its odd obligations lead to N.
 
 No answer to 40 is known.
 
