@@ -1,0 +1,27 @@
+2026-10-24 08:59:54 start
+C = (16, 28, 40, 42) even moves: [2, 6, 10, 4, 18, 22, 34, 8, 12, 26, 38, 50, 14, 20, 30, 36, 46, 62, 78, 24, 52, 54, 66, 94]
+e'=2: D=(2,) long; skipped
+e'=6: D=(6, 16) N (odd obligation 7 wins)
+e'=10: D=(10, 16, 28) long; skipped
+e'=4: D=(4, 42) odd-complete (9); even 9/10 refuted; 1 open; open: [(6, 'is a known P-position')]
+e'=18: D=(16, 18, 28, 40, 42) long; skipped
+e'=22: D=(16, 22, 28, 40, 42) long; skipped
+e'=34: D=(16, 28, 34, 40, 42) long; skipped
+e'=8: D=(8, 28, 42) N (odd obligation 11 wins)
+e'=12: D=(12, 16, 42) odd-complete (12); even 13/16 refuted; 3 open; open: [(8, 'short, odd-complete'), (14, 'is a known P-position'), (18, 'short, odd-complete')]
+e'=26: D=(16, 26, 28, 40) long; skipped
+e'=38: D=(16, 28, 38, 40, 42) long; skipped
+e'=50: D=(16, 28, 40, 42, 50) long; skipped
+e'=14: D=(14, 16, 40) N (odd obligation 9 wins)
+e'=20: D=(16, 20, 28, 42) long; skipped
+e'=30: D=(16, 28, 30, 40, 42) long; skipped
+e'=36: D=(16, 28, 36, 40, 42) long; skipped
+e'=46: D=(16, 28, 40, 42, 46) long; skipped
+e'=62: D=(16, 28, 40, 42, 62) long; skipped
+e'=78: D=(16, 28, 40, 42, 78) long; skipped
+e'=24: D=(16, 24, 28, 42) N (odd obligation 5 wins)
+e'=52: D=(16, 28, 40, 42, 52) long; skipped
+e'=54: D=(16, 28, 40, 42, 54) long; skipped
+e'=66: D=(16, 28, 40, 42, 66) long; skipped
+e'=94: D=(16, 28, 40, 42, 94) long; skipped
+2026-10-24 08:59:55 end (exit 0)

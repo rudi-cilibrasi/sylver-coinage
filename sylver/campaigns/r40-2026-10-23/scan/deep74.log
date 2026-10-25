@@ -1,0 +1,5 @@
+2026-10-24 08:59:53 deep74 start (a P child of 74 found: False)
+2026-10-24 08:59:54 pair search {16 28 34 40 74} end (exit 0)
+2026-10-24 08:59:55 pair search {16 28 40 42 74} end (exit 0)
+2026-10-24 09:01:06 pair search {16 28 40 74 98} end (exit 0)
+2026-10-24 09:03:48 deep74 end

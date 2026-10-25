@@ -2128,6 +2128,38 @@ Recorded in [the reply-40 record](campaigns/r40-2026-10-23/RESULT.md).
   remain refuted by search only, as do the odd answers 3 to 57. B54's three
   largest witnesses and 62's need native and sequential Kunz replays.
 
+### Attempt 53 — reply 40: B78 refutes 78, and {16,36,40,x} is P for x = 50, 58, 70, 78 (2026-10-24)
+
+Recorded in [the reply-40 record](campaigns/r40-2026-10-23/RESULT.md#the-search-for-an-answer-to-40).
+
+- **The pass.** For 66, 74, 78, 82 and 86, whose odd sweeps had stopped
+  early, the search resolved the even obligations whose children are
+  short, and tested each short child whose odd obligations all lead to N,
+  the way 54 and 58 fell.
+- **B78** (search). 78 had one such child, {16,36,40,78}, and all 61 of
+  its obligations lead to N. So 78 fails, and 36 again.
+- **B50 and B70** (search). Two obligations of 86's child {16,36,40,86}
+  reach {16,36,40,50} and {16,36,40,70}, and both are P too. With B58,
+  {16,36,40,x} is P for x = 50, 58, 70 and 78. So the move 36 refutes
+  neither 66 nor 86: {16,36,40,66} and {16,36,40,86} can each move to one
+  of them.
+- **{16,28,40,42}** (search), found while testing 74's child
+  {16,28,40,74}. It refutes 28 and 42, which were already refuted.
+- **The known list.** Until October 24 the search's list of known
+  P-positions had 67 entries. It now holds Sicherman's whole list, Blok's
+  pairing family and the six positions found here, 508 in all. Two of
+  74's tested children fell to it: {16,28,40,74} reaches {16,28,34,40},
+  which is on Sicherman's list, and {16,36,40,74} reaches B58.
+- **What it means.** None of the four new positions is on Sicherman's
+  list. No answer to 40 is known. Below 90, 66, 74, 82 and 86 remain open:
+  none of their short children has been shown P, and their long children
+  were not tried. {16,40,44,66} bears on two of them: if it is P, 66 fails,
+  and if it is N, {16,40,44,82} may be P, refuting 82. A search for even
+  replies from its three open children found none. To certify B78 the way
+  B58 was certified, three of its obligations need finite witnesses: 20
+  and 46, whose resolver replies reach Q, and 34, whose reply reaches
+  {8,34,36}, on Sicherman's list.
+
 ### Sources
 
 - <https://math.colgate.edu/~integers/yg2/yg2.pdf>

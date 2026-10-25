@@ -1,0 +1,47 @@
+resolve_16-40-44-66.jsonl 34 rows, 3 unresolved: {36: 'open', 90: 'open', 134: 'open'}
+    36 known reply: None
+    90 known reply: None
+    134 known reply: None
+resolve_16-40-52-66.jsonl 36 rows, 9 unresolved: {36: 'short: needs even', 50: 'short: needs even', 58: 'open', 60: 'open', 76: 'open', 86: 'open', 90: 'open', 110: 'open', 142: 'open'}
+    36 known reply: (50, 'r40 search: B50 P (resolve_16-36-40-50.jsonl)')
+    50 known reply: (36, 'r40 search: B50 P (resolve_16-36-40-50.jsonl)')
+    58 known reply: None
+    60 known reply: None
+    76 known reply: None
+    86 known reply: None
+    90 known reply: None
+    110 known reply: None
+    142 known reply: None
+resolve_16-40-66-68.jsonl 40 rows, 16 unresolved: {36: 'short: needs even', 50: 'short: needs even', 52: 'short: needs even', 54: 'open', 74: 'open', 78: 'open', 86: 'open', 90: 'open', 92: 'open', 94: 'open', 102: 'open', 110: 'open', 118: 'open', 126: 'open', 142: 'open', 158: 'open'}
+    36 known reply: (50, 'r40 search: B50 P (resolve_16-36-40-50.jsonl)')
+    50 known reply: (36, 'r40 search: B50 P (resolve_16-36-40-50.jsonl)')
+    52 known reply: None
+    54 known reply: None
+    74 known reply: None
+    78 known reply: None
+    86 known reply: None
+    90 known reply: None
+    92 known reply: None
+    94 known reply: None
+    102 known reply: None
+    110 known reply: None
+    118 known reply: None
+    126 known reply: None
+    142 known reply: None
+    158 known reply: None
+resolve_16-40-60-74.jsonl 35 rows, 6 unresolved: {28: 'short: needs even', 58: 'short: needs even', 82: 'open', 86: 'open', 98: 'open', 102: 'open'}
+    28 known reply: (34, "Sicherman's list (published)")
+    58 known reply: None
+    82 known reply: None
+    86 known reply: None
+    98 known reply: None
+    102 known reply: None
+resolve_16-40-44-82.jsonl 35 rows, 3 unresolved: {66: 'short: needs even', 90: 'open', 102: 'open'}
+    66 known reply: None
+    90 known reply: None
+    102 known reply: None
+resolve_16-36-40-86.jsonl 37 rows, 4 unresolved: {50: 'short: needs even', 70: 'short: needs even', 110: 'open', 146: 'open'}
+    50 its child is known P: r40 search: B50 P (resolve_16-36-40-50.jsonl) -> the tested position is N
+    70 its child is known P: r40 search: B70 P (resolve_16-36-40-70.jsonl) -> the tested position is N
+    110 known reply: (70, 'r40 search: B70 P (resolve_16-36-40-70.jsonl)')
+    146 known reply: (50, 'r40 search: B50 P (resolve_16-36-40-50.jsonl)')

@@ -44,7 +44,7 @@ With them, the audit refutes twenty-three answers to 40:
 | 70 | {16,40,70} | 37 | {16,37,40,70} | finite witness |
 
 16, 32, 40 and 48 are not legal answers. So **every legal even answer up to
-50 fails**, and 58 and 70 fail too. By search, 52, 54, 62 and the odd
+50 fails**, and 58 and 70 fail too. By search, 52, 54, 62, 78 and the odd
 answers 3 to 57 fail as well
 ([below](#the-search-for-an-answer-to-40)). **40 remains unanswered**, and
 opening 16 remains unresolved.
@@ -179,8 +179,58 @@ For 46, 54 and 58, the even obligations decide:
     time within a 22 GiB memory budget.
 
 Each of 46, 54 and 58 thus fell to a short child that is P: the first one
-tested, every time. Below 90, the answers a ≡ 2 (mod 4) still open are 66,
-74, 78, 82 and 86.
+tested, every time.
+
+**66 to 86** (October 23 to 24). For these five the odd sweeps had stopped
+early, so the search went to the even side, as for 54 and 58: it resolved
+each even obligation whose child is short, and tested each short child
+whose odd obligations all lead to N. A child stayed open when none of its
+odd replies was found to win and at least one had hit the limit of five
+minutes or 100 million P-positions; its sweep gave up once four had. The
+table gives the counts as the pass found them. With the known list as it
+now stands, one more child is settled: 74's open child {16,40,58,74} plays
+36 and reaches B58.
+
+| a | Short children | Resolved | Odd obligations all N | Open | Those children |
+| ---: | ---: | ---: | --- | ---: | --- |
+| 66 | 23 | 16 | 36, 44, 52, 68 | 3 | none shown P; {16,36,40,66} is N (by 50, to B50 below) |
+| 74 | 26 | 16 | 28, 36, 60 | 7 | {16,28,40,74} is N (by 34, to {16,28,34,40} on Sicherman's list); {16,36,40,74} is N (by 58, to B58); {16,40,60,74} not shown P |
+| 78 | 28 | 19 | 36 | 8 | **{16,36,40,78} is P**, so 78 fails |
+| 82 | 30 | 18 | 44 | 11 | {16,40,44,82} not shown P |
+| 86 | 31 | 23 | 36 | 7 | {16,36,40,86} is N (by 50 and 70, to B50 and B70) |
+
+"Not shown P" means the test left even obligations unresolved, even with
+the positions found later: three of {16,40,44,66}'s 34,
+seven of {16,40,52,66}'s 36, fourteen of {16,40,66,68}'s 40, five of
+{16,40,60,74}'s 40 (and five more not tried), and three of
+{16,40,44,82}'s 38 (and three more not tried). The last two tests were
+stopped by hand once they could no longer succeed.
+
+Four new P-positions came out of the pass, all by search and none on
+Sicherman's list:
+- **B78={16,36,40,78}.** Its half is {8,18,20,39}, the half's Frobenius
+  number is 69, and it has 61 obligations: 26 odd and 35 even, all leading
+  to N. So 78 fails, and 36 again.
+- **B50={16,36,40,50}** and **B70={16,36,40,70}**, which two of
+  {16,36,40,86}'s obligations reach. Their halves' Frobenius numbers are 55
+  and 65, and they have 47 and 57 obligations. So {16,36,40,x} is P for
+  x = 50, 58, 70 and 78. These refute 50 and 70 again, and they show that
+  the move 36 does not refute 66 or 86.
+- **{16,28,40,42}**, found by a search over the even replies of
+  {16,28,40,74}'s children. Its half is {8,14,20,21}, the half's Frobenius
+  number is 47, and its 40 obligations (16 odd, 24 even) all lead to N. It
+  refutes 28 and 42 again.
+
+Below 90, the answers a ≡ 2 (mod 4) still open are 66, 74, 82 and 86. One
+position bears on two of them: {16,40,44,66}, 66's child 44, is also
+where {16,40,44,82}'s obligation 66 leads. If it is P, 66 fails; if it is
+N, {16,40,44,82} may still be P, and then 82 fails. Three of
+{16,40,44,66}'s obligations are open, and their children (its moves 36, 90
+and 134) are long. A search for even replies from them (October 24, 21:34)
+found none: each such reply whose position is short leads to an
+N-position, and the others are beyond the method. The obligation 36 is
+the obstacle: its child {16,36,40,44,66} has no winning odd reply up to
+401 either, so these methods cannot show {16,40,44,66} P.
 
 No answer to 40 is known.
 

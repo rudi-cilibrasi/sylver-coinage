@@ -1,0 +1,35 @@
+2026-10-24 21:34:49 start
+C = (16, 40, 44, 66, 90) even moves: [2, 6, 10, 18, 14, 4, 26, 30, 22, 38, 46, 54, 12, 34, 62, 20, 36, 42, 58, 70, 86, 102, 8, 28, 52, 74, 78, 118, 24, 50, 68, 94]
+e'=2: D=(2,) long; skipped
+e'=6: D=(6, 16) N (odd obligation 7 wins)
+e'=10: D=(10, 16, 44) long; skipped
+e'=18: D=(16, 18, 40, 44) long; skipped
+e'=14: D=(14, 16, 40, 66) long; skipped
+e'=4: D=(4, 66) odd-complete (15); even 15/16 refuted; 1 open; open: [(6, 'is a known P-position')]
+e'=26: D=(16, 26, 40, 44) long; skipped
+e'=30: D=(16, 30, 40, 44, 66) long; skipped
+e'=22: D=(16, 22, 40, 90) long; skipped
+e'=38: D=(16, 38, 40, 44, 66, 90) long; skipped
+e'=46: D=(16, 40, 44, 46, 66) long; skipped
+e'=54: D=(16, 40, 44, 54, 66, 90) long; skipped
+e'=12: D=(12, 16, 66) odd-complete (18); even 19/22 refuted; 3 open; open: [(14, 'is a known P-position'), (18, 'is a known P-position'), (22, 'is a known P-position')]
+e'=34: D=(16, 34, 40, 44) long; skipped
+e'=62: D=(16, 40, 44, 62, 66, 90) long; skipped
+e'=20: D=(16, 20, 44, 66, 90) long; skipped
+e'=36: D=(16, 36, 40, 44, 66, 90) long; skipped
+e'=42: D=(16, 40, 42, 44, 66) long; skipped
+e'=58: D=(16, 40, 44, 58, 66) long; skipped
+e'=70: D=(16, 40, 44, 66, 70, 90) long; skipped
+e'=86: D=(16, 40, 44, 66, 86, 90) long; skipped
+e'=102: D=(16, 40, 44, 66, 90, 102) long; skipped
+e'=8: D=(8, 44, 66) odd-complete (20); even 25/26 refuted; 1 open; open: [(14, 'is a known P-position')]
+e'=28: D=(16, 28, 40, 66, 90) long; skipped
+e'=52: D=(16, 40, 44, 52, 66, 90) long; skipped
+e'=74: D=(16, 40, 44, 66, 74) long; skipped
+e'=78: D=(16, 40, 44, 66, 78, 90) long; skipped
+e'=118: D=(16, 40, 44, 66, 90, 118) long; skipped
+e'=24: D=(16, 24, 44, 66) N (odd obligation 15 wins)
+e'=50: D=(16, 40, 44, 50) N (odd obligation 11 wins)
+e'=68: D=(16, 40, 44, 66, 68, 90) long; skipped
+e'=94: D=(16, 40, 44, 66, 90, 94) long; skipped
+2026-10-24 21:34:50 end (exit 0)

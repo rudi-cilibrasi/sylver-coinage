@@ -4,7 +4,9 @@ For a = 2 mod 4, {16,40,a} has gcd two and (for a > 2) a quiet-ender half, so by
 Theorem it is P exactly when each obligation b (profile(...)['moves']) leads to an N-position.
 Stage 1 (known): an obligation b whose child {16,40,a,b} is a known P-position refutes a. The list is
 the reply-38 campaign's known_p.json plus the finite P-positions of the opening-16 table and ledger,
-and the search-grade {16,38,72}; each refutation names its source.
+and the search-grade {16,38,72}; then the P-positions this search found, each as it was found; and from
+October 24, for search only, Sicherman's published list (sicherman_ppos.json) and Blok's pairing family.
+Each refutation names its source.
 Stage 2 (odd, with --odd): for each candidate stage 1 leaves, sweep its odd obligations (finite children)
 with kunz in one shared memo, stopping at the first P: a P child refutes a.
 Writes screen.jsonl (one row per candidate and stage).
@@ -26,8 +28,20 @@ for p, why in [((2, 3), 'opening table'), ((5, 16, 18), 'opening table'), ((6, 7
                ((16, 37, 62), 'o16 ledger'), ((16, 33, 86), 'o16 ledger'), ((16, 17, 90), 'o16 ledger'),
                ((13, 16, 140), 'o16 ledger'), ((16, 21, 156), 'o16 ledger'), ((16, 31, 150), 'o16 scan (search)'),
                ((16, 38, 72), 'reply-38 search'),
-               ((16, 20, 46), 'r40 search: P (pair_any_16-40-46-60.log)')]:
+               ((16, 20, 46), 'r40 search: P (pair_any_16-40-46-60.log)'),
+               ((16, 40, 52, 54), 'r40 search: B54 P (resolve_16-40-52-54.jsonl)'),
+               ((16, 36, 40, 58), 'r40 record: B58 P (certified, PR #67)'),
+               ((16, 28, 40, 42), 'r40 search: P (pair_any_16-28-40-74-98.log)'),
+               ((16, 36, 40, 78), 'r40 search: B78 P (resolve_16-36-40-78.jsonl)'),
+               ((16, 36, 40, 50), 'r40 search: B50 P (resolve_16-36-40-50.jsonl)'),
+               ((16, 36, 40, 70), 'r40 search: B70 P (resolve_16-36-40-70.jsonl)')]:
     KNOWN.setdefault(key(p), why)
+# published P-positions, for search (not certification): Sicherman's list (sicherman_ppos.json, the
+# positions on his page as updated 2026-09-28) and Blok's pairing family {8,12,8n+2,8n+6}
+for p in json.loads((HERE / 'sicherman_ppos.json').read_text())['positions']:
+    KNOWN.setdefault(key(tuple(p)), "Sicherman's list (published)")
+for n in range(1, 200):
+    KNOWN.setdefault(key((8, 12, 8 * n + 2, 8 * n + 6)), "Blok's pairing family (published)")
 OUT = HERE / 'screen.jsonl'
 
 
