@@ -1,0 +1,2 @@
+2026-10-27 12:13:29 stopped even_resolver.py 3652320 and 3669924
+2026-10-27 12:13:29 start (python3 even_resolver.py --position 16 40 60 82 --p-table --ncache-mb 8192 --threads 10 --short-first --max-states 400000000 --timeout 1200; 16 h)

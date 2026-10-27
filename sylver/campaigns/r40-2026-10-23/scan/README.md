@@ -67,7 +67,8 @@ certified.
 | the odd obligations pass A left for 86 and 82: pass H | `./pass_h.sh PID PID` (`kunz_pt` as in pass C, 4 hours each, after `collect.py` and `size_alt.sh` ended), October 26, 21:45, to October 27, 05:45: 86's 73 to 101 N, then the limit during 105; 82's 71 to 127 N, then the limit during 135. The first line of `deep_86.err` is pass C's, from October 25 | `pass_h.sh`, `pass_h.log`, `deep_86.*`, `deep_82.*` |
 | pass H's leftovers, eight hours each: pass I | `./pass_i.sh PID` (`kunz_pt` as in pass C, on the obligations with no row in `deep_82.out` or `deep_86.out`), October 27. Its first run began with 86 and was stopped after 16 seconds; the script was then changed to take 82 first (its order and its header comment), and run again, 05:45 to 11:54: 135 by 349. Neither of its 86 runs wrote a row, and their files are not kept | `pass_i.sh`, `pass_i.log`, `deep_82x.*` |
 | the even rows that odd rows settle | `python cross_rows.py 82 --b66 > cross_82.log` and `python cross_rows.py 86 > cross_86.log`, without a solver, October 27, 05:47; pass J ran the first again, which added nothing | `cross_rows.py`, `cross_82.log`, `cross_86.log`, `even_82.jsonl` and `even_86.jsonl` (their last 7 and 3 rows) |
-| 82's even side: pass J | `./pass_j.sh PID`: once pass I's row for 135 was N, it stopped pass I, ran `cross_rows.py 82 --b66` again, and started `even_resolver.py 82 --p-table --ncache-mb 8192 --threads 10 --short-first --redo-open --max-states 400000000 --timeout 1200` (24 hours at most), October 27, 11:54. It was still running when this was recorded | `pass_j.sh`, `pass_j.log` (to 11:54) |
+| 82's even side: pass J | `./pass_j.sh PID`: once pass I's row for 135 was N, it stopped pass I, ran `cross_rows.py 82 --b66` again, and started `even_resolver.py 82 --p-table --ncache-mb 8192 --threads 10 --short-first --redo-open --max-states 400000000 --timeout 1200` (24 hours at most), October 27, 11:54. Its first row: 82's child {16,40,60,82} is "short: needs even", its 30 odd obligations all N, 75 and 83 (skipped on October 24) among them. `pass_k.sh` stopped it at 12:13, during its row for 68 | `pass_j.sh`, `pass_j.log`, `eighty2.log`, `even_82.jsonl` (its last row) |
+| {16,40,60,82}'s 42 even obligations: pass K | `./pass_k.sh PID` (`even_resolver.py --position 16 40 60 82 --p-table --ncache-mb 8192 --threads 10 --short-first --max-states 400000000 --timeout 1200`, 16 hours at most), from October 27, 12:13. It was still running when this was recorded | `pass_k.sh`, `pass_k.log` (its start) |
 
 The shell scripts log "(exit N)" after each run. Until the review of this
 record, they took N from `$?` inside the `$(date ...)` line, which is
@@ -126,5 +127,4 @@ in its line in `sixty6.log`, `pass_e.log`, `pass_f.log`, `pass_g.log`,
 ended this way four seconds in.
 After the review of this pass, `cross_rows.py` skips a P row before reading
 its winning move (a P row has none); its runs here read only N rows.
-`even_82.jsonl` stops at the rows written before pass J's resolver began;
-its later rows come with pass J's record.
+`even_82.jsonl` has the rows written by October 27, 12:13.

@@ -366,9 +366,14 @@ began 86, before it classified any of them.
   known P-positions settle at once ({2,3}, B28 and Q). Open are nine short
   children, {16,40,82,e} for e = 60, 68, 76, 84, 92, 100, 108, 116 and
   148, whose sweeps hit the limit on October 24, and 31 long ones not yet
-  tried. Pass J stopped pass I when 135's row came in, and since
-  October 27, 11:54, it has run `even_resolver.py` on them: the open short
-  children first, then the long ones.
+  tried. Pass J stopped pass I when 135's row came in (October 27, 11:54)
+  and ran `even_resolver.py` on them, the open short children first.
+- **{16,40,60,82}.** Pass J's first row found every one of the 30 odd
+  obligations of {16,40,60,82}, 82's child 60, leading to N, the two that
+  had hit the limit on October 24 (75 and 83) among them. So that child is
+  P exactly when its 42 even obligations all lead to N, and then 82 fails
+  by 60. Pass K stopped pass J at 12:13 to resolve those 42 first, as pass
+  E did {16,40,66,76}'s; 82's other open children wait for it.
 - **86** still has eight odd obligations open, 105, 109, 113, 117, 121,
   125, 133 and 141. They wait for 82's even side.
 
