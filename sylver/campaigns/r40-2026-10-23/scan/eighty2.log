@@ -1,0 +1,2 @@
+r=82 e=  60 short: needs even reply=None via=None tried=30 490.5s
+2026-10-27 12:13:29 stopped here by pass_k.sh (even_resolver.py 3652320 and 3669924), during 82's 68: {16,40,60,82} first

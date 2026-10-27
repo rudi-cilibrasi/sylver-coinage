@@ -1,0 +1,5 @@
+2026-10-27 08:52:12 waiting for pass I's 82x end line
+2026-10-27 11:54:00 stopped pass_i.sh 2586790 and 
+2026-10-27 11:54:00 cross_rows.py 82 --b66: 7 rows in cross_82.log
+2026-10-27 11:54:00 start (python3 even_resolver.py 82 --p-table --ncache-mb 8192 --threads 10 --short-first --redo-open --max-states 400000000 --timeout 1200; 24 h)
+2026-10-27 12:13:31 even_resolver.py exit 143; 2026-10-27 12:13:29 stopped here by pass_k.sh (even_resolver.py 3652320 and 3669924), during 82's 68: {16,40,60,82} first

@@ -1,0 +1,8 @@
+2026-10-27 01:52:41 waiting for pass H (1179362) to end
+2026-10-27 05:45:25 86x start: {16 40 86} + 105,109,113,117,121,125,133,141 (8 h)
+2026-10-27 05:45:41 stopped 86x after 16 seconds (pass_i.sh 2095260 and kunz_pt 2584656) to run 82 first: pass H left 82 only 135
+2026-10-27 05:45:57 waiting for pass H (1179362) to end
+2026-10-27 05:45:57 82x start: {16 40 82} + 135 (8 h)
+2026-10-27 11:53:56 82x end: exit 0, 1 of 1 classified
+2026-10-27 11:53:56 86x start: {16 40 86} + 105,109,113,117,121,125,133,141 (8 h)
+2026-10-27 11:54:00 stopped here by pass_j.sh (pass_i.sh 2586790 and ): 82 is odd-complete

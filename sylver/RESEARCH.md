@@ -2221,6 +2221,26 @@ Recorded in [the reply-40 record](campaigns/r40-2026-10-23/RESULT.md#the-search-
 - **What it means.** No answer to 40 is known. Below 90, 82 and 86 remain
   open.
 
+### Attempt 56 — reply 40: by search, every odd obligation of 82 leads to N (2026-10-27)
+
+Recorded in [the reply-40 record](campaigns/r40-2026-10-23/RESULT.md#the-search-for-an-answer-to-40).
+
+- **82's odd side.** Deeper sweeps of the 15 odd obligations of {16,40,82}
+  that the first sweep left found each one N. The last, 135, is answered
+  by 349, after six hours alone. So 82 answers 40, by search, exactly when
+  each of its 68 even obligations leads to N.
+- **Rows that settle both sides.** An odd row "{16,40,a}+w is N by e" with
+  e even also settles a's even obligation e: {16,40,a,e} plus w is the same
+  P-position. Five of 82's even obligations and three of 86's are settled
+  this way. 82's obligations 44 and 66, which B66 settles (Attempt 55),
+  are now in the resolver's file too.
+- **What is left.** 28 of 82's 68 even obligations lead to N. Nine short
+  children and 31 long ones are open. The first short child retried,
+  {16,40,60,82}, has every odd obligation leading to N, so it is P (and 82
+  fails by 60) exactly when its 42 even obligations all lead to N; those
+  are being resolved first. 86 still has eight odd obligations open, 105
+  to 141. No answer to 40 is known.
+
 ### Sources
 
 - <https://math.colgate.edu/~integers/yg2/yg2.pdf>

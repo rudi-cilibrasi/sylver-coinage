@@ -1,0 +1,3 @@
+{"e": 84, "child": "16,40,84,86", "status": "resolved", "reply": 73, "via": "deep_86.out: {16,40,86}+73 N by 84 (search), so {16,40,86,84}+73 is P", "seconds": 0.0}
+{"e": 124, "child": "16,40,86,124", "status": "resolved", "reply": 77, "via": "deep_86.out: {16,40,86}+77 N by 124 (search), so {16,40,86,124}+77 is P", "seconds": 0.0}
+{"e": 154, "child": "16,40,86,154", "status": "resolved", "reply": 101, "via": "deep_86.out: {16,40,86}+101 N by 154 (search), so {16,40,86,154}+101 is P", "seconds": 0.0}
