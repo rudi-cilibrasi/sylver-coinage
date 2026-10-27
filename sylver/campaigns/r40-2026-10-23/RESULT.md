@@ -338,7 +338,39 @@ A is the first long sweep of the odd obligations (October 23).
 - **82.** B66 is also where {16,40,44,82}'s obligation 66 leads (82 =
   16+66), so 82's child {16,40,44,82} is N.
 
-Below 90, the answers a ≡ 2 (mod 4) still open are 82 and 86.
+**82 and 86** (October 26 to 27). Pass A had left 15 of 82's 43 odd
+obligations and 16 of 86's 45 unclassified, and pass C was stopped before
+it reached them.
+- **The odd obligations.** Pass H swept them as pass C did, four hours
+  each (October 26, 21:45, to October 27, 05:45). 86's 73 to 101 lead to N
+  (by 84, 124, 84, 43, 8, 35, 37 and 154), and it stopped at the limit
+  during 105. 82's 71 to 127 lead to N (by 90, 90, 123, 25, 142, 54, 269,
+  265, 155, 37, 132, 62, 62 and 43), and it stopped at the limit during
+  135. Pass I then gave 135 a run of its own: **135 leads to N, by 349**.
+  {16,40,82,135}'s Frobenius number is 389, and the run held 528,456,246
+  P-positions when it ended, after six hours. So **every odd obligation of
+  82 leads to N**, by search, as for 46, 54, 58 and 66 before it. 82
+  answers 40 exactly when its even obligations all lead to N too.
+- **Rows that settle both sides.** An odd row "{16,40,a}+w is N by e", for
+  an even e, says that {16,40,a,e,w} is P. That position is also a's child
+  {16,40,a,e} plus w, so a's even obligation e leads to N. `cross_rows.py`
+  added these rows to the resolver's files: for 82, 54 (by 91), 62 (by
+  115), 90 (by 71), 132 (by 111) and 142 (by 87); for 86, 84 (by 73), 124
+  (by 77) and 154 (by 101). It added 82's 44 (by 66) and 66 (by 44) as
+  well, since both reach B66.
+- **82's even side.** Of 82's 68 even obligations, 30 have short children.
+  25 now lead to N: 18 of the short ones from October 24, and the seven
+  rows above. Open are nine short children, {16,40,82,e} for e = 60, 68,
+  76, 84, 92, 100, 108, 116 and 148, whose sweeps hit the limit on October
+  24, and the 34 long ones not yet tried, three of which a known P-position
+  settles at once. Pass J stopped pass I when 135's row came in, and since
+  October 27, 11:54, it has run `even_resolver.py` on them: the open short
+  children first, then the long ones.
+- **86** still has eight odd obligations open, 105, 109, 113, 117, 121,
+  125, 133 and 141. They wait for 82's even side.
+
+Below 90, the answers a ≡ 2 (mod 4) still open are 82 and 86. 82's odd
+obligations all lead to N.
 
 **90 to 398** (October 25, 06:00 to 12:21). A light sweep of the odd
 obligations ran beside B78's replays: for each a, five minutes or

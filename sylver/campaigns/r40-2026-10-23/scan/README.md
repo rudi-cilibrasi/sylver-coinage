@@ -64,6 +64,10 @@ certified.
 | the positions an even reply reaches from a gcd-two position, and which are short | `peek_evens.py C...`, without a solver | |
 | B66's evidence | `THREADS=8 python collect.py resolve_16-40-44-66.jsonl '{"28": [38, "B28"], "38": [28, "B28"], "36": [447, "finite"], "90": [463, "finite"], "134": [181, "finite"]}' 16 40 44 66`, October 26, 18:19 to 21:45: it stopped there, during its move 90, when `./guard90.sh PID DEADLINE` ended that solve (collect.py has no memory guard, and the solve had reached 31 GiB in 92 minutes). `finish_evidence.py` then took the 53 rows written, added 90 unsized, and solved 94, 102, 118 and 134 alone the same way, 21:45 to 22:52 | `collect_B66.log`, `guard90.sh`, `guard90.log`, `finish_evidence.py`, `finish_evidence.log`, `evidence_16-40-44-66.json` |
 | cheaper witnesses for B66's moves 68 and 70 | `./alt68.sh`, `./alt70.sh` (`kunz_pt --p-table --ncache-mb 4096 --threads 8 --max-states 300000000`, without stopping at P, on every odd reply after the first witness up to 801, in the resolver's order: `alt_list.py`), October 26, 19:58 to 20:06; then `./size_alt.sh`, each new P destination solved alone by `kunz --threads 4` | `alt68.sh`, `alt70.sh`, `alt_list.py`, `alt_68.*`, `alt_70.*`, `size_alt.sh`, `size_alt.log` |
+| the odd obligations pass A left for 86 and 82: pass H | `./pass_h.sh PID PID` (`kunz_pt` as in pass C, 4 hours each, after `collect.py` and `size_alt.sh` ended), October 26, 21:45, to October 27, 05:45: 86's 73 to 101 N, then the limit during 105; 82's 71 to 127 N, then the limit during 135. The first line of `deep_86.err` is pass C's, from October 25 | `pass_h.sh`, `pass_h.log`, `deep_86.*`, `deep_82.*` |
+| pass H's leftovers, eight hours each: pass I | `./pass_i.sh PID` (`kunz_pt` as in pass C, on the obligations with no row in `deep_82.out` or `deep_86.out`), October 27. Its first run began with 86 and was stopped after 16 seconds; the script was then changed to take 82 first, and run again, 05:45 to 11:54: 135 by 349 | `pass_i.sh`, `pass_i.log`, `deep_82x.*` |
+| the even rows that odd rows settle | `python cross_rows.py 82 --b66` and `python cross_rows.py 86`, without a solver, October 27, 05:47; pass J ran the first again, which added nothing | `cross_rows.py`, `cross_82.log`, `cross_86.log`, `even_82.jsonl` and `even_86.jsonl` (their last 7 and 3 rows) |
+| 82's even side: pass J | `./pass_j.sh PID`: once pass I's row for 135 was N, it stopped pass I, ran `cross_rows.py 82 --b66` again, and started `even_resolver.py 82 --p-table --ncache-mb 8192 --threads 10 --short-first --redo-open --max-states 400000000 --timeout 1200` (24 hours at most), October 27, 11:54. It was still running when this was recorded | `pass_j.sh`, `pass_j.log` (to 11:54) |
 
 The shell scripts log "(exit N)" after each run. Until the review of this
 record, they took N from `$?` inside the `$(date ...)` line, which is
@@ -111,3 +115,9 @@ passes D and E had swept their remaining odd obligations, and 44 as
 "REFUTES r", once B66 was P by search. The 90 row of
 `evidence_16-40-44-66.json` has no state count, and no Frobenius number
 either; the destination's is 581.
+
+Pass J stopped pass I four seconds into its second 86 run, whose output
+was empty and is not kept. Like several stoppers' lines above, its "stopped"
+line names no solver: none had been listed. `even_82.jsonl` stops at the
+rows written before pass J's resolver began; its rows come with pass J's
+record.

@@ -1,0 +1,7 @@
+{"e": 44, "child": "16,40,44,82", "status": "resolved", "reply": 66, "via": "B66 P by search (evidence_16-40-44-66.json)", "seconds": 0.0}
+{"e": 54, "child": "16,40,54,82", "status": "resolved", "reply": 91, "via": "deep_82.out: {16,40,82}+91 N by 54 (search), so {16,40,82,54}+91 is P", "seconds": 0.0}
+{"e": 62, "child": "16,40,62,82", "status": "resolved", "reply": 115, "via": "deep_82.out: {16,40,82}+115 N by 62 (search), so {16,40,82,62}+115 is P", "seconds": 0.0}
+{"e": 66, "child": "16,40,66", "status": "resolved", "reply": 44, "via": "B66 P by search (evidence_16-40-44-66.json)", "seconds": 0.0}
+{"e": 90, "child": "16,40,82,90", "status": "resolved", "reply": 71, "via": "deep_82.out: {16,40,82}+71 N by 90 (search), so {16,40,82,90}+71 is P", "seconds": 0.0}
+{"e": 132, "child": "16,40,82,132", "status": "resolved", "reply": 111, "via": "deep_82.out: {16,40,82}+111 N by 132 (search), so {16,40,82,132}+111 is P", "seconds": 0.0}
+{"e": 142, "child": "16,40,82,142", "status": "resolved", "reply": 87, "via": "deep_82.out: {16,40,82}+87 N by 142 (search), so {16,40,82,142}+87 is P", "seconds": 0.0}
