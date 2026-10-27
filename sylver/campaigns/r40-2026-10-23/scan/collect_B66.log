@@ -1,0 +1,67 @@
+2026-10-26 18:19:14 start
+{"obligation": 3, "kind": "odd", "reply": 2, "via": "finite", "destination": "2,3", "seconds": 0.0, "frobenius": 1, "states": 1}
+{"obligation": 5, "kind": "odd", "reply": 18, "via": "finite", "destination": "5,16,18", "seconds": 0.0, "frobenius": 29, "states": 50}
+{"obligation": 7, "kind": "odd", "reply": 6, "via": "finite", "destination": "6,7,16", "seconds": 0.0, "frobenius": 17, "states": 21}
+{"obligation": 9, "kind": "odd", "reply": 10, "via": "finite", "destination": "9,10,16", "seconds": 0.0, "frobenius": 33, "states": 213}
+{"obligation": 11, "kind": "odd", "reply": 26, "via": "finite", "destination": "11,16,26,40", "seconds": 0.0, "frobenius": 61, "states": 3740}
+{"obligation": 13, "kind": "odd", "reply": 18, "via": "finite", "destination": "13,16,18,40", "seconds": 0.0, "frobenius": 59, "states": 3760}
+{"obligation": 15, "kind": "odd", "reply": 10, "via": "finite", "destination": "10,15,16,44", "seconds": 0.0, "frobenius": 53, "states": 1028}
+{"obligation": 17, "kind": "odd", "reply": 27, "via": "finite", "destination": "16,17,27,40", "seconds": 0.0, "frobenius": 79, "states": 39985}
+{"obligation": 19, "kind": "odd", "reply": 71, "via": "finite", "destination": "16,19,40,44,66,71", "seconds": 0.3, "frobenius": 93, "states": 364918}
+{"obligation": 21, "kind": "odd", "reply": 28, "via": "finite", "destination": "16,21,28,40,66", "seconds": 0.1, "frobenius": 99, "states": 149318}
+{"obligation": 23, "kind": "odd", "reply": 10, "via": "finite", "destination": "10,16,23,44", "seconds": 0.0, "frobenius": 61, "states": 2071}
+{"obligation": 25, "kind": "odd", "reply": 33, "via": "finite", "destination": "16,25,33,40,44", "seconds": 0.4, "frobenius": 111, "states": 417199}
+{"obligation": 27, "kind": "odd", "reply": 17, "via": "finite", "destination": "16,17,27,40", "seconds": 0.0, "frobenius": 79, "states": 39985}
+{"obligation": 29, "kind": "odd", "reply": 51, "via": "finite", "destination": "16,29,40,44,51,66", "seconds": 2.3, "frobenius": 97, "states": 1540252}
+{"obligation": 31, "kind": "odd", "reply": 37, "via": "finite", "destination": "16,31,37,40,44,66", "seconds": 1.3, "frobenius": 89, "states": 998474}
+{"obligation": 35, "kind": "odd", "reply": 13, "via": "finite", "destination": "13,16,35,40,44", "seconds": 0.0, "frobenius": 63, "states": 17344}
+{"obligation": 37, "kind": "odd", "reply": 31, "via": "finite", "destination": "16,31,37,40,44,66", "seconds": 1.3, "frobenius": 89, "states": 998474}
+{"obligation": 39, "kind": "odd", "reply": 26, "via": "finite", "destination": "16,26,39,40,44", "seconds": 1.1, "frobenius": 101, "states": 824797}
+{"obligation": 43, "kind": "odd", "reply": 21, "via": "finite", "destination": "16,21,40,43,44,66", "seconds": 0.3, "frobenius": 94, "states": 303102}
+{"obligation": 45, "kind": "odd", "reply": 25, "via": "finite", "destination": "16,25,40,44,45", "seconds": 1.0, "frobenius": 103, "states": 777947}
+{"obligation": 47, "kind": "odd", "reply": 33, "via": "finite", "destination": "16,33,40,44,47", "seconds": 3.7, "frobenius": 118, "states": 2484589}
+{"obligation": 51, "kind": "odd", "reply": 29, "via": "finite", "destination": "16,29,40,44,51,66", "seconds": 2.1, "frobenius": 97, "states": 1540252}
+{"obligation": 59, "kind": "odd", "reply": 34, "via": "finite", "destination": "16,34,40,44,59", "seconds": 10.9, "frobenius": 145, "states": 6672732}
+{"obligation": 67, "kind": "odd", "reply": 21, "via": "finite", "destination": "16,21,40,44,66,67", "seconds": 0.4, "frobenius": 94, "states": 459556}
+{"obligation": 2, "kind": "even", "reply": 3, "via": "finite", "destination": "2,3", "seconds": 0.0, "frobenius": 1, "states": 1}
+{"obligation": 4, "kind": "even", "reply": 6, "via": "C", "destination": "4,6"}
+{"obligation": 6, "kind": "even", "reply": 4, "via": "C", "destination": "4,6"}
+{"obligation": 8, "kind": "even", "reply": 14, "via": "E", "destination": "8,14"}
+{"obligation": 10, "kind": "even", "reply": 9, "via": "finite", "destination": "9,10,16", "seconds": 0.0, "frobenius": 33, "states": 213}
+{"obligation": 12, "kind": "even", "reply": 14, "via": "F", "destination": "12,14,16"}
+{"obligation": 14, "kind": "even", "reply": 8, "via": "E", "destination": "8,14"}
+{"obligation": 18, "kind": "even", "reply": 5, "via": "finite", "destination": "5,16,18", "seconds": 0.0, "frobenius": 29, "states": 50}
+{"obligation": 20, "kind": "even", "reply": 13, "via": "finite", "destination": "13,16,20,44", "seconds": 0.0, "frobenius": 67, "states": 5210}
+{"obligation": 22, "kind": "even", "reply": 12, "via": "P0", "destination": "12,16,22"}
+{"obligation": 24, "kind": "even", "reply": 10, "via": "K", "destination": "10,16,24"}
+{"obligation": 26, "kind": "even", "reply": 11, "via": "finite", "destination": "11,16,26,40", "seconds": 0.0, "frobenius": 61, "states": 3740}
+{"obligation": 28, "kind": "even", "reply": 38, "via": "B28", "destination": "16,28,38,40"}
+{"obligation": 30, "kind": "even", "reply": 157, "via": "finite", "destination": "16,30,40,44,66,157", "seconds": 38.9, "frobenius": 225, "states": 20113172}
+{"obligation": 34, "kind": "even", "reply": 59, "via": "finite", "destination": "16,34,40,44,59", "seconds": 9.7, "frobenius": 145, "states": 6672732}
+{"obligation": 36, "kind": "even", "reply": 447, "via": "finite", "destination": "16,36,40,44,66,447", "seconds": 850.4, "frobenius": 541, "states": 264776052}
+{"obligation": 38, "kind": "even", "reply": 28, "via": "B28", "destination": "16,28,38,40"}
+{"obligation": 42, "kind": "even", "reply": 161, "via": "finite", "destination": "16,40,42,44,66,161", "seconds": 177.0, "frobenius": 255, "states": 72630490}
+{"obligation": 46, "kind": "even", "reply": 25, "via": "finite", "destination": "16,25,40,44,46", "seconds": 1.0, "frobenius": 99, "states": 863704}
+{"obligation": 50, "kind": "even", "reply": 11, "via": "finite", "destination": "11,16,40,50", "seconds": 0.0, "frobenius": 85, "states": 7432}
+{"obligation": 52, "kind": "even", "reply": 89, "via": "finite", "destination": "16,40,44,52,66,89", "seconds": 180.9, "frobenius": 191, "states": 76063329}
+{"obligation": 54, "kind": "even", "reply": 129, "via": "finite", "destination": "16,40,44,54,66,129", "seconds": 254.4, "frobenius": 219, "states": 103652005}
+{"obligation": 58, "kind": "even", "reply": 109, "via": "finite", "destination": "16,40,44,58,66,109", "seconds": 237.5, "frobenius": 203, "states": 98407916}
+{"obligation": 62, "kind": "even", "reply": 73, "via": "finite", "destination": "16,40,44,62,66,73", "seconds": 102.0, "frobenius": 163, "states": 49148339}
+{"obligation": 68, "kind": "even", "reply": 265, "via": "finite", "destination": "16,40,44,66,68,265", "seconds": 2368.3, "frobenius": 383, "states": 679655902}
+{"obligation": 70, "kind": "even", "reply": 273, "via": "finite", "destination": "16,40,44,66,70,273", "seconds": 1715.4, "frobenius": 367, "states": 507780524}
+{"obligation": 74, "kind": "even", "reply": 91, "via": "finite", "destination": "16,40,44,66,74,91", "seconds": 341.2, "frobenius": 193, "states": 113143476}
+{"obligation": 78, "kind": "even", "reply": 21, "via": "finite", "destination": "16,21,40,44,66,78", "seconds": 0.5, "frobenius": 91, "states": 484204}
+{"obligation": 86, "kind": "even", "reply": 81, "via": "finite", "destination": "16,40,44,66,81,86", "seconds": 294.1, "frobenius": 175, "states": 101358899}
+Traceback (most recent call last):
+  File "/tmp/claude-1001/-home-ruclaw-src-sylver-coinage/cd9b0cdd-5710-4000-902b-0c5c9cdc90cc/scratchpad/r40/collect.py", line 88, in <module>
+    main([int(x) for x in sys.argv[3:]], sys.argv[1], json.loads(sys.argv[2]))
+  File "/tmp/claude-1001/-home-ruclaw-src-sylver-coinage/cd9b0cdd-5710-4000-902b-0c5c9cdc90cc/scratchpad/r40/collect.py", line 75, in main
+    line = run('--threads', 1, *dest).split()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/claude-1001/-home-ruclaw-src-sylver-coinage/cd9b0cdd-5710-4000-902b-0c5c9cdc90cc/scratchpad/r40/collect.py", line 31, in run
+    return subprocess.run([ENGINE, *map(str, args)], capture_output=True, text=True, check=True, timeout=timeout).stdout
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/tmp/claude-1001/-home-ruclaw-src-sylver-coinage/cd9b0cdd-5710-4000-902b-0c5c9cdc90cc/scratchpad/r40/kunz', '--threads', '1', '16', '40', '44', '66', '90', '463']' died with <Signals.SIGTERM: 15>.
+2026-10-26 21:45:05 exit 1

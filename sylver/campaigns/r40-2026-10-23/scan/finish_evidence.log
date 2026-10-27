@@ -1,0 +1,7 @@
+{"obligation": 90, "kind": "even", "reply": 463, "via": "finite", "destination": "16,40,44,66,90,463", "frobenius": null, "states": null, "note": "not sized: solved alone (kunz --threads 1) from 20:12 until guard90.sh stopped it at 21:45, at 32,301,908 kB RSS (guard90.log)"}
+{"obligation": 94, "kind": "even", "reply": 93, "via": "finite", "destination": "16,40,44,66,93,94", "frobenius": 211, "states": 152752888, "seconds": 638.7}
+{"obligation": 102, "kind": "even", "reply": 49, "via": "finite", "destination": "16,40,44,49,66,102", "frobenius": 143, "states": 26552036, "seconds": 147.6}
+{"obligation": 118, "kind": "even", "reply": 47, "via": "finite", "destination": "16,40,44,47,66,118", "frobenius": 149, "states": 20244905, "seconds": 65.1}
+{"obligation": 134, "kind": "even", "reply": 181, "via": "finite", "destination": "16,40,44,66,134,181", "frobenius": 299, "states": 523101247, "seconds": 3188.0}
+finite: 49 sized: 48 states: 2,835,058,274 routes: [(4, 'C'), (6, 'C'), (8, 'E'), (12, 'F'), (14, 'E'), (22, 'P0'), (24, 'K'), (28, 'B28'), (38, 'B28')]
+exit 0

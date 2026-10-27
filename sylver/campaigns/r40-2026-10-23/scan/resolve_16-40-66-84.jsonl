@@ -1,0 +1,13 @@
+{"e": 4, "child": "4,66", "status": "resolved", "reply": 6, "via": "node C", "seconds": 0.0}
+{"e": 6, "child": "6,16", "status": "resolved", "reply": 4, "via": "node C", "seconds": 0.0}
+{"e": 8, "child": "8,66,84", "status": "resolved", "reply": 14, "via": "node E", "seconds": 0.0}
+{"e": 10, "child": "10,16", "status": "resolved", "reply": 9, "via": "opening table", "seconds": 0.0}
+{"e": 12, "child": "12,16,66", "status": "resolved", "reply": 14, "via": "node F", "seconds": 0.0}
+{"e": 18, "child": "16,18,40", "status": "resolved", "reply": 5, "via": "opening table", "seconds": 0.0}
+{"e": 20, "child": "16,20,66", "status": "resolved", "reply": 34, "via": "node T", "seconds": 0.0}
+{"e": 22, "child": "16,22,40", "status": "resolved", "reply": 12, "via": "node P0", "seconds": 0.0}
+{"e": 24, "child": "16,24,66,84", "status": "resolved", "reply": 10, "via": "node K", "seconds": 0.0}
+{"e": 26, "child": "16,26,40", "status": "resolved", "reply": 11, "via": "even_58.jsonl: screen.jsonl: odd child P (search)", "seconds": 0.0}
+{"e": 28, "child": "16,28,40,66", "status": "resolved", "reply": 34, "via": "Sicherman's list (published)", "seconds": 0.0}
+{"e": 34, "child": "16,34,40", "status": "resolved", "reply": 20, "via": "node T", "seconds": 0.0}
+{"e": 36, "child": "16,36,40,66", "status": "resolved", "reply": 50, "via": "r40 search: B50 P (resolve_16-36-40-50.jsonl)", "seconds": 0.0}

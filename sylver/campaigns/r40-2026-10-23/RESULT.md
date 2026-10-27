@@ -50,8 +50,8 @@ With them, the audit refutes twenty-six answers to 40:
 | 102 | {16,40,102} | 33 | {16,33,40,102} | finite witness |
 
 16, 32, 40 and 48 are not legal answers. So **every legal even answer up to
-50 fails**, and 58, 70, 78, 94 and 102 fail too. By search, 52, 54, 62
-and the odd answers 3 to 73 fail as well
+50 fails**, and 58, 70, 78, 94 and 102 fail too. By search, 52, 54, 62,
+66, 74 and the odd answers 3 to 73 fail as well
 ([below](#the-search-for-an-answer-to-40)). **40 remains unanswered**, and
 opening 16 remains unresolved.
 
@@ -233,11 +233,11 @@ now stands, one more child is settled: 74's open child {16,40,58,74} plays
 | 86 | 31 | 23 | 36 | 7 | {16,36,40,86} is N (by 50 and 70, to B50 and B70) |
 
 "Not shown P" means the test left even obligations unresolved, even with
-the positions found later: three of {16,40,44,66}'s 34,
-seven of {16,40,52,66}'s 36, fourteen of {16,40,66,68}'s 40, five of
-{16,40,60,74}'s 40 (and five more not tried), and three of
-{16,40,44,82}'s 38 (and three more not tried). The last two tests were
-stopped by hand once they could no longer succeed.
+the positions found by October 25: three of {16,40,44,66}'s 34 (all three
+resolved since, below), seven of {16,40,52,66}'s 36, fourteen of
+{16,40,66,68}'s 40, five of {16,40,60,74}'s 40 (and five more not tried),
+and three of {16,40,44,82}'s 38 (and three more not tried). The last two
+tests were stopped by hand once they could no longer succeed.
 
 Four new P-positions came out of the pass, none on Sicherman's list. The
 audit has since certified the first; the other three are P by search:
@@ -256,16 +256,89 @@ audit has since certified the first; the other three are P by search:
   number is 47, and its 40 obligations (16 odd, 24 even) all lead to N. It
   refutes 28 and 42 again.
 
-Below 90, the answers a ≡ 2 (mod 4) still open are 66, 74, 82 and 86. One
-position bears on two of them: {16,40,44,66}, 66's child 44, is also
-where {16,40,44,82}'s obligation 66 leads. If it is P, 66 fails; if it is
-N, {16,40,44,82} may still be P, and then 82 fails. Three of
-{16,40,44,66}'s obligations are open, and their children (its moves 36, 90
-and 134) are long. A search for even replies from them (October 24, 21:34)
-found none: each such reply whose position is short leads to an
-N-position, and the others are beyond the method. The obligation 36 is
-the obstacle: its child {16,36,40,44,66} has no winning odd reply up to
-401 either, so these methods cannot show {16,40,44,66} P.
+After that pass, 66, 74, 82 and 86 were the answers a ≡ 2 (mod 4) still
+open below 90. One position bore on two of them: {16,40,44,66}, 66's child
+44, is also where {16,40,44,82}'s obligation 66 leads. Three of its
+obligations were open, and their children (its moves 36, 90 and 134) are
+long. A search for even replies from them (October 24, 21:34) found none,
+and the child {16,36,40,44,66} had no winning odd reply up to 401.
+({16,40,44,66} was later shown P by search, below, so {16,40,44,82} is N.)
+
+**66 and 74** (October 25 to 26). Deeper sweeps settled both, by search.
+The passes are lettered as in [scan/README.md](scan/README.md), where pass
+A is the first long sweep of the odd obligations (October 23).
+- **The odd obligations.** Pass C swept the odd obligations that pass A
+  had left unclassified, one answer at a time, with a cap of 800 million
+  P-positions, stopping at the first P. 66's last three, 95, 103 and 111,
+  lead to N (by 118, 59 and 163), so every odd obligation of 66 leads to N.
+  74's 87 to 103 lead to N, and then **{16,40,74,107} is P**: its
+  Frobenius number is 313, and the sweep held 283,641,284 P-positions when
+  it ended. So **74 fails, by 107**. The witness is not replayed here: 62's,
+  {16,40,61,62}, already takes 286,533,125 states at Frobenius number 209,
+  and this one's is 313.
+- **66's even side.** `even_resolver.py` then took 66's 33 even
+  obligations whose children are long. In ten and a half hours it resolved
+  13, left 7 open and did not reach the other 13. Passes D and E went back
+  to 66's three open short children, {16,40,66,e} for e = 76, 84 and 116.
+  Once their remaining odd obligations were swept (those whose sweeps had
+  hit the limit, and, for 116, five the resolver never tried), every odd
+  obligation of each led to N.
+- **A case split.** 76 = 16+16+44, 84 = 40+44 and 116 = 16+16+40+44 lie in
+  the semigroup of {16,40,44,66}, so the move 44 takes each {16,40,66,e}
+  to {16,40,44,66} itself. Suppose every even obligation of {16,40,66,76}
+  other than 44 leads to N. If {16,40,44,66} is P, 66 fails by 44. If it
+  is N, every obligation of {16,40,66,76} leads to N, so that position is
+  P, and 66 fails by 76. Either way 66 fails. Pass E resolved
+  {16,40,66,76}'s 42 even obligations (`scan/resolve_16-40-66-76.jsonl`):
+  39 lead to N, 44 reaches {16,40,44,66}, and 126 and 150 stayed open.
+  Pass F found 150 answered by 135 ({16,40,66,76,135,150} is P). After 126,
+  no odd reply up to 401 wins: the resolver classified 65 of them and pass
+  F the other 135.
+- **The last open obligations.** The resolver tries odd replies only up to
+  401, and gives up on a position once four of them hit its limit, so some
+  replies up to 401 go untried. A long position may also need a larger
+  one: up to 501, {16,20,34,58} is answered only by 291, and a long reply
+  in the study of the gcd-four candidate after move 20 needed 825
+  (Attempts 6 and 4 of [RESEARCH.md](../../RESEARCH.md)). Pass G swept
+  {16,40,44,66}'s open 90 and 134 on their untried replies up to 401, then
+  odd replies from 403 to 1601, which keeps every destination within the
+  Kunz engine's coordinate limit. **134 is answered by 181**, among its
+  untried replies; 90's all lead to N. Above 401, **126 is answered by
+  553** ({16,40,66,76,126,553} is P, with Frobenius number 703), which
+  completes the case split, and **36 by 447 and 90 by 463**, so 463 is
+  90's least winning odd reply. The Frobenius numbers of those three are
+  299, 541 and 581.
+- **B66={16,40,44,66} is P**, by search. All 58 of its obligations, 24 odd
+  and 34 even, lead to N. Its half is {8,20,22,33}, the half's Frobenius
+  number is 67, and it is not on Sicherman's list. So **66 fails by 44**,
+  and so {16,40,66,76} is N. The case split shows that 66 fails without
+  B66's outcome: had B66 been N, 76 would have won instead.
+- **Why B66 is not certified.** Its evidence
+  (`scan/evidence_16-40-44-66.json`) has 49 finite witnesses, seven routes
+  to the certified nodes C, E, F, P0 and K, and two to B28 (its moves 28
+  and 38). Solved alone, 48 of the witnesses take 2,835,058,274 states in
+  all. Four are too large to replay here: its moves 68, 134 and 70,
+  answered by 265, 181 and 273, at 679,655,902, 523,101,247 and
+  507,780,524 states; and its move 90, answered by 463, whose solve was
+  stopped unfinished after 92 minutes, at 31 GiB resident. The {16,38,72}
+  certification record measured about 80 bytes a state for a native replay
+  (`native_solver.cpp`) of a four-word state, and these states take five
+  or six words. So a native replay of 68's witness would need nearly all
+  of this host's 62 GiB, and of 134's or 70's over 40 GiB, more than the
+  host has free while it keeps the 15 GB margin of these runs.
+  - For 68 and 70, no other winning odd reply up to 801 gives a smaller
+    witness: 291 for 68 takes about 761 million states, and 311 and 287
+    for 70 about 590 and 538 million (each solved alone with four
+    threads, so the counts are close to, not exactly, the sequential ones).
+  - Nor does an even reply from 68's child help. The six positions it
+    reaches that are short are all N: {4,66} and {6,16} by moves to C,
+    {8,44,66} to E, {12,16,66} to F, {16,24,44,66} to K, and {16,28,40,66}
+    to {16,28,34,40}, on Sicherman's list. The others are long.
+  - So B66 is P by search only, and 66 is refuted by search here.
+- **82.** B66 is also where {16,40,44,82}'s obligation 66 leads (82 =
+  16+66), so 82's child {16,40,44,82} is N.
+
+Below 90, the answers a ≡ 2 (mod 4) still open are 82 and 86.
 
 **90 to 398** (October 25, 06:00 to 12:21). A light sweep of the odd
 obligations ran beside B78's replays: for each a, five minutes or
@@ -274,8 +347,11 @@ that 94 fails by 21 and 102 by 33, and the audit certifies both with finite
 witnesses: {16,21,40,94} at 1,199,603 states and {16,33,40,102} at
 27,971,381, each replayed natively and in Python. Each of the other 76
 stopped with 20 to 23 of its odd obligations classified, all N: 110 at the
-cap, the rest at the time limit. So no a from 90 to 398 is yet known to
-have all its odd obligations lead to N.
+cap, the rest at the time limit. Pass B (October 25, 15:23 to 19:36) gave
+90 to 130 pass A's settings, 30 minutes or 100,000,000 P-positions each:
+all nine stopped with 25 to 28 odd obligations classified, all N, and pass
+C stopped it there. So no a from 90 to 398 is yet known to have all its odd
+obligations lead to N.
 
 No answer to 40 is known.
 

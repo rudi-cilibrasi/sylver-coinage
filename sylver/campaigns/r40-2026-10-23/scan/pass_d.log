@@ -1,0 +1,10 @@
+2026-10-26 08:42:40 waiting for sixty6's next row (sixty6.log has 22 lines)
+2026-10-26 08:55:26 stopped sixty6 after its row: r=66 e= 124 open      reply=None via=None tried=42 4806.8s (killed even_resolver.py 2591963 and 3326935)
+2026-10-26 08:55:31 66+76 start: {16 40 66 76} + 75 (2 h)
+2026-10-26 08:59:51 66+76 end: exit 0, 1 of 1 classified
+2026-10-26 08:59:51 66+84 start: {16 40 66 84} + 67,71,79,87 (2 h)
+2026-10-26 09:10:41 66+84 end: exit 0, 4 of 4 classified
+2026-10-26 09:10:41 66+116 start: {16 40 66 116} + 55,63,71,79 (2 h)
+2026-10-26 09:27:32 66+116 end: exit 0, 4 of 4 classified
+2026-10-26 09:27:32 Y+58 start: {16 40 52 58 66} + 103,105,107,111 (2 h)
+2026-10-26 09:27:36 stopped here by pass_e.sh (its Y part runs in pass E)

@@ -1,0 +1,13 @@
+r=None e=   4 resolved  reply=6 via=node C tried=- 0.0s
+r=None e=   6 resolved  reply=4 via=node C tried=- 0.0s
+r=None e=   8 resolved  reply=14 via=node E tried=- 0.0s
+r=None e=  10 resolved  reply=9 via=opening table tried=- 0.0s
+r=None e=  12 resolved  reply=14 via=node F tried=- 0.0s
+r=None e=  18 resolved  reply=5 via=opening table tried=- 0.0s
+r=None e=  20 resolved  reply=34 via=node T tried=- 0.0s
+r=None e=  22 resolved  reply=12 via=node P0 tried=- 0.0s
+r=None e=  24 resolved  reply=10 via=node K tried=- 0.0s
+r=None e=  26 resolved  reply=11 via=even_58.jsonl: screen.jsonl: odd child P (search) tried=- 0.0s
+r=None e=  28 resolved  reply=34 via=Sicherman's list (published) tried=- 0.0s
+r=None e=  34 resolved  reply=20 via=node T tried=- 0.0s
+r=None e=  36 resolved  reply=50 via=r40 search: B50 P (resolve_16-36-40-50.jsonl) tried=- 0.0s
