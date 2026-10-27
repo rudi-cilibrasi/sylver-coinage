@@ -1,0 +1,8 @@
+2026-10-26 09:14:45 waiting for pass D's 66+116 to end
+2026-10-26 09:27:36 stopped pass D after: 2026-10-26 09:27:32 66+116 end: exit 0, 4 of 4 classified (killed pass_d.sh 3307518 and )
+2026-10-26 09:27:36 66+116b start: {16 40 66 116} + 75,87,95,83,103 (2 h)
+2026-10-26 09:44:27 66+116b end: exit 0, 5 of 5 classified
+2026-10-26 09:44:27 resolve {16 40 66 76} start (10 h)
+2026-10-26 15:26:05 resolve {16 40 66 76} end: exit 0; summary: {'resolved': 39, 'short: needs even': 1, 'open': 2, 'REFUTES r': 0} of 42
+2026-10-26 15:26:05 resolve {16 40 66 84} start (10 h)
+2026-10-26 15:26:08 stopped here by pass_f.sh

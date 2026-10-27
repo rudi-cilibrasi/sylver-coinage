@@ -1,0 +1,5 @@
+move=75 N winning_move=78 frobenius=249 cumulative_states=36205456
+move=87 N winning_move=69 frobenius=253 cumulative_states=64082528
+move=95 N winning_move=43 frobenius=269 cumulative_states=64082528
+move=83 N winning_move=25 frobenius=273 cumulative_states=64082528
+move=103 N winning_move=46 frobenius=293 cumulative_states=71921728

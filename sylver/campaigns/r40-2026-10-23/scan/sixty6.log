@@ -1,0 +1,24 @@
+2026-10-25 20:39:00 waiting for pass C's 74 to end
+2026-10-25 22:28:23 stopped pass C after: 2026-10-25 22:28:22 74 end: exit 0, 6 of 8 classified, P: move=107 (killed pass_c.sh 2296585 and )
+2026-10-25 22:28:23 even_resolver.py 66 start
+r=66 e=   2 resolved  reply=3 via=opening table tried=- 0.0s
+r=66 e=  14 resolved  reply=8 via=node E tried=- 0.0s
+r=66 e=  30 resolved  reply=17 via=finite odd witness tried=7 0.1s
+r=66 e=  38 resolved  reply=28 via=search: P (resolve_16-28-38-40) tried=- 0.0s
+r=66 e=  42 resolved  reply=261 via=finite odd witness tried=130 627.1s
+r=66 e=  46 resolved  reply=20 via=r40 search: P (pair_any_16-40-46-60.log) tried=- 0.0s
+r=66 e=  54 resolved  reply=29 via=finite odd witness tried=13 5.1s
+r=66 e=  58 resolved  reply=185 via=finite odd witness tried=92 2002.3s
+r=66 e=  62 resolved  reply=29 via=finite odd witness tried=13 5.6s
+r=66 e=  70 open      reply=None via=None tried=95 5429.0s
+r=66 e=  74 open      reply=None via=None tried=56 4805.4s
+r=66 e=  78 resolved  reply=37 via=finite odd witness tried=17 25.3s
+r=66 e=  86 open      reply=None via=None tried=62 4805.4s
+r=66 e=  90 open      reply=None via=None tried=46 4805.3s
+r=66 e=  94 open      reply=None via=None tried=51 4805.4s
+r=66 e= 102 resolved  reply=33 via=finite odd witness tried=20 63.6s
+r=66 e= 108 resolved  reply=35 via=finite odd witness tried=13 16.4s
+r=66 e= 110 resolved  reply=65 via=finite odd witness tried=32 612.9s
+r=66 e= 118 open      reply=None via=None tried=50 4805.4s
+r=66 e= 124 open      reply=None via=None tried=42 4806.8s
+2026-10-26 08:55:30 exit 143

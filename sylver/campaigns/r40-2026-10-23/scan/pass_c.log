@@ -1,0 +1,8 @@
+2026-10-25 19:31:44 waiting for pass B's next row (screen90b.log has 9 lines)
+2026-10-25 19:36:34 stopped pass B after its row: 130 odd open 26 1544.5 (killed screen.py 1900944 and 2302601)
+2026-10-25 19:36:44 66 start: 95,103,111 (6 h)
+2026-10-25 20:17:56 66 end: exit 0, 3 of 3 classified
+2026-10-25 20:17:56 74 start: 87,91,95,99,103,107,115,123 (4 h)
+2026-10-25 22:28:22 74 end: exit 0, 6 of 8 classified, P: move=107
+2026-10-25 22:28:22 86 start: 73,77,81,85,89,93,97,101,105,109,113,117,121,125,133,141 (3 h)
+2026-10-25 22:28:23 stopped here by sixty6.sh, for 66's even side
