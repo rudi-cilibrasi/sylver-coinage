@@ -2200,21 +2200,24 @@ Recorded in [the reply-40 record](campaigns/r40-2026-10-23/RESULT.md#the-search-
   obligations N. Three of its even obligations, 76, 84 and 116, reach short
   positions whose odd obligations all lead to N. Each of those positions
   also reaches {16,40,44,66}, 66's child 44, by the move 44, since 76, 84
-  and 116 lie in that position's semigroup. So if every other even
+  and 116 lie in {16,40,44,66}'s semigroup. So if every other even
   obligation of {16,40,66,76} leads to N, 66 fails whether {16,40,44,66}
   is P (by 44) or N (by 76).
-- **Odd replies above 401.** The last open positions had no winning odd
-  reply up to 401, the resolver's bound. Above it they did: {16,40,66,76}'s
-  obligation 126 by 553, which completes the case split, and
-  {16,40,44,66}'s open obligations 36, 90 and 134 by 447, 463 and 181. So
+- **The last open positions.** The resolver tries odd replies only up to
+  401 and gives up on a position once four of them hit its limit. Swept
+  further, {16,40,66,76}'s obligation 126 is answered by 553, which
+  completes the case split, and {16,40,44,66}'s open obligations 36 and 90
+  by 447 and 463, all above 401; its open obligation 134 is answered by
+  181, among the replies the resolver never tried. So
   **B66={16,40,44,66} is P**, by search, and 66 fails by 44. B66 is not on
   Sicherman's list. It also makes {16,40,44,82}, 82's child 44, N.
 - **Not certified.** Four of B66's 49 finite witnesses are too large to
-  replay here: those for its moves 68, 134 and 70 take 679,655,902,
-  523,101,247 and 507,780,524 states when solved alone, more than a native
-  replay can hold in this host's memory, and the one for 90 was stopped
-  unsolved. For 68 and 70, no other winning odd reply up to 801 is
-  smaller. So 66 and 74 fail by search only.
+  replay here. Those for its moves 68, 134 and 70 take 679,655,902,
+  523,101,247 and 507,780,524 states when solved alone, beyond what a
+  native replay can hold in this host's free memory, by the memory per
+  state the {16,38,72} record measured; and the solve for 90 was stopped
+  unfinished. For 68 and 70, no other winning odd reply up to 801 gives a
+  smaller witness. So 66 and 74 fail by search only.
 - **What it means.** No answer to 40 is known. Below 90, 82 and 86 remain
   open.
 
