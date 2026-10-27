@@ -2236,8 +2236,8 @@ Recorded in [the reply-40 record](campaigns/r40-2026-10-23/RESULT.md#the-search-
   are now in the resolver's file too.
 - **What is left.** 28 of 82's 68 even obligations lead to N. Nine short
   children and 31 long ones are open. The first short child retried,
-  {16,40,60,82}, has every odd obligation leading to N, so it is P, and 82
-  fails by 60, exactly when its 42 even obligations all lead to N; those
+  {16,40,60,82}, has every odd obligation leading to N, so it is P (and 82
+  fails by 60) exactly when its 42 even obligations all lead to N; those
   are being resolved first. 86 still has eight odd obligations open, 105
   to 141. No answer to 40 is known.
 

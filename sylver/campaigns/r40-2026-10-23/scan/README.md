@@ -120,11 +120,15 @@ either; the destination's is 581.
 Each long pass ran as a Claude Code background task. Stopping a pass's
 shell with SIGSTOP ends that task (exit 147), and the harness then ends the
 task's processes, its solver among them, within a second; a test with
-`sleep` in place of the solver showed this on October 27. So by the time a
+`sleep` in place of the solver (not kept) showed this on October 27. So by the time a
 stopper listed the stopped shell's children, there were none, and the list
 in its line in `sixty6.log`, `pass_e.log`, `pass_f.log`, `pass_g.log`,
 `pass_i.log` or `pass_j.log` is empty. Pass I's second 86 run was
 ended this way four seconds in.
 After the review of this pass, `cross_rows.py` skips a P row before reading
 its winning move (a P row has none); its runs here read only N rows.
-`even_82.jsonl` has the rows written by October 27, 12:13.
+`even_82.jsonl` has the rows written by October 27, 12:13. `pass_k.sh`'s
+header says pass J's row for 60 came at 12:10; it was written at about
+12:02 (11:54 plus 490.5 seconds). After the review of this pass, the
+header comment of `pass_h.sh` was corrected (pass C's stop); the copy
+that ran differed from it there only.
