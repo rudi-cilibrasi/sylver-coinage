@@ -6,6 +6,8 @@ so the child is N by w and the obligation e is met (search grade, as the odd row
 and row they came from. With --b66, also 82's obligations 44 and 66, which B66={16,40,44,66} (P by search,
 evidence_16-40-44-66.json) meets: {16,40,44,82}+66 and {16,40,66}+44 are B66 (82 = 16+66).
 Usage: cross_rows.py a [--b66]. A row is added only for an obligation whose latest row is not 'resolved'.
+Not while even_resolver.py runs on the same a: it reads its file once, at its start, and a row it writes later
+for the same obligation would become the latest.
 """
 import json, sys
 from pathlib import Path
@@ -26,9 +28,11 @@ for f in sorted(HERE.glob(f'deep_{a}*.out')):
     for line in f.read_text().splitlines():
         if not line.startswith('move='):
             continue
+        if line.split()[1] != 'N':   # a P row has winning_move=none
+            continue
         fields = dict(part.split('=') for part in line.split()[2:])
         w, e = int(line.split()[0].split('=')[1]), int(fields['winning_move'])
-        if line.split()[1] != 'N' or e not in even or e in new:
+        if e not in even or e in new:
             continue
         child = position((*base, e))
         assert legal(child, w) and legal(position((*base, w)), e)

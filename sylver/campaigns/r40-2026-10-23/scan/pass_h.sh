@@ -1,7 +1,7 @@
 #!/bin/bash
 # Pass H: below 90, 82 and 86 are the answers a = 2 mod 4 still open. Pass A (screen.py, 30 minutes or 100M
-# P-positions each) left 16 of 86's odd obligations and 15 of 82's unclassified, and pass C was stopped before it
-# reached them. This waits for B66's evidence collection and the alternative-witness sizing to end (collect.py and
+# P-positions each) left 16 of 86's odd obligations and 15 of 82's unclassified, and pass C was stopped as it began
+# 86, before it classified any of them. This waits for B66's evidence collection and the alternative-witness sizing to end (collect.py and
 # size_alt.sh, PIDs $1 and $2), then sweeps those obligations with kunz_pt --p-table --stop-at-p and an 800M cap,
 # 4 hours each, as pass C did. A P row refutes that answer; if every row is N, its odd obligations all lead to N and
 # its even side decides. Stopped if MemAvailable falls below 15 GB.

@@ -2232,11 +2232,12 @@ Recorded in [the reply-40 record](campaigns/r40-2026-10-23/RESULT.md#the-search-
 - **Rows that settle both sides.** An odd row "{16,40,a}+w is N by e" with
   e even also settles a's even obligation e: {16,40,a,e} plus w is the same
   P-position. Five of 82's even obligations and three of 86's are settled
-  this way, and B66 settles two more of 82's.
-- **What is left.** 82 has 25 of its 68 even obligations settled. Nine
-  short children and 34 long ones are open, and the resolver has been
-  working through them since October 27, 11:54. 86 still has eight odd
-  obligations open, 105 to 141. No answer to 40 is known.
+  this way. 82's obligations 44 and 66, which B66 settles (Attempt 55),
+  are now in the resolver's file too.
+- **What is left.** 28 of 82's 68 even obligations lead to N. Nine short
+  children and 31 long ones are open, and the resolver has been working
+  through them since October 27, 11:54. 86 still has eight odd obligations
+  open, 105 to 141. No answer to 40 is known.
 
 ### Sources
 
