@@ -50,8 +50,8 @@ With them, the audit refutes twenty-six answers to 40:
 | 102 | {16,40,102} | 33 | {16,33,40,102} | finite witness |
 
 16, 32, 40 and 48 are not legal answers. So **every legal even answer up to
-50 fails**, and 58, 70, 78, 94 and 102 fail too. By search, 52, 54, 62,
-66, 74, 82 and the odd answers 3 to 73 fail as well
+50 fails**, and 58, 70, 78, 94 and 102 fail too. By search, 52, 54, 60,
+62, 66, 74, 82, 107 and the odd answers 3 to 73 fail as well
 ([below](#the-search-for-an-answer-to-40)). **40 remains unanswered**, and
 opening 16 remains unresolved.
 
@@ -145,8 +145,8 @@ discovery output, not certified.
   position P.
 - **a ≡ 0 (mod 4).** These give gcd four or eight, which the tools here do
   not cover. Some fail anyway, by one move to a known P-position: those in
-  the table above (36 among them, by 58 to B58), and 52 (by 54, to B54
-  below).
+  the table above (36 among them, by 58 to B58), 52 (by 54, to B54
+  below) and 60 (by 82, to {16,40,60,82} below).
 - **Odd answers.** These give finite positions.
 
 **Odd answers.** The ledger's scan tried 3, the one odd gap above 1 of the
@@ -157,7 +157,8 @@ one-hour limit during 59: it started at 16:41:36 and its log ends at
 17:41:37. A third, from 59 with a six-hour limit (October 24, 21:37, to
 October 25, 03:37), found that 59 through 73 fail as well (530,988,925
 P-positions after 73). Their winning replies are 330, 62, 163, 19, 103, 25,
-45 and 78. It stopped at the limit during 75.
+45 and 78. It stopped at the limit during 75. Above 73, 107 fails by 74,
+to {16,40,74,107} (below).
 
 **Even answers a ≡ 2 (mod 4).** `screen.py` first looked for an obligation
 reaching a known P-position, for every a up to 398. It then swept the odd
@@ -273,9 +274,10 @@ A is the first long sweep of the odd obligations (October 23).
   lead to N (by 118, 59 and 163), so every odd obligation of 66 leads to N.
   74's 87 to 103 lead to N, and then **{16,40,74,107} is P**: its
   Frobenius number is 313, and the sweep held 283,641,284 P-positions when
-  it ended. So **74 fails, by 107**. The witness is not replayed here: 62's,
-  {16,40,61,62}, already takes 286,533,125 states at Frobenius number 209,
-  and this one's is 313.
+  it ended. So **74 fails, by 107**, and the odd answer 107 fails by 74
+  ({16,40,107} plus 74 is the same position). The witness is not
+  replayed here: 62's, {16,40,61,62}, already takes 286,533,125 states at
+  Frobenius number 209, and this one's is 313.
 - **66's even side.** `even_resolver.py` then took 66's 33 even
   obligations whose children are long. In ten and a half hours it resolved
   13, left 7 open and did not reach the other 13. Passes D and E went back
@@ -397,6 +399,8 @@ began 86, before it classified any of them.
 - **82 fails by 60.** {16,40,60,82} is short, its 30 odd and 42 even
   obligations all lead to N, so it is P by the Quiet End Theorem, by
   search. It is {16,40,82} plus 60, so **82 fails, by 60**, by search.
+  It is also {16,40,60} plus 82 ({16,40,60} generates only multiples of
+  4), so 60 fails by 82.
   The witnesses are in `even_82.jsonl` (the odd side: pass J's row for
   60), `resolve_16-40-60-82.jsonl` and the `deep_82+60+*.out` files.
 - **86** still has eight odd obligations open, 105, 109, 113, 117, 121,
