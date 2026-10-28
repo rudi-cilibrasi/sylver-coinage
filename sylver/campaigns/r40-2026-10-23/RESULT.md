@@ -447,8 +447,12 @@ answers they refute this way. Eleven are not refuted otherwise:
 | 330 | 59 | {16,40,59,330} | the third odd-answer sweep (59 by 330) |
 
 All are by search. 202, 214 and 330 are answers a ≡ 2 (mod 4), and 116 is
-a multiple of 4. The same scan finds 60 by 82 and 107 by 74, above, and
-nothing else new.
+a multiple of 4. The same scan finds 107 by 74, above, and nothing else
+new. It cannot find 60 by 82: no single row records {16,40,60,82} as P,
+which rests on passes J to M together. It skips the outputs whose base it
+cannot read (replays and sweeps of positions with more generators; its
+last line names them), and a wider check that included them found nothing
+more.
 
 No answer to 40 is known.
 

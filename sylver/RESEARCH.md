@@ -2243,7 +2243,7 @@ Recorded in [the reply-40 record](campaigns/r40-2026-10-23/RESULT.md#the-search-
   greater depth. 86 still has eight odd obligations open, 105 to 141. No
   answer to 40 is known.
 
-### Attempt 57 — reply 40: by search, {16,40,60,82} is P, so 82 fails by 60; thirteen more answers fail by positions already found (2026-10-28)
+### Attempt 57 — reply 40: by search, {16,40,60,82} is P, so 82 fails by 60; thirteen more answers fail by positions the search found (2026-10-28)
 
 Recorded in [the reply-40 record](campaigns/r40-2026-10-23/RESULT.md#the-search-for-an-answer-to-40).
 

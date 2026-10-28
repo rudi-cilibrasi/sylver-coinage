@@ -4,7 +4,9 @@ A P-position {16,40,x,y} found while refuting x (or in any sweep) also refutes t
 from {16,40,y}. This collects the P-positions the scan's files record: the P rows of kunz_pt outputs (base + w is
 P), their N rows (base + w + winning move is P), and the resolved rows of the resolver files (child + reply is P).
 It prints each answer a, its move b and the position {16,40,a}+b, with the first file and line that gives it, for
-every such position of the form {16,40,x,y}. All of it is search grade, as the files are.
+every such position of the form {16,40,x,y}. All of it is search grade, as the files are. Outputs with no base (no
+kunz_pt command line in their .err and none in BASES: replays and sweeps of positions with more generators) are
+skipped, and the last line names them.
 
 Usage: mirror_scan.py (no solver; it reads the files beside it).
 """
@@ -34,9 +36,11 @@ def base_of(out):
 
 
 found = {}   # position key -> first source
+skipped = []
 for out in sorted(HERE.glob('*.out')):
     base = base_of(out)
     if base is None:
+        skipped.append(out.name)
         continue
     for i, line in enumerate(out.read_text(errors='replace').splitlines(), 1):
         if not line.startswith('move='):
@@ -54,7 +58,7 @@ for jf in sorted(HERE.glob('*.jsonl')):
 rows = set()
 for k, src in found.items():
     g = [int(x) for x in k.split(',')]
-    if len(g) != 4 or g[0] != 16 or 40 not in g:
+    if len(g) != 4 or 16 not in g or 40 not in g:
         continue
     u, v = [x for x in g if x not in (16, 40)]
     for a, b in ((u, v), (v, u)):
@@ -63,3 +67,4 @@ for k, src in found.items():
             rows.add((a, b, k, src))
 for a, b, k, src in sorted(rows):
     print(f'{a} fails by {b}: {{{k}}} [{src}]')
+print('skipped (no base):', ' '.join(skipped))
