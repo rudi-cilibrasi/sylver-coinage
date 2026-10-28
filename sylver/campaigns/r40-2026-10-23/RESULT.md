@@ -381,8 +381,9 @@ began 86, before it classified any of them.
   54 by 69, 58 by 133, 62 by 259, 68 by 91, 70 by 23, 74 by 265, 78 by
   33, 86 by 33, 94 by 29, 102 by 109, 106 by 79, 110 by 147, 118 by 37
   and 126 by 81. Open are 84, 90, 134, 150 and 166: for each, the 63 to
-  76 odd replies tried are not winning replies, and the sweep gave up when
-  a fourth reply hit the 20-minute limit, after 80 to 99 minutes. Pass L
+  76 odd replies tried are not winning replies, and the sweep gave up at
+  its fourth skipped reply (a batch of replies hit the 20-minute limit or
+  the 400M cap during it), after 80 to 99 minutes. Pass L
   reruns them as pass F did {16,40,66,76}'s, the skipped replies first.
 - **86** still has eight odd obligations open, 105, 109, 113, 117, 121,
   125, 133 and 141. They wait for 82's even side.

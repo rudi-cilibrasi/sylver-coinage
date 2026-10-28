@@ -136,6 +136,7 @@ that ran differed from it there only.
 On October 27 at 16:24, a test of the row check in `pass_l.sh`, before it
 ran, took in the rest of the script by mistake and started pass L's first
 run (84) for about two minutes beside pass K's solver, which was then
-sweeping 90. That run was stopped and its files deleted; the check was
+sweeping 90 (90's row then ended open, after four skips; pass L reruns
+it). That run was stopped and its files deleted; the check was
 then fixed (it had a syntax error and now stops pass L if it fails), and
 `pass_l.sh` was not changed after it started at 16:26.
