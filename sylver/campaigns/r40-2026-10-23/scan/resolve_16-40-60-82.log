@@ -1,0 +1,43 @@
+r=None e=   4 resolved  reply=6 via=node C tried=- 0.0s
+r=None e=   6 resolved  reply=4 via=node C tried=- 0.0s
+r=None e=   8 resolved  reply=14 via=node E tried=- 0.0s
+r=None e=  10 resolved  reply=9 via=opening table tried=- 0.0s
+r=None e=  12 resolved  reply=14 via=node F tried=- 0.0s
+r=None e=  14 resolved  reply=8 via=node E tried=- 0.0s
+r=None e=  20 resolved  reply=34 via=node T tried=- 0.0s
+r=None e=  22 resolved  reply=12 via=node P0 tried=- 0.0s
+r=None e=  24 resolved  reply=10 via=node K tried=- 0.0s
+r=None e=  28 resolved  reply=34 via=Sicherman's list (published) tried=- 0.0s
+r=None e=  44 resolved  reply=66 via=even_82.jsonl: B66 P by search (evidence_16-40-44-66.json) tried=- 0.1s
+r=None e=  50 resolved  reply=11 via=finite odd witness tried=6 0.2s
+r=None e=  66 resolved  reply=39 via=even_66.jsonl: finite odd witness tried=- 0.0s
+r=None e=   2 resolved  reply=3 via=opening table tried=- 0.0s
+r=None e=  18 resolved  reply=5 via=opening table tried=- 0.0s
+r=None e=  26 resolved  reply=11 via=finite odd witness tried=5 0.1s
+r=None e=  30 resolved  reply=17 via=finite odd witness tried=7 0.4s
+r=None e=  34 resolved  reply=20 via=node T tried=- 0.0s
+r=None e=  36 resolved  reply=177 via=finite odd witness tried=88 302.2s
+r=None e=  38 resolved  reply=28 via=search: P (resolve_16-28-38-40) tried=- 0.0s
+r=None e=  42 resolved  reply=28 via=r40 search: P (pair_any_16-28-40-74-98.log) tried=- 0.0s
+r=None e=  46 resolved  reply=20 via=r40 search: P (pair_any_16-40-46-60.log) tried=- 0.0s
+r=None e=  52 resolved  reply=29 via=finite odd witness tried=14 5.3s
+r=None e=  54 resolved  reply=69 via=finite odd witness tried=34 60.9s
+r=None e=  58 resolved  reply=133 via=finite odd witness tried=66 626.5s
+r=None e=  62 resolved  reply=259 via=finite odd witness tried=129 1392.0s
+r=None e=  68 resolved  reply=91 via=finite odd witness tried=45 574.2s
+r=None e=  70 resolved  reply=23 via=finite odd witness tried=9 2.2s
+r=None e=  74 resolved  reply=265 via=finite odd witness tried=132 3062.4s
+r=None e=  78 resolved  reply=33 via=finite odd witness tried=15 9.7s
+r=None e=  84 open      reply=None via=None tried=70 5809.9s
+r=None e=  86 resolved  reply=33 via=finite odd witness tried=17 14.6s
+r=None e=  90 open      reply=None via=None tried=76 5742.7s
+r=None e=  94 resolved  reply=29 via=finite odd witness tried=12 4.8s
+r=None e= 102 resolved  reply=109 via=finite odd witness tried=54 786.5s
+r=None e= 106 resolved  reply=79 via=finite odd witness tried=39 495.8s
+r=None e= 110 resolved  reply=147 via=finite odd witness tried=70 5845.3s
+r=None e= 118 resolved  reply=37 via=finite odd witness tried=22 51.2s
+r=None e= 126 resolved  reply=81 via=finite odd witness tried=40 538.4s
+r=None e= 134 open      reply=None via=None tried=71 5926.1s
+r=None e= 150 open      reply=None via=None tried=66 4805.3s
+r=None e= 166 open      reply=None via=None tried=63 4805.7s
+summary: {'resolved': 37, 'short: needs even': 0, 'open': 5, 'REFUTES r': 0} of 42
