@@ -2243,6 +2243,26 @@ Recorded in [the reply-40 record](campaigns/r40-2026-10-23/RESULT.md#the-search-
   greater depth. 86 still has eight odd obligations open, 105 to 141. No
   answer to 40 is known.
 
+### Attempt 57 — reply 40: by search, {16,40,60,82} is P, so 82 fails by 60 (2026-10-28)
+
+Recorded in [the reply-40 record](campaigns/r40-2026-10-23/RESULT.md#the-search-for-an-answer-to-40).
+
+- **The even side of {16,40,60,82}.** 37 of its 42 even obligations led to
+  N in the resolver's first sweep: 18 by P-positions known before, 19 by
+  replies it found. Swept further, 84, 134, 150 and 166 lead to N by 145,
+  197, 333 and 255. No odd reply up to 401 wins on {16,40,60,82,90}, but
+  499 does: {16,40,60,82,90,499} is P, with Frobenius number 633.
+- **82 fails by 60.** {16,40,60,82} is short, and its 30 odd obligations
+  (Attempt 56) and its 42 even ones all lead to N, so it is P, by search.
+  It is 82's child 60, so 82 fails by 60. {16,40,60,82} is not on
+  Sicherman's list. The large witnesses are not replayed here, so this is
+  by search only, like 66 and 74.
+- **Like 66.** 66 also needed an odd winner above 401 on a long child (126
+  by 553, 36 by 447, 90 by 463). The resolver's bound of 401 is a budget,
+  not a bound of the game.
+- **What it means.** No answer to 40 is known. Below 90, only 86 remains
+  open: eight of its odd obligations, 105 to 141, are not yet classified.
+
 ### Sources
 
 - <https://math.colgate.edu/~integers/yg2/yg2.pdf>

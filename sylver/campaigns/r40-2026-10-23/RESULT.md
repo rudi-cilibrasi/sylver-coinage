@@ -51,7 +51,7 @@ With them, the audit refutes twenty-six answers to 40:
 
 16, 32, 40 and 48 are not legal answers. So **every legal even answer up to
 50 fails**, and 58, 70, 78, 94 and 102 fail too. By search, 52, 54, 62,
-66, 74 and the odd answers 3 to 73 fail as well
+66, 74, 82 and the odd answers 3 to 73 fail as well
 ([below](#the-search-for-an-answer-to-40)). **40 remains unanswered**, and
 opening 16 remains unresolved.
 
@@ -338,7 +338,7 @@ A is the first long sweep of the odd obligations (October 23).
 - **82.** B66 is also where {16,40,44,82}'s obligation 66 leads (82 =
   16+66), so 82's child {16,40,44,82} is N.
 
-**82 and 86** (October 26 to 27). Pass A had left 15 of 82's 43 odd
+**82 and 86** (October 26 to 28). Pass A had left 15 of 82's 43 odd
 obligations and 16 of 86's 45 unclassified, and pass C was stopped as it
 began 86, before it classified any of them.
 - **The odd obligations.** Pass H swept them as pass C did, four hours
@@ -385,11 +385,25 @@ began 86, before it classified any of them.
   its fourth skipped reply (a batch of replies hit the 20-minute limit or
   the 400M cap during it), after 80 to 99 minutes. Pass L
   reruns them as pass F did {16,40,66,76}'s, the skipped replies first.
+- **The last five.** Pass L (October 27, 23:34, to October 28, 02:39)
+  gave each open obligation its skipped replies, then every odd reply up
+  to 401 the resolver had not reached, with an 800M cap. Four lead to N:
+  84 by 145, 134 by 197, 150 by 333 and 166 by 255, each found in 25 to
+  49 minutes. All 200 odd replies up to 401 to {16,40,60,82,90} are N.
+  Pass M (02:39 to 03:15) then swept its odd replies from 403 up, as pass
+  G did: **{16,40,60,82,90,499} is P**, its Frobenius number is 633, and
+  the run held 91,003,969 P-positions when it found it, after 36 minutes.
+  So 90 leads to N too.
+- **82 fails by 60.** {16,40,60,82} is short, its 30 odd and 42 even
+  obligations all lead to N, so it is P by the Quiet End Theorem, by
+  search. It is {16,40,82} plus 60, so **82 fails, by 60**, by search.
+  The witnesses are in `even_82.jsonl` (the odd side: pass J's row for
+  60), `resolve_16-40-60-82.jsonl` and the `deep_82+60+*.out` files.
 - **86** still has eight odd obligations open, 105, 109, 113, 117, 121,
-  125, 133 and 141. They wait for 82's even side.
+  125, 133 and 141. Pass N gives each one a run of its own, three hours
+  each, from October 28, 03:16.
 
-Below 90, the answers a ≡ 2 (mod 4) still open are 82 and 86. 82's odd
-obligations all lead to N.
+Below 90, the answer a ≡ 2 (mod 4) still open is 86.
 
 **90 to 398** (October 25, 06:00 to 12:21). A light sweep of the odd
 obligations ran beside B78's replays: for each a, five minutes or
