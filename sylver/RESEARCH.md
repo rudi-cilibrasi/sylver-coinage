@@ -2238,8 +2238,10 @@ Recorded in [the reply-40 record](campaigns/r40-2026-10-23/RESULT.md#the-search-
   children and 31 long ones are open. The first short child retried,
   {16,40,60,82}, has every odd obligation leading to N, so it is P (and 82
   fails by 60) exactly when its 42 even obligations all lead to N; those
-  are being resolved first. 86 still has eight odd obligations open, 105
-  to 141. No answer to 40 is known.
+  are being resolved first. 37 of them do, by search, and five (84, 90,
+  134, 150 and 166) are open after a first sweep and are being retried at
+  greater depth. 86 still has eight odd obligations open, 105 to 141. No
+  answer to 40 is known.
 
 ### Sources
 

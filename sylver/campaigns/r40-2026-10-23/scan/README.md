@@ -68,7 +68,8 @@ certified.
 | pass H's leftovers, eight hours each: pass I | `./pass_i.sh PID` (`kunz_pt` as in pass C, on the obligations with no row in `deep_82.out` or `deep_86.out`), October 27. Its first run began with 86 and was stopped after 16 seconds; the script was then changed to take 82 first (its order and its header comment), and run again, 05:45 to 11:54: 135 by 349. Neither of its 86 runs wrote a row, and their files are not kept | `pass_i.sh`, `pass_i.log`, `deep_82x.*` |
 | the even rows that odd rows settle | `python cross_rows.py 82 --b66 > cross_82.log` and `python cross_rows.py 86 > cross_86.log`, without a solver, October 27, 05:47; pass J ran the first again, which added nothing | `cross_rows.py`, `cross_82.log`, `cross_86.log`, `even_82.jsonl` and `even_86.jsonl` (their last 7 and 3 rows) |
 | 82's even side: pass J | `./pass_j.sh PID`: once pass I's row for 135 was N, it stopped pass I, ran `cross_rows.py 82 --b66` again, and started `even_resolver.py 82 --p-table --ncache-mb 8192 --threads 10 --short-first --redo-open --max-states 400000000 --timeout 1200` (24 hours at most), October 27, 11:54. Its first row: 82's child {16,40,60,82} is "short: needs even", its 30 odd obligations all N, 75 and 83 (skipped on October 24) among them. `pass_k.sh` stopped it at 12:13, during its row for 68 | `pass_j.sh`, `pass_j.log`, `eighty2.log`, `even_82.jsonl` (its last row) |
-| {16,40,60,82}'s 42 even obligations: pass K | `./pass_k.sh PID` (`even_resolver.py --position 16 40 60 82 --p-table --ncache-mb 8192 --threads 10 --short-first --max-states 400000000 --timeout 1200`, 16 hours at most), from October 27, 12:13. It was still running when this was recorded | `pass_k.sh`, `pass_k.log` (its start) |
+| {16,40,60,82}'s 42 even obligations: pass K | `./pass_k.sh PID` (`even_resolver.py --position 16 40 60 82 --p-table --ncache-mb 8192 --threads 10 --short-first --max-states 400000000 --timeout 1200`, 16 hours at most), October 27, 12:13 to 23:34: 37 N (19 by replies it found), none refuting; 84, 90, 134, 150 and 166 open after four skips each | `pass_k.sh`, `pass_k.log`, `resolve_16-40-60-82.jsonl`, `resolve_16-40-60-82.log` |
+| {16,40,60,82}'s open obligations: their skipped odd replies, then every odd reply up to 401 the resolver did not reach: pass L | `./pass_l.sh PID` (`pass_f_lists.py 16 40 60 82` gives the lists; `kunz_pt` as in pass C, 4 hours each), from October 27, 23:34, when pass K ended. It reruns the open rows only if every row of `resolve_16-40-60-82.jsonl` is resolved or open. It was still running when this was recorded | `pass_l.sh`, `pass_l.log` (its start) |
 
 The shell scripts log "(exit N)" after each run. Until the review of this
 record, they took N from `$?` inside the `$(date ...)` line, which is
@@ -132,3 +133,9 @@ header says pass J's row for 60 came at 12:10; it was written at about
 12:02 (11:54 plus 490.5 seconds). After the review of this pass, the
 header comment of `pass_h.sh` was corrected (pass C's stop); the copy
 that ran differed from it there only.
+On October 27 at 16:24, a test of the row check in `pass_l.sh`, before it
+ran, took in the rest of the script by mistake and started pass L's first
+run (84) for about two minutes beside pass K's solver, which was then
+sweeping 90. That run was stopped and its files deleted; the check was
+then fixed (it had a syntax error and now stops pass L if it fails), and
+`pass_l.sh` was not changed after it started at 16:26.

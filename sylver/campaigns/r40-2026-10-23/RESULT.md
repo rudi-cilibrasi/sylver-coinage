@@ -373,7 +373,17 @@ began 86, before it classified any of them.
   had hit the limit on October 24 (75 and 83) among them. So that child is
   P exactly when its 42 even obligations all lead to N, and then 82 fails
   by 60. Pass K stopped pass J at 12:13 to resolve those 42 first, as pass
-  E did {16,40,66,76}'s; 82's other open children wait for it.
+  E did {16,40,66,76}'s; 82's other open children wait for it. Pass K
+  ended at 23:34: **37 of the 42 lead to N**, and none refutes it. 18 are
+  settled by P-positions known before (the opening table, the record's
+  nodes, Sicherman's list, B28, B66 and earlier searches), and 19 by a
+  reply pass K found: 26 by 11, 30 by 17, 36 by 177, 50 by 11, 52 by 29,
+  54 by 69, 58 by 133, 62 by 259, 68 by 91, 70 by 23, 74 by 265, 78 by
+  33, 86 by 33, 94 by 29, 102 by 109, 106 by 79, 110 by 147, 118 by 37
+  and 126 by 81. Open are 84, 90, 134, 150 and 166: for each, the 63 to
+  76 odd replies tried are not winning replies, and the sweep gave up when
+  a fourth reply hit the 20-minute limit, after 80 to 99 minutes. Pass L
+  reruns them as pass F did {16,40,66,76}'s, the skipped replies first.
 - **86** still has eight odd obligations open, 105, 109, 113, 117, 121,
   125, 133 and 141. They wait for 82's even side.
 
