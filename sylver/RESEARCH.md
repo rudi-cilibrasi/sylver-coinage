@@ -2243,7 +2243,7 @@ Recorded in [the reply-40 record](campaigns/r40-2026-10-23/RESULT.md#the-search-
   greater depth. 86 still has eight odd obligations open, 105 to 141. No
   answer to 40 is known.
 
-### Attempt 57 — reply 40: by search, {16,40,60,82} is P, so 82 fails by 60 and 60 by 82 (2026-10-28)
+### Attempt 57 — reply 40: by search, {16,40,60,82} is P, so 82 fails by 60; thirteen more answers fail by positions already found (2026-10-28)
 
 Recorded in [the reply-40 record](campaigns/r40-2026-10-23/RESULT.md#the-search-for-an-answer-to-40).
 
@@ -2257,16 +2257,21 @@ Recorded in [the reply-40 record](campaigns/r40-2026-10-23/RESULT.md#the-search-
   It is 82's child 60, so 82 fails by 60. {16,40,60,82} is not on
   Sicherman's list. The large witnesses are not replayed here, so this is
   by search only, like 66 and 74.
-- **Two more answers.** {16,40,60} generates only multiples of 4, so 82 is
-  a move there, and it reaches {16,40,60,82}: the answer 60 fails by 82.
-  In the same way {16,40,74,107} (Attempt 55) is {16,40,107} plus 74, so
-  the odd answer 107 fails by 74. Both are by search.
+- **Answers refuted by other answers' positions.** A P-position
+  {16,40,x,y} found for x refutes y as well, when x is a legal move from
+  {16,40,y}. {16,40,60} generates only multiples of 4, so 82 is a move
+  there, and 60 fails by 82; {16,40,74,107} (Attempt 55) refutes 107 by
+  74. A scan of every P-position the search's files record
+  (`mirror_scan.py`) finds eleven more: 79, 83, 85, 93, 103, 116, 163,
+  202, 214, 221 and 330. Most come from the odd-answer sweeps: 47 is
+  answered by 202, so {16,40,47,202} is P, and 202 fails by 47. All are
+  by search.
 - **Like 66.** 66 also needed an odd winner above 401 on a long child (126
   by 553, 36 by 447, 90 by 463). The resolver's bound of 401 is a budget,
   not a bound of the game.
 - **What it means.** No answer to 40 is known. Below 90, the only answer
   a ≡ 2 (mod 4) still open is 86: eight of its odd obligations, 105 to
-  141, are not yet classified. The odd answers from 75 and most answers
+  141, are not yet classified. Most odd answers from 75 and most answers
   a ≡ 0 (mod 4) are not settled either.
 
 ### Sources

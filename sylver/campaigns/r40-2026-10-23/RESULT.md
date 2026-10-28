@@ -51,7 +51,8 @@ With them, the audit refutes twenty-six answers to 40:
 
 16, 32, 40 and 48 are not legal answers. So **every legal even answer up to
 50 fails**, and 58, 70, 78, 94 and 102 fail too. By search, 52, 54, 60,
-62, 66, 74, 82, 107 and the odd answers 3 to 73 fail as well
+62, 66, 74, 82, 116, 202, 214 and 330 fail as well, and the odd answers 3
+to 73, 79, 83, 85, 93, 103, 107, 163 and 221
 ([below](#the-search-for-an-answer-to-40)). **40 remains unanswered**, and
 opening 16 remains unresolved.
 
@@ -146,7 +147,7 @@ discovery output, not certified.
 - **a ≡ 0 (mod 4).** These give gcd four or eight, which the tools here do
   not cover. Some fail anyway, by one move to a known P-position: those in
   the table above (36 among them, by 58 to B58), 52 (by 54, to B54
-  below) and 60 (by 82, to {16,40,60,82} below).
+  below), 60 (by 82, to {16,40,60,82} below) and 116 (by 35, below).
 - **Odd answers.** These give finite positions.
 
 **Odd answers.** The ledger's scan tried 3, the one odd gap above 1 of the
@@ -157,8 +158,9 @@ one-hour limit during 59: it started at 16:41:36 and its log ends at
 17:41:37. A third, from 59 with a six-hour limit (October 24, 21:37, to
 October 25, 03:37), found that 59 through 73 fail as well (530,988,925
 P-positions after 73). Their winning replies are 330, 62, 163, 19, 103, 25,
-45 and 78. It stopped at the limit during 75. Above 73, 107 fails by 74,
-to {16,40,74,107} (below).
+45 and 78. It stopped at the limit during 75. Above 73, 79, 83, 85, 93,
+103, 107, 163 and 221 fail by moves to P-positions found for other
+answers (below).
 
 **Even answers a ≡ 2 (mod 4).** `screen.py` first looked for an obligation
 reaching a known P-position, for every a up to 398. It then swept the odd
@@ -420,7 +422,33 @@ cap, the rest at the time limit. Pass B (October 25, 15:23 to 19:36) gave
 90 to 130 pass A's settings, 30 minutes or 100,000,000 P-positions each:
 all nine stopped with 25 to 28 odd obligations classified, all N, and pass
 C stopped it there. So no a from 90 to 398 is yet known to have all its odd
-obligations lead to N.
+obligations lead to N. Three of those 76, 202, 214 and 330, fail anyway,
+by search (below).
+
+**Answers that positions found for others refute** (October 28). A
+P-position {16,40,x,y} found while refuting x also refutes y, when x is a
+legal move from {16,40,y}: it is {16,40,y} plus x. `mirror_scan.py`
+collects the P-positions the scan's files record (P rows, N rows with
+their winning moves, and the resolver's resolved rows) and lists the
+answers they refute this way. Eleven are not refuted otherwise:
+
+| Answer | Move | Reaches | First found in |
+| ---: | ---: | --- | --- |
+| 79 | 51 | {16,40,51,79} | the second odd-answer sweep (51 by 79) |
+| 83 | 25 | {16,25,40,83} | pass E's {16,40,66,116}+83 by 25, and pass H's 82 sweep (83 by 25) |
+| 85 | 43 | {16,40,43,85} | the second odd-answer sweep (43 by 85), and pass H's 86 sweep |
+| 93 | 35 | {16,35,40,93} | pass H's 86 sweep (93 by 35) |
+| 103 | 67 | {16,40,67,103} | the third odd-answer sweep (67 by 103) |
+| 116 | 35 | {16,35,40,116} | 86's even row 116, by 35 (86 = 16+35+35) |
+| 163 | 63 | {16,40,63,163} | the third odd-answer sweep (63 by 163) |
+| 202 | 47 | {16,40,47,202} | the second odd-answer sweep (47 by 202) |
+| 214 | 53 | {16,40,53,214} | the second odd-answer sweep (53 by 214) |
+| 221 | 49 | {16,40,49,221} | the second odd-answer sweep (49 by 221) |
+| 330 | 59 | {16,40,59,330} | the third odd-answer sweep (59 by 330) |
+
+All are by search. 202, 214 and 330 are answers a ≡ 2 (mod 4), and 116 is
+a multiple of 4. The same scan finds 60 by 82 and 107 by 74, above, and
+nothing else new.
 
 No answer to 40 is known.
 
