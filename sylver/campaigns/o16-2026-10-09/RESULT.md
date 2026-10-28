@@ -11,7 +11,7 @@ is **38**. (Since October 18, by search, 72 answers 38; that is not
 certified, so it is not a row here. See the
 [reply-38 record](../r38-2026-10-09/RESULT.md#the-search-for-an-answer-to-38).)
 The next reply, 40, has no known answer; the
-[reply-40 record](../r40-2026-10-23/RESULT.md) (October 23 to 27) refutes
+[reply-40 record](../r40-2026-10-23/RESULT.md) (October 23 to 28) refutes
 26 answers to it, every legal even answer up to 50 among them, and more by
 search. Opening 16 remains unresolved.
 

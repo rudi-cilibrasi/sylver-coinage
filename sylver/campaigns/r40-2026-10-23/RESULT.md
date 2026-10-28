@@ -50,8 +50,9 @@ With them, the audit refutes twenty-six answers to 40:
 | 102 | {16,40,102} | 33 | {16,33,40,102} | finite witness |
 
 16, 32, 40 and 48 are not legal answers. So **every legal even answer up to
-50 fails**, and 58, 70, 78, 94 and 102 fail too. By search, 52, 54, 62,
-66, 74 and the odd answers 3 to 73 fail as well
+50 fails**, and 58, 70, 78, 94 and 102 fail too. By search, 52, 54, 60,
+62, 66, 74, 82, 116, 202, 214 and 330 fail as well, and the odd answers 3
+to 73, 79, 83, 85, 93, 103, 107, 163 and 221
 ([below](#the-search-for-an-answer-to-40)). **40 remains unanswered**, and
 opening 16 remains unresolved.
 
@@ -145,8 +146,8 @@ discovery output, not certified.
   position P.
 - **a ≡ 0 (mod 4).** These give gcd four or eight, which the tools here do
   not cover. Some fail anyway, by one move to a known P-position: those in
-  the table above (36 among them, by 58 to B58), and 52 (by 54, to B54
-  below).
+  the table above (36 among them, by 58 to B58), 52 (by 54, to B54
+  below), 60 (by 82, to {16,40,60,82} below) and 116 (by 35, below).
 - **Odd answers.** These give finite positions.
 
 **Odd answers.** The ledger's scan tried 3, the one odd gap above 1 of the
@@ -157,7 +158,9 @@ one-hour limit during 59: it started at 16:41:36 and its log ends at
 17:41:37. A third, from 59 with a six-hour limit (October 24, 21:37, to
 October 25, 03:37), found that 59 through 73 fail as well (530,988,925
 P-positions after 73). Their winning replies are 330, 62, 163, 19, 103, 25,
-45 and 78. It stopped at the limit during 75.
+45 and 78. It stopped at the limit during 75. Above 73, 79, 83, 85, 93,
+103, 107, 163 and 221 fail by moves to P-positions found for other
+answers (below).
 
 **Even answers a ≡ 2 (mod 4).** `screen.py` first looked for an obligation
 reaching a known P-position, for every a up to 398. It then swept the odd
@@ -273,9 +276,10 @@ A is the first long sweep of the odd obligations (October 23).
   lead to N (by 118, 59 and 163), so every odd obligation of 66 leads to N.
   74's 87 to 103 lead to N, and then **{16,40,74,107} is P**: its
   Frobenius number is 313, and the sweep held 283,641,284 P-positions when
-  it ended. So **74 fails, by 107**. The witness is not replayed here: 62's,
-  {16,40,61,62}, already takes 286,533,125 states at Frobenius number 209,
-  and this one's is 313.
+  it ended. So **74 fails, by 107**, and the odd answer 107 fails by 74
+  ({16,40,107} plus 74 is the same position). The witness is not
+  replayed here: 62's, {16,40,61,62}, already takes 286,533,125 states at
+  Frobenius number 209, and this one's is 313.
 - **66's even side.** `even_resolver.py` then took 66's 33 even
   obligations whose children are long. In ten and a half hours it resolved
   13, left 7 open and did not reach the other 13. Passes D and E went back
@@ -338,7 +342,7 @@ A is the first long sweep of the odd obligations (October 23).
 - **82.** B66 is also where {16,40,44,82}'s obligation 66 leads (82 =
   16+66), so 82's child {16,40,44,82} is N.
 
-**82 and 86** (October 26 to 27). Pass A had left 15 of 82's 43 odd
+**82 and 86** (October 26 to 28). Pass A had left 15 of 82's 43 odd
 obligations and 16 of 86's 45 unclassified, and pass C was stopped as it
 began 86, before it classified any of them.
 - **The odd obligations.** Pass H swept them as pass C did, four hours
@@ -385,11 +389,27 @@ began 86, before it classified any of them.
   its fourth skipped reply (a batch of replies hit the 20-minute limit or
   the 400M cap during it), after 80 to 99 minutes. Pass L
   reruns them as pass F did {16,40,66,76}'s, the skipped replies first.
+- **The last five.** Pass L (October 27, 23:34, to October 28, 02:39)
+  gave each open obligation its skipped replies, then every odd reply up
+  to 401 the resolver had not reached, with an 800M cap. Four lead to N:
+  84 by 145, 134 by 197, 150 by 333 and 166 by 255, each found in 25 to
+  49 minutes. All 200 odd replies up to 401 to {16,40,60,82,90} are N.
+  Pass M (02:39 to 03:15) then swept its odd replies from 403 up, as pass
+  G did: **{16,40,60,82,90,499} is P**, its Frobenius number is 633, and
+  the run held 91,003,969 P-positions when it found it, after 36 minutes.
+  So 90 leads to N too.
+- **82 fails by 60.** {16,40,60,82} is short, its 30 odd and 42 even
+  obligations all lead to N, so it is P by the Quiet End Theorem, by
+  search. It is {16,40,82} plus 60, so **82 fails, by 60**, by search.
+  It is also {16,40,60} plus 82 ({16,40,60} generates only multiples of
+  4), so 60 fails by 82.
+  The witnesses are in `even_82.jsonl` (the odd side: pass J's row for
+  60), `resolve_16-40-60-82.jsonl` and the `deep_82+60+*.out` files.
 - **86** still has eight odd obligations open, 105, 109, 113, 117, 121,
-  125, 133 and 141. They wait for 82's even side.
+  125, 133 and 141. Pass N gives each one a run of its own, three hours
+  each, from October 28, 03:16.
 
-Below 90, the answers a ≡ 2 (mod 4) still open are 82 and 86. 82's odd
-obligations all lead to N.
+Below 90, the answer a ≡ 2 (mod 4) still open is 86.
 
 **90 to 398** (October 25, 06:00 to 12:21). A light sweep of the odd
 obligations ran beside B78's replays: for each a, five minutes or
@@ -402,7 +422,37 @@ cap, the rest at the time limit. Pass B (October 25, 15:23 to 19:36) gave
 90 to 130 pass A's settings, 30 minutes or 100,000,000 P-positions each:
 all nine stopped with 25 to 28 odd obligations classified, all N, and pass
 C stopped it there. So no a from 90 to 398 is yet known to have all its odd
-obligations lead to N.
+obligations lead to N. Three of those 76, 202, 214 and 330, fail anyway,
+by search (below).
+
+**Answers that positions found for others refute** (October 28). A
+P-position {16,40,x,y} found while refuting x also refutes y, when x is a
+legal move from {16,40,y}: it is {16,40,y} plus x. `mirror_scan.py`
+collects the P-positions the scan's files record (P rows, N rows with
+their winning moves, and the resolver's resolved rows) and lists the
+answers they refute this way. Eleven are not refuted otherwise:
+
+| Answer | Move | Reaches | First found in |
+| ---: | ---: | --- | --- |
+| 79 | 51 | {16,40,51,79} | the second odd-answer sweep (51 by 79) |
+| 83 | 25 | {16,25,40,83} | pass E's {16,40,66,116}+83 by 25, and pass H's 82 sweep (83 by 25) |
+| 85 | 43 | {16,40,43,85} | the second odd-answer sweep (43 by 85), and pass H's 86 sweep |
+| 93 | 35 | {16,35,40,93} | pass H's 86 sweep (93 by 35) |
+| 103 | 67 | {16,40,67,103} | the third odd-answer sweep (67 by 103) |
+| 116 | 35 | {16,35,40,116} | 86's even row 116, by 35 (86 = 16+35+35) |
+| 163 | 63 | {16,40,63,163} | the third odd-answer sweep (63 by 163) |
+| 202 | 47 | {16,40,47,202} | the second odd-answer sweep (47 by 202) |
+| 214 | 53 | {16,40,53,214} | the second odd-answer sweep (53 by 214) |
+| 221 | 49 | {16,40,49,221} | the second odd-answer sweep (49 by 221) |
+| 330 | 59 | {16,40,59,330} | the third odd-answer sweep (59 by 330) |
+
+All are by search. 202, 214 and 330 are answers a ≡ 2 (mod 4), and 116 is
+a multiple of 4. The same scan finds 107 by 74, above, and nothing else
+new. It cannot find 60 by 82: no single row records {16,40,60,82} as P,
+which rests on passes J to M together. It skips the outputs whose base it
+cannot read (replays and sweeps of positions with more generators; its
+last line names them), and a wider check that included them found nothing
+more.
 
 No answer to 40 is known.
 

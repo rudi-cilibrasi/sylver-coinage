@@ -1,0 +1,7 @@
+2026-10-28 01:16:55 waiting for pass_l.sh 250816 to end
+2026-10-28 02:39:33 pass L ended: 2026-10-28 02:39:29 pass L end
+2026-10-28 02:39:33 82+60+90x start: {16 40 60 82 90} + 403..1601 (4 h)
+2026-10-28 03:15:34 82+60+90x end: exit 0, 49 of 600 classified, P: move=499
+2026-10-28 03:15:34 82+60+150: pass L found a P reply
+2026-10-28 03:15:34 82+60+166: pass L found a P reply
+2026-10-28 03:15:34 pass M end
