@@ -405,9 +405,25 @@ began 86, before it classified any of them.
   4), so 60 fails by 82.
   The witnesses are in `even_82.jsonl` (the odd side: pass J's row for
   60), `resolve_16-40-60-82.jsonl` and the `deep_82+60+*.out` files.
-- **86** still has eight odd obligations open, 105, 109, 113, 117, 121,
-  125, 133 and 141. Pass N gives each one a run of its own, three hours
-  each, from October 28, 03:16.
+- **86.** Pass N gave each of its eight open odd obligations a run of its
+  own, three hours each (October 28, 03:16 to 19:45). Five lead to N:
+  105 by 291, 109 by 65, 117 by 49, 125 by 73 and 141 by 59. 113, 121 and
+  133 reached the limit unclassified, so 86 has three odd obligations
+  open. On the even side, `even_86.jsonl` has 31 of its 71 obligations
+  leading to N, five more of them (2, 34, 36, 42 and 50) because the child
+  reaches a known P-position (`cross_rows.py 86 --known`; B50 and
+  {16,28,40,42} are P by search). 26 leads to N as well, by 11: the child
+  {16,26,40,86} plus 11 is {11,16,26,40}, the finite witness that refutes
+  26 above, which the known positions `cross_rows.py` reads do not hold.
+  So 32 of the 71 lead to N. Pass O was to retry the five short children
+  left open after a first sweep (68, 100, 108, 132 and 140) first. Its
+  first row, on October 28 at 20:03, is that **{16,40,68,86} is "short:
+  needs even"**: every odd obligation of that child leads to N, by search.
+  It stopped there. So, as {16,40,60,82} did for 82, {16,40,68,86} is P
+  exactly when its 45 even obligations all lead to N too, and then 86
+  fails by 68 (and 68 by 86). Pass P resolves those from 20:03. 100, 108,
+  132 and 140 keep their open rows of October 24, and 34 long children
+  have not been run.
 
 Below 90, the answer a ≡ 2 (mod 4) still open is 86.
 

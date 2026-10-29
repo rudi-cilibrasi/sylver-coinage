@@ -1,0 +1,5 @@
+2026-10-28 04:46:48 waiting for pass_n.sh 1453545 to end
+2026-10-28 19:45:42 pass N ended: 2026-10-28 19:45:39 pass N end
+2026-10-28 19:45:43 cross_rows.py 86 --known: 8 rows in cross_86.log
+2026-10-28 19:45:43 start (python3 even_resolver.py 86 --p-table --ncache-mb 8192 --threads 10 --short-first --redo-open --stop-at-needs-even --max-states 400000000 --timeout 1200; 24 h)
+2026-10-28 20:03:04 even_resolver.py exit 0; summary: {'resolved': 31, 'short: needs even': 1, 'open': 4, 'REFUTES r': 0} of 71
