@@ -409,12 +409,15 @@ began 86, before it classified any of them.
   own, three hours each (October 28, 03:16 to 19:45). Five lead to N:
   105 by 291, 109 by 65, 117 by 49, 125 by 73 and 141 by 59. 113, 121 and
   133 reached the limit unclassified, so 86 has three odd obligations
-  open. On the even side, 31 of its 71 obligations lead to N, five of them
-  (2, 34, 36, 42 and 50) because the child reaches a known P-position
-  (`cross_rows.py 86 --known`). Five short children (68, 100, 108, 132
-  and 140) are open after a first sweep, and 35 long ones have not been
-  run. Pass O resolves them, the open short ones first, from October 28,
-  19:45.
+  open. On the even side, `even_86.jsonl` has 31 of its 71 obligations
+  leading to N, five more of them (2, 34, 36, 42 and 50) because the child
+  reaches a known P-position (`cross_rows.py 86 --known`; B50 and
+  {16,28,40,42} are P by search). 26 leads to N as well, by 11: the child
+  {16,26,40,86} plus 11 is {11,16,26,40}, the finite witness that refutes
+  26 above, which the known positions `cross_rows.py` reads do not hold.
+  So 32 lead to N. Five short children (68, 100, 108, 132 and 140) are
+  open after a first sweep, and 34 long ones have not been run. Pass O
+  runs on them, the open short ones first, from October 28, 19:45.
 
 Below 90, the answer a ≡ 2 (mod 4) still open is 86.
 

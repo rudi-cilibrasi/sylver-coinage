@@ -2,7 +2,7 @@
 # Pass O: 86's even side, after pass N (pass_n.sh, PID $1). If pass N found a P row, 86 fails and there is nothing
 # to do. Otherwise this adds the even rows that pass N's odd rows and the known P-positions settle (cross_rows.py
 # 86 --known), then runs even_resolver.py on 86's even obligations, 24 hours at most: the five open short ones again
-# first (68, 100, 108, 132 and 140, each with four replies skipped on October 25), then the long ones, which have
+# first (68, 100, 108, 132 and 140, each with four replies skipped on October 24), then the long ones, which have
 # never been run. It stops at the first child that is short with every odd obligation N ('short: needs even'): that
 # child may be P, which would refute 86 as {16,40,60,82} refuted 82, so it is tested next. Stopped if MemAvailable
 # falls below 15 GB.

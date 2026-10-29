@@ -2282,13 +2282,14 @@ Recorded in [the reply-40 record](campaigns/r40-2026-10-23/RESULT.md#the-search-
   had three hours alone. 105, 109, 117, 125 and 141 lead to N (by 291, 65,
   49, 73 and 59); 113, 121 and 133 are still unclassified. So 42 of 86's
   45 odd obligations lead to N.
-- **86's even side.** 31 of its 71 even obligations lead to N, five more
+- **86's even side.** 32 of its 71 even obligations lead to N, six more
   of them because the child reaches a P-position already known: 36 and 50
-  reach B50={16,36,40,50}, 42 reaches {16,28,40,42}, 34 reaches
-  {16,20,34}, and 2 reaches {2,3}. Earlier precedent points here: 46, 54,
-  58, 66, 78 and 82 each failed by an even move e ≡ 0 (mod 4), and 86's
-  five open short children, 68, 100, 108, 132 and 140, are all of that
-  kind. They are being resolved first.
+  reach B50={16,36,40,50} and 42 reaches {16,28,40,42} (both P by
+  search), 34 reaches {16,20,34}, 26 reaches {11,16,26,40}, and 2 reaches
+  {2,3}. Earlier precedent points here: 46, 54, 58, 66, 78 and 82 each
+  failed by an even move e ≡ 0 (mod 4), and only 74 by an odd one (107).
+  86's five open short children, 68, 100, 108, 132 and 140, are all
+  ≡ 0 (mod 4). They are being resolved first.
 - **What it means.** No answer to 40 is known. 86 is still the only answer
   a ≡ 2 (mod 4) below 90 that is open.
 

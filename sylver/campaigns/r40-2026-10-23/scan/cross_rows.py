@@ -4,11 +4,13 @@ An odd row 'move=w N winning_move=e' of {16,40,a} (kunz_pt --odd-list, deep_<a>*
 When e is an even obligation of {16,40,a}, that position is also its child {16,40,a,e} plus the odd reply w,
 so the child is N by w and the obligation e is met (search grade, as the odd row is). The rows say which file
 and row they came from. A deep_<a>*.out file is read only when the last kunz_pt command line in its .err has
-the base {16,40,a} (deep_86+105.out does; deep_82+60+84.out, on {16,40,60,82}, does not).
+the base {16,40,a} (deep_86+105.out does; deep_82+60+84.out, a sweep of {16,40,60,82,84}, does not).
 With --b66, also 82's obligations 44 and 66, which B66={16,40,44,66} (P by search,
 evidence_16-40-44-66.json) meets: {16,40,44,82}+66 and {16,40,66}+44 are B66 (82 = 16+66).
 With --known, also each obligation whose child reaches a known P-position (screen.py's KNOWN) by a reply below
-600: the lookup even_resolver.py makes first, here for rows it would not redo (such as 'short: needs even').
+600: the reply lookup even_resolver.py makes first, here for rows it would not redo (such as 'short: needs
+even'). A child that is itself in KNOWN (which refutes a) gets no row here; even_resolver.py reports it.
+KNOWN does not hold this record's finite witnesses (such as {11,16,26,40}).
 Usage: cross_rows.py a [--b66] [--known]. A row is added only for an obligation whose latest row is not 'resolved'.
 Not while even_resolver.py runs on the same a: it reads its file once, at its start, and a row it writes later
 for the same obligation would become the latest.
