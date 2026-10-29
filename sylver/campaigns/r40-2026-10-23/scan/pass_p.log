@@ -1,0 +1,1 @@
+2026-10-28 20:03:35 start (python3 even_resolver.py --position 16 40 68 86 --p-table --ncache-mb 8192 --threads 10 --short-first --max-states 400000000 --timeout 1200; 16 h)

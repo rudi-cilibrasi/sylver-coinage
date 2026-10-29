@@ -415,9 +415,14 @@ began 86, before it classified any of them.
   {16,28,40,42} are P by search). 26 leads to N as well, by 11: the child
   {16,26,40,86} plus 11 is {11,16,26,40}, the finite witness that refutes
   26 above, which the known positions `cross_rows.py` reads do not hold.
-  So 32 lead to N. Five short children (68, 100, 108, 132 and 140) are
-  open after a first sweep, and 34 long ones have not been run. Pass O
-  runs on them, the open short ones first, from October 28, 19:45.
+  So 32 lead to N. Pass O retried the five short children left open after
+  a first sweep (68, 100, 108, 132 and 140), and its first row, on
+  October 28 at 20:03, is that **{16,40,68,86} is "short: needs even"**:
+  its 32 odd obligations all lead to N. So, as {16,40,60,82} did for 82,
+  it is P exactly when its 45 even obligations all lead to N too, and
+  then 86 fails by 68 (and 68 by 86). Pass P resolves those from 20:03.
+  100, 108, 132 and 140 are still open, and 34 long children have not
+  been run.
 
 Below 90, the answer a ≡ 2 (mod 4) still open is 86.
 

@@ -2289,7 +2289,10 @@ Recorded in [the reply-40 record](campaigns/r40-2026-10-23/RESULT.md#the-search-
   {2,3}. Earlier precedent points here: 46, 54, 58, 66, 78 and 82 each
   failed by an even move e ≡ 0 (mod 4), and only 74 by an odd one (107).
   86's five open short children, 68, 100, 108, 132 and 140, are all
-  ≡ 0 (mod 4). They are being resolved first.
+  ≡ 0 (mod 4), and were retried first.
+- **{16,40,68,86}.** The first of them has all 32 of its odd obligations
+  leading to N, so it is P exactly when its 45 even obligations do too,
+  and then 86 fails by 68, as 82 failed by 60. Those are being resolved.
 - **What it means.** No answer to 40 is known. 86 is still the only answer
   a ≡ 2 (mod 4) below 90 that is open.
 
