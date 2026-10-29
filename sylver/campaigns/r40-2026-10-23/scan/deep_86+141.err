@@ -1,0 +1,2 @@
+2026-10-28 17:55:34 start (./kunz_pt --p-table --ncache-mb 8192 --threads 10 --stop-at-p --max-states 800000000 --odd-list 141 16 40 86; 3 h)
+2026-10-28 19:45:39 exit 0

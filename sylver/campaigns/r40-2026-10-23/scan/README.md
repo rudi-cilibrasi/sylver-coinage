@@ -71,8 +71,9 @@ certified.
 | {16,40,60,82}'s 42 even obligations: pass K | `./pass_k.sh PID` (`even_resolver.py --position 16 40 60 82 --p-table --ncache-mb 8192 --threads 10 --short-first --max-states 400000000 --timeout 1200`, 16 hours at most), October 27, 12:13 to 23:34: 37 N (19 by replies it found), none refuting; 84, 90, 134, 150 and 166 open after four skips each | `pass_k.sh`, `pass_k.log`, `resolve_16-40-60-82.jsonl`, `resolve_16-40-60-82.log` |
 | {16,40,60,82}'s open obligations: their skipped odd replies, then every odd reply up to 401 the resolver did not reach: pass L | `./pass_l.sh PID` (`pass_f_lists.py 16 40 60 82` gives the lists; `kunz_pt` as in pass C, 4 hours each), October 27, 23:34, when pass K ended, to October 28, 02:39. It reruns the open rows only if every row of `resolve_16-40-60-82.jsonl` is resolved or open. 84 by 145, 134 by 197, 150 by 333, 166 by 255; all 124 of 90's replies N | `pass_l.sh`, `pass_l.log`, `deep_82+60+84.*`, `deep_82+60+90.*`, `deep_82+60+134.*`, `deep_82+60+150.*`, `deep_82+60+166.*` |
 | the open obligations pass L leaves, on odd replies 403 to 1601: pass M | `./pass_m.sh PID` (`kunz_pt` as in pass C, 4 hours each, for each of 90, 150 and 166 with no P row from pass L), October 28, 02:39 to 03:15: 90 by 499, so {16,40,60,82} is P and 82 fails by 60 | `pass_m.sh`, `pass_m.log`, `deep_82+60+90x.*` |
-| 86's eight open odd obligations, 105 to 141, each alone: pass N | `./pass_n.sh` (`kunz_pt` as in pass C, 3 hours each; it stops at a P row), from October 28, 03:16. It was still running when this was recorded | `pass_n.sh`, `pass_n.log` (its start) |
+| 86's eight open odd obligations, 105 to 141, each alone: pass N | `./pass_n.sh` (`kunz_pt` as in pass C, 3 hours each; it stops at a P row), October 28, 03:16 to 19:45: 105 by 291, 109 by 65, 117 by 49, 125 by 73 and 141 by 59; 113, 121 and 133 reached the three-hour limit with no row (exit 143) | `pass_n.sh`, `pass_n.log`, `deep_86+105.*`, `deep_86+109.*`, `deep_86+113.*`, `deep_86+117.*`, `deep_86+121.*`, `deep_86+125.*`, `deep_86+133.*`, `deep_86+141.*` |
 | the answers that P-positions found for other answers refute: {16,40,x,y} refutes y by x when x is a legal move from {16,40,y} | `python mirror_scan.py > mirror_scan.log`, without a solver, October 28 (it reads the `.out`, `.err` and `.jsonl` files here; four outputs whose `.err` has no command line get their bases from this table, and it skips the 13 others with no base, which its last line names) | `mirror_scan.py`, `mirror_scan.log` |
+| 86's even side: pass O | `./pass_o.sh PID`: once pass N ended with no P row, it ran `python cross_rows.py 86 --known >> cross_86.log`, which added 2 (by 3), 34 (by 20), 36 (by 50), 42 (by 28) and 50 (by 36), each child reaching a known P-position, and then started `even_resolver.py 86 --p-table --ncache-mb 8192 --threads 10 --short-first --redo-open --stop-at-needs-even --max-states 400000000 --timeout 1200` (24 hours at most), October 28, 19:45. It was still running when this was recorded | `pass_o.sh`, `pass_o.log` (its start), `cross_86.log` (its last 5 rows), `even_86.jsonl` (its last 5 rows) |
 
 The shell scripts log "(exit N)" after each run. Until the review of this
 record, they took N from `$?` inside the `$(date ...)` line, which is
@@ -143,3 +144,9 @@ sweeping 90 (90's row then ended open, after four skips; pass L reruns
 it). That run was stopped and its files deleted; the check was
 then fixed (it had a syntax error and now stops pass L if it fails), and
 `pass_l.sh` was not changed after it started at 16:26.
+Before pass O, `cross_rows.py` chose its files by name (`deep_<a>.out` and
+`deep_<a>x.out`); it now reads every `deep_<a>*.out` whose `.err` names
+the base {16,40,a} in its last `--odd-list` command line, so that it reads
+pass N's files and not those of {16,40,60,82}. On 82's and 86's files
+before pass N it reads the same files as before. `even_86.jsonl` has the
+rows written by October 28, 19:45, before the resolver's first.

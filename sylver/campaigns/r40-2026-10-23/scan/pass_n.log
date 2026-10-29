@@ -1,1 +1,17 @@
 2026-10-28 03:16:58 86+105 start: {16 40 86} + 105 (3 h)
+2026-10-28 05:30:14 86+105 end: exit 0; move=105 N winning_move=291 frobenius=339 cumulative_states=333204284
+2026-10-28 05:30:14 86+109 start: {16 40 86} + 109 (3 h)
+2026-10-28 06:27:26 86+109 end: exit 0; move=109 N winning_move=65 frobenius=351 cumulative_states=183494701
+2026-10-28 06:27:26 86+113 start: {16 40 86} + 113 (3 h)
+2026-10-28 09:27:36 86+113 end: exit 143; no row
+2026-10-28 09:27:36 86+117 start: {16 40 86} + 117 (3 h)
+2026-10-28 09:48:46 86+117 end: exit 0; move=117 N winning_move=49 frobenius=359 cumulative_states=95878629
+2026-10-28 09:48:46 86+121 start: {16 40 86} + 121 (3 h)
+2026-10-28 12:48:57 86+121 end: exit 143; no row
+2026-10-28 12:48:57 86+125 start: {16 40 86} + 125 (3 h)
+2026-10-28 14:55:23 86+125 end: exit 0; move=125 N winning_move=73 frobenius=367 cumulative_states=309384806
+2026-10-28 14:55:23 86+133 start: {16 40 86} + 133 (3 h)
+2026-10-28 17:55:34 86+133 end: exit 143; no row
+2026-10-28 17:55:34 86+141 start: {16 40 86} + 141 (3 h)
+2026-10-28 19:45:39 86+141 end: exit 0; move=141 N winning_move=59 frobenius=407 cumulative_states=276634751
+2026-10-28 19:45:39 pass N end

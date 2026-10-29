@@ -405,9 +405,16 @@ began 86, before it classified any of them.
   4), so 60 fails by 82.
   The witnesses are in `even_82.jsonl` (the odd side: pass J's row for
   60), `resolve_16-40-60-82.jsonl` and the `deep_82+60+*.out` files.
-- **86** still has eight odd obligations open, 105, 109, 113, 117, 121,
-  125, 133 and 141. Pass N gives each one a run of its own, three hours
-  each, from October 28, 03:16.
+- **86.** Pass N gave each of its eight open odd obligations a run of its
+  own, three hours each (October 28, 03:16 to 19:45). Five lead to N:
+  105 by 291, 109 by 65, 117 by 49, 125 by 73 and 141 by 59. 113, 121 and
+  133 reached the limit unclassified, so 86 has three odd obligations
+  open. On the even side, 31 of its 71 obligations lead to N, five of them
+  (2, 34, 36, 42 and 50) because the child reaches a known P-position
+  (`cross_rows.py 86 --known`). Five short children (68, 100, 108, 132
+  and 140) are open after a first sweep, and 35 long ones have not been
+  run. Pass O resolves them, the open short ones first, from October 28,
+  19:45.
 
 Below 90, the answer a ≡ 2 (mod 4) still open is 86.
 
